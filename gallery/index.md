@@ -15,7 +15,7 @@ description: "Photography of Valentine Golden Ghanem, Ghanaian medical scientist
     <div class="carousel__viewport">
       <div class="carousel__track">
         {% for p in site.data.gallery_portraits %}
-        <figure class="carousel__slide">
+        <figure class="carousel__slide{% if p.contain %} carousel__slide--contain{% endif %}">
           <img src="{{ p.url | relative_url }}" alt="{{ p.caption }}" loading="lazy">
           <figcaption>{{ p.caption }}</figcaption>
         </figure>
@@ -36,7 +36,7 @@ description: "Photography of Valentine Golden Ghanem, Ghanaian medical scientist
     <div class="carousel__viewport">
       <div class="carousel__track">
         {% for p in site.data.gallery_photos %}
-        <figure class="carousel__slide">
+        <figure class="carousel__slide{% if p.contain %} carousel__slide--contain{% endif %}">
           <img src="{{ p.url }}" alt="{{ p.caption }}" loading="lazy">
           <figcaption>{{ p.caption }}</figcaption>
         </figure>

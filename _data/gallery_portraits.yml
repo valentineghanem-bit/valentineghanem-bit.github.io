@@ -13,10 +13,12 @@
   caption: "Portrait, Ghana COCOBOD 70th Anniversary shirt."
 - url: "/assets/img/gallery/portraits/conference-participant-screens.jpg"
   caption: "At the laboratory desk, reviewing sample records."
+  contain: true
 - url: "/assets/img/gallery/portraits/lab-yellow-shirt-microscope.jpg"
   caption: "Portrait at a residential gate, beside flowering shrubs."
 - url: "/assets/img/gallery/portraits/lab-yellow-shirt-lis-samples.jpg"
   caption: "At the laboratory desk, reviewing the LIS dashboard."
+  contain: true
 - url: "/assets/img/gallery/portraits/lab-biosafety-cabinet.jpg"
   caption: "At his desk with health-policy literature."
 - url: "/assets/img/gallery/portraits/lab-coat-with-team.jpg"
@@ -41,6 +43,7 @@
   caption: "Outdoor portrait, teal patterned shirt."
 - url: "/assets/img/gallery/portraits/hall-portrait-blue-pattern.jpg"
   caption: "Portrait in a mall hallway."
+  contain: true
 - url: "/assets/img/gallery/portraits/outdoor-portrait-green-pattern.jpg"
   caption: "Studio portrait, red patterned shirt."
 - url: "/assets/img/gallery/portraits/street-portrait-blue-shirt.jpg"
@@ -49,8 +52,10 @@
   caption: "Portrait at home, beside a display cabinet."
 - url: "/assets/img/gallery/portraits/outdoor-portrait-blue-shirt-2.jpg"
   caption: "Studio portrait in black tie."
+  contain: true
 - url: "/assets/img/gallery/portraits/mall-hallway-portrait.jpg"
   caption: "Beside a wall-mounted map of Cocoa Clinic locations, Ghana."
+  contain: true
 - url: "/assets/img/gallery/portraits/wicker-chair-portrait.jpg"
   caption: "Portrait in an office hallway."
 - url: "/assets/img/gallery/portraits/living-room-portrait.jpg"

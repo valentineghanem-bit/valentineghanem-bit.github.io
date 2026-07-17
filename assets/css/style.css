@@ -805,6 +805,10 @@ p { text-wrap: pretty; }
 }
 .carousel__slide.is-active { opacity: 1; pointer-events: auto; z-index: 1; }
 .carousel__slide img { width: 100%; height: 100%; object-fit: cover; object-position: top; background: oklch(18% 0.015 250); display: block; }
+/* Portrait-orientation photos (e.g. tall group selfies) look badly cropped
+   when forced to fill a 4:3 landscape box via cover -- show the whole frame
+   instead, letterboxed on the dark slide background. */
+.carousel__slide--contain img { object-fit: contain; }
 .carousel__slide figcaption {
   position: absolute; left: 0; right: 0; bottom: 0;
   padding: 18px 22px;
