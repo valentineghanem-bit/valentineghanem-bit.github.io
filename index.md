@@ -8,6 +8,7 @@ description: "Official website of Valentine Golden Ghanem, a Ghanaian medical sc
 
 {%- assign rep_img = site.data.images | where: "representative", true | first -%}
 <section class="hero wrap">
+  <div class="canvas-field" data-canvas-field aria-hidden="true"></div>
   <div class="hero__content">
     <p class="hero__eyebrow">Accra, Ghana &nbsp;·&nbsp; 5.6037° N, 0.1870° W</p>
     <h1 class="hero__title">Valentine Golden Ghanem</h1>

@@ -359,4 +359,84 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     render();
   });
+
+  // Tactile bento micro-interactions: a real mass-spring-damper simulation
+  // (not a CSS easing curve) drives tilt/lift/press on .card, .toc-card and
+  // .event-card. Reads pointer position, writes --tilt-x/--tilt-y/--lift/
+  // --press-scale custom properties that the CSS transform already composes
+  // from -- so with JS disabled or reduced-motion requested, cards simply
+  // keep their plain CSS :hover lift and remain fully usable either way.
+  if (!prefersReduced) {
+    var STIFFNESS = 300;
+    var DAMPING = 20;
+    var springs = [];
+
+    function makeAxis() { return { value: 0, velocity: 0, target: 0 }; }
+    function stepAxis(axis, dt) {
+      var accel = -STIFFNESS * (axis.value - axis.target) - DAMPING * axis.velocity;
+      axis.velocity += accel * dt;
+      axis.value += axis.velocity * dt;
+    }
+    function atRest(axis) {
+      return Math.abs(axis.value - axis.target) < 0.001 && Math.abs(axis.velocity) < 0.001;
+    }
+
+    var loopRunning = false;
+    var lastTs = null;
+    function loop(ts) {
+      if (!lastTs) lastTs = ts;
+      var dt = Math.min((ts - lastTs) / 1000, 0.032);
+      lastTs = ts;
+      var anyActive = false;
+      springs.forEach(function (s) {
+        stepAxis(s.tiltX, dt); stepAxis(s.tiltY, dt); stepAxis(s.scale, dt);
+        if (!(atRest(s.tiltX) && atRest(s.tiltY) && atRest(s.scale))) anyActive = true;
+        s.el.style.setProperty('--tilt-x', s.tiltX.value.toFixed(3) + 'deg');
+        s.el.style.setProperty('--tilt-y', s.tiltY.value.toFixed(3) + 'deg');
+        s.el.style.setProperty('--press-scale', (1 + s.scale.value).toFixed(4));
+      });
+      if (anyActive) {
+        requestAnimationFrame(loop);
+      } else {
+        loopRunning = false;
+        lastTs = null;
+      }
+    }
+    function ensureLoop() {
+      if (!loopRunning) { loopRunning = true; requestAnimationFrame(loop); }
+    }
+
+    document.querySelectorAll('.card, .toc-card, .event-card').forEach(function (el) {
+      var s = { el: el, tiltX: makeAxis(), tiltY: makeAxis(), scale: makeAxis() };
+      springs.push(s);
+      el.addEventListener('pointermove', function (e) {
+        if (e.pointerType === 'touch') return;
+        var r = el.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        s.tiltY.target = px * 6;
+        s.tiltX.target = py * -6;
+        ensureLoop();
+      });
+      el.addEventListener('pointerenter', function (e) {
+        if (e.pointerType === 'touch') return;
+        s.scale.target = 0.018;
+        ensureLoop();
+      });
+      el.addEventListener('pointerleave', function () {
+        s.tiltX.target = 0; s.tiltY.target = 0; s.scale.target = 0;
+        ensureLoop();
+      });
+      el.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'touch') return;
+        s.scale.target = -0.02; // Z-axis compression on press
+        ensureLoop();
+      });
+      el.addEventListener('pointerup', function (e) {
+        if (e.pointerType === 'touch') return;
+        s.scale.target = 0.018;
+        ensureLoop();
+      });
+    });
+  }
 });
