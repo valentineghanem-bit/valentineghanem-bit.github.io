@@ -1,0 +1,32 @@
+{%- assign rep_img = site.data.images | where: "representative", true | first -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "{{ site.url }}/#website",
+      "url": "{{ site.url }}/",
+      "name": {{ site.data.profile.name | jsonify }},
+      "description": {{ site.data.profile.short_description | strip_newlines | jsonify }},
+      "inLanguage": "en",
+      "publisher": { "@id": "{{ site.url }}/#person" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "{{ site.url }}/#webpage",
+      "url": "{{ site.url }}/",
+      "name": "{{ site.data.profile.name }} | Medical Scientist and Epidemiologist",
+      "description": {{ site.data.profile.short_description | strip_newlines | jsonify }},
+      "isPartOf": { "@id": "{{ site.url }}/#website" },
+      "about": { "@id": "{{ site.url }}/#person" },
+      "mainEntity": { "@id": "{{ site.url }}/#person" },
+      "primaryImageOfPage": { "@id": {{ rep_img.id_url | jsonify }} },
+      "inLanguage": "en"
+    },
+    {% include jsonld/person-node.html %},
+    {% include jsonld/image-nodes.html %},
+    {% include jsonld/organization-node.html %}
+  ]
+}
+</script>

@@ -1,0 +1,20 @@
+{%- for img in site.data.images -%}
+{
+  "@type": "ImageObject",
+  "@id": {{ img.id_url | jsonify }},
+  "url": {{ img.page_url | jsonify }},
+  "contentUrl": {{ img.content_url | jsonify }},
+  "name": {{ img.name | jsonify }},
+  "caption": {{ img.caption | jsonify }},
+  "description": {{ img.caption | jsonify }},
+  "width": { "@type": "QuantitativeValue", "value": {{ img.width }}, "unitCode": "E37" },
+  "height": { "@type": "QuantitativeValue", "value": {{ img.height }}, "unitCode": "E37" },
+  "encodingFormat": "image/jpeg",
+  "about": { "@id": "{{ site.url }}/#person" },
+  "creator": { "@id": "{{ site.url }}/#person" },
+  "creditText": "Valentine Golden Ghanem / Wikimedia Commons",
+  "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "acquireLicensePage": {{ img.page_url | jsonify }}{% if img.representative %},
+  "representativeOfPage": true{% endif %}
+}{% unless forloop.last %},{% endunless %}
+{%- endfor -%}

@@ -1,0 +1,12 @@
+# Note: the key is "cocoa_clinic" (underscore) so it's safe to access via
+# Liquid dot-notation as site.data.organization.cocoa_clinic -- hyphens in a
+# Liquid property name get parsed as subtraction and break silently.
+# The URL slug "#cocoa-clinic" (with a hyphen) is set separately in the
+# templates and is unaffected by this.
+cocoa_clinic:
+  name: "Cocoa Clinic"
+  alternate_name: "Ghana Cocoa Board Medical Department"
+  parent_organization:
+    name: "Ghana Cocoa Board"
+    alternate_name: "COCOBOD"
+    url: "https://cocobod.gh/"

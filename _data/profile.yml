@@ -1,0 +1,135 @@
+name: "Valentine Golden Ghanem"
+given_name: "Valentine"
+additional_name: "Golden"
+family_name: "Ghanem"
+alternate_names:
+  - "Valentine Ghanem"
+  - "Valentine G. Ghanem"
+  - "V. G. Ghanem"
+birth_date: "1987-04-25"
+birth_place: "Accra, Ghana"
+job_titles:
+  - "Principal Biomedical Scientist"
+  - "Epidemiologist"
+  - "Public Health Researcher"
+nationality: "Ghana"
+description: >
+  Valentine Golden Ghanem is a Ghanaian medical scientist, epidemiologist and public
+  health researcher with over a decade of experience at the intersection of diagnostic
+  medicine and data-driven health systems. He serves as Principal Biomedical Scientist
+  at Cocoa Clinic, Ghana Cocoa Board. His work integrates laboratory medicine,
+  epidemiology, clinical data science, geospatial analytics and machine learning to
+  strengthen disease surveillance and reduce health inequities.
+disambiguating_description: >
+  Ghanaian medical scientist, epidemiologist and public health researcher based in Accra, Ghana.
+short_description: >
+  Official website of Valentine Golden Ghanem, a Ghanaian medical scientist,
+  epidemiologist and public health researcher.
+languages:
+  - name: "English"
+    code: "en"
+  - name: "Twi"
+    code: ""
+knows_about:
+  - "Laboratory medicine"
+  - "Epidemiology"
+  - "Public health"
+  - "Clinical data science"
+  - "Computational epidemiology"
+  - "Infectious disease surveillance"
+  - "Spatial epidemiology"
+  - "Health informatics"
+  - "Machine learning"
+  - "Explainable artificial intelligence"
+  - "Geospatial analysis"
+  - "Health equity"
+  - "Health systems research"
+  - "Universal health coverage"
+  - "HIV/AIDS surveillance"
+identifiers:
+  - property_id: "Wikidata"
+    value: "Q137962236"
+    url: "https://www.wikidata.org/wiki/Q137962236"
+  - property_id: "ORCID"
+    value: "0009-0002-8332-0220"
+    url: "https://orcid.org/0009-0002-8332-0220"
+  - property_id: "ISNI"
+    value: "000000052967791X"
+    url: "https://isni.org/isni/000000052967791X"
+  - property_id: "Google Scholar"
+    value: "06JdyxMAAAAJ"
+    url: "https://scholar.google.com/citations?user=06JdyxMAAAAJ"
+  - property_id: "Web of Science ResearcherID"
+    value: "NRA-8276-2025"
+    url: "https://www.webofscience.com/wos/author/record/NRA-8276-2025"
+credentials:
+  - name: "Master of Science in Data Science"
+    category: "degree"
+    institution: "University of East London"
+    status: "completed"
+    year: 2025
+    note: "Distinction"
+  - name: "Master of Science in Public Health"
+    category: "degree"
+    institution: "University of Suffolk"
+    status: "completed"
+    year: 2026
+    note: "Merit"
+  - name: "Bachelor of Science in Medical Laboratory Science"
+    category: "degree"
+    institution: "University of Ghana"
+    status: "completed"
+    year: 2013
+  - name: "Master of Laws in International Law"
+    category: "education"
+    level: "Postgraduate"
+    institution: "Liverpool John Moores University"
+    status: "in progress"
+    note: "Ongoing postgraduate legal studies; qualification not represented as completed."
+alumni_of:
+  - "University of East London"
+  - "University of Suffolk"
+  - "University of Ghana"
+works_for: "cocoa-clinic"
+memberships:
+  - name: "Royal Society for Public Health"
+    role: "Fellow"
+    abbreviation: "FRSPH"
+    reg_no: "140437"
+  - name: "Academy of Clinical Science and Laboratory Medicine"
+    abbreviation: "ACSLM"
+    reg_no: "12474"
+  - name: "Ghana Association of Medical Laboratory Scientists"
+    abbreviation: "GAMLS"
+    reg_no: "AS 1206"
+  - name: "Dutch Epidemiology Society"
+    abbreviation: "VvE"
+licensure:
+  - credential: "Medical Scientist"
+    jurisdiction: "Ghana"
+    body: "Allied Health Professions Council"
+    abbreviation: "AHPC"
+    reg_no: "09007815"
+  - credential: "Medical Scientist"
+    jurisdiction: "Ireland"
+    body: "CORU"
+    abbreviation: "CORU"
+    reg_no: "MS 063958"
+certifications_in_progress:
+  - name: "Epidemioloog A, Netherlands"
+    note: "Panel expected June 2026"
+  - name: "Certified in Public Health (CPH)"
+    note: "Examination preparation ongoing, July 2026"
+religion: "Christianity"
+statement_of_purpose: >
+  I intend to pursue a career at the junction of diagnostic medicine and public health systems, supporting evidence-based approaches. I am also dedicated to transforming the lessons gleaned from the laboratory into actionable insights that can be utilized to respond promptly and enhance disease surveillance. This is why I find fulfillment in being both an academic researcher and a clinician: my goal is to integrate essential clinical data with the realities of the public health system.
+career_vision: >
+  I anticipate leading initiatives to harmonize biomedical science, data science, and policy to advance health equity in Africa. I aspire to contribute to a future in which proactive epidemic response plans and sustainable health systems, particularly in resource-limited settings, benefit from the combination of predictive modeling, digital health technologies, and focused interventions.
+aim: >
+  To bridge the gap between clinical diagnostic medicine and public health systems in Africa by leveraging data science and digital health technologies to build proactive, equitable, and evidence-based disease surveillance and epidemic response frameworks.
+objectives:
+  - "Translate laboratory insights: establish robust mechanisms that convert raw, laboratory-derived diagnostic data into actionable, real-time insights for public health surveillance systems."
+  - "Deploy digital health & predictive tools: design, evaluate, or implement predictive modeling tools and digital health technologies optimized for early epidemic detection and response in resource-limited settings."
+  - "Harmonize policy and science: collaborate with policymakers and stakeholders to integrate biomedical data science into national and regional health policies."
+  - "Advance health equity: design targeted, data-driven interventions that address systemic health disparities across diverse African populations."
+  - "Bridge the clinician-researcher divide: maintain a dual role as clinician and academic researcher, using frontline clinical realities to inform rigorous, system-level public health research."

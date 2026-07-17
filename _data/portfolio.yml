@@ -1,0 +1,33 @@
+capstone_projects:
+  - title: "Technology Trends and Demographic Insights from Stack Overflow Developer Survey"
+    context: "IBM Data Analyst Professional Certificate Capstone (2024)"
+    summary: "EDA and dashboard creation analyzing developer technology preferences and global demographics using Python, IBM Watson Studio, and IBM Cognos Analytics."
+    links:
+      - label: "Download full capstone report"
+        url: "/assets/files/capstone-report.pdf"
+data_visualisations:
+  - title: "HIV Incidence Forecasting Dashboard (2025)"
+    summary: "Interactive Streamlit dashboard visualizing regional HIV forecasts based on machine learning models."
+    doi_url: "https://doi.org/10.5281/zenodo.15292209"
+    links:
+      - label: "Launch dashboard (Streamlit)"
+        url: "https://dashboardapppy-3ryuuaxnlmrsrrkqoxpcfw.streamlit.app/"
+      - label: "Code & model files (GitHub)"
+        url: "https://github.com/vghanem/ghana_disease_dashboard"
+research_projects:
+  - title: "Analysis and Prediction of Infectious Disease Trends in Ghana: A Machine Learning Approach, with Emphasis on HIV/AIDS"
+    context: "MSc Research Dissertation (2025) — University of East London"
+    summary: "Predictive epidemiological study applying Random Forest, Ridge Regression, XGBoost, and SVR to model HIV/AIDS incidence in Ghana."
+    links:
+      - label: "View abstract / executive summary"
+        url: "/assets/files/data-science-dissertation.pdf"
+      - label: "Access full dataset & scripts"
+        url: "https://doi.org/10.5281/zenodo.15292209"
+      - label: "View dashboard"
+        url: "https://dashboardapppy-3ryuuaxnlmrsrrkqoxpcfw.streamlit.app/"
+  - title: "Isolation and Determination of Antimicrobial Resistance Patterns in Surgical Theater Sinks, Korle-Bu Teaching Hospital"
+    context: "BSc Undergraduate Research Project (2013) — University of Ghana"
+    summary: "Microbiological analysis of nosocomial pathogens isolated from hospital sinks; evaluation of antimicrobial resistance patterns."
+    links:
+      - label: "Download full research paper (PDF)"
+        url: "/assets/files/bsc-research-project.pdf"

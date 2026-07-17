@@ -1,0 +1,65 @@
+- category: "Technical"
+  groups:
+    - name: "Public Health"
+      icon: "🌍"
+      items:
+        - "Disease monitoring & case documentation — laboratory-based documentation and CPD training on epidemic response (VHF, malaria, HIV/AIDS)."
+        - "Community evaluation & diagnostics — point-of-care screening (HemoCue, urinalysis dipsticks, glucose meters) for rural community assessment."
+        - "Informed decision-making — incorporating diagnostic information into public health reports and surveillance presentations."
+    - name: "Data Science"
+      icon: "💻"
+      items:
+        - "Python (Pandas, Scikit-learn, Matplotlib) for disease modelling and HIV incidence forecasting."
+        - "R (ARIMA, GLMs) for time-series prediction and epidemiological graphing."
+        - "Tableau & Streamlit for interactive dashboards and visual storytelling."
+        - "Machine learning: XGBoost, Ridge Regression, SHAP for model interpretation."
+        - "Google Colab, Jupyter & GitHub for reproducible, version-controlled workflows."
+        - "ArcGIS & Folium for spatial epidemiology and choropleth mapping."
+    - name: "Biomedical Science"
+      icon: "🧪"
+      items:
+        - "Clinical chemistry & hematology: Mindray BS600, Sysmex XN550, Roche Cobas e411."
+        - "Molecular diagnostics: GeneXpert, real-time PCR, post-PCR data verification."
+        - "Microbiology & AST: VITEK 2 Compact, BACTEC FX."
+        - "Histopathology & IHC: Leica RM2235, TP1020, basic immunohistochemistry."
+        - "LIMS: LabWare, Meditech, PathNet, Co-Path."
+        - "Quality assurance & equipment upkeep, calibration, internal/external QC."
+- category: "Analytical"
+  groups:
+    - name: "Public Health"
+      icon: "🌍"
+      items:
+        - "Monitoring & evaluation — health program metrics, risk assessment and occupational hazard review via CPD training."
+        - "Disease outbreak & data management — laboratory data compilation for COVID-19 and VHF surveillance."
+        - "Scientific writing — CPD summaries, internal lab reports and data presentations."
+    - name: "Data Science"
+      icon: "💻"
+      items:
+        - "Model interpretability (SHAP) for HIV incidence prediction models."
+        - "Epidemiological forecasting — ARIMA and ensemble models (XGBoost) on HIV/AIDS incidence data."
+        - "Model validation & tuning — 5-fold cross-validation and grid search."
+    - name: "Biomedical Science"
+      icon: "🧪"
+      items:
+        - "Quality assurance — external quality assurance (RIQAS, NEQAS, Sysmex Caresphere) and instrument verification."
+        - "Clinical data verification with the Cocoa Clinic Data Validation Committee."
+        - "SOP and compliance review under SLIPTA/SLMTA toward ISO 15189 alignment."
+- category: "Leadership"
+  groups:
+    - name: "Public Health"
+      icon: "🌍"
+      items:
+        - "Coordination of laboratory operations during Cocoa Clinic medical missions."
+        - "Health communication — patient education and translating lab results at outreach events."
+        - "Public health translation of laboratory results into actionable insight segments."
+    - name: "Data Science"
+      icon: "💻"
+      items:
+        - "Applying ML-based disease models to simulate real-world epidemiological trends."
+        - "Leading dashboard development with Streamlit and Tableau for academic and public health audiences."
+    - name: "Biomedical Science"
+      icon: "🧪"
+      items:
+        - "Team support & mentorship — onboarding junior staff on diagnostics and QC."
+        - "Quality systems contribution — QC troubleshooting, SOP adherence, CPD on ISO 15189 and lab safety."
+        - "Equipment & inventory management for BS600 and XN550 platforms."

@@ -1,0 +1,13 @@
+{%- assign org = site.data.organization.cocoa_clinic -%}
+{
+  "@type": "Organization",
+  "@id": "{{ site.url }}/#cocoa-clinic",
+  "name": {{ org.name | jsonify }},
+  "alternateName": {{ org.alternate_name | jsonify }},
+  "parentOrganization": {
+    "@type": "Organization",
+    "name": {{ org.parent_organization.name | jsonify }},
+    "alternateName": {{ org.parent_organization.alternate_name | jsonify }},
+    "url": {{ org.parent_organization.url | jsonify }}
+  }
+}

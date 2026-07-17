@@ -1,0 +1,86 @@
+# Each entry becomes one ImageObject node in the JSON-LD graph, AND is
+# available to layouts for rendering <img> tags -- one source of truth.
+# Add more entries in the same shape to bring in the rest of your
+# Wikimedia Commons set. `id_url` is the page URL with the #image fragment
+# used as the node's @id; `page_url` and `content_url` are the file page and
+# the direct redirect-to-original link respectively.
+- id_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Official_Portrait4.jpg#image"
+  page_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Official_Portrait4.jpg"
+  content_url: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Official_Portrait4.jpg"
+  name: "Official portrait of Valentine Golden Ghanem"
+  caption: "Official professional portrait of Valentine Golden Ghanem."
+  width: 810
+  height: 810
+  representative: true
+- id_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_2.jpg#image"
+  page_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_2.jpg"
+  content_url: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_2.jpg"
+  name: "Valentine Golden Ghanem professional portrait"
+  caption: "Professional portrait of Valentine Golden Ghanem."
+  width: 400
+  height: 600
+  representative: false
+- id_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_3.jpg#image"
+  page_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_3.jpg"
+  content_url: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_3.jpg"
+  name: "Valentine Golden Ghanem professional photograph"
+  caption: "Professional photograph of Valentine Golden Ghanem."
+  width: 719
+  height: 656
+  representative: false
+- id_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Community_Health.jpg#image"
+  page_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Community_Health.jpg"
+  content_url: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Community_Health.jpg"
+  name: "Valentine Golden Ghanem community health photograph"
+  caption: "Valentine Golden Ghanem participating in a community-health activity."
+  width: 881
+  height: 656
+  representative: false
+- id_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Conference_Participant.jpg#image"
+  page_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Conference_Participant.jpg"
+  content_url: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Conference_Participant.jpg"
+  name: "Valentine Golden Ghanem conference photograph"
+  caption: "Valentine Golden Ghanem participating in a professional conference."
+  width: 678
+  height: 960
+  representative: false
+- id_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Conference_Participant2.jpg#image"
+  page_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Conference_Participant2.jpg"
+  content_url: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Conference_Participant2.jpg"
+  name: "Valentine Golden Ghanem conference portrait"
+  caption: "Conference portrait of Valentine Golden Ghanem."
+  width: 1080
+  height: 1080
+  representative: false
+- id_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Lab_Portrait.jpg#image"
+  page_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Lab_Portrait.jpg"
+  content_url: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Lab_Portrait.jpg"
+  name: "Valentine Golden Ghanem laboratory portrait"
+  caption: "Laboratory portrait of Valentine Golden Ghanem."
+  width: 810
+  height: 810
+  representative: false
+- id_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Studio.jpg#image"
+  page_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Studio.jpg"
+  content_url: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Studio.jpg"
+  name: "Valentine Golden Ghanem studio portrait"
+  caption: "Studio portrait of Valentine Golden Ghanem."
+  width: 717
+  height: 960
+  representative: false
+- id_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist.jpg#image"
+  page_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist.jpg"
+  content_url: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist.jpg"
+  name: "Valentine Golden Ghanem at his professional workstation"
+  caption: "Valentine Golden Ghanem, Ghanaian medical scientist, public health researcher and epidemiologist, at his workstation."
+  width: 1280
+  height: 1920
+  representative: false
+- id_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist1.jpg#image"
+  page_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist1.jpg"
+  content_url: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Valentine_Golden_Ghanem_Ghanaian_medical_scientist1.jpg"
+  name: "Valentine Golden Ghanem at a medical laboratory workstation"
+  caption: "Valentine Golden Ghanem at his professional medical laboratory workstation."
+  width: 640
+  height: 640
+  representative: false

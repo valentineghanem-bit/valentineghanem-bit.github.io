@@ -1,0 +1,18 @@
+title: "Valentine Golden Ghanem"
+url: "https://www.valentineghanem.com"
+baseurl: ""
+
+# Only files/dirs Jekyll should ignore when building
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - node_modules
+
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+
+# Keep permalinks clean and predictable, matching what the JSON-LD @ids assume
+permalink: pretty

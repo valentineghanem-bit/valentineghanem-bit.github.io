@@ -1,0 +1,41 @@
+- title: "Spatial and Machine Learning Analysis of District-Level Health Insurance Inequities in Ghana"
+  journal: "Cureus"
+  year: 2026
+  citation: "Ghanem, V. G. (2026). Spatial and Machine Learning Analysis of District-Level Health Insurance Inequities in Ghana. Cureus, 18(1): e101984."
+  doi_url: "https://doi.org/10.7759/cureus.101984"
+  status: "Published"
+  summary: "Examines NHIS non-enrolment across 261 districts in Ghana using spatial analysis (Bivariate LISA) and machine learning (CART). District-level illiteracy emerged as the strongest predictor of uninsurance, outweighing poverty and population density. Forty-two high-risk districts, concentrated in the northern belt, highlight geographic and institutional access barriers."
+- title: "HIV Prognosis in Sub-Saharan Africa: A Narrative Review of Mortality Trends, Structural Determinants, and Policy Implications"
+  journal: "International Journal of Medical and Health Research"
+  year: 2025
+  citation: "Ghanem, V. G. (2025). HIV Prognosis in Sub-Saharan Africa: A Narrative Review of Mortality Trends, Structural Determinants, and Policy Implications. International Journal of Medical and Health Research, 3(2)."
+  doi_url: "https://doi.org/10.61424/ijmhr.v3i2.346"
+  status: "Published"
+  summary: "A narrative synthesis of 218 peer-reviewed studies (2015–2024) examining HIV-related mortality trends in Sub-Saharan Africa, emphasizing structural determinants and highlighting the underutilization of behavioral and biomedical predictors."
+- title: "Socio-Behavioral and Spatial Determinants of HIV/AIDS Incidence in Ghana: An Ecological Cross-Sectional Study with Explainable Machine Learning"
+  journal: "Advances in Infectious Diseases"
+  year: 2025
+  citation: "Ghanem, V. G. (2025). Socio-Behavioral and Spatial Determinants of HIV/AIDS Incidence in Ghana: An Ecological Cross-Sectional Study with Explainable Machine Learning. Advances in Infectious Diseases."
+  doi_url: "https://doi.org/10.4236/aid.2025.154050"
+  status: "Published"
+  summary: "Spatial epidemiological analysis combining socio-behavioral indicators and geospatial data to identify determinants of HIV/AIDS incidence using SHAP, XGBoost, and GIS techniques."
+- title: "Forecasting HIV/AIDS Incidence in Ghana: A Retrospective Observational Study Using Ensemble Machine Learning Models"
+  journal: "Research Square (Preprint)"
+  year: 2025
+  citation: "Ghanem, V. G. (2025). Forecasting HIV/AIDS Incidence in Ghana: A Retrospective Observational Study Using Ensemble Machine Learning Models [Preprint]. Research Square."
+  doi_url: "https://doi.org/10.21203/rs.3.rs-6639193/v1"
+  status: "Preprint — in peer review with BMC Public Health"
+  summary: "Time-series modelling of HIV/AIDS incidence in Ghana using ensemble methods — Random Forest, XGBoost, Gradient Boosting, and Voting Regressors — to predict future trends."
+- title: "Analysis and Prediction of Infectious Disease Trends in Ghana: A Machine Learning Approach, with Emphasis on HIV/AIDS"
+  journal: "Zenodo (data & software repository)"
+  year: 2025
+  citation: "Ghanem, V. G. (2025). Analysis and Prediction of Infectious Disease Trends in Ghana: A Machine Learning Approach, with Emphasis on HIV/AIDS [Data and software repository]. Zenodo."
+  doi_url: "https://doi.org/10.5281/zenodo.15616846"
+  status: "Published"
+  summary: "Predictive epidemiological study applying Random Forest, Ridge Regression, XGBoost, and SVR to model HIV/AIDS incidence in Ghana."
+  schema_subject_of: false
+  links:
+    - label: "Launch dashboard (Streamlit)"
+      url: "https://dashboardapppy-3ryuuaxnlmrsrrkqoxpcfw.streamlit.app/"
+    - label: "Code & model files (GitHub)"
+      url: "https://github.com/vghanem/ghana_disease_dashboard"

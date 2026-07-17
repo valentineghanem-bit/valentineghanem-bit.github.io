@@ -1,0 +1,32 @@
+<header class="site-header">
+  <div class="wrap site-header__row">
+    <a class="site-header__name" href="{{ '/' | relative_url }}">{{ site.data.profile.name }}</a>
+    <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle__bar"></span>
+      <span class="nav-toggle__bar"></span>
+      <span class="nav-toggle__bar"></span>
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Primary">
+      <a href="{{ '/' | relative_url }}" class="{% if page.url == '/' %}is-active{% endif %}" {% if page.url == '/' %}aria-current="page"{% endif %}>Home</a>
+      <a href="{{ '/about/' | relative_url }}" class="{% if page.url == '/about/' %}is-active{% endif %}" {% if page.url == '/about/' %}aria-current="page"{% endif %}>About</a>
+      {%- assign dd_pages = "/community/,/skills/,/publications/,/portfolio/,/certificates/,/press/" | split: "," -%}
+      {%- assign dd_active = false -%}
+      {%- for dp in dd_pages -%}{%- if page.url == dp -%}{%- assign dd_active = true -%}{%- endif -%}{%- endfor -%}
+      <div class="nav-dropdown" data-nav-dropdown>
+        <button type="button" class="nav-dropdown__trigger{% if dd_active %} is-active{% endif %}" aria-haspopup="true" aria-expanded="false">
+          Explore
+          <svg class="nav-dropdown__chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-dropdown__menu">
+          <a href="{{ '/community/' | relative_url }}" class="{% if page.url == '/community/' %}is-active{% endif %}">Community</a>
+          <a href="{{ '/skills/' | relative_url }}" class="{% if page.url == '/skills/' %}is-active{% endif %}">Skills</a>
+          <a href="{{ '/publications/' | relative_url }}" class="{% if page.url == '/publications/' %}is-active{% endif %}">Publications</a>
+          <a href="{{ '/portfolio/' | relative_url }}" class="{% if page.url == '/portfolio/' %}is-active{% endif %}">Portfolio</a>
+          <a href="{{ '/certificates/' | relative_url }}" class="{% if page.url == '/certificates/' %}is-active{% endif %}">Certificates</a>
+          <a href="{{ '/press/' | relative_url }}" class="{% if page.url == '/press/' %}is-active{% endif %}">Press</a>
+        </div>
+      </div>
+      <a href="{{ '/gallery/' | relative_url }}" class="{% if page.url == '/gallery/' %}is-active{% endif %}" {% if page.url == '/gallery/' %}aria-current="page"{% endif %}>Gallery</a>
+    </nav>
+  </div>
+</header>

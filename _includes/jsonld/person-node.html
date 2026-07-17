@@ -1,0 +1,57 @@
+{%- assign p = site.data.profile -%}
+{
+  "@type": "Person",
+  "@id": "{{ site.url }}/#person",
+  "url": "{{ site.url }}/",
+  "name": {{ p.name | jsonify }},
+  "givenName": {{ p.given_name | jsonify }},
+  "additionalName": {{ p.additional_name | jsonify }},
+  "familyName": {{ p.family_name | jsonify }},
+  "alternateName": {{ p.alternate_names | jsonify }},
+  "description": {{ p.description | strip_newlines | jsonify }},
+  "disambiguatingDescription": {{ p.disambiguating_description | strip_newlines | jsonify }},
+  "jobTitle": {{ p.job_titles | jsonify }},
+  "nationality": { "@type": "Country", "name": {{ p.nationality | jsonify }} },
+  "birthDate": {{ p.birth_date | jsonify }},
+  "birthPlace": { "@type": "Place", "name": {{ p.birth_place | jsonify }} },
+  "knowsLanguage": [
+    {%- for lang in p.languages -%}
+    { "@type": "Language", "name": {{ lang.name | jsonify }}{% if lang.code and lang.code != "" %}, "alternateName": {{ lang.code | jsonify }}{% endif %} }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ],
+  "knowsAbout": {{ p.knows_about | jsonify }},
+  "worksFor": { "@id": "{{ site.url }}/#cocoa-clinic" },
+  "affiliation": [
+    { "@id": "{{ site.url }}/#cocoa-clinic" },
+    { "@type": "Organization", "name": "Ghana Cocoa Board", "alternateName": "COCOBOD", "url": "https://cocobod.gh/" }
+  ],
+  "alumniOf": [
+    {%- for a in p.alumni_of -%}
+    { "@type": "CollegeOrUniversity", "name": {{ a | jsonify }} }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ],
+  "hasCredential": [
+    {%- for c in p.credentials -%}
+    {%- capture cred_name -%}{{ c.name }}{% if c.status == "in progress" %} — studies in progress{% endif %}{%- endcapture -%}
+    { "@type": "EducationalOccupationalCredential", "name": {{ cred_name | jsonify }}, "credentialCategory": {{ c.category | jsonify }}{% if c.level %}, "educationalLevel": {{ c.level | jsonify }}{% endif %}, "recognizedBy": { "@type": "CollegeOrUniversity", "name": {{ c.institution | jsonify }} }{% if c.status == "in progress" %}, "description": {{ c.note | jsonify }}{% endif %} }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ],
+  "subjectOf": [
+    {%- assign subj_pubs = site.data.publications | where_exp: "pub", "pub.schema_subject_of != false" -%}
+    {%- for pub in subj_pubs -%}
+    { "@id": {{ pub.doi_url | jsonify }} }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ],
+  "mainEntityOfPage": { "@id": "{{ site.url }}/about/#profilepage" },
+  "identifier": [
+    {%- for ident in p.identifiers -%}
+    { "@type": "PropertyValue", "propertyID": {{ ident.property_id | jsonify }}, "value": {{ ident.value | jsonify }}, "url": {{ ident.url | jsonify }} }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ],
+  "image": [
+    {%- for img in site.data.images -%}
+    { "@id": {{ img.id_url | jsonify }} }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ],
+  "sameAs": {{ site.data.social.same_as | jsonify }}
+}
