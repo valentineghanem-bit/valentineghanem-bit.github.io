@@ -448,15 +448,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var MAGNET_MAX = 10;
     var magnets = [];
     document.querySelectorAll('.btn, .site-toolbar__btn').forEach(function (el) {
-      magnets.push({ el: el, x: makeAxis(), y: makeAxis(), rect: null });
+      magnets.push({ el: el, x: makeAxis(), y: makeAxis() });
     });
-
-    function refreshMagnetRects() {
-      magnets.forEach(function (m) { m.rect = m.el.getBoundingClientRect(); });
-    }
-    refreshMagnetRects();
-    window.addEventListener('resize', refreshMagnetRects, { passive: true });
-    window.addEventListener('scroll', refreshMagnetRects, { passive: true });
 
     var magnetLoopRunning = false;
     var magnetLastTs = null;
@@ -481,8 +474,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('pointermove', function (e) {
       if (e.pointerType === 'touch') return;
       magnets.forEach(function (m) {
-        var r = m.rect;
-        if (!r) return;
+        var r = m.el.getBoundingClientRect();
         var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
         var dx = e.clientX - cx, dy = e.clientY - cy;
         var dist = Math.sqrt(dx * dx + dy * dy);
