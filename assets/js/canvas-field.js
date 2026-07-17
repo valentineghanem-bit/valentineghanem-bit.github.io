@@ -36,10 +36,17 @@
       '  float c = sin((p.y * 2.4 + p.x * 0.6) - t * 1.1) * 0.5;' +
       '  return a + b + c;' +
       '}' +
+      // Drifting soft-edged orbs -- distinct moving objects (not just a
+      // flat gradient), each following its own slow Lissajous path so the
+      // field reads as a scene with depth rather than a static wash.
+      'float orb(vec2 p, vec2 center, float radius){' +
+      '  return smoothstep(radius, 0.0, length(p - center));' +
+      '}' +
       'void main(){' +
       '  vec2 uv = gl_FragCoord.xy / uResolution.xy;' +
       '  vec2 p = uv * 2.0 - 1.0;' +
-      '  p.x *= uResolution.x / uResolution.y;' +
+      '  float aspect = uResolution.x / uResolution.y;' +
+      '  p.x *= aspect;' +
       '  float t = uTime * 0.16;' +
       '  float n = wave(p * 1.15, t);' +
       '  vec2 toPointer = p - uPointer;' +
@@ -48,8 +55,24 @@
       '  float field = n * 0.5 + 0.5 + ripple;' +
       '  field = clamp(field, 0.0, 1.0);' +
       '  vec3 col = mix(uColorA, uColorB, field);' +
-      '  float alpha = (0.16 + ripple * 0.14) * mix(1.0, 0.7, uDark) * uIntensity;' +
-      '  gl_FragColor = vec4(col, clamp(alpha, 0.0, 0.4));' +
+      '  float glow = 0.0;' +
+      '  vec3 glowCol = vec3(0.0);' +
+      '  for (int i = 0; i < 5; i++) {' +
+      '    float fi = float(i);' +
+      '    float speed = 0.05 + fi * 0.017;' +
+      '    float phase = fi * 2.4;' +
+      '    vec2 c = vec2(sin(uTime * speed + phase) * aspect * 0.65,' +
+      '                  cos(uTime * (speed * 0.8) + phase * 1.3) * 0.7);' +
+      '    float parallax = 1.0 + fi * 0.35;' +
+      '    vec2 pull = (uPointer - c) * 0.05 / parallax;' +
+      '    float r = mix(0.10, 0.22, fract(fi * 0.61803));' +
+      '    float g = orb(p, c + pull, r) * (0.5 / parallax + 0.15);' +
+      '    glow += g;' +
+      '    glowCol += g * mix(uColorA, uColorB, fract(fi * 0.37));' +
+      '  }' +
+      '  col = mix(col, glowCol / max(glow, 0.001), clamp(glow, 0.0, 1.0));' +
+      '  float alpha = (0.16 + ripple * 0.14 + glow * 0.22) * mix(1.0, 0.7, uDark) * uIntensity;' +
+      '  gl_FragColor = vec4(col, clamp(alpha, 0.0, 0.55));' +
       '}';
 
     function compile(type, src) {
