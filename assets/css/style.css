@@ -22,7 +22,6 @@
   --gold-tint: oklch(93% 0.045 80);
   --line: oklch(85% 0.012 95);
   --line-strong: oklch(75% 0.015 95);
-  --grid-line: oklch(90% 0.01 95 / 0.6);
   --shadow: 0 8px 24px -14px oklch(21% 0.02 250 / 0.35);
   --shadow-lg: 0 20px 44px -18px oklch(21% 0.02 250 / 0.45);
 
@@ -49,7 +48,6 @@
   --gold-tint: oklch(30% 0.05 80);
   --line: oklch(33% 0.016 255);
   --line-strong: oklch(42% 0.018 255);
-  --grid-line: oklch(34% 0.014 255 / 0.6);
   --shadow: 0 8px 24px -14px oklch(0% 0 0 / 0.6);
   --shadow-lg: 0 20px 44px -18px oklch(0% 0 0 / 0.7);
 }
@@ -67,9 +65,7 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  background:
-    repeating-linear-gradient(to right, var(--grid-line) 0 1px, transparent 1px 96px),
-    var(--paper);
+  background: var(--paper);
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 17px;
