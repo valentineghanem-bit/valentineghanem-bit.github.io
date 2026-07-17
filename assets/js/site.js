@@ -494,45 +494,70 @@ document.addEventListener('DOMContentLoaded', function () {
   // and greedily place it into whichever column currently totals the
   // least height, so cards pack tight with no leftover space -- unlike a
   // row-based grid, an odd card never leaves a gap beside it either.
+  var EVENT_MIN_COL_WIDTH = 300; // narrower than this and photo grids get cramped
+
+  // Largest-first bin packing: assigning the tallest cards before the
+  // shorter ones balances the columns far better than DOM-order greedy
+  // does. Returns the resulting per-column index lists plus how balanced
+  // they came out (max - min column height), so the caller can compare
+  // a couple of candidate column counts and keep whichever is tighter.
+  function binPack(heights, numCols) {
+    var order = heights.map(function (_, i) { return i; });
+    order.sort(function (a, b) { return heights[b] - heights[a]; });
+    var cols = [];
+    var colSums = [];
+    for (var i = 0; i < numCols; i++) { cols.push([]); colSums.push(0); }
+    order.forEach(function (i) {
+      var shortest = 0;
+      for (var j = 1; j < numCols; j++) {
+        if (colSums[j] < colSums[shortest]) shortest = j;
+      }
+      cols[shortest].push(i);
+      colSums[shortest] += heights[i] + 22;
+    });
+    return { cols: cols, imbalance: Math.max.apply(null, colSums) - Math.min.apply(null, colSums) };
+  }
+
   function packEventGrids() {
     document.querySelectorAll('.event-grid').forEach(function (grid) {
       var cards = Array.prototype.slice.call(grid.querySelectorAll('.event-card'));
       if (!cards.length) return;
 
       var gridWidth = grid.getBoundingClientRect().width;
-      var numCols = Math.max(1, Math.min(3, Math.round(gridWidth / 460)));
-
+      var byWidth = Math.max(1, Math.min(3, Math.round(gridWidth / 460)));
       var heights = cards.map(function (c) { return c.getBoundingClientRect().height; });
 
       grid.querySelectorAll('.event-grid__col').forEach(function (col) { col.remove(); });
 
-      if (numCols === 1) {
+      if (byWidth === 1) {
         cards.forEach(function (c) { grid.appendChild(c); });
         return;
       }
 
-      var cols = [];
-      var colSums = [];
-      for (var i = 0; i < numCols; i++) {
+      // Try the width-implied column count and one more (if it still
+      // leaves each column wide enough for a readable photo grid), and
+      // keep whichever packs tighter -- an extra column sometimes turns
+      // an unavoidable 2-column gap (one tall card vs. two short ones)
+      // into a perfectly even split.
+      var candidates = [byWidth];
+      var extra = byWidth + 1;
+      if (extra <= cards.length && gridWidth / extra >= EVENT_MIN_COL_WIDTH) candidates.push(extra);
+
+      var best = null;
+      candidates.forEach(function (n) {
+        var result = binPack(heights, n);
+        if (!best || result.imbalance < best.imbalance) best = { numCols: n, cols: result.cols };
+      });
+
+      var colEls = [];
+      for (var i = 0; i < best.numCols; i++) {
         var col = document.createElement('div');
         col.className = 'event-grid__col';
-        cols.push(col);
-        colSums.push(0);
+        colEls.push(col);
         grid.appendChild(col);
       }
-      // Largest-first bin packing: assigning the tallest cards before the
-      // shorter ones balances the columns far better than pure DOM-order
-      // greedy assignment does (a big card landing late has fewer options
-      // left to even things out).
-      var order = cards.map(function (_, i) { return i; });
-      order.sort(function (a, b) { return heights[b] - heights[a]; });
-      order.forEach(function (i) {
-        var shortest = 0;
-        for (var j = 1; j < numCols; j++) {
-          if (colSums[j] < colSums[shortest]) shortest = j;
-        }
-        cols[shortest].appendChild(cards[i]);
-        colSums[shortest] += heights[i] + 22; // + gap
+      best.cols.forEach(function (indices, colIndex) {
+        indices.forEach(function (cardIndex) { colEls[colIndex].appendChild(cards[cardIndex]); });
       });
     });
   }
