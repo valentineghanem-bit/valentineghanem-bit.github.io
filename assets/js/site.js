@@ -494,7 +494,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // and greedily place it into whichever column currently totals the
   // least height, so cards pack tight with no leftover space -- unlike a
   // row-based grid, an odd card never leaves a gap beside it either.
-  var EVENT_MIN_COL_WIDTH = 300; // narrower than this and photo grids get cramped
+  var EVENT_MIN_COL_WIDTH = 260; // narrower than this and photo grids get cramped
 
   // Largest-first bin packing: assigning the tallest cards before the
   // shorter ones balances the columns far better than DOM-order greedy
