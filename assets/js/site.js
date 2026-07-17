@@ -520,12 +520,18 @@ document.addEventListener('DOMContentLoaded', function () {
         colSums.push(0);
         grid.appendChild(col);
       }
-      cards.forEach(function (card, i) {
+      // Largest-first bin packing: assigning the tallest cards before the
+      // shorter ones balances the columns far better than pure DOM-order
+      // greedy assignment does (a big card landing late has fewer options
+      // left to even things out).
+      var order = cards.map(function (_, i) { return i; });
+      order.sort(function (a, b) { return heights[b] - heights[a]; });
+      order.forEach(function (i) {
         var shortest = 0;
         for (var j = 1; j < numCols; j++) {
           if (colSums[j] < colSums[shortest]) shortest = j;
         }
-        cols[shortest].appendChild(card);
+        cols[shortest].appendChild(cards[i]);
         colSums[shortest] += heights[i] + 22; // + gap
       });
     });
