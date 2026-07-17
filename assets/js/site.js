@@ -438,5 +438,63 @@ document.addEventListener('DOMContentLoaded', function () {
         ensureLoop();
       });
     });
+
+    // Magnetic buttons: CTAs and toolbar buttons drift toward a nearby cursor
+    // within a small radius, using the same spring engine as the cards.
+    // Composes with each button's existing --btn-lift hover state via CSS
+    // custom properties, so hover/press styling is unchanged, just layered.
+    var MAGNET_RADIUS = 80;
+    var MAGNET_STRENGTH = 0.4;
+    var MAGNET_MAX = 10;
+    var magnets = [];
+    document.querySelectorAll('.btn, .site-toolbar__btn').forEach(function (el) {
+      magnets.push({ el: el, x: makeAxis(), y: makeAxis(), rect: null });
+    });
+
+    function refreshMagnetRects() {
+      magnets.forEach(function (m) { m.rect = m.el.getBoundingClientRect(); });
+    }
+    refreshMagnetRects();
+    window.addEventListener('resize', refreshMagnetRects, { passive: true });
+    window.addEventListener('scroll', refreshMagnetRects, { passive: true });
+
+    var magnetLoopRunning = false;
+    var magnetLastTs = null;
+    function magnetLoop(ts) {
+      if (!magnetLastTs) magnetLastTs = ts;
+      var dt = Math.min((ts - magnetLastTs) / 1000, 0.032);
+      magnetLastTs = ts;
+      var anyActive = false;
+      magnets.forEach(function (m) {
+        stepAxis(m.x, dt); stepAxis(m.y, dt);
+        if (!(atRest(m.x) && atRest(m.y))) anyActive = true;
+        m.el.style.setProperty('--magnet-x', m.x.value.toFixed(2) + 'px');
+        m.el.style.setProperty('--magnet-y', m.y.value.toFixed(2) + 'px');
+      });
+      if (anyActive) { requestAnimationFrame(magnetLoop); }
+      else { magnetLoopRunning = false; magnetLastTs = null; }
+    }
+    function ensureMagnetLoop() {
+      if (!magnetLoopRunning) { magnetLoopRunning = true; requestAnimationFrame(magnetLoop); }
+    }
+
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'touch') return;
+      magnets.forEach(function (m) {
+        var r = m.rect;
+        if (!r) return;
+        var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        var dx = e.clientX - cx, dy = e.clientY - cy;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < MAGNET_RADIUS) {
+          var pull = (1 - dist / MAGNET_RADIUS) * MAGNET_STRENGTH;
+          m.x.target = Math.max(-MAGNET_MAX, Math.min(MAGNET_MAX, dx * pull));
+          m.y.target = Math.max(-MAGNET_MAX, Math.min(MAGNET_MAX, dy * pull));
+        } else {
+          m.x.target = 0; m.y.target = 0;
+        }
+      });
+      ensureMagnetLoop();
+    }, { passive: true });
   }
 });

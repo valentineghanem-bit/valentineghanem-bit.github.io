@@ -4,10 +4,9 @@
 // requested, or anything throws, the hero simply keeps its flat paper
 // background. No existing markup, state, or interactivity depends on this.
 (function () {
-  function init() {
-    var host = document.querySelector('[data-canvas-field]');
-    if (!host) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  function initHost(host) {
+    var intensity = parseFloat(host.getAttribute('data-intensity'));
+    if (isNaN(intensity)) intensity = 1;
 
     var canvas = document.createElement('canvas');
     canvas.setAttribute('aria-hidden', 'true');
@@ -30,6 +29,7 @@
       'uniform vec3 uColorA;' +
       'uniform vec3 uColorB;' +
       'uniform float uDark;' +
+      'uniform float uIntensity;' +
       'float wave(vec2 p, float t){' +
       '  float a = sin(p.x * 2.2 + t) * 0.5;' +
       '  float b = sin((p.x * 1.3 - p.y * 1.7) + t * 0.8) * 0.5;' +
@@ -48,7 +48,7 @@
       '  float field = n * 0.5 + 0.5 + ripple;' +
       '  field = clamp(field, 0.0, 1.0);' +
       '  vec3 col = mix(uColorA, uColorB, field);' +
-      '  float alpha = (0.16 + ripple * 0.14) * mix(1.0, 0.7, uDark);' +
+      '  float alpha = (0.16 + ripple * 0.14) * mix(1.0, 0.7, uDark) * uIntensity;' +
       '  gl_FragColor = vec4(col, clamp(alpha, 0.0, 0.4));' +
       '}';
 
@@ -87,6 +87,7 @@
     var uColorA = gl.getUniformLocation(program, 'uColorA');
     var uColorB = gl.getUniformLocation(program, 'uColorB');
     var uDark = gl.getUniformLocation(program, 'uDark');
+    var uIntensity = gl.getUniformLocation(program, 'uIntensity');
 
     // Approximate RGB reads of the site's teal/gold tokens (raw WebGL has no
     // oklch()); kept in sync by eye with assets/css/style.css's palette.
@@ -153,11 +154,17 @@
       gl.uniform3f(uColorA, a[0], a[1], a[2]);
       gl.uniform3f(uColorB, b[0], b[1], b[2]);
       gl.uniform1f(uDark, isDark ? 1.0 : 0.0);
+      gl.uniform1f(uIntensity, intensity);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
       raf = requestAnimationFrame(frame);
     }
     raf = requestAnimationFrame(frame);
+  }
+
+  function init() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll('[data-canvas-field]').forEach(initHost);
   }
 
   if (document.readyState === 'loading') {

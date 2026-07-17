@@ -93,6 +93,7 @@ description: "Official website of Valentine Golden Ghanem, a Ghanaian medical sc
 </section>
 
 <section class="section section--inverted wrap section--credentials" data-reveal>
+  <div class="canvas-field" data-canvas-field data-intensity="0.4" aria-hidden="true"></div>
   <h2 class="section__title"><span class="section__index">02</span> Credentials</h2>
   <ul class="tag-list">
     {% for c in site.data.profile.credentials %}
