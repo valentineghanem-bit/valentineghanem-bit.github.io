@@ -575,10 +575,17 @@ p { text-wrap: pretty; }
   .community-sidebar { position: static; flex-direction: row; flex-wrap: wrap; }
   .community-nav { flex-direction: row; }
 }
-.event-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 22px; align-items: start; margin-bottom: 22px; }
+/* Mosaic/masonry flow instead of a row-locked grid: cards size purely to
+   their own content, so a short card (fewer photos, no video) never gets
+   stretched to match a taller neighbor and left with dead space at the
+   bottom -- it just sits at its natural height, packed tight. */
+.event-grid { columns: 2 420px; column-gap: 22px; margin-bottom: 22px; }
 .event-grid:last-child { margin-bottom: 0; }
-.event-grid .event-card { margin-bottom: 0; height: 100%; }
-.event-media__more { grid-column: 1 / -1; text-align: center; }
+.event-grid .event-card { break-inside: avoid; width: 100%; display: inline-block; vertical-align: top; }
+@media (max-width: 900px) {
+  .event-grid { columns: 1; }
+}
+.event-media__more { text-align: center; }
 .event-media__more summary { list-style: none; cursor: pointer; font-family: var(--font-mono); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--teal-dark); padding: 10px; border: 1px dashed var(--line-strong); border-radius: 6px; margin-top: 4px; }
 .event-media__more summary::-webkit-details-marker { display: none; }
 .event-media__more[open] summary { display: none; }
