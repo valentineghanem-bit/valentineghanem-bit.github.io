@@ -575,16 +575,18 @@ p { text-wrap: pretty; }
   .community-sidebar { position: static; flex-direction: row; flex-wrap: wrap; }
   .community-nav { flex-direction: row; }
 }
-/* Plain grid with align-items: start (no forced card height): each card
-   sizes to its own content, so a short card never gets stretched to match
-   a taller row-mate. Multi-column masonry was tried here first but a
-   3-card row (2 tall + 1 short, both landing in the same column) left an
-   entire column ~360px short of its neighbor -- worse than the original
-   bug. Grid's own row-based auto-fit only ever leaves a gap beside the
-   last odd card, not a whole dead column before the next heading. */
-.event-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 22px; align-items: start; margin-bottom: 22px; }
+/* True masonry, computed in JS (see site.js packEventGrids): cards are
+   measured and greedily placed into whichever column is currently
+   shortest, so there is never leftover space -- not beside an odd card,
+   not under a short one. Falls back to a plain single-column stack (each
+   .event-card just a normal block child) if JS doesn't run. */
+.event-grid { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 22px; margin-bottom: 22px; }
 .event-grid:last-child { margin-bottom: 0; }
-.event-grid .event-card { margin-bottom: 0; }
+.event-grid > .event-card { flex: 1 1 420px; margin-bottom: 22px; }
+.event-grid > .event-card:last-child { margin-bottom: 0; }
+.event-grid__col { display: flex; flex-direction: column; flex: 1 1 0; min-width: 0; }
+.event-grid__col .event-card { margin-bottom: 22px; }
+.event-grid__col .event-card:last-child { margin-bottom: 0; }
 .event-media__more { grid-column: 1 / -1; text-align: center; }
 .event-media__more summary { list-style: none; cursor: pointer; font-family: var(--font-mono); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--teal-dark); padding: 10px; border: 1px dashed var(--line-strong); border-radius: 6px; margin-top: 4px; }
 .event-media__more summary::-webkit-details-marker { display: none; }
@@ -665,11 +667,17 @@ p { text-wrap: pretty; }
 .event-media__item { margin: 0; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 4 / 3; }
 .event-media__item img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; transition: transform 0.25s ease; }
 .event-media__item:hover img { transform: scale(1.04); }
-.event-media__video { margin: 16px 0 0; max-width: 420px; }
-.event-media__video video { width: 100%; border-radius: 6px; border: 1px solid var(--line); display: block; box-shadow: var(--shadow); }
+/* Height-constrained rather than width-constrained: a landscape clip and a
+   portrait clip (rotated 90 deg from each other) shouldn't both be forced
+   to the same width -- that leaves the portrait one nearly 3x taller than
+   the landscape one. Capping height instead means each clip's own aspect
+   ratio decides its width, and the two read as comparable visual weight
+   side by side. */
+.event-media__video { margin: 16px 0 0; }
+.event-media__video video { height: 260px; max-width: 100%; width: auto; border-radius: 6px; border: 1px solid var(--line); display: block; box-shadow: var(--shadow); }
 @media (max-width: 620px) {
   .event-card { padding: 22px 20px; }
-  .event-media__video { max-width: 100%; }
+  .event-media__video video { height: 220px; }
 }
 
 /* ---------- Empty state ---------- */

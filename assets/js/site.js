@@ -489,4 +489,54 @@ document.addEventListener('DOMContentLoaded', function () {
       ensureMagnetLoop();
     }, { passive: true });
   }
+
+  // True masonry for .event-grid: measure each card's real rendered height
+  // and greedily place it into whichever column currently totals the
+  // least height, so cards pack tight with no leftover space -- unlike a
+  // row-based grid, an odd card never leaves a gap beside it either.
+  function packEventGrids() {
+    document.querySelectorAll('.event-grid').forEach(function (grid) {
+      var cards = Array.prototype.slice.call(grid.querySelectorAll('.event-card'));
+      if (!cards.length) return;
+
+      var gridWidth = grid.getBoundingClientRect().width;
+      var numCols = Math.max(1, Math.min(3, Math.round(gridWidth / 460)));
+
+      var heights = cards.map(function (c) { return c.getBoundingClientRect().height; });
+
+      grid.querySelectorAll('.event-grid__col').forEach(function (col) { col.remove(); });
+
+      if (numCols === 1) {
+        cards.forEach(function (c) { grid.appendChild(c); });
+        return;
+      }
+
+      var cols = [];
+      var colSums = [];
+      for (var i = 0; i < numCols; i++) {
+        var col = document.createElement('div');
+        col.className = 'event-grid__col';
+        cols.push(col);
+        colSums.push(0);
+        grid.appendChild(col);
+      }
+      cards.forEach(function (card, i) {
+        var shortest = 0;
+        for (var j = 1; j < numCols; j++) {
+          if (colSums[j] < colSums[shortest]) shortest = j;
+        }
+        cols[shortest].appendChild(card);
+        colSums[shortest] += heights[i] + 22; // + gap
+      });
+    });
+  }
+
+  if (document.querySelector('.event-grid')) {
+    packEventGrids();
+    var packResizeTimer = null;
+    window.addEventListener('resize', function () {
+      clearTimeout(packResizeTimer);
+      packResizeTimer = setTimeout(packEventGrids, 150);
+    }, { passive: true });
+  }
 });
