@@ -4,6 +4,8 @@ medical_screening:
     format: "In-Person Health Outreach"
     date: "6 November 2024"
     location: "Goaso, Brong Ahafo Region"
+    lat: 6.80
+    lng: -2.51
     description: "Participated as part of the Cocoa Clinic team in a health screening exercise for cocoa farmers, aligning with national health objectives and UN SDGs 3, 8, 10 and 17."
     video: "/assets/video/goaso-2024-screening.mp4"
     photos:
@@ -24,6 +26,8 @@ medical_screening:
     format: "In-Person Health Screening"
     date: "19 October 2024"
     location: "Agona West Municipal, Central Region"
+    lat: 5.54
+    lng: -0.70
     description: "Supported a public health screening for SPD staff and cocoa farmers covering malaria, diabetes, obesity, breast cancer, HIV and general wellness, with free physician consultation and medication."
     video: "/assets/video/agona-swedru-2024-screening.mp4"
     photos:
@@ -46,6 +50,8 @@ medical_screening:
     format: "Nationwide Medical Screening Exercise"
     date: "21 October 2023"
     location: "Kofikrom, Koforidua, Eastern Region"
+    lat: 6.12
+    lng: -0.26
     description: "Participated in COCOBOD's regional health outreach improving access to healthcare services for cocoa farmers, including diagnostic and wellness services."
     photos:
       - url: "/assets/img/community/kofikrom-2023/screening-exercise.jpg"
@@ -59,6 +65,8 @@ conferences:
     provider: "Ghana Association of Medical Laboratory Scientists (GAMLS) – National"
     format: "In-Person, Desert Pastures, Bolgatanga – Upper East Region"
     date: "13–16 October 2021"
+    lat: 10.79
+    lng: -0.85
     description: "Annual National Congress & Scientific Conference (10 CPD credits). Theme: \"Standardizing Medical Laboratory Science Practice in Ghana to Better Position the Country in the Midst of Infectious Diseases.\""
     photos:
       - url: "/assets/img/community/gamls-congress-2021/group-picture.jpg"
@@ -96,6 +104,8 @@ conferences:
     provider: "Ghana Health Service (GHS)"
     format: "In-Person, Adabraka Polyclinic, Accra"
     date: "18 January 2020"
+    lat: 5.56
+    lng: -0.21
     description: "National TB Control Training — hands-on training in TB sample collection, Ziehl-Neelsen staining, AFB microscopy, and diagnostic workflow under national TB protocols."
     photos:
       - url: "/assets/img/community/tb-seminar-2020/seminar-1.jpg"
@@ -109,6 +119,8 @@ outreach:
     provider: "National Cocoa Day Medical Response Team, Ghana Cocoa Board"
     format: "In-Person, State House, Osu – Accra"
     date: "1 October 2018"
+    lat: 5.55
+    lng: -0.18
     description: "Served as part of the Cocoa Clinic team providing essential diagnostics and screenings — blood pressure checks, glucose testing, and basic health education — during Ghana's National Cocoa Day celebration."
     photos:
       - url: "/assets/img/community/cocoa-day-2018/medical-team.jpg"
@@ -128,6 +140,8 @@ outreach:
     provider: "Enable-Ghana Drug and Substance Abuse Awareness Programme, Enable Ghana Foundation"
     format: "In-Person, Community JHS, Lartebiokorshie – Accra"
     date: "16 July 2016"
+    lat: 5.54
+    lng: -0.24
     description: "Delivered a guest address on substance abuse and health awareness to Junior High School students, emphasizing personal responsibility, peer pressure, and the science of addiction."
     photos:
       - url: "/assets/img/community/youth-event-2016/talk-1.jpg"

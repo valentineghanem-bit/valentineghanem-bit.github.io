@@ -570,6 +570,39 @@ p { text-wrap: pretty; }
 .community-nav a { text-align: left; }
 .community-sidebar .pull-quote { margin: 0; }
 .community-main { min-width: 0; }
+/* ---------- Field map (scrollytelling geo layout) ---------- */
+.geo-layout { display: grid; grid-template-columns: minmax(260px, 380px) minmax(0, 1fr); gap: 16px 56px; align-items: start; margin-top: 32px; }
+.geo-map-wrap { position: sticky; top: 96px; }
+.geo-map { width: 100%; height: auto; max-height: 78vh; }
+.geo-map__silhouette { fill: var(--teal-tint); stroke: var(--teal); stroke-width: 1.5; }
+.geo-map__caption { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-soft); text-align: center; margin: 8px 0 0; }
+.geo-pin { cursor: default; }
+.geo-pin__dot { fill: var(--gold); stroke: var(--paper-raised); stroke-width: 1.5; transition: fill 0.25s ease, r 0.25s ease; }
+.geo-pin__pulse { fill: none; stroke: var(--gold); stroke-width: 1.5; opacity: 0; transform-origin: center; }
+.geo-pin.is-active .geo-pin__dot { fill: var(--teal-dark); r: 7; }
+.geo-pin.is-active .geo-pin__pulse { animation: geo-pulse 1.8s ease-out infinite; }
+@keyframes geo-pulse {
+  0% { opacity: 0.55; transform: scale(1); }
+  100% { opacity: 0; transform: scale(3.2); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .geo-pin.is-active .geo-pin__pulse { animation: none; opacity: 0.35; }
+}
+.geo-scroll { list-style: none; margin: 0; padding: 0; display: grid; gap: 28px; }
+.geo-card {
+  border-left: 3px solid var(--line);
+  padding: 4px 0 4px 20px;
+  transition: border-left-color 0.25s ease;
+}
+.geo-card.is-active { border-left-color: var(--gold); }
+.geo-card__coord { font-family: var(--font-mono); font-size: 0.72rem; color: var(--teal-dark); letter-spacing: 0.02em; }
+.geo-card__title { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; margin: 4px 0 6px; }
+.geo-card__desc { color: var(--ink-soft); font-size: 0.92rem; margin: 10px 0 14px; max-width: 62ch; }
+@media (max-width: 900px) {
+  .geo-layout { grid-template-columns: 1fr; }
+  .geo-map-wrap { position: static; margin-bottom: 24px; }
+}
+
 @media (max-width: 980px) {
   .community-layout { grid-template-columns: 1fr; }
   .community-sidebar { position: static; flex-direction: row; flex-wrap: wrap; }

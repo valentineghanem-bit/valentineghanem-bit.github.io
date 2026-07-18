@@ -144,5 +144,10 @@ description: "Official website of Valentine Golden Ghanem, a Ghanaian medical sc
       <span class="toc-card__title">Press</span>
       <span class="toc-card__desc">Media &amp; recognition</span>
     </a>
+    <a class="toc-card" href="{{ '/map/' | relative_url }}">
+      <span class="toc-card__index">08</span>
+      <span class="toc-card__title">Field Map</span>
+      <span class="toc-card__desc">Outreach activity plotted across Ghana</span>
+    </a>
   </div>
 </section>

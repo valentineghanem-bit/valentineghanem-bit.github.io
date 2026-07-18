@@ -9,7 +9,7 @@
     <nav class="site-nav" id="site-nav" aria-label="Primary">
       <a href="{{ '/' | relative_url }}" class="{% if page.url == '/' %}is-active{% endif %}" {% if page.url == '/' %}aria-current="page"{% endif %}>Home</a>
       <a href="{{ '/about/' | relative_url }}" class="{% if page.url == '/about/' %}is-active{% endif %}" {% if page.url == '/about/' %}aria-current="page"{% endif %}>About</a>
-      {%- assign dd_pages = "/community/,/skills/,/publications/,/portfolio/,/certificates/,/press/" | split: "," -%}
+      {%- assign dd_pages = "/community/,/skills/,/publications/,/portfolio/,/certificates/,/press/,/map/" | split: "," -%}
       {%- assign dd_active = false -%}
       {%- for dp in dd_pages -%}{%- if page.url == dp -%}{%- assign dd_active = true -%}{%- endif -%}{%- endfor -%}
       <div class="nav-dropdown" data-nav-dropdown>
@@ -24,6 +24,7 @@
           <a href="{{ '/portfolio/' | relative_url }}" class="{% if page.url == '/portfolio/' %}is-active{% endif %}">Portfolio</a>
           <a href="{{ '/certificates/' | relative_url }}" class="{% if page.url == '/certificates/' %}is-active{% endif %}">Certificates</a>
           <a href="{{ '/press/' | relative_url }}" class="{% if page.url == '/press/' %}is-active{% endif %}">Press</a>
+          <a href="{{ '/map/' | relative_url }}" class="{% if page.url == '/map/' %}is-active{% endif %}">Field Map</a>
         </div>
       </div>
       <a href="{{ '/gallery/' | relative_url }}" class="{% if page.url == '/gallery/' %}is-active{% endif %}" {% if page.url == '/gallery/' %}aria-current="page"{% endif %}>Gallery</a>

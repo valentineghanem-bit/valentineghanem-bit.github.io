@@ -570,4 +570,42 @@ document.addEventListener('DOMContentLoaded', function () {
       packResizeTimer = setTimeout(packEventGrids, 150);
     }, { passive: true });
   }
+
+  // Field map scrollytelling: as each event card scrolls through the
+  // vertical center of the viewport, activate its matching pin on the
+  // sticky map (and vice versa -- the pin's own border highlights the
+  // active card). Falls back to nothing but a static map if JS/IO is
+  // unavailable; every card and pin is still fully readable either way.
+  var geoMap = document.querySelector('[data-geo-map]');
+  if (geoMap && 'IntersectionObserver' in window) {
+    var geoPins = {};
+    geoMap.querySelectorAll('[data-geo-pin]').forEach(function (pin) {
+      geoPins[pin.getAttribute('data-target')] = pin;
+    });
+    var geoCards = document.querySelectorAll('[data-geo-card]');
+    var activeCard = null;
+    function setActiveGeoCard(card) {
+      if (activeCard === card) return;
+      if (activeCard) {
+        activeCard.classList.remove('is-active');
+        var prevPin = geoPins[activeCard.id];
+        if (prevPin) prevPin.classList.remove('is-active');
+      }
+      activeCard = card;
+      if (card) {
+        card.classList.add('is-active');
+        var pin = geoPins[card.id];
+        if (pin) pin.classList.add('is-active');
+      }
+    }
+    var geoIo = new IntersectionObserver(function (entries) {
+      var best = null;
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        if (!best || entry.intersectionRatio > best.intersectionRatio) best = entry;
+      });
+      if (best) setActiveGeoCard(best.target);
+    }, { threshold: [0.3, 0.5, 0.7], rootMargin: '-20% 0px -20% 0px' });
+    geoCards.forEach(function (c) { geoIo.observe(c); });
+  }
 });
