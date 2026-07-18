@@ -1,0 +1,37 @@
+{%- assign video_events = "" | split: "," -%}
+{%- for e in site.data.community_activities.medical_screening -%}{%- if e.video -%}{%- assign video_events = video_events | push: e -%}{%- endif -%}{%- endfor -%}
+{%- for e in site.data.community_activities.conferences -%}{%- if e.video -%}{%- assign video_events = video_events | push: e -%}{%- endif -%}{%- endfor -%}
+{%- for e in site.data.community_activities.outreach -%}{%- if e.video -%}{%- assign video_events = video_events | push: e -%}{%- endif -%}{%- endfor -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "{{ page.url | absolute_url }}#webpage",
+      "url": "{{ page.url | absolute_url }}",
+      "name": {% if page.title %}"{{ page.title }} | {{ site.data.profile.name }}"{% else %}{{ site.data.profile.name | jsonify }}{% endif %},
+      "description": {{ page.description | default: site.data.profile.short_description | strip_newlines | jsonify }},
+      "isPartOf": { "@id": "{{ site.url }}/#website" },
+      "about": { "@id": "{{ site.url }}/#person" },
+      "inLanguage": "en"
+    }{% if video_events.size > 0 %},
+    {% for v in video_events %}
+    {
+      "@type": "VideoObject",
+      "@id": "{{ v.video | absolute_url }}#video",
+      "name": {{ v.title | jsonify }},
+      "description": {{ v.description | jsonify }},
+      "thumbnailUrl": [{{ v.photos.first.url | absolute_url | jsonify }}],
+      "uploadDate": "{{ v.date | date: '%Y-%m-%d' }}",
+      "contentUrl": "{{ v.video | absolute_url }}",
+      "duration": "{{ v.video_duration }}",
+      "isFamilyFriendly": true,
+      "publisher": { "@id": "{{ site.url }}/#person" },
+      "creator": { "@id": "{{ site.url }}/#person" }
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+    {% endif %}
+  ]
+}
+</script>
