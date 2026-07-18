@@ -14,6 +14,7 @@
   "creator": { "@id": "{{ site.url }}/#person" },
   "creditText": "Valentine Golden Ghanem / Wikimedia Commons",
   "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "copyrightNotice": "© {{ 'now' | date: '%Y' }} {{ site.data.profile.name }}. Released into the public domain (CC0 1.0).",
   "acquireLicensePage": {{ img.page_url | jsonify }}{% if img.representative %},
   "representativeOfPage": true{% endif %}
 }{% unless forloop.last %},{% endunless %}
