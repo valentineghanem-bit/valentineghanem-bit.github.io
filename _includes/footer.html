@@ -1,4 +1,11 @@
 <footer class="site-footer">
+  <div class="marquee marquee--footer" aria-hidden="true">
+    <div class="marquee__track">
+      {% assign footer_ticker = site.data.profile.job_titles | push: "Accra, Ghana" %}
+      {% for item in footer_ticker %}<span class="marquee__item">{{ item }}</span>{% endfor %}
+      {% for item in footer_ticker %}<span class="marquee__item">{{ item }}</span>{% endfor %}
+    </div>
+  </div>
   <div class="wrap site-footer__row">
     <p class="site-footer__copy">© {{ 'now' | date: "%Y" }} {{ site.data.profile.name }}. All rights reserved.</p>
     <ul class="site-footer__icons">

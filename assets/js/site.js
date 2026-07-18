@@ -3,6 +3,110 @@
   if (saved === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
 })();
 
+// Ambient audio: a synthesized pad (a few detuned oscillators through a
+// slow-breathing lowpass filter) plus short blips on key hover targets --
+// no audio files to fetch, everything is generated. Always starts muted
+// on load: browsers block autoplay before a gesture anyway, and unannounced
+// sound has no place on a first visit to a clinical/scientific site. The
+// toolbar button is the only thing that can turn it on, and only for the
+// current page view.
+var vgAudio = (function () {
+  var ctx = null, masterGain = null, padNodes = null, isOn = false, button = null;
+
+  function ensureContext() {
+    if (ctx) return ctx;
+    var AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return null;
+    ctx = new AudioCtx();
+    masterGain = ctx.createGain();
+    masterGain.gain.value = 0;
+    masterGain.connect(ctx.destination);
+    return ctx;
+  }
+
+  function startPad() {
+    var c = ensureContext();
+    if (!c || padNodes) return;
+    if (c.state === 'suspended') c.resume();
+    var freqs = [110, 164.81, 220, 277.18];
+    var filter = c.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 900;
+    filter.connect(masterGain);
+    var oscs = freqs.map(function (f, i) {
+      var osc = c.createOscillator();
+      osc.type = i % 2 === 0 ? 'sine' : 'triangle';
+      osc.frequency.value = f;
+      var oscGain = c.createGain();
+      oscGain.gain.value = 0.9 / freqs.length;
+      osc.connect(oscGain);
+      oscGain.connect(filter);
+      osc.start();
+      return osc;
+    });
+    var lfo = c.createOscillator();
+    lfo.frequency.value = 0.045;
+    var lfoGain = c.createGain();
+    lfoGain.gain.value = 260;
+    lfo.connect(lfoGain);
+    lfoGain.connect(filter.frequency);
+    lfo.start();
+    padNodes = { oscs: oscs, filter: filter, lfo: lfo };
+    masterGain.gain.cancelScheduledValues(c.currentTime);
+    masterGain.gain.setValueAtTime(masterGain.gain.value, c.currentTime);
+    masterGain.gain.linearRampToValueAtTime(0.045, c.currentTime + 1.4);
+  }
+
+  function stopPad() {
+    if (!ctx || !masterGain) return;
+    masterGain.gain.cancelScheduledValues(ctx.currentTime);
+    masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
+    masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.6);
+    var nodes = padNodes;
+    padNodes = null;
+    setTimeout(function () {
+      if (!nodes) return;
+      nodes.oscs.forEach(function (o) { try { o.stop(); } catch (e) {} });
+      try { nodes.lfo.stop(); } catch (e) {}
+    }, 700);
+  }
+
+  function blip() {
+    if (!isOn) return;
+    var c = ensureContext();
+    if (!c) return;
+    var osc = c.createOscillator();
+    var gain = c.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = 640;
+    gain.gain.setValueAtTime(0, c.currentTime);
+    gain.gain.linearRampToValueAtTime(0.05, c.currentTime + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 0.16);
+    osc.connect(gain);
+    gain.connect(masterGain || c.destination);
+    osc.start();
+    osc.stop(c.currentTime + 0.18);
+  }
+
+  function syncButton() {
+    if (!button) return;
+    button.setAttribute('aria-pressed', isOn ? 'true' : 'false');
+    button.classList.toggle('is-audio-on', isOn);
+    var onIcon = button.querySelector('.icon-audio-on');
+    var offIcon = button.querySelector('.icon-audio-off');
+    if (onIcon) onIcon.hidden = !isOn;
+    if (offIcon) offIcon.hidden = isOn;
+  }
+
+  function toggle() {
+    isOn = !isOn;
+    if (isOn) startPad(); else stopPad();
+    syncButton();
+  }
+
+  return { toggle: toggle, blip: blip, setButton: function (btn) { button = btn; syncButton(); } };
+})();
+
 function vgShowToast(msg) {
   var toast = document.querySelector('.toast');
   if (!toast) {
@@ -42,9 +146,36 @@ document.addEventListener('DOMContentLoaded', function () {
     dot.className = 'cursor-dot is-hidden';
     var ring = document.createElement('div');
     ring.className = 'cursor-ring is-hidden';
+    var label = document.createElement('div');
+    label.className = 'cursor-label';
     document.body.appendChild(dot);
     document.body.appendChild(ring);
+    document.body.appendChild(label);
     document.body.classList.add('has-custom-cursor');
+
+    // Short verb labels shown inside the difference-blob cursor over
+    // specific target families -- a quiet hint of what a hover will do,
+    // without adding any visible markup to the elements themselves.
+    var CURSOR_LABELS = [
+      { selector: '.toc-card', text: 'View' },
+      { selector: '.event-media__video__play', text: 'Play' },
+      { selector: '.event-media__item, .carousel__slide img', text: 'Zoom' },
+      { selector: '.carousel__arrow, .carousel__dot', text: '' },
+      { selector: '.carousel__slide, .carousel', text: 'Drag' },
+      { selector: '.event-card', text: '' },
+      { selector: '.card', text: '' },
+      { selector: 'a[target="_blank"]', text: 'Open' },
+      { selector: '.geo-pin', text: 'View' },
+      { selector: '.site-toolbar__btn--theme', text: '' },
+      { selector: '.site-toolbar__btn--top', text: 'Top' },
+      { selector: '.site-toolbar__btn--audio', text: '' }
+    ];
+    function cursorLabelFor(target) {
+      for (var i = 0; i < CURSOR_LABELS.length; i++) {
+        if (target.closest && target.closest(CURSOR_LABELS[i].selector)) return CURSOR_LABELS[i].text;
+      }
+      return '';
+    }
 
     var ringX = { value: 0, velocity: 0, target: 0 };
     var ringY = { value: 0, velocity: 0, target: 0 };
@@ -70,6 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (e.pointerType === 'touch') return;
       if (!shown) { shown = true; dot.classList.remove('is-hidden'); ring.classList.remove('is-hidden'); }
       dot.style.transform = 'translate(' + e.clientX + 'px, ' + e.clientY + 'px) translate(-50%, -50%)';
+      label.style.transform = 'translate(' + e.clientX + 'px, ' + e.clientY + 'px) translate(-50%, -50%)';
       ringX.target = e.clientX;
       ringY.target = e.clientY;
     }, { passive: true });
@@ -79,13 +211,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var interactiveSelector = 'a, button, .btn, .card, .toc-card, .event-card, input, select, summary, .geo-pin';
     document.addEventListener('pointerover', function (e) {
-      if (e.target.closest && e.target.closest(interactiveSelector)) ring.classList.add('is-interactive');
+      if (e.target.closest && e.target.closest(interactiveSelector)) {
+        ring.classList.add('is-interactive');
+        var text = cursorLabelFor(e.target);
+        label.textContent = text;
+        label.classList.toggle('is-visible', !!text);
+      }
     });
     document.addEventListener('pointerout', function (e) {
-      if (e.target.closest && e.target.closest(interactiveSelector)) ring.classList.remove('is-interactive');
+      if (e.target.closest && e.target.closest(interactiveSelector)) {
+        ring.classList.remove('is-interactive');
+        label.classList.remove('is-visible');
+      }
     });
-    document.addEventListener('mouseleave', function () { dot.classList.add('is-hidden'); ring.classList.add('is-hidden'); });
+    document.addEventListener('mouseleave', function () {
+      dot.classList.add('is-hidden'); ring.classList.add('is-hidden'); label.classList.remove('is-visible');
+    });
   }
+
+  // Kinetic hover arrow for the home "Explore" tiles -- injected once here
+  // so every toc-card gets it without touching index.md's markup.
+  document.querySelectorAll('.toc-card').forEach(function (card) {
+    var arrow = document.createElement('span');
+    arrow.className = 'toc-card__arrow';
+    arrow.setAttribute('aria-hidden', 'true');
+    arrow.textContent = '↗';
+    card.appendChild(arrow);
+  });
 
   // Scroll progress bar
   var progress = document.createElement('div');
@@ -104,6 +256,10 @@ document.addEventListener('DOMContentLoaded', function () {
   var toolbar = document.createElement('div');
   toolbar.className = 'site-toolbar';
   toolbar.innerHTML =
+    '<button type="button" class="site-toolbar__btn site-toolbar__btn--audio" aria-label="Toggle ambient sound" title="Toggle ambient sound" aria-pressed="false">' +
+      '<svg class="icon-audio-off" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M18 9l4 6M22 9l-4 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>' +
+      '<svg class="icon-audio-on" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" hidden><path d="M4 9v6h4l5 4V5L8 9H4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M17 8.5a5 5 0 0 1 0 7M19.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>' +
+    '</button>' +
     '<button type="button" class="site-toolbar__btn site-toolbar__btn--theme" aria-label="Toggle dark mode" title="Toggle dark mode">' +
       '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36A5.5 5.5 0 0 1 12 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>' +
     '</button>' +
@@ -113,6 +269,22 @@ document.addEventListener('DOMContentLoaded', function () {
   document.body.appendChild(toolbar);
   var themeBtn = toolbar.querySelector('.site-toolbar__btn--theme');
   var topBtn = toolbar.querySelector('.site-toolbar__btn--top');
+  var audioBtn = toolbar.querySelector('.site-toolbar__btn--audio');
+  vgAudio.setButton(audioBtn);
+  audioBtn.addEventListener('click', function () { vgAudio.toggle(); });
+
+  // Quiet hover blips on primary interactive affordances -- silent unless
+  // the ambient toggle above is on, so this never surprises anyone.
+  if (!prefersReduced && window.matchMedia('(pointer: fine)').matches) {
+    var BLIP_SELECTOR = '.btn, .toc-card, .site-nav > a, .carousel__arrow, .filter-chip, .site-toolbar__btn';
+    var lastBlipTarget = null;
+    document.addEventListener('pointerover', function (e) {
+      if (e.pointerType === 'touch') return;
+      var match = e.target.closest && e.target.closest(BLIP_SELECTOR);
+      if (match && match !== lastBlipTarget) { lastBlipTarget = match; vgAudio.blip(); }
+      else if (!match) { lastBlipTarget = null; }
+    });
+  }
   function isDark() { return document.documentElement.getAttribute('data-theme') === 'dark'; }
   themeBtn.addEventListener('click', function () {
     if (isDark()) { document.documentElement.removeAttribute('data-theme'); localStorage.setItem('vg-theme', 'light'); }
@@ -169,6 +341,87 @@ document.addEventListener('DOMContentLoaded', function () {
     revealEls.forEach(function (el) { el.classList.add('is-visible'); });
   }
 
+  // Kinetic word-split heading reveal: every .section__title and
+  // .page-title gets the same masked word-rise treatment the hero title
+  // gets on load, except triggered on scroll-into-view. Walks text nodes
+  // only, so existing child markup (e.g. <span class="section__index">)
+  // is left completely alone.
+  function splitHeadingWords(el) {
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
+    var nodes = [];
+    var n;
+    while ((n = walker.nextNode())) nodes.push(n);
+    var i = 0;
+    nodes.forEach(function (node) {
+      if (!node.nodeValue.trim()) return;
+      var parts = node.nodeValue.split(/(\s+)/);
+      var frag = document.createDocumentFragment();
+      parts.forEach(function (part) {
+        if (part === '') return;
+        if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+        var outer = document.createElement('span');
+        outer.className = 'kinetic-word';
+        outer.style.setProperty('--i', i++);
+        var inner = document.createElement('span');
+        inner.className = 'kinetic-word__inner';
+        inner.textContent = part;
+        outer.appendChild(inner);
+        frag.appendChild(outer);
+      });
+      node.parentNode.replaceChild(frag, node);
+    });
+  }
+  var headingEls = document.querySelectorAll('.section__title, .page-title');
+  if (!prefersReduced && headingEls.length && 'IntersectionObserver' in window) {
+    headingEls.forEach(splitHeadingWords);
+    var headingIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { entry.target.classList.add('is-kinetic-visible'); headingIo.unobserve(entry.target); }
+      });
+    }, { threshold: 0.2 });
+    headingEls.forEach(function (el) { headingIo.observe(el); });
+  }
+
+  // Text scramble: cycles random glyphs into place, left to right, before
+  // settling on the exact original text. Purely a hover flourish -- final
+  // state always equals the starting textContent, gated to fine-pointer/
+  // motion-ok so it never touches touch devices or reduced-motion users.
+  var SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*+=-/\\';
+  function scrambleInto(el, finalText) {
+    if (el._scrambleRaf) cancelAnimationFrame(el._scrambleRaf);
+    var duration = 420;
+    var start = null;
+    function frame(ts) {
+      if (!start) start = ts;
+      var progress = Math.min((ts - start) / duration, 1);
+      var revealCount = Math.floor(progress * finalText.length);
+      var out = '';
+      for (var i = 0; i < finalText.length; i++) {
+        if (finalText[i] === ' ') { out += ' '; continue; }
+        out += i < revealCount ? finalText[i] : SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+      }
+      el.textContent = out;
+      if (progress < 1) { el._scrambleRaf = requestAnimationFrame(frame); }
+      else { el.textContent = finalText; el._scrambleRaf = null; }
+    }
+    el._scrambleRaf = requestAnimationFrame(frame);
+  }
+  if (!prefersReduced && window.matchMedia('(pointer: fine)').matches) {
+    // .nav-dropdown__trigger is deliberately excluded: it has a non-text
+    // SVG chevron child, and scrambleInto's el.textContent assignment
+    // would silently delete it.
+    var scrambleTargets = document.querySelectorAll(
+      '.hero__title .word-reveal__inner, .site-nav > a, .toc-card__title'
+    );
+    scrambleTargets.forEach(function (el) {
+      var original = el.textContent;
+      el.addEventListener('pointerenter', function (e) {
+        if (e.pointerType === 'touch') return;
+        scrambleInto(el, original);
+      });
+    });
+  }
+
   // Stat counters (count up when scrolled into view)
   var stats = document.querySelectorAll('.stat__number[data-target]');
   function animateStat(el) {
@@ -212,6 +465,65 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('scroll', function () {
       if (!ticking) { requestAnimationFrame(updateParallax); ticking = true; }
     }, { passive: true });
+  }
+
+  // Hero exit + mouse tilt: --hero-scroll drives the CSS shrink/fade/blur
+  // as the visitor scrolls past the first screen; --hero-tilt-x/-y is a
+  // spring-damped response to cursor position, applied only to
+  // .hero__content (the portrait keeps its own parallax transform above
+  // untouched -- this never writes a transform to it).
+  var heroEl = document.querySelector('.hero');
+  if (heroEl && !prefersReduced) {
+    var heroScrollTicking = false;
+    function updateHeroScroll() {
+      var progress = Math.min(Math.max(window.scrollY / (heroEl.offsetHeight * 0.6), 0), 1);
+      heroEl.style.setProperty('--hero-scroll', progress.toFixed(4));
+      heroScrollTicking = false;
+    }
+    window.addEventListener('scroll', function () {
+      if (!heroScrollTicking) { requestAnimationFrame(updateHeroScroll); heroScrollTicking = true; }
+    }, { passive: true });
+    updateHeroScroll();
+
+    if (window.matchMedia('(pointer: fine)').matches) {
+      var heroContent = heroEl.querySelector('.hero__content');
+      var tiltX = { value: 0, velocity: 0, target: 0 };
+      var tiltY = { value: 0, velocity: 0, target: 0 };
+      var heroTiltRunning = false;
+      var heroTiltLastTs = null;
+      function stepHeroTilt(axis, dt) {
+        var accel = -180 * (axis.value - axis.target) - 16 * axis.velocity;
+        axis.velocity += accel * dt;
+        axis.value += axis.velocity * dt;
+      }
+      function heroTiltLoop(ts) {
+        if (!heroTiltLastTs) heroTiltLastTs = ts;
+        var dt = Math.min((ts - heroTiltLastTs) / 1000, 0.032);
+        heroTiltLastTs = ts;
+        stepHeroTilt(tiltX, dt);
+        stepHeroTilt(tiltY, dt);
+        heroContent.style.setProperty('--hero-tilt-x', tiltX.value.toFixed(3) + 'deg');
+        heroContent.style.setProperty('--hero-tilt-y', tiltY.value.toFixed(3) + 'deg');
+        var atRestX = Math.abs(tiltX.value - tiltX.target) < 0.01 && Math.abs(tiltX.velocity) < 0.01;
+        var atRestY = Math.abs(tiltY.value - tiltY.target) < 0.01 && Math.abs(tiltY.velocity) < 0.01;
+        if (!(atRestX && atRestY)) { requestAnimationFrame(heroTiltLoop); }
+        else { heroTiltRunning = false; heroTiltLastTs = null; }
+      }
+      if (heroContent) {
+        heroEl.addEventListener('pointermove', function (e) {
+          var r = heroEl.getBoundingClientRect();
+          var px = (e.clientX - r.left) / r.width - 0.5;
+          var py = (e.clientY - r.top) / r.height - 0.5;
+          tiltY.target = px * 2.4;
+          tiltX.target = py * -2.4;
+          if (!heroTiltRunning) { heroTiltRunning = true; requestAnimationFrame(heroTiltLoop); }
+        }, { passive: true });
+        heroEl.addEventListener('pointerleave', function () {
+          tiltX.target = 0; tiltY.target = 0;
+          if (!heroTiltRunning) { heroTiltRunning = true; requestAnimationFrame(heroTiltLoop); }
+        });
+      }
+    }
   }
 
   // Skills toolkit filter (category select + domain select + live search)
@@ -426,6 +738,104 @@ document.addEventListener('DOMContentLoaded', function () {
       root.addEventListener('mouseleave', resetAutoplay);
     }
     render();
+  });
+
+  // Full-scale photo lightbox: click any Community event photo (or any
+  // Gallery carousel slide) to open it full-size, with prev/next through
+  // the rest of that same event's/carousel's photo set.
+  var lightboxImgSelector = '.event-media__item img, .carousel__slide img';
+  var lightboxImgs = Array.prototype.slice.call(document.querySelectorAll(lightboxImgSelector));
+  if (lightboxImgs.length) {
+    var lbOverlay = document.createElement('div');
+    lbOverlay.className = 'lightbox';
+    lbOverlay.innerHTML =
+      '<button type="button" class="lightbox__close" aria-label="Close">&times;</button>' +
+      '<button type="button" class="lightbox__arrow lightbox__arrow--prev" aria-label="Previous photo">&#8249;</button>' +
+      '<button type="button" class="lightbox__arrow lightbox__arrow--next" aria-label="Next photo">&#8250;</button>' +
+      '<figure class="lightbox__figure"><img class="lightbox__img" alt=""><figcaption class="lightbox__caption"></figcaption></figure>';
+    document.body.appendChild(lbOverlay);
+
+    var lbImgEl = lbOverlay.querySelector('.lightbox__img');
+    var lbCaptionEl = lbOverlay.querySelector('.lightbox__caption');
+    var lbCloseBtn = lbOverlay.querySelector('.lightbox__close');
+    var lbPrevBtn = lbOverlay.querySelector('.lightbox__arrow--prev');
+    var lbNextBtn = lbOverlay.querySelector('.lightbox__arrow--next');
+    var lbGroup = [];
+    var lbIndex = 0;
+    var lbLastFocused = null;
+
+    function lbGroupFor(img) {
+      var scope = img.closest('.event-card') || img.closest('.carousel');
+      if (!scope) return [img];
+      return Array.prototype.slice.call(scope.querySelectorAll(lightboxImgSelector));
+    }
+    function lbRender() {
+      var img = lbGroup[lbIndex];
+      lbImgEl.src = img.currentSrc || img.src;
+      lbImgEl.alt = img.alt || '';
+      var caption = img.closest('figure');
+      var capEl = caption ? caption.querySelector('figcaption') : null;
+      lbCaptionEl.textContent = capEl ? capEl.textContent : (img.alt || '');
+      var multi = lbGroup.length > 1;
+      lbPrevBtn.hidden = !multi;
+      lbNextBtn.hidden = !multi;
+    }
+    function lbOpen(img) {
+      lbGroup = lbGroupFor(img);
+      lbIndex = Math.max(0, lbGroup.indexOf(img));
+      lbRender();
+      lbLastFocused = document.activeElement;
+      lbOverlay.classList.add('is-open');
+      document.body.classList.add('lightbox-open');
+      lbCloseBtn.focus();
+    }
+    function lbClose() {
+      lbOverlay.classList.remove('is-open');
+      document.body.classList.remove('lightbox-open');
+      if (lbLastFocused && lbLastFocused.focus) lbLastFocused.focus();
+    }
+    function lbNext() { lbIndex = (lbIndex + 1) % lbGroup.length; lbRender(); }
+    function lbPrev() { lbIndex = (lbIndex - 1 + lbGroup.length) % lbGroup.length; lbRender(); }
+
+    lightboxImgs.forEach(function (img) {
+      img.addEventListener('click', function () { lbOpen(img); });
+    });
+    lbCloseBtn.addEventListener('click', lbClose);
+    lbNextBtn.addEventListener('click', lbNext);
+    lbPrevBtn.addEventListener('click', lbPrev);
+    lbOverlay.addEventListener('click', function (e) { if (e.target === lbOverlay) lbClose(); });
+    document.addEventListener('keydown', function (e) {
+      if (!lbOverlay.classList.contains('is-open')) return;
+      if (e.key === 'Escape') lbClose();
+      if (e.key === 'ArrowRight') lbNext();
+      if (e.key === 'ArrowLeft') lbPrev();
+    });
+  }
+
+  // Play-to-fullscreen overlay for Community event videos: a dedicated
+  // button (not a click handler on the <video> itself, which would also
+  // fire -- and force fullscreen -- every time someone touches the native
+  // scrub bar or volume control).
+  document.querySelectorAll('.event-media__video').forEach(function (wrap) {
+    var video = wrap.querySelector('video');
+    if (!video) return;
+    var playBtn = document.createElement('button');
+    playBtn.type = 'button';
+    playBtn.className = 'event-media__video__play';
+    playBtn.setAttribute('aria-label', 'Play video full screen');
+    playBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+    wrap.appendChild(playBtn);
+    playBtn.addEventListener('click', function () {
+      video.play();
+      var rf = video.requestFullscreen || video.webkitRequestFullscreen || video.webkitEnterFullscreen;
+      if (rf) { try { rf.call(video); } catch (e) {} }
+      playBtn.hidden = true;
+    });
+    video.addEventListener('play', function () { playBtn.hidden = true; });
+    video.addEventListener('pause', function () { playBtn.hidden = false; });
+    document.addEventListener('fullscreenchange', function () {
+      if (!document.fullscreenElement) playBtn.hidden = !video.paused;
+    });
   });
 
   // Tactile bento micro-interactions: a real mass-spring-damper simulation
@@ -675,5 +1085,221 @@ document.addEventListener('DOMContentLoaded', function () {
       if (best) setActiveGeoCard(best.target);
     }, { threshold: [0.3, 0.5, 0.7], rootMargin: '-20% 0px -20% 0px' });
     geoCards.forEach(function (c) { geoIo.observe(c); });
+  }
+
+  // Map pin hover/focus preview: a floating box with the event's photo,
+  // title and location, positioned beside whichever pin is currently
+  // hovered or focused -- so "is this worth a click" is answered before
+  // the click. The pin itself is a real SVG <a>, so clicking it (or
+  // pressing Enter while focused) is a plain navigation to that event's
+  // card on /community/, no JS required for that part.
+  var geoPins = document.querySelectorAll('.geo-pin[data-preview-title]');
+  if (geoPins.length) {
+    var geoPreview = document.createElement('div');
+    geoPreview.className = 'geo-preview';
+    geoPreview.innerHTML =
+      '<img class="geo-preview__photo" alt="" loading="lazy">' +
+      '<div class="geo-preview__body">' +
+        '<p class="geo-preview__title"></p>' +
+        '<span class="geo-preview__meta"></span>' +
+        '<p class="geo-preview__cue">View record &rarr;</p>' +
+      '</div>';
+    document.body.appendChild(geoPreview);
+    var geoPreviewImg = geoPreview.querySelector('.geo-preview__photo');
+    var geoPreviewTitle = geoPreview.querySelector('.geo-preview__title');
+    var geoPreviewMeta = geoPreview.querySelector('.geo-preview__meta');
+
+    function showGeoPreview(pin) {
+      var photo = pin.getAttribute('data-preview-photo');
+      geoPreviewImg.style.display = photo ? '' : 'none';
+      if (photo) geoPreviewImg.src = photo;
+      geoPreviewTitle.textContent = pin.getAttribute('data-preview-title') || '';
+      geoPreviewMeta.textContent = pin.getAttribute('data-preview-meta') || '';
+      var rect = pin.getBoundingClientRect();
+      var boxWidth = 220;
+      var left = rect.right + 14;
+      if (left + boxWidth > window.innerWidth - 12) left = rect.left - boxWidth - 14;
+      if (left < 12) left = 12;
+      var top = Math.min(Math.max(rect.top - 20, 12), window.innerHeight - 220);
+      geoPreview.style.left = left + 'px';
+      geoPreview.style.top = top + 'px';
+      geoPreview.classList.add('is-visible');
+    }
+    function hideGeoPreview() { geoPreview.classList.remove('is-visible'); }
+
+    geoPins.forEach(function (pin) {
+      pin.addEventListener('pointerenter', function () { showGeoPreview(pin); });
+      pin.addEventListener('pointerleave', hideGeoPreview);
+      pin.addEventListener('focus', function () { showGeoPreview(pin); });
+      pin.addEventListener('blur', hideGeoPreview);
+    });
+  }
+
+  // Field map chrome: zoom/pan (buttons, Ctrl/Cmd+wheel, drag), a scale
+  // bar that recomputes against the real projection (SCALE=100 viewBox
+  // units per degree of longitude, ~110.5 km per degree at Ghana's
+  // latitude), and a legend that doubles as a category filter.
+  var geoSvg = document.querySelector('[data-geo-map]');
+  if (geoSvg) {
+    var geoWrap = geoSvg.closest('.geo-map-wrap');
+    var baseViewBox = (geoSvg.getAttribute('data-viewbox') || geoSvg.getAttribute('viewBox')).split(' ').map(Number);
+    var vb = { x: baseViewBox[0], y: baseViewBox[1], w: baseViewBox[2], h: baseViewBox[3] };
+    var GEO_MIN_W = baseViewBox[2] / 4;
+    var GEO_MAX_W = baseViewBox[2];
+    var geoAspect = baseViewBox[3] / baseViewBox[2];
+
+    function geoClamp() {
+      vb.w = Math.max(GEO_MIN_W, Math.min(GEO_MAX_W, vb.w));
+      vb.h = vb.w * geoAspect;
+      vb.x = Math.max(0, Math.min(baseViewBox[2] - vb.w, vb.x));
+      vb.y = Math.max(0, Math.min(baseViewBox[3] - vb.h, vb.y));
+    }
+    function geoUpdateScaleBar() {
+      var bar = geoWrap.querySelector('[data-geo-scale-bar]');
+      var label = geoWrap.querySelector('[data-geo-scale-label]');
+      if (!bar || !label) return;
+      var rect = geoSvg.getBoundingClientRect();
+      if (!rect.width) return;
+      var pxPerUnit = rect.width / vb.w;
+      var kmPerUnit = 1.105; // (1 / SCALE) degree per unit * ~110.5 km/degree
+      var pxPerKm = pxPerUnit / kmPerUnit;
+      var niceKms = [1, 2, 5, 10, 20, 25, 50, 100, 150, 200, 250, 500];
+      var target = 64, best = niceKms[0], bestDiff = Infinity;
+      niceKms.forEach(function (km) {
+        var w = km * pxPerKm;
+        if (w >= 28 && w <= 130) {
+          var diff = Math.abs(w - target);
+          if (diff < bestDiff) { bestDiff = diff; best = km; }
+        }
+      });
+      bar.style.width = Math.max(20, best * pxPerKm) + 'px';
+      label.textContent = best + ' km';
+    }
+    function geoSetViewBox() {
+      geoSvg.setAttribute('viewBox', vb.x + ' ' + vb.y + ' ' + vb.w + ' ' + vb.h);
+      geoUpdateScaleBar();
+    }
+    function geoZoomBy(factor, cx, cy) {
+      if (cx == null) cx = vb.x + vb.w / 2;
+      if (cy == null) cy = vb.y + vb.h / 2;
+      var relX = (cx - vb.x) / vb.w;
+      var relY = (cy - vb.y) / vb.h;
+      vb.w = vb.w / factor;
+      geoClamp();
+      vb.x = cx - relX * vb.w;
+      vb.y = cy - relY * vb.h;
+      geoClamp();
+      geoSetViewBox();
+    }
+    function geoResetView() {
+      vb = { x: baseViewBox[0], y: baseViewBox[1], w: baseViewBox[2], h: baseViewBox[3] };
+      geoSetViewBox();
+    }
+
+    var geoZoomIn = geoWrap.querySelector('[data-geo-zoom-in]');
+    var geoZoomOut = geoWrap.querySelector('[data-geo-zoom-out]');
+    var geoZoomReset = geoWrap.querySelector('[data-geo-zoom-reset]');
+    if (geoZoomIn) geoZoomIn.addEventListener('click', function () { geoZoomBy(1.5); });
+    if (geoZoomOut) geoZoomOut.addEventListener('click', function () { geoZoomBy(1 / 1.5); });
+    if (geoZoomReset) geoZoomReset.addEventListener('click', geoResetView);
+
+    // Plain scroll over the map still scrolls the page -- only Ctrl/Cmd+
+    // wheel zooms it, so the map never hijacks the page. A brief hint
+    // explains the modifier the first couple of times someone tries it.
+    var geoHint = geoWrap.querySelector('[data-geo-hint]');
+    geoSvg.addEventListener('wheel', function (e) {
+      if (!(e.ctrlKey || e.metaKey)) {
+        if (geoHint) {
+          geoHint.classList.add('is-visible');
+          clearTimeout(geoHint._t);
+          geoHint._t = setTimeout(function () { geoHint.classList.remove('is-visible'); }, 1600);
+        }
+        return;
+      }
+      e.preventDefault();
+      var rect = geoSvg.getBoundingClientRect();
+      var px = vb.x + ((e.clientX - rect.left) / rect.width) * vb.w;
+      var py = vb.y + ((e.clientY - rect.top) / rect.height) * vb.h;
+      geoZoomBy(e.deltaY < 0 ? 1.15 : 1 / 1.15, px, py);
+    }, { passive: false });
+
+    var geoDragging = false, geoDragStart = null, geoVbStart = null;
+    geoSvg.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'touch' || (e.target.closest && e.target.closest('.geo-pin'))) return;
+      geoDragging = true;
+      geoDragStart = { x: e.clientX, y: e.clientY };
+      geoVbStart = { x: vb.x, y: vb.y };
+      geoSvg.classList.add('is-panning');
+      geoSvg.setPointerCapture(e.pointerId);
+    });
+    geoSvg.addEventListener('pointermove', function (e) {
+      if (!geoDragging) return;
+      var rect = geoSvg.getBoundingClientRect();
+      var scale = vb.w / rect.width;
+      vb.x = geoVbStart.x - (e.clientX - geoDragStart.x) * scale;
+      vb.y = geoVbStart.y - (e.clientY - geoDragStart.y) * scale;
+      geoClamp();
+      geoSetViewBox();
+    });
+    function geoEndDrag() { geoDragging = false; geoSvg.classList.remove('is-panning'); }
+    geoSvg.addEventListener('pointerup', geoEndDrag);
+    geoSvg.addEventListener('pointercancel', geoEndDrag);
+
+    window.addEventListener('resize', geoUpdateScaleBar, { passive: true });
+    geoUpdateScaleBar();
+
+    // Legend doubles as a filter: click a category to isolate it (click
+    // again to release). With nothing active, every pin shows.
+    var geoLegendItems = Array.prototype.slice.call(geoWrap.querySelectorAll('[data-geo-filter]'));
+    var geoActiveFilters = [];
+    function geoApplyFilter() {
+      var any = geoActiveFilters.length > 0;
+      geoSvg.classList.toggle('has-category-filter', any);
+      geoSvg.querySelectorAll('.geo-pin').forEach(function (pin) {
+        var match = !any || geoActiveFilters.indexOf(pin.getAttribute('data-category')) !== -1;
+        pin.classList.toggle('is-filter-match', match);
+      });
+      geoLegendItems.forEach(function (item) {
+        var cat = item.getAttribute('data-geo-filter');
+        item.classList.toggle('is-dimmed', any && geoActiveFilters.indexOf(cat) === -1);
+      });
+    }
+    geoLegendItems.forEach(function (item) {
+      item.addEventListener('click', function () {
+        var cat = item.getAttribute('data-geo-filter');
+        var idx = geoActiveFilters.indexOf(cat);
+        if (idx === -1) geoActiveFilters.push(cat); else geoActiveFilters.splice(idx, 1);
+        geoApplyFilter();
+      });
+    });
+  }
+
+  // Marquee scroll-skew: a quick flick of the wheel racks every .marquee
+  // band over briefly (scroll-velocity driven), easing back to level once
+  // scrolling settles. The steady horizontal scroll itself is a plain CSS
+  // keyframe animation on .marquee__track, so the band keeps moving even
+  // if this never runs.
+  var marquees = document.querySelectorAll('.marquee');
+  if (marquees.length && !prefersReduced) {
+    var lastMarqueeScrollY = window.scrollY;
+    var marqueeSkew = 0;
+    var marqueeDecayRaf = null;
+    function applyMarqueeSkew() {
+      marquees.forEach(function (m) { m.style.setProperty('--marquee-skew', marqueeSkew.toFixed(2) + 'deg'); });
+    }
+    function decayMarqueeSkew() {
+      marqueeSkew *= 0.85;
+      if (Math.abs(marqueeSkew) < 0.05) { marqueeSkew = 0; applyMarqueeSkew(); marqueeDecayRaf = null; return; }
+      applyMarqueeSkew();
+      marqueeDecayRaf = requestAnimationFrame(decayMarqueeSkew);
+    }
+    window.addEventListener('scroll', function () {
+      var y = window.scrollY;
+      var delta = y - lastMarqueeScrollY;
+      lastMarqueeScrollY = y;
+      marqueeSkew = Math.max(-14, Math.min(14, marqueeSkew + delta * 0.6));
+      applyMarqueeSkew();
+      if (!marqueeDecayRaf) marqueeDecayRaf = requestAnimationFrame(decayMarqueeSkew);
+    }, { passive: true });
   }
 });

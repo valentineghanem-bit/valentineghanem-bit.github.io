@@ -1,0 +1,14 @@
+{%- assign px = include.event.lng | minus: -3.2621 | times: 100 | plus: 20 -%}
+{%- assign py = 11.1748 | minus: include.event.lat | times: 100 | plus: 20 -%}
+{%- assign first_photo = include.event.photos | first -%}
+<a class="geo-pin geo-pin--{{ include.category }}" data-geo-pin data-category="{{ include.category }}" data-target="geo-event-{{ include.index }}"
+  data-preview-title="{{ include.event.title | escape }}"
+  data-preview-meta="{{ include.event.location | default: include.event.provider | escape }}"
+  {% if first_photo %}data-preview-photo="{{ first_photo.url | relative_url }}"{% endif %}
+  href="{{ '/community/' | relative_url }}#community-event-{{ include.index }}"
+  xlink:href="{{ '/community/' | relative_url }}#community-event-{{ include.index }}"
+  aria-label="{{ include.event.title | escape }} ({{ include.category_label }}) -- view in Community &amp; outreach"
+  transform="translate({{ px }}, {{ py }})">
+  <circle class="geo-pin__pulse" r="5"/>
+  <circle class="geo-pin__dot" r="4.5"/>
+</a>

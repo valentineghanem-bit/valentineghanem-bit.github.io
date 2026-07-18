@@ -35,7 +35,18 @@ description: "Official website of Valentine Golden Ghanem, a Ghanaian medical sc
   <figure class="hero__portrait" data-parallax="0.12">
     <img src="{{ rep_img.content_url }}" alt="{{ rep_img.name }}" loading="lazy" onerror="this.closest('figure').style.display='none'">
   </figure>
+  <div class="hero-scroll-cue" aria-hidden="true">
+    <span>Scroll</span>
+    <span class="hero-scroll-cue__line"></span>
+  </div>
 </section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    {% for topic in site.data.profile.knows_about %}<span class="marquee__item">{{ topic }}</span>{% endfor %}
+    {% for topic in site.data.profile.knows_about %}<span class="marquee__item">{{ topic }}</span>{% endfor %}
+  </div>
+</div>
 
 <section class="section wrap" data-reveal>
   <h2 class="section__title"><span class="section__index">01</span> Professional snapshot</h2>

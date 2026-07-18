@@ -24,10 +24,12 @@ description: "Community outreach, medical screening programs and public engageme
     </aside>
 
     <div class="community-main">
+      {%- assign geo_i = 0 -%}
       <h2 class="section__title section__title--sub" id="medical-screening"><span class="section__index">01</span> Medical screening</h2>
       <div class="event-grid">
         {% for e in site.data.community_activities.medical_screening %}
-        <article class="event-card">
+        <article class="event-card" id="community-event-{{ geo_i }}">
+        {%- assign geo_i = geo_i | plus: 1 -%}
           <div class="event-card__head">
             <p class="feed-item__title">🩺 {{ e.title }}</p>
           </div>
@@ -60,7 +62,8 @@ description: "Community outreach, medical screening programs and public engageme
       <h2 class="section__title section__title--sub" id="conferences"><span class="section__index">02</span> Conferences &amp; seminars</h2>
       <div class="event-grid">
         {% for e in site.data.community_activities.conferences %}
-        <article class="event-card">
+        <article class="event-card" id="community-event-{{ geo_i }}">
+        {%- assign geo_i = geo_i | plus: 1 -%}
           <div class="event-card__head">
             <p class="feed-item__title">🧬 {{ e.title }}</p>
           </div>
@@ -90,7 +93,8 @@ description: "Community outreach, medical screening programs and public engageme
       <h2 class="section__title section__title--sub" id="outreach"><span class="section__index">03</span> Community outreach</h2>
       <div class="event-grid">
         {% for e in site.data.community_activities.outreach %}
-        <article class="event-card">
+        <article class="event-card" id="community-event-{{ geo_i }}">
+        {%- assign geo_i = geo_i | plus: 1 -%}
           <div class="event-card__head">
             <p class="feed-item__title">⚕️ {{ e.title }}</p>
           </div>
