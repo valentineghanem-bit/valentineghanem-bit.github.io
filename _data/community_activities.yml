@@ -8,6 +8,7 @@ medical_screening:
     lng: -2.51
     description: "Participated as part of the Cocoa Clinic team in a health screening exercise for cocoa farmers, aligning with national health objectives and UN SDGs 3, 8, 10 and 17."
     video: "/assets/video/goaso-2024-screening.mp4"
+        video_duration: "PT13S"
     photos:
       - url: "/assets/img/community/goaso-2024/with-ceo.jpg"
         caption: "With the Cocoa Clinic CEO at the Goaso outreach."
@@ -30,6 +31,7 @@ medical_screening:
     lng: -0.70
     description: "Supported a public health screening for SPD staff and cocoa farmers covering malaria, diabetes, obesity, breast cancer, HIV and general wellness, with free physician consultation and medication."
     video: "/assets/video/agona-swedru-2024-screening.mp4"
+        video_duration: "PT32S"
     photos:
       - url: "/assets/img/community/agona-swedru-2024/group-pic.jpg"
         caption: "The Cocoa Clinic screening team at Agona Swedru."
