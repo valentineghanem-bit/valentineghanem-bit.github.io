@@ -114,10 +114,14 @@
 
     // Approximate RGB reads of the site's teal/gold tokens (raw WebGL has no
     // oklch()); kept in sync by eye with assets/css/style.css's palette.
-    var LIGHT_A = [0.243, 0.373, 0.365]; // teal-dark
-    var LIGHT_B = [0.700, 0.560, 0.220]; // gold
-    var DARK_A = [0.180, 0.400, 0.400];
-    var DARK_B = [0.780, 0.620, 0.260];
+    // Hand-tuned, not a literal oklch->sRGB conversion: the mathematically
+    // "correct" gold read as near-pure saturated orange once spread across
+    // a large wash rather than used as small text/button accents, so these
+    // stay a notch more restrained than the CSS custom properties.
+    var LIGHT_A = [0.08, 0.28, 0.27]; // teal-dark (palette v2)
+    var LIGHT_B = [0.74, 0.55, 0.20]; // gold (palette v2)
+    var DARK_A = [0.10, 0.46, 0.44];
+    var DARK_B = [0.85, 0.62, 0.24];
 
     var pointer = { x: 0, y: 0 };
     var targetPointer = { x: 0, y: 0 };

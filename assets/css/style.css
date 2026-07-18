@@ -1,7 +1,11 @@
 /* ============================================================
    Design tokens
-   Palette: clinical paper + a deep field-notebook teal, with a
-   richer editorial gold reserved for credentials/notices. Type:
+   Palette v2: a deeper, richer editorial reworking of the original
+   clinical-paper + field-notebook-teal system -- higher chroma on
+   every accent, a truer near-black ink, and (in dark mode) an obsidian
+   surface rather than flat charcoal, all still built from the same
+   three-hue teal/gold/clay family so nothing downstream (map pin
+   colours, category legend, etc.) needed to change, just deepen. Type:
    a serif with academic gravity for display, a clean sans for
    reading, a mono for data/identifiers (DOIs, ORCID, coordinates)
    -- a nod to lab notebooks and spatial datasets.
@@ -9,23 +13,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 :root {
-  --paper: oklch(96.5% 0.008 95);
-  --paper-raised: oklch(99% 0.003 95);
-  --paper-sunken: oklch(93.5% 0.012 95);
-  --ink: oklch(21% 0.02 250);
-  --ink-soft: oklch(45% 0.03 205);
-  --teal-dark: oklch(34% 0.07 185);
-  --teal: oklch(46% 0.09 185);
-  --teal-tint: oklch(92% 0.03 185);
-  --gold: oklch(58% 0.13 75);
-  --gold-dark: oklch(45% 0.11 70);
-  --gold-tint: oklch(93% 0.045 80);
-  --line: oklch(85% 0.012 95);
-  --line-strong: oklch(75% 0.015 95);
-  --shadow: 0 8px 24px -14px oklch(21% 0.02 250 / 0.35);
-  --shadow-lg: 0 20px 44px -18px oklch(21% 0.02 250 / 0.45);
-  --clay: oklch(55% 0.13 35);
-  --clay-dark: oklch(45% 0.12 33);
+  --paper: oklch(97% 0.01 92);
+  --paper-raised: oklch(99% 0.005 92);
+  --paper-sunken: oklch(93% 0.015 92);
+  --ink: oklch(16% 0.025 255);
+  --ink-soft: oklch(41% 0.05 220);
+  --teal-dark: oklch(30% 0.10 195);
+  --teal: oklch(48% 0.13 190);
+  --teal-tint: oklch(93% 0.045 190);
+  --gold: oklch(63% 0.17 68);
+  --gold-dark: oklch(48% 0.15 64);
+  --gold-tint: oklch(94% 0.06 78);
+  --line: oklch(89% 0.014 92);
+  --line-strong: oklch(77% 0.02 92);
+  --shadow: 0 8px 24px -14px oklch(16% 0.025 255 / 0.4);
+  --shadow-lg: 0 20px 44px -18px oklch(16% 0.025 255 / 0.5);
+  --clay: oklch(56% 0.16 35);
+  --clay-dark: oklch(46% 0.145 33);
 
   --font-display: "Source Serif 4", Georgia, serif;
   --font-body: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
@@ -34,26 +38,28 @@
   --wrap: 1240px;
 }
 
-/* Dark theme -- same tokens, re-tuned for a dim surface. Toggled via the
-   floating toolbar button; persisted in localStorage as "vg-theme". */
+/* Dark theme -- an obsidian surface (deeper + a touch more chroma than a
+   flat charcoal grey) with brighter, punchier accents to hold up against
+   it. Toggled via the floating toolbar button; persisted in localStorage
+   as "vg-theme". */
 :root[data-theme="dark"] {
-  --paper: oklch(21% 0.014 255);
-  --paper-raised: oklch(25.5% 0.016 255);
-  --paper-sunken: oklch(17% 0.014 255);
-  --ink: oklch(93% 0.006 95);
-  --ink-soft: oklch(74% 0.025 200);
-  --teal-dark: oklch(78% 0.10 185);
-  --teal: oklch(68% 0.11 185);
-  --teal-tint: oklch(29% 0.045 190);
-  --gold: oklch(74% 0.13 75);
-  --gold-dark: oklch(80% 0.12 78);
-  --gold-tint: oklch(30% 0.05 80);
-  --line: oklch(33% 0.016 255);
-  --line-strong: oklch(42% 0.018 255);
+  --paper: oklch(15% 0.028 260);
+  --paper-raised: oklch(19.5% 0.03 260);
+  --paper-sunken: oklch(11% 0.024 260);
+  --ink: oklch(95% 0.008 95);
+  --ink-soft: oklch(76% 0.045 200);
+  --teal-dark: oklch(80% 0.14 190);
+  --teal: oklch(70% 0.15 188);
+  --teal-tint: oklch(27% 0.06 190);
+  --gold: oklch(79% 0.16 72);
+  --gold-dark: oklch(84% 0.15 76);
+  --gold-tint: oklch(29% 0.07 78);
+  --line: oklch(29% 0.022 260);
+  --line-strong: oklch(39% 0.026 260);
   --shadow: 0 8px 24px -14px oklch(0% 0 0 / 0.6);
   --shadow-lg: 0 20px 44px -18px oklch(0% 0 0 / 0.7);
-  --clay: oklch(70% 0.12 38);
-  --clay-dark: oklch(76% 0.11 40);
+  --clay: oklch(72% 0.14 38);
+  --clay-dark: oklch(78% 0.13 40);
 }
 body, .site-header, .card, .event-card, .toc-card, .tag, .pill, .btn, .site-toolbar__btn {
   transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
@@ -751,28 +757,23 @@ body.has-custom-cursor, body.has-custom-cursor a, body.has-custom-cursor button 
 /* ---------- Field map (scrollytelling geo layout) ---------- */
 .geo-layout { display: grid; grid-template-columns: minmax(260px, 380px) minmax(0, 1fr); gap: 16px 56px; align-items: start; margin-top: 32px; }
 .geo-map-wrap { position: sticky; top: 96px; }
-.geo-map { width: 100%; height: auto; max-height: 78vh; }
-/* Real district boundaries (259 features, precomputed from a GeoJSON
-   source into static path data at build time -- see _includes/ghana-districts.svg).
-   Each district is individually stroked so the internal borders read as
-   texture, not just one outer silhouette. */
-.geo-district { fill: var(--teal-tint); stroke: var(--line-strong); stroke-width: 0.6; transition: fill 0.3s ease; }
-.geo-district:hover { fill: color-mix(in oklch, var(--teal-tint) 55%, var(--gold-tint)); }
+/* The frame holds only the svg itself plus its floating chrome (compass,
+   scale bar, zoom controls, hint) -- it's the positioning context for all
+   of those. The caption and legend live in .geo-map-wrap but OUTSIDE the
+   frame, in normal flow below it; keeping them out of the frame is what
+   stops the "bottom: 14px" chrome from anchoring to the bottom of the
+   legend text instead of the bottom of the map. */
+.geo-map-frame { position: relative; }
+/* The chart itself (see assets/js/field-map.js): ECharts renders the real
+   district geometry from assets/data/ghana-districts.geojson directly, no
+   hand-simplification or hand-rolled projection in between. */
+.geo-map-echarts { width: 100%; height: 620px; max-height: 78vh; border-radius: 6px; overflow: hidden; }
+@media (max-width: 720px) {
+  .geo-map-echarts { height: 440px; }
+}
 .geo-map__caption { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-soft); text-align: center; margin: 8px 0 0; }
-.geo-pin { cursor: pointer; --pin-color: var(--gold); transition: opacity 0.25s ease; }
-.geo-pin__dot { fill: var(--pin-color); stroke: var(--paper-raised); stroke-width: 1.5; transition: fill 0.25s ease, r 0.25s ease; }
-.geo-pin__pulse { fill: none; stroke: var(--pin-color); stroke-width: 1.5; opacity: 0; transform-origin: center; }
-.geo-pin.is-active .geo-pin__dot, .geo-pin:hover .geo-pin__dot, .geo-pin:focus-visible .geo-pin__dot { fill: var(--teal-dark); r: 7; }
-.geo-pin.is-active .geo-pin__pulse, .geo-pin:hover .geo-pin__pulse, .geo-pin:focus-visible .geo-pin__pulse { animation: geo-pulse 1.8s ease-out infinite; }
-/* Category colour-coding, matched to the map legend. */
-.geo-pin--screening { --pin-color: var(--gold); }
-.geo-pin--conference { --pin-color: var(--teal-dark); }
-.geo-pin--outreach { --pin-color: var(--clay); }
-.geo-map.has-category-filter .geo-pin { opacity: 0; pointer-events: none; }
-.geo-map.has-category-filter .geo-pin.is-filter-match { opacity: 1; pointer-events: auto; }
 
 /* ---------- Map chrome: legend, compass, scale bar, zoom controls ---------- */
-.geo-map-wrap { position: relative; }
 .geo-legend {
   display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 12px 0 0;
   font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-soft);
@@ -822,8 +823,6 @@ body.has-custom-cursor, body.has-custom-cursor a, body.has-custom-cursor button 
 }
 .geo-zoom__btn:hover { background: var(--teal-dark); color: #fff; transform: scale(1.06); }
 .geo-zoom__btn--reset { font-size: 0.6rem; }
-.geo-map { cursor: grab; touch-action: pan-y; }
-.geo-map.is-panning { cursor: grabbing; }
 .geo-map-hint {
   position: absolute; top: 14px; left: 14px; z-index: 2;
   font-family: var(--font-mono); font-size: 0.62rem; color: var(--ink-soft);
@@ -836,34 +835,6 @@ body.has-custom-cursor, body.has-custom-cursor a, body.has-custom-cursor button 
   .geo-compass, .geo-map-hint { display: none; }
 }
 
-/* Floating preview box: one reusable element (see site.js), repositioned
-   next to whichever pin is currently hovered/focused, showing that
-   event's first photo -- so "is this worth clicking" is answered before
-   the click. */
-.geo-preview {
-  position: fixed; z-index: 90; width: 220px;
-  background: var(--paper-raised); border: 1px solid var(--line); border-radius: 8px;
-  box-shadow: var(--shadow-lg); overflow: hidden;
-  opacity: 0; transform: scale(0.94) translateY(6px);
-  transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: none;
-}
-.geo-preview.is-visible { opacity: 1; transform: scale(1) translateY(0); }
-.geo-preview__photo { width: 100%; height: 130px; object-fit: cover; display: block; background: var(--paper-sunken); }
-.geo-preview__body { padding: 10px 12px 12px; }
-.geo-preview__title { font-family: var(--font-display); font-weight: 600; font-size: 0.88rem; margin: 0 0 3px; color: var(--ink); }
-.geo-preview__meta { font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-soft); display: block; }
-.geo-preview__cue { font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gold-dark); margin: 6px 0 0; }
-@media (max-width: 720px) {
-  .geo-preview { display: none; }
-}
-@keyframes geo-pulse {
-  0% { opacity: 0.55; transform: scale(1); }
-  100% { opacity: 0; transform: scale(3.2); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .geo-pin.is-active .geo-pin__pulse { animation: none; opacity: 0.35; }
-}
 .geo-scroll { list-style: none; margin: 0; padding: 0; display: grid; gap: 28px; }
 .geo-card {
   border-left: 3px solid var(--line);

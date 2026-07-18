@@ -3,15 +3,27 @@
   if (saved === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
 })();
 
-// Ambient audio: a synthesized pad (a few detuned oscillators through a
-// slow-breathing lowpass filter) plus short blips on key hover targets --
-// no audio files to fetch, everything is generated. Always starts muted
-// on load: browsers block autoplay before a gesture anyway, and unannounced
-// sound has no place on a first visit to a clinical/scientific site. The
-// toolbar button is the only thing that can turn it on, and only for the
-// current page view.
+// Ambient audio: a slow, soft procedurally-generated piano/jazz chord loop
+// (plucked triangle+sine notes through a lowpass filter -- no audio files
+// to fetch, everything is synthesized) plus short UI blips and a distinct
+// click-tick. On by default (persisted only as an explicit mute, in
+// localStorage) but browsers block real autoplay before a gesture no
+// matter what a site wants, so playback actually begins on this page's
+// first click/keydown/touch -- as close to "plays automatically" as the
+// platform allows without every tab on the internet blasting sound on load.
 var vgAudio = (function () {
-  var ctx = null, masterGain = null, padNodes = null, isOn = false, button = null;
+  var ctx = null, masterGain = null, isOn = false, button = null, loopTimer = null, chordIndex = 0;
+  var MUTE_KEY = 'vg-audio-muted';
+  var wantsOn = localStorage.getItem(MUTE_KEY) !== 'true';
+
+  // Soft jazz-ish voicings, each an arpeggiated "pluck" rather than a held
+  // drone: Cmaj9 -> Am9 -> Dm9 -> G9, four bars, looping.
+  var CHORDS = [
+    [261.63, 329.63, 392.00, 493.88, 587.33],
+    [220.00, 261.63, 329.63, 392.00, 493.88],
+    [293.66, 349.23, 440.00, 523.25, 587.33],
+    [196.00, 246.94, 293.66, 349.23, 440.00]
+  ];
 
   function ensureContext() {
     if (ctx) return ctx;
@@ -24,51 +36,51 @@ var vgAudio = (function () {
     return ctx;
   }
 
-  function startPad() {
-    var c = ensureContext();
-    if (!c || padNodes) return;
-    if (c.state === 'suspended') c.resume();
-    var freqs = [110, 164.81, 220, 277.18];
-    var filter = c.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.value = 900;
-    filter.connect(masterGain);
-    var oscs = freqs.map(function (f, i) {
-      var osc = c.createOscillator();
-      osc.type = i % 2 === 0 ? 'sine' : 'triangle';
-      osc.frequency.value = f;
-      var oscGain = c.createGain();
-      oscGain.gain.value = 0.9 / freqs.length;
-      osc.connect(oscGain);
-      oscGain.connect(filter);
-      osc.start();
-      return osc;
-    });
-    var lfo = c.createOscillator();
-    lfo.frequency.value = 0.045;
-    var lfoGain = c.createGain();
-    lfoGain.gain.value = 260;
-    lfo.connect(lfoGain);
-    lfoGain.connect(filter.frequency);
-    lfo.start();
-    padNodes = { oscs: oscs, filter: filter, lfo: lfo };
-    masterGain.gain.cancelScheduledValues(c.currentTime);
-    masterGain.gain.setValueAtTime(masterGain.gain.value, c.currentTime);
-    masterGain.gain.linearRampToValueAtTime(0.045, c.currentTime + 1.4);
+  function pluck(freq, when, peak) {
+    var osc = ctx.createOscillator();
+    var osc2 = ctx.createOscillator();
+    var g = ctx.createGain();
+    var filt = ctx.createBiquadFilter();
+    filt.type = 'lowpass';
+    filt.frequency.value = 2200;
+    osc.type = 'triangle';
+    osc2.type = 'sine';
+    osc.frequency.value = freq;
+    osc2.frequency.value = freq * 1.003;
+    g.gain.setValueAtTime(0, when);
+    g.gain.linearRampToValueAtTime(peak, when + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, when + 2.6);
+    osc.connect(g); osc2.connect(g); g.connect(filt); filt.connect(masterGain);
+    osc.start(when); osc2.start(when);
+    osc.stop(when + 2.8); osc2.stop(when + 2.8);
   }
 
-  function stopPad() {
-    if (!ctx || !masterGain) return;
+  function scheduleLoop() {
+    if (!isOn || !ctx) return;
+    var chord = CHORDS[chordIndex % CHORDS.length];
+    var now = ctx.currentTime + 0.05;
+    chord.forEach(function (freq, i) { pluck(freq, now + i * 0.42, 0.05 - i * 0.005); });
+    chordIndex++;
+    loopTimer = setTimeout(scheduleLoop, 4200);
+  }
+
+  function startLoop() {
+    var c = ensureContext();
+    if (!c) return;
+    if (c.state === 'suspended') c.resume();
+    masterGain.gain.cancelScheduledValues(c.currentTime);
+    masterGain.gain.setValueAtTime(masterGain.gain.value, c.currentTime);
+    masterGain.gain.linearRampToValueAtTime(1, c.currentTime + 1.4);
+    if (!loopTimer) scheduleLoop();
+  }
+
+  function stopLoop() {
+    if (!ctx) return;
+    clearTimeout(loopTimer);
+    loopTimer = null;
     masterGain.gain.cancelScheduledValues(ctx.currentTime);
     masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
     masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.6);
-    var nodes = padNodes;
-    padNodes = null;
-    setTimeout(function () {
-      if (!nodes) return;
-      nodes.oscs.forEach(function (o) { try { o.stop(); } catch (e) {} });
-      try { nodes.lfo.stop(); } catch (e) {}
-    }, 700);
   }
 
   function blip() {
@@ -88,6 +100,24 @@ var vgAudio = (function () {
     osc.stop(c.currentTime + 0.18);
   }
 
+  // A distinct, quick percussive tick for actual clicks (haptics have no
+  // web API, but a crisp short click is the closest audible stand-in).
+  function tick() {
+    if (!isOn) return;
+    var c = ensureContext();
+    if (!c) return;
+    var osc = c.createOscillator();
+    var gain = c.createGain();
+    osc.type = 'square';
+    osc.frequency.value = 1100;
+    gain.gain.setValueAtTime(0.055, c.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 0.045);
+    osc.connect(gain);
+    gain.connect(masterGain || c.destination);
+    osc.start();
+    osc.stop(c.currentTime + 0.05);
+  }
+
   function syncButton() {
     if (!button) return;
     button.setAttribute('aria-pressed', isOn ? 'true' : 'false');
@@ -98,13 +128,32 @@ var vgAudio = (function () {
     if (offIcon) offIcon.hidden = isOn;
   }
 
-  function toggle() {
-    isOn = !isOn;
-    if (isOn) startPad(); else stopPad();
+  function setOn(next) {
+    isOn = next;
+    localStorage.setItem(MUTE_KEY, isOn ? 'false' : 'true');
+    if (isOn) startLoop(); else stopLoop();
     syncButton();
   }
 
-  return { toggle: toggle, blip: blip, setButton: function (btn) { button = btn; syncButton(); } };
+  function toggle() { setOn(!isOn); }
+
+  // Reflect the intended state immediately (icon shows "on" if the user
+  // hasn't muted before), then wait for this page's first gesture to
+  // actually start sound, since no browser allows real autoplay.
+  if (wantsOn) {
+    isOn = true;
+    var startOnFirstGesture = function () {
+      startLoop();
+      document.removeEventListener('pointerdown', startOnFirstGesture);
+      document.removeEventListener('keydown', startOnFirstGesture);
+      document.removeEventListener('touchstart', startOnFirstGesture);
+    };
+    document.addEventListener('pointerdown', startOnFirstGesture, { once: true });
+    document.addEventListener('keydown', startOnFirstGesture, { once: true });
+    document.addEventListener('touchstart', startOnFirstGesture, { once: true, passive: true });
+  }
+
+  return { toggle: toggle, blip: blip, tick: tick, setButton: function (btn) { button = btn; syncButton(); } };
 })();
 
 function vgShowToast(msg) {
@@ -179,9 +228,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var ringX = { value: 0, velocity: 0, target: 0 };
     var ringY = { value: 0, velocity: 0, target: 0 };
+    var ringScale = { value: 1, velocity: 0, target: 1 };
     var shown = false;
-    function stepCursorAxis(axis, dt) {
-      var accel = -220 * (axis.value - axis.target) - 18 * axis.velocity;
+    function stepCursorAxis(axis, dt, stiffness, damping) {
+      var accel = -stiffness * (axis.value - axis.target) - damping * axis.velocity;
       axis.velocity += accel * dt;
       axis.value += axis.velocity * dt;
     }
@@ -190,9 +240,20 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!lastCursorTs) lastCursorTs = ts;
       var dt = Math.min((ts - lastCursorTs) / 1000, 0.032);
       lastCursorTs = ts;
-      stepCursorAxis(ringX, dt);
-      stepCursorAxis(ringY, dt);
-      ring.style.transform = 'translate(' + ringX.value + 'px, ' + ringY.value + 'px) translate(-50%, -50%)';
+      stepCursorAxis(ringX, dt, 220, 18);
+      stepCursorAxis(ringY, dt, 220, 18);
+      stepCursorAxis(ringScale, dt, 300, 18);
+      // Velocity-based squash/stretch: the ring elongates slightly along
+      // its direction of travel (a rotate/scale/counter-rotate composite,
+      // capped so it never reads as rubbery) and a separate scale spring
+      // gives it a press-down/release bounce on click -- small "juicy
+      // cursor" touches that a flat translate() alone doesn't have.
+      var speed = Math.sqrt(ringX.velocity * ringX.velocity + ringY.velocity * ringY.velocity);
+      var stretch = Math.min(speed / 2200, 0.32);
+      var angle = Math.atan2(ringY.velocity, ringX.velocity) * 180 / Math.PI;
+      var sx = (ringScale.value + stretch).toFixed(3);
+      var sy = (ringScale.value - stretch * 0.6).toFixed(3);
+      ring.style.transform = 'translate(' + ringX.value.toFixed(1) + 'px, ' + ringY.value.toFixed(1) + 'px) translate(-50%, -50%) rotate(' + angle.toFixed(1) + 'deg) scale(' + sx + ', ' + sy + ') rotate(' + (-angle).toFixed(1) + 'deg)';
       requestAnimationFrame(cursorLoop);
     }
     requestAnimationFrame(cursorLoop);
@@ -206,8 +267,8 @@ document.addEventListener('DOMContentLoaded', function () {
       ringY.target = e.clientY;
     }, { passive: true });
 
-    document.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'touch') dot.classList.add('is-hidden'); });
-    document.addEventListener('pointerup', function (e) { if (e.pointerType !== 'touch') dot.classList.remove('is-hidden'); });
+    document.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'touch') { dot.classList.add('is-hidden'); ringScale.target = 0.78; } });
+    document.addEventListener('pointerup', function (e) { if (e.pointerType !== 'touch') { dot.classList.remove('is-hidden'); ringScale.target = 1; } });
 
     var interactiveSelector = 'a, button, .btn, .card, .toc-card, .event-card, input, select, summary, .geo-pin';
     document.addEventListener('pointerover', function (e) {
@@ -285,6 +346,14 @@ document.addEventListener('DOMContentLoaded', function () {
       else if (!match) { lastBlipTarget = null; }
     });
   }
+
+  // A quiet click "tick" on any real interaction -- the closest audible
+  // stand-in for haptic feedback the Web platform offers; works for touch
+  // too, since touch has no hover state for the blip above to fire on.
+  document.addEventListener('pointerdown', function (e) {
+    if (e.target.closest && e.target.closest('a, button')) vgAudio.tick();
+  });
+
   function isDark() { return document.documentElement.getAttribute('data-theme') === 'dark'; }
   themeBtn.addEventListener('click', function () {
     if (isDark()) { document.documentElement.removeAttribute('data-theme'); localStorage.setItem('vg-theme', 'light'); }
@@ -825,10 +894,31 @@ document.addEventListener('DOMContentLoaded', function () {
     playBtn.setAttribute('aria-label', 'Play video full screen');
     playBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
     wrap.appendChild(playBtn);
+    // Fullscreen entry is promise-based and browser-inconsistent: Safari on
+    // iOS often exposes video.requestFullscreen() as a real function that
+    // silently does nothing, so a truthy-existence check alone (the old
+    // `a || b || c` chain) can pick a method that never actually fires --
+    // catching its rejection and falling through to webkitEnterFullscreen
+    // is what makes this work across engines, not just Chrome/Firefox.
+    function enterVideoFullscreen() {
+      if (video.requestFullscreen) {
+        var p = video.requestFullscreen();
+        if (p && p.catch) {
+          p.catch(function () {
+            if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
+            else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
+          });
+          return;
+        }
+      }
+      if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
+      else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
+      else if (video.mozRequestFullScreen) video.mozRequestFullScreen();
+    }
     playBtn.addEventListener('click', function () {
-      video.play();
-      var rf = video.requestFullscreen || video.webkitRequestFullscreen || video.webkitEnterFullscreen;
-      if (rf) { try { rf.call(video); } catch (e) {} }
+      var playPromise = video.play();
+      if (playPromise && playPromise.then) { playPromise.then(enterVideoFullscreen, enterVideoFullscreen); }
+      else { enterVideoFullscreen(); }
       playBtn.hidden = true;
     });
     video.addEventListener('play', function () { playBtn.hidden = true; });
@@ -1047,231 +1137,6 @@ document.addEventListener('DOMContentLoaded', function () {
       clearTimeout(packResizeTimer);
       packResizeTimer = setTimeout(packEventGrids, 150);
     }, { passive: true });
-  }
-
-  // Field map scrollytelling: as each event card scrolls through the
-  // vertical center of the viewport, activate its matching pin on the
-  // sticky map (and vice versa -- the pin's own border highlights the
-  // active card). Falls back to nothing but a static map if JS/IO is
-  // unavailable; every card and pin is still fully readable either way.
-  var geoMap = document.querySelector('[data-geo-map]');
-  if (geoMap && 'IntersectionObserver' in window) {
-    var geoPins = {};
-    geoMap.querySelectorAll('[data-geo-pin]').forEach(function (pin) {
-      geoPins[pin.getAttribute('data-target')] = pin;
-    });
-    var geoCards = document.querySelectorAll('[data-geo-card]');
-    var activeCard = null;
-    function setActiveGeoCard(card) {
-      if (activeCard === card) return;
-      if (activeCard) {
-        activeCard.classList.remove('is-active');
-        var prevPin = geoPins[activeCard.id];
-        if (prevPin) prevPin.classList.remove('is-active');
-      }
-      activeCard = card;
-      if (card) {
-        card.classList.add('is-active');
-        var pin = geoPins[card.id];
-        if (pin) pin.classList.add('is-active');
-      }
-    }
-    var geoIo = new IntersectionObserver(function (entries) {
-      var best = null;
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        if (!best || entry.intersectionRatio > best.intersectionRatio) best = entry;
-      });
-      if (best) setActiveGeoCard(best.target);
-    }, { threshold: [0.3, 0.5, 0.7], rootMargin: '-20% 0px -20% 0px' });
-    geoCards.forEach(function (c) { geoIo.observe(c); });
-  }
-
-  // Map pin hover/focus preview: a floating box with the event's photo,
-  // title and location, positioned beside whichever pin is currently
-  // hovered or focused -- so "is this worth a click" is answered before
-  // the click. The pin itself is a real SVG <a>, so clicking it (or
-  // pressing Enter while focused) is a plain navigation to that event's
-  // card on /community/, no JS required for that part.
-  var geoPins = document.querySelectorAll('.geo-pin[data-preview-title]');
-  if (geoPins.length) {
-    var geoPreview = document.createElement('div');
-    geoPreview.className = 'geo-preview';
-    geoPreview.innerHTML =
-      '<img class="geo-preview__photo" alt="" loading="lazy">' +
-      '<div class="geo-preview__body">' +
-        '<p class="geo-preview__title"></p>' +
-        '<span class="geo-preview__meta"></span>' +
-        '<p class="geo-preview__cue">View record &rarr;</p>' +
-      '</div>';
-    document.body.appendChild(geoPreview);
-    var geoPreviewImg = geoPreview.querySelector('.geo-preview__photo');
-    var geoPreviewTitle = geoPreview.querySelector('.geo-preview__title');
-    var geoPreviewMeta = geoPreview.querySelector('.geo-preview__meta');
-
-    function showGeoPreview(pin) {
-      var photo = pin.getAttribute('data-preview-photo');
-      geoPreviewImg.style.display = photo ? '' : 'none';
-      if (photo) geoPreviewImg.src = photo;
-      geoPreviewTitle.textContent = pin.getAttribute('data-preview-title') || '';
-      geoPreviewMeta.textContent = pin.getAttribute('data-preview-meta') || '';
-      var rect = pin.getBoundingClientRect();
-      var boxWidth = 220;
-      var left = rect.right + 14;
-      if (left + boxWidth > window.innerWidth - 12) left = rect.left - boxWidth - 14;
-      if (left < 12) left = 12;
-      var top = Math.min(Math.max(rect.top - 20, 12), window.innerHeight - 220);
-      geoPreview.style.left = left + 'px';
-      geoPreview.style.top = top + 'px';
-      geoPreview.classList.add('is-visible');
-    }
-    function hideGeoPreview() { geoPreview.classList.remove('is-visible'); }
-
-    geoPins.forEach(function (pin) {
-      pin.addEventListener('pointerenter', function () { showGeoPreview(pin); });
-      pin.addEventListener('pointerleave', hideGeoPreview);
-      pin.addEventListener('focus', function () { showGeoPreview(pin); });
-      pin.addEventListener('blur', hideGeoPreview);
-    });
-  }
-
-  // Field map chrome: zoom/pan (buttons, Ctrl/Cmd+wheel, drag), a scale
-  // bar that recomputes against the real projection (SCALE=100 viewBox
-  // units per degree of longitude, ~110.5 km per degree at Ghana's
-  // latitude), and a legend that doubles as a category filter.
-  var geoSvg = document.querySelector('[data-geo-map]');
-  if (geoSvg) {
-    var geoWrap = geoSvg.closest('.geo-map-wrap');
-    var baseViewBox = (geoSvg.getAttribute('data-viewbox') || geoSvg.getAttribute('viewBox')).split(' ').map(Number);
-    var vb = { x: baseViewBox[0], y: baseViewBox[1], w: baseViewBox[2], h: baseViewBox[3] };
-    var GEO_MIN_W = baseViewBox[2] / 4;
-    var GEO_MAX_W = baseViewBox[2];
-    var geoAspect = baseViewBox[3] / baseViewBox[2];
-
-    function geoClamp() {
-      vb.w = Math.max(GEO_MIN_W, Math.min(GEO_MAX_W, vb.w));
-      vb.h = vb.w * geoAspect;
-      vb.x = Math.max(0, Math.min(baseViewBox[2] - vb.w, vb.x));
-      vb.y = Math.max(0, Math.min(baseViewBox[3] - vb.h, vb.y));
-    }
-    function geoUpdateScaleBar() {
-      var bar = geoWrap.querySelector('[data-geo-scale-bar]');
-      var label = geoWrap.querySelector('[data-geo-scale-label]');
-      if (!bar || !label) return;
-      var rect = geoSvg.getBoundingClientRect();
-      if (!rect.width) return;
-      var pxPerUnit = rect.width / vb.w;
-      var kmPerUnit = 1.105; // (1 / SCALE) degree per unit * ~110.5 km/degree
-      var pxPerKm = pxPerUnit / kmPerUnit;
-      var niceKms = [1, 2, 5, 10, 20, 25, 50, 100, 150, 200, 250, 500];
-      var target = 64, best = niceKms[0], bestDiff = Infinity;
-      niceKms.forEach(function (km) {
-        var w = km * pxPerKm;
-        if (w >= 28 && w <= 130) {
-          var diff = Math.abs(w - target);
-          if (diff < bestDiff) { bestDiff = diff; best = km; }
-        }
-      });
-      bar.style.width = Math.max(20, best * pxPerKm) + 'px';
-      label.textContent = best + ' km';
-    }
-    function geoSetViewBox() {
-      geoSvg.setAttribute('viewBox', vb.x + ' ' + vb.y + ' ' + vb.w + ' ' + vb.h);
-      geoUpdateScaleBar();
-    }
-    function geoZoomBy(factor, cx, cy) {
-      if (cx == null) cx = vb.x + vb.w / 2;
-      if (cy == null) cy = vb.y + vb.h / 2;
-      var relX = (cx - vb.x) / vb.w;
-      var relY = (cy - vb.y) / vb.h;
-      vb.w = vb.w / factor;
-      geoClamp();
-      vb.x = cx - relX * vb.w;
-      vb.y = cy - relY * vb.h;
-      geoClamp();
-      geoSetViewBox();
-    }
-    function geoResetView() {
-      vb = { x: baseViewBox[0], y: baseViewBox[1], w: baseViewBox[2], h: baseViewBox[3] };
-      geoSetViewBox();
-    }
-
-    var geoZoomIn = geoWrap.querySelector('[data-geo-zoom-in]');
-    var geoZoomOut = geoWrap.querySelector('[data-geo-zoom-out]');
-    var geoZoomReset = geoWrap.querySelector('[data-geo-zoom-reset]');
-    if (geoZoomIn) geoZoomIn.addEventListener('click', function () { geoZoomBy(1.5); });
-    if (geoZoomOut) geoZoomOut.addEventListener('click', function () { geoZoomBy(1 / 1.5); });
-    if (geoZoomReset) geoZoomReset.addEventListener('click', geoResetView);
-
-    // Plain scroll over the map still scrolls the page -- only Ctrl/Cmd+
-    // wheel zooms it, so the map never hijacks the page. A brief hint
-    // explains the modifier the first couple of times someone tries it.
-    var geoHint = geoWrap.querySelector('[data-geo-hint]');
-    geoSvg.addEventListener('wheel', function (e) {
-      if (!(e.ctrlKey || e.metaKey)) {
-        if (geoHint) {
-          geoHint.classList.add('is-visible');
-          clearTimeout(geoHint._t);
-          geoHint._t = setTimeout(function () { geoHint.classList.remove('is-visible'); }, 1600);
-        }
-        return;
-      }
-      e.preventDefault();
-      var rect = geoSvg.getBoundingClientRect();
-      var px = vb.x + ((e.clientX - rect.left) / rect.width) * vb.w;
-      var py = vb.y + ((e.clientY - rect.top) / rect.height) * vb.h;
-      geoZoomBy(e.deltaY < 0 ? 1.15 : 1 / 1.15, px, py);
-    }, { passive: false });
-
-    var geoDragging = false, geoDragStart = null, geoVbStart = null;
-    geoSvg.addEventListener('pointerdown', function (e) {
-      if (e.pointerType === 'touch' || (e.target.closest && e.target.closest('.geo-pin'))) return;
-      geoDragging = true;
-      geoDragStart = { x: e.clientX, y: e.clientY };
-      geoVbStart = { x: vb.x, y: vb.y };
-      geoSvg.classList.add('is-panning');
-      geoSvg.setPointerCapture(e.pointerId);
-    });
-    geoSvg.addEventListener('pointermove', function (e) {
-      if (!geoDragging) return;
-      var rect = geoSvg.getBoundingClientRect();
-      var scale = vb.w / rect.width;
-      vb.x = geoVbStart.x - (e.clientX - geoDragStart.x) * scale;
-      vb.y = geoVbStart.y - (e.clientY - geoDragStart.y) * scale;
-      geoClamp();
-      geoSetViewBox();
-    });
-    function geoEndDrag() { geoDragging = false; geoSvg.classList.remove('is-panning'); }
-    geoSvg.addEventListener('pointerup', geoEndDrag);
-    geoSvg.addEventListener('pointercancel', geoEndDrag);
-
-    window.addEventListener('resize', geoUpdateScaleBar, { passive: true });
-    geoUpdateScaleBar();
-
-    // Legend doubles as a filter: click a category to isolate it (click
-    // again to release). With nothing active, every pin shows.
-    var geoLegendItems = Array.prototype.slice.call(geoWrap.querySelectorAll('[data-geo-filter]'));
-    var geoActiveFilters = [];
-    function geoApplyFilter() {
-      var any = geoActiveFilters.length > 0;
-      geoSvg.classList.toggle('has-category-filter', any);
-      geoSvg.querySelectorAll('.geo-pin').forEach(function (pin) {
-        var match = !any || geoActiveFilters.indexOf(pin.getAttribute('data-category')) !== -1;
-        pin.classList.toggle('is-filter-match', match);
-      });
-      geoLegendItems.forEach(function (item) {
-        var cat = item.getAttribute('data-geo-filter');
-        item.classList.toggle('is-dimmed', any && geoActiveFilters.indexOf(cat) === -1);
-      });
-    }
-    geoLegendItems.forEach(function (item) {
-      item.addEventListener('click', function () {
-        var cat = item.getAttribute('data-geo-filter');
-        var idx = geoActiveFilters.indexOf(cat);
-        if (idx === -1) geoActiveFilters.push(cat); else geoActiveFilters.splice(idx, 1);
-        geoApplyFilter();
-      });
-    });
   }
 
   // Marquee scroll-skew: a quick flick of the wheel racks every .marquee
