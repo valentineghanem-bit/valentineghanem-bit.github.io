@@ -22,41 +22,29 @@ description: "An interactive coordinate map of Valentine Golden Ghanem's medical
 
   <div class="geo-layout">
     <div class="geo-map-wrap">
-      <div class="geo-map-hint" data-geo-hint>Drag to pan &middot; Ctrl/&#8984; + scroll to zoom</div>
-      <div class="geo-compass" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 9-3 3-3-3 3-9z" fill="currentColor"/><path d="M12 22V13M4 12h16M6.5 6.5l11 11M17.5 6.5l-11 11" stroke="currentColor" stroke-width="0.75" opacity="0.4"/></svg>
-        <span>N</span>
-      </div>
-      <svg class="geo-map" viewBox="0 0 490 690" role="img" aria-label="Map of Ghana's 259 administrative districts with activity locations marked" data-geo-map data-viewbox="0 0 490 690">
-        <defs>
-          <pattern id="geo-grid" width="49" height="69" patternUnits="userSpaceOnUse">
-            <path d="M 49 0 L 0 0 0 69" fill="none" stroke="var(--line)" stroke-width="1"/>
-          </pattern>
-        </defs>
-        <rect x="0" y="0" width="490" height="690" fill="url(#geo-grid)" opacity="0.5"/>
-        {% include ghana-districts.svg %}
-        {%- assign pin_i = 0 -%}
-        {%- for e in site.data.community_activities.medical_screening -%}
-        {% include geo-pin.html event=e category="screening" category_label="Medical screening" index=pin_i %}
-        {%- assign pin_i = pin_i | plus: 1 -%}
-        {%- endfor -%}
-        {%- for e in site.data.community_activities.conferences -%}
-        {% include geo-pin.html event=e category="conference" category_label="Conference or seminar" index=pin_i %}
-        {%- assign pin_i = pin_i | plus: 1 -%}
-        {%- endfor -%}
-        {%- for e in site.data.community_activities.outreach -%}
-        {% include geo-pin.html event=e category="outreach" category_label="Community outreach" index=pin_i %}
-        {%- assign pin_i = pin_i | plus: 1 -%}
-        {%- endfor -%}
-      </svg>
-      <div class="geo-scale" data-geo-scale aria-hidden="true">
-        <span class="geo-scale__bar" data-geo-scale-bar style="width: 64px;"></span>
-        <span class="geo-scale__label" data-geo-scale-label>50 km</span>
-      </div>
-      <div class="geo-zoom" data-geo-zoom>
-        <button type="button" class="geo-zoom__btn" data-geo-zoom-in aria-label="Zoom in">+</button>
-        <button type="button" class="geo-zoom__btn" data-geo-zoom-out aria-label="Zoom out">&minus;</button>
-        <button type="button" class="geo-zoom__btn geo-zoom__btn--reset" data-geo-zoom-reset aria-label="Reset map view">&#8634;</button>
+      <div class="geo-map-frame">
+        <div class="geo-map-hint" data-geo-hint>Drag to pan &middot; Ctrl/&#8984; + scroll to zoom</div>
+        <div class="geo-compass" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 9-3 3-3-3 3-9z" fill="currentColor"/><path d="M12 22V13M4 12h16M6.5 6.5l11 11M17.5 6.5l-11 11" stroke="currentColor" stroke-width="0.75" opacity="0.4"/></svg>
+          <span>N</span>
+        </div>
+        <div id="geo-map-echarts" class="geo-map-echarts" role="img" aria-label="Map of Ghana's 259 administrative districts with activity locations marked" data-geojson-url="{{ '/assets/data/ghana-districts.geojson' | relative_url }}"></div>
+        <script type="application/json" id="geo-map-data">
+          {
+            "screening": {{ site.data.community_activities.medical_screening | jsonify }},
+            "conference": {{ site.data.community_activities.conferences | jsonify }},
+            "outreach": {{ site.data.community_activities.outreach | jsonify }}
+          }
+        </script>
+        <div class="geo-scale" data-geo-scale aria-hidden="true">
+          <span class="geo-scale__bar" data-geo-scale-bar style="width: 64px;"></span>
+          <span class="geo-scale__label" data-geo-scale-label>50 km</span>
+        </div>
+        <div class="geo-zoom" data-geo-zoom>
+          <button type="button" class="geo-zoom__btn" data-geo-zoom-in aria-label="Zoom in">+</button>
+          <button type="button" class="geo-zoom__btn" data-geo-zoom-out aria-label="Zoom out">&minus;</button>
+          <button type="button" class="geo-zoom__btn geo-zoom__btn--reset" data-geo-zoom-reset aria-label="Reset map view">&#8634;</button>
+        </div>
       </div>
       <p class="geo-map__caption">Real district boundaries (259 districts) &middot; hover a pin for a preview, click to open its record.</p>
       <div class="geo-legend" data-geo-legend>
@@ -80,3 +68,6 @@ description: "An interactive coordinate map of Valentine Golden Ghanem's medical
     </ol>
   </div>
 </section>
+
+<script src="{{ '/assets/js/vendor/echarts.min.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/js/field-map.js' | relative_url }}" defer></script>
