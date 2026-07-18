@@ -64,7 +64,7 @@
       }),
       symbolSize: 20,
       itemStyle: { color: color, borderColor: p.paperRaised, borderWidth: 2, shadowBlur: 6, shadowColor: 'rgba(0,0,0,0.25)' },
-      emphasis: { scale: 1.35, itemStyle: { borderColor: p.stroke } },
+      emphasis: { scale: 1.35, itemStyle: { color: color, borderColor: p.stroke, borderWidth: 2.5 } },
       zlevel: 2,
       cursor: 'pointer'
     };
