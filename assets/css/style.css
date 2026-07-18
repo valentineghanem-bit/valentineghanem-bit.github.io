@@ -253,6 +253,17 @@ p { text-wrap: pretty; }
   margin: 0 0 10px;
   letter-spacing: -0.01em;
 }
+.hero__title .word-reveal { display: inline-block; overflow: hidden; }
+.hero__title .word-reveal__inner {
+  display: inline-block;
+  transform: translateY(105%);
+  animation: word-reveal-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 90ms + 120ms);
+}
+@keyframes word-reveal-in { to { transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .hero__title .word-reveal__inner { animation: none; transform: none; }
+}
 .hero__role {
   margin: 0 0 24px;
   color: var(--ink-soft);

@@ -19,6 +19,19 @@ function vgShowToast(msg) {
 document.addEventListener('DOMContentLoaded', function () {
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Hero title kinetic reveal: wrap each word so CSS can stagger it in on
+  // load (a purposeful first-impression moment on the one piece of text
+  // that matters most -- the name -- not decoration elsewhere).
+  if (!prefersReduced) {
+    var heroTitle = document.querySelector('.hero__title');
+    if (heroTitle) {
+      var words = heroTitle.textContent.trim().split(/\s+/);
+      heroTitle.innerHTML = words.map(function (w, i) {
+        return '<span class="word-reveal"><span class="word-reveal__inner" style="--i:' + i + '">' + w + '</span></span>';
+      }).join(' ');
+    }
+  }
+
   // Scroll progress bar
   var progress = document.createElement('div');
   progress.className = 'scroll-progress';
