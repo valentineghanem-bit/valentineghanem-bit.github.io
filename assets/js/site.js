@@ -32,6 +32,61 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  // Custom cursor: a spring-lagged ring trails an instant dot, and grows
+  // over interactive elements -- only on fine-pointer, motion-ok devices
+  // (touch screens and reduced-motion users keep the native cursor
+  // untouched; nothing here ever blocks a click, it's purely decorative
+  // and sits at pointer-events: none).
+  if (!prefersReduced && window.matchMedia('(pointer: fine)').matches) {
+    var dot = document.createElement('div');
+    dot.className = 'cursor-dot is-hidden';
+    var ring = document.createElement('div');
+    ring.className = 'cursor-ring is-hidden';
+    document.body.appendChild(dot);
+    document.body.appendChild(ring);
+    document.body.classList.add('has-custom-cursor');
+
+    var ringX = { value: 0, velocity: 0, target: 0 };
+    var ringY = { value: 0, velocity: 0, target: 0 };
+    var shown = false;
+    function stepCursorAxis(axis, dt) {
+      var accel = -220 * (axis.value - axis.target) - 18 * axis.velocity;
+      axis.velocity += accel * dt;
+      axis.value += axis.velocity * dt;
+    }
+    var lastCursorTs = null;
+    function cursorLoop(ts) {
+      if (!lastCursorTs) lastCursorTs = ts;
+      var dt = Math.min((ts - lastCursorTs) / 1000, 0.032);
+      lastCursorTs = ts;
+      stepCursorAxis(ringX, dt);
+      stepCursorAxis(ringY, dt);
+      ring.style.transform = 'translate(' + ringX.value + 'px, ' + ringY.value + 'px) translate(-50%, -50%)';
+      requestAnimationFrame(cursorLoop);
+    }
+    requestAnimationFrame(cursorLoop);
+
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'touch') return;
+      if (!shown) { shown = true; dot.classList.remove('is-hidden'); ring.classList.remove('is-hidden'); }
+      dot.style.transform = 'translate(' + e.clientX + 'px, ' + e.clientY + 'px) translate(-50%, -50%)';
+      ringX.target = e.clientX;
+      ringY.target = e.clientY;
+    }, { passive: true });
+
+    document.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'touch') dot.classList.add('is-hidden'); });
+    document.addEventListener('pointerup', function (e) { if (e.pointerType !== 'touch') dot.classList.remove('is-hidden'); });
+
+    var interactiveSelector = 'a, button, .btn, .card, .toc-card, .event-card, input, select, summary, .geo-pin';
+    document.addEventListener('pointerover', function (e) {
+      if (e.target.closest && e.target.closest(interactiveSelector)) ring.classList.add('is-interactive');
+    });
+    document.addEventListener('pointerout', function (e) {
+      if (e.target.closest && e.target.closest(interactiveSelector)) ring.classList.remove('is-interactive');
+    });
+    document.addEventListener('mouseleave', function () { dot.classList.add('is-hidden'); ring.classList.add('is-hidden'); });
+  }
+
   // Scroll progress bar
   var progress = document.createElement('div');
   progress.className = 'scroll-progress';
