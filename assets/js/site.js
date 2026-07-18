@@ -916,9 +916,8 @@ document.addEventListener('DOMContentLoaded', function () {
       else if (video.mozRequestFullScreen) video.mozRequestFullScreen();
     }
     playBtn.addEventListener('click', function () {
-      var playPromise = video.play();
-      if (playPromise && playPromise.then) { playPromise.then(enterVideoFullscreen, enterVideoFullscreen); }
-      else { enterVideoFullscreen(); }
+      enterVideoFullscreen();
+      if (playPromise && playPromise.catch) { playPromise.catch(function () {}); }
       playBtn.hidden = true;
     });
     video.addEventListener('play', function () { playBtn.hidden = true; });

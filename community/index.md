@@ -3,6 +3,7 @@ layout: default
 permalink: /community/
 title: "Community"
 description: "Community outreach, medical screening programs and public engagement by Valentine Golden Ghanem in Ghana."
+jsonld: community
 ---
 
 <section class="section wrap wrap--wide">
@@ -53,7 +54,7 @@ description: "Community outreach, medical screening programs and public engageme
           </div>
           {% endif %}
           {% if e.video %}
-          <div class="event-media__video"><video src="{{ e.video | relative_url }}" controls preload="metadata"></video></div>
+          <div class="event-media__video"><video src="{{ e.video | relative_url }}"{% if e.photos.first.url %} poster="{{ e.photos.first.url | relative_url }}"{% endif %} controls preload="metadata"></video></div>
           {% endif %}
         </article>
         {% endfor %}
