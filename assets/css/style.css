@@ -664,8 +664,12 @@ p { text-wrap: pretty; }
 .event-card:last-child { margin-bottom: 0; }
 .event-card__head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 14px; }
 .event-media { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 16px; }
-.event-media__item { margin: 0; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 4 / 3; }
+.event-media__item { margin: 0; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 4 / 3; background: var(--paper-sunken); }
 .event-media__item img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; transition: transform 0.25s ease; }
+/* Portrait-orientation event photos (e.g. a 678x960 congress portrait) lose
+   almost everything but a sliver of hair/forehead when forced to cover a
+   4:3 box anchored at the top. Show the full frame instead. */
+.event-media__item--contain img { object-fit: contain; }
 .event-media__item:hover img { transform: scale(1.04); }
 /* Height-constrained rather than width-constrained: a landscape clip and a
    portrait clip (rotated 90 deg from each other) shouldn't both be forced

@@ -9,12 +9,16 @@ medical_screening:
     photos:
       - url: "/assets/img/community/goaso-2024/with-ceo.jpg"
         caption: "With the Cocoa Clinic CEO at the Goaso outreach."
+        contain: true
       - url: "/assets/img/community/goaso-2024/goaso-car.jpg"
         caption: "En route to the Goaso screening site."
+        contain: true
       - url: "/assets/img/community/goaso-2024/cocoa-farm.jpg"
         caption: "On a cocoa farm near Goaso."
+        contain: true
       - url: "/assets/img/community/goaso-2024/cocoa-farmer.jpg"
         caption: "With a local cocoa farmer during outreach."
+        contain: true
   - title: "2024 Medical Screening – Agona Swedru"
     provider: "Ghana Cocoa Board (COCOBOD) – Cocoa Clinic"
     format: "In-Person Health Screening"
@@ -29,8 +33,10 @@ medical_screening:
         caption: "Conducting point-of-care screening."
       - url: "/assets/img/community/agona-swedru-2024/screening-1.jpg"
         caption: "Blood glucose screening in progress."
+        contain: true
       - url: "/assets/img/community/agona-swedru-2024/screening-2.jpg"
         caption: "Reviewing screening results with a participant."
+        contain: true
       - url: "/assets/img/community/agona-swedru-2024/dispensing.jpg"
         caption: "Dispensing medication after consultation."
       - url: "/assets/img/community/agona-swedru-2024/ride-back.jpg"
@@ -59,24 +65,33 @@ conferences:
         caption: "Congress delegation group photo, Bolgatanga."
       - url: "/assets/img/community/gamls-congress-2021/congress-participant.jpg"
         caption: "As a registered congress participant."
+        contain: true
       - url: "/assets/img/community/gamls-congress-2021/congress-day-2.jpg"
         caption: "Day two of the Annual National Congress."
+        contain: true
       - url: "/assets/img/community/gamls-congress-2021/close-shot.jpg"
         caption: "Portrait at the congress venue."
       - url: "/assets/img/community/gamls-congress-2021/talking-to-supplier.jpg"
         caption: "Discussing diagnostics with an exhibiting supplier."
+        contain: true
       - url: "/assets/img/community/gamls-congress-2021/medical-equip-supplier.jpg"
         caption: "Reviewing laboratory equipment on the exhibition floor."
+        contain: true
       - url: "/assets/img/community/gamls-congress-2021/medical-equipment-suppliers.jpg"
         caption: "Laboratory equipment suppliers' exhibition stand."
+        contain: true
       - url: "/assets/img/community/gamls-congress-2021/medical-equipment-supplier-2.jpg"
         caption: "Diagnostic instrumentation on display."
+        contain: true
       - url: "/assets/img/community/gamls-congress-2021/medical-insurance-booth.jpg"
         caption: "Health insurance exhibition booth."
+        contain: true
       - url: "/assets/img/community/gamls-congress-2021/equipments.jpg"
         caption: "Laboratory analyzers on display at the congress."
+        contain: true
       - url: "/assets/img/community/gamls-congress-2021/pamphlets.jpg"
         caption: "Congress programme and reference materials."
+        contain: true
   - title: "2020 Technical Training"
     provider: "Ghana Health Service (GHS)"
     format: "In-Person, Adabraka Polyclinic, Accra"
@@ -102,6 +117,7 @@ outreach:
         caption: "Representing Cocoa Clinic at the National Cocoa Day exhibition."
       - url: "/assets/img/community/cocoa-day-2018/with-colleagues.jpg"
         caption: "With colleagues at the State House grounds."
+        contain: true
       - url: "/assets/img/community/cocoa-day-2018/setting-up.jpg"
         caption: "Setting up the health screening station."
       - url: "/assets/img/community/cocoa-day-2018/display-1.jpg"
