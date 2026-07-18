@@ -963,7 +963,7 @@ body.has-custom-cursor, body.has-custom-cursor a, body.has-custom-cursor button 
    the landscape one. Capping height instead means each clip's own aspect
    ratio decides its width, and the two read as comparable visual weight
    side by side. */
-.event-media__video { margin: 16px 0 0; }
+.event-media__video { margin: 16px 0 0; display: inline-block; max-width: 100%; }
 .event-media__video video { height: 260px; max-width: 100%; width: auto; border-radius: 6px; border: 1px solid var(--line); display: block; box-shadow: var(--shadow); }
 @media (max-width: 620px) {
   .event-card { padding: 22px 20px; }
