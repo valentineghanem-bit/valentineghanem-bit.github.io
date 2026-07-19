@@ -3,6 +3,7 @@ layout: default
 permalink: /gallery/
 title: "Gallery"
 description: "Photography of Valentine Golden Ghanem, Ghanaian medical scientist and epidemiologist, in the laboratory and in the field."
+jsonld: gallery
 ---
 
 <section class="section wrap wrap--wide wrap--centered">
