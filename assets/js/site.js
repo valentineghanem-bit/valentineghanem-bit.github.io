@@ -917,8 +917,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     playBtn.addEventListener('click', function () {
       enterVideoFullscreen();
-      var playPromise = video.play();
-      if (playPromise && playPromise.catch) { playPromise.catch(function () {}); }
+      // webkitEnterFullscreen() (Safari/iOS's native fullscreen video player)
+      // starts playback itself as part of entering -- calling video.play()
+      // again right on top of that interrupts its own transition and makes
+      // it immediately dismiss (fullscreen flashes on then exits). Only
+      // drive play() ourselves on the standards-based requestFullscreen()
+      // path, which doesn't autoplay on its own.
+      if (!video.webkitEnterFullscreen) {
+        var playPromise = video.play();
+        if (playPromise && playPromise.catch) { playPromise.catch(function () {}); }
+      }
       playBtn.hidden = true;
     });
     video.addEventListener('play', function () { playBtn.hidden = true; });
