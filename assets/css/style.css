@@ -965,9 +965,11 @@ body.has-custom-cursor, body.has-custom-cursor a, body.has-custom-cursor button 
    side by side. */
 .event-media__video { margin: 16px 0 0; display: inline-block; max-width: 100%; }
 .event-media__video video { height: 260px; max-width: 100%; width: auto; border-radius: 6px; border: 1px solid var(--line); display: block; box-shadow: var(--shadow); }
+.event-media__video--landscape video { width: 462px; height: 260px; object-fit: cover; object-position: 50% 30%; }
 @media (max-width: 620px) {
   .event-card { padding: 22px 20px; }
   .event-media__video video { height: 220px; }
+  .event-media__video--landscape video { width: 391px; height: 220px; }
 }
 
 /* ---------- Video play-to-fullscreen overlay ---------- */
