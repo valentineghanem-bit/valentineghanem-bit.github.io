@@ -54,7 +54,7 @@ jsonld: community
           </div>
           {% endif %}
           {% if e.video %}
-          <div class="event-media__video"><video src="{{ e.video | relative_url }}"{% if e.photos.first.url %} poster="{{ e.photos.first.url | relative_url }}"{% endif %} controls preload="metadata"></video></div>
+          <div class="event-media__video{% if e.video_landscape %} event-media__video--landscape{% endif %}"><video src="{{ e.video | relative_url }}"{% if e.photos.first.url %} poster="{{ e.photos.first.url | relative_url }}"{% endif %} controls preload="metadata"></video></div>
           {% endif %}
         </article>
         {% endfor %}
