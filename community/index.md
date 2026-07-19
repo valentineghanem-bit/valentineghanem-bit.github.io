@@ -39,14 +39,14 @@ jsonld: community
           {% if e.photos %}
           <div class="event-media">
             {% for p in e.photos limit:6 %}
-            <figure class="event-media__item{% if p.contain %} event-media__item--contain{% endif %}"><img src="{{ p.url | relative_url }}" alt="{{ p.caption }}" loading="lazy"></figure>
+            <figure class="event-media__item{% if p.contain %} event-media__item--contain{% endif %}"{% if p.contain %} style="background-image:url('{{ p.url | relative_url }}');"{% endif %}><img src="{{ p.url | relative_url }}" alt="{{ p.caption }}" loading="lazy"></figure>
             {% endfor %}
             {% if e.photos.size > 6 %}
             <details class="event-media__more">
               <summary>+{{ e.photos.size | minus: 6 }} more photos</summary>
               <div class="event-media">
                 {% for p in e.photos offset:6 %}
-                <figure class="event-media__item{% if p.contain %} event-media__item--contain{% endif %}"><img src="{{ p.url | relative_url }}" alt="{{ p.caption }}" loading="lazy"></figure>
+                <figure class="event-media__item{% if p.contain %} event-media__item--contain{% endif %}"{% if p.contain %} style="background-image:url('{{ p.url | relative_url }}');"{% endif %}><img src="{{ p.url | relative_url }}" alt="{{ p.caption }}" loading="lazy"></figure>
                 {% endfor %}
               </div>
             </details>
@@ -73,14 +73,14 @@ jsonld: community
           {% if e.photos %}
           <div class="event-media">
             {% for p in e.photos limit:6 %}
-            <figure class="event-media__item{% if p.contain %} event-media__item--contain{% endif %}"><img src="{{ p.url | relative_url }}" alt="{{ p.caption }}" loading="lazy"></figure>
+            <figure class="event-media__item{% if p.contain %} event-media__item--contain{% endif %}"{% if p.contain %} style="background-image:url('{{ p.url | relative_url }}');"{% endif %}><img src="{{ p.url | relative_url }}" alt="{{ p.caption }}" loading="lazy"></figure>
             {% endfor %}
             {% if e.photos.size > 6 %}
             <details class="event-media__more">
               <summary>+{{ e.photos.size | minus: 6 }} more photos</summary>
               <div class="event-media">
                 {% for p in e.photos offset:6 %}
-                <figure class="event-media__item{% if p.contain %} event-media__item--contain{% endif %}"><img src="{{ p.url | relative_url }}" alt="{{ p.caption }}" loading="lazy"></figure>
+                <figure class="event-media__item{% if p.contain %} event-media__item--contain{% endif %}"{% if p.contain %} style="background-image:url('{{ p.url | relative_url }}');"{% endif %}><img src="{{ p.url | relative_url }}" alt="{{ p.caption }}" loading="lazy"></figure>
                 {% endfor %}
               </div>
             </details>
@@ -104,14 +104,14 @@ jsonld: community
           {% if e.photos %}
           <div class="event-media">
             {% for p in e.photos limit:6 %}
-            <figure class="event-media__item{% if p.contain %} event-media__item--contain{% endif %}"><img src="{{ p.url | relative_url }}" alt="{{ p.caption }}" loading="lazy"></figure>
+            <figure class="event-media__item{% if p.contain %} event-media__item--contain{% endif %}"{% if p.contain %} style="background-image:url('{{ p.url | relative_url }}');"{% endif %}><img src="{{ p.url | relative_url }}" alt="{{ p.caption }}" loading="lazy"></figure>
             {% endfor %}
             {% if e.photos.size > 6 %}
             <details class="event-media__more">
               <summary>+{{ e.photos.size | minus: 6 }} more photos</summary>
               <div class="event-media">
                 {% for p in e.photos offset:6 %}
-                <figure class="event-media__item{% if p.contain %} event-media__item--contain{% endif %}"><img src="{{ p.url | relative_url }}" alt="{{ p.caption }}" loading="lazy"></figure>
+                <figure class="event-media__item{% if p.contain %} event-media__item--contain{% endif %}"{% if p.contain %} style="background-image:url('{{ p.url | relative_url }}');"{% endif %}><img src="{{ p.url | relative_url }}" alt="{{ p.caption }}" loading="lazy"></figure>
                 {% endfor %}
               </div>
             </details>
