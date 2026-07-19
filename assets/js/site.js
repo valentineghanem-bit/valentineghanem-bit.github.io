@@ -881,10 +881,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Play-to-fullscreen overlay for Community event videos: a dedicated
-  // button (not a click handler on the <video> itself, which would also
-  // fire -- and force fullscreen -- every time someone touches the native
-  // scrub bar or volume control).
+  // Play-to-fullscreen overlay for Community event videos. This deliberately
+  // does NOT use the native Fullscreen API (video.requestFullscreen() /
+  // webkitEnterFullscreen()) -- across several rounds that path kept
+  // flashing into fullscreen and immediately exiting on desktop Firefox no
+  // matter how carefully the gesture/promise timing was handled, almost
+  // certainly some interaction with Firefox's stricter "transient
+  // activation" rules and the page's other gesture-triggered behavior
+  // (ambient audio) that isn't reliably fixable from the page side. A
+  // CSS-only overlay that fills the viewport sidesteps the browser's
+  // fullscreen permission model entirely, so it can't be silently revoked.
   document.querySelectorAll('.event-media__video').forEach(function (wrap) {
     var video = wrap.querySelector('video');
     if (!video) return;
@@ -894,51 +900,46 @@ document.addEventListener('DOMContentLoaded', function () {
     playBtn.setAttribute('aria-label', 'Play video full screen');
     playBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
     wrap.appendChild(playBtn);
-    // Fullscreen entry is promise-based and browser-inconsistent: Safari on
-    // iOS often exposes video.requestFullscreen() as a real function that
-    // silently does nothing, so a truthy-existence check alone (the old
-    // `a || b || c` chain) can pick a method that never actually fires --
-    // catching its rejection and falling through to webkitEnterFullscreen
-    // is what makes this work across engines, not just Chrome/Firefox.
-    function enterVideoFullscreen() {
-      if (video.requestFullscreen) {
-        var p = video.requestFullscreen();
-        if (p && p.catch) {
-          p.catch(function () {
-            if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
-            else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
-          });
-          return;
-        }
-      }
-      if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
-      else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
-      else if (video.mozRequestFullScreen) video.mozRequestFullScreen();
-    }
-    playBtn.addEventListener('click', function () {
-      // Fullscreen must be requested synchronously inside the click handler
-      // to count as a user gesture on Safari/iOS -- waiting on video.play()'s
-      // promise first (even though it usually resolves within a tick) drops
-      // out of that gesture window there and silently fails. Firing both
-      // calls synchronously keeps this working everywhere.
-      enterVideoFullscreen();
-      // webkitEnterFullscreen() (Safari/iOS's native fullscreen video player)
-      // starts playback itself as part of entering -- calling video.play()
-      // again right on top of that interrupts its own transition and makes
-      // it immediately dismiss (fullscreen flashes on then exits). Only
-      // drive play() ourselves on the standards-based requestFullscreen()
-      // path, which doesn't autoplay on its own.
-      if (!video.webkitEnterFullscreen) {
-        var playPromise = video.play();
-        if (playPromise && playPromise.catch) { playPromise.catch(function () {}); }
-      }
+
+    var closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.className = 'event-media__video__close';
+    closeBtn.setAttribute('aria-label', 'Exit full screen');
+    closeBtn.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+    wrap.appendChild(closeBtn);
+
+    var placeholder = document.createComment('video-fullscreen-anchor');
+    function open() {
+      // position:fixed is only relative to the real viewport if no ancestor
+      // has a transform/filter/perspective -- .event-card does (it drives
+      // the tilt/lift hover effect), which silently traps a fixed-position
+      // descendant inside the card's own box instead of the screen. Move
+      // the wrap out to a direct child of <body> while open to escape that
+      // containing block entirely, and put it back exactly where it was on
+      // close.
+      wrap.parentNode.insertBefore(placeholder, wrap);
+      document.body.appendChild(wrap);
+      wrap.classList.add('is-pseudo-fullscreen');
+      document.documentElement.classList.add('has-pseudo-fullscreen');
+      var playPromise = video.play();
+      if (playPromise && playPromise.catch) { playPromise.catch(function () {}); }
       playBtn.hidden = true;
-    });
+      document.addEventListener('keydown', onKeydown);
+    }
+    function close() {
+      wrap.classList.remove('is-pseudo-fullscreen');
+      document.documentElement.classList.remove('has-pseudo-fullscreen');
+      placeholder.parentNode.insertBefore(wrap, placeholder);
+      placeholder.remove();
+      playBtn.hidden = !video.paused;
+      document.removeEventListener('keydown', onKeydown);
+    }
+    function onKeydown(e) { if (e.key === 'Escape') close(); }
+
+    playBtn.addEventListener('click', open);
+    closeBtn.addEventListener('click', close);
     video.addEventListener('play', function () { playBtn.hidden = true; });
     video.addEventListener('pause', function () { playBtn.hidden = false; });
-    document.addEventListener('fullscreenchange', function () {
-      if (!document.fullscreenElement) playBtn.hidden = !video.paused;
-    });
   });
 
   // Tactile bento micro-interactions: a real mass-spring-damper simulation
