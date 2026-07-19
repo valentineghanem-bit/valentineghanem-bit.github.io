@@ -954,8 +954,18 @@ body.has-custom-cursor, body.has-custom-cursor a, body.has-custom-cursor button 
 .event-media__item img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; transition: transform 0.25s ease; cursor: zoom-in; }
 /* Portrait-orientation event photos (e.g. a 678x960 congress portrait) lose
    almost everything but a sliver of hair/forehead when forced to cover a
-   4:3 box anchored at the top. Show the full frame instead. */
-.event-media__item--contain img { object-fit: contain; }
+   4:3 box anchored at the top. Show the full frame instead -- but a bare
+   object-fit:contain leaves flat, empty side-bars in the box's background
+   color, which reads as a broken/unfilled tile rather than a deliberate
+   letterbox. Fill those bars with a blurred, scaled-up copy of the same
+   photo (via a ::before sharing the figure's own background-image) so the
+   full frame still shows with nothing left uncropped, but nothing empty. */
+.event-media__item--contain { position: relative; background-size: cover; background-position: center; }
+.event-media__item--contain::before {
+  content: ""; position: absolute; inset: -15%; z-index: 0;
+  background: inherit; filter: blur(18px) brightness(0.82); background-size: cover; background-position: center;
+}
+.event-media__item--contain img { object-fit: contain; position: relative; z-index: 1; }
 .event-media__item:hover img { transform: scale(1.04); }
 /* Height-constrained rather than width-constrained: a landscape clip and a
    portrait clip (rotated 90 deg from each other) shouldn't both be forced
