@@ -1,0 +1,19 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "{{ page.url | absolute_url }}#webpage",
+      "url": "{{ page.url | absolute_url }}",
+      "name": {% if page.title %}"{{ page.title }} | {{ site.data.profile.name }}"{% else %}{{ site.data.profile.name | jsonify }}{% endif %},
+      "description": {{ page.description | default: site.data.profile.short_description | strip_newlines | jsonify }},
+      "isPartOf": { "@id": "{{ site.url }}/#website" },
+      "about": { "@id": "{{ site.url }}/#person" },
+      "mainEntity": { "@id": "{{ site.url }}/#person" },
+      "inLanguage": "en"
+    },
+    {% include jsonld/gallery-image-nodes.html %}
+  ]
+}
+</script>

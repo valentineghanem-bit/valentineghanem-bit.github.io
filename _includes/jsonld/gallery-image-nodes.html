@@ -1,0 +1,21 @@
+{%- assign gallery_images = "" | split: "," -%}
+{%- for img in site.data.gallery_portraits -%}{%- assign gallery_images = gallery_images | push: img -%}{%- endfor -%}
+{%- for img in site.data.gallery_photos -%}{%- assign gallery_images = gallery_images | push: img -%}{%- endfor -%}
+{%- for img in gallery_images -%}
+{
+  "@type": "ImageObject",
+  "@id": {{ img.url | absolute_url | append: "#image" | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "contentUrl": {{ img.url | absolute_url | jsonify }},
+  "name": {{ img.caption | jsonify }},
+  "caption": {{ img.caption | jsonify }},
+  "description": {{ img.caption | jsonify }},
+  "width": { "@type": "QuantitativeValue", "value": {{ img.width }}, "unitCode": "E37" },
+  "height": { "@type": "QuantitativeValue", "value": {{ img.height }}, "unitCode": "E37" },
+  "encodingFormat": "image/jpeg",
+  "about": { "@id": "{{ site.url }}/#person" },
+  "creator": { "@id": "{{ site.url }}/#person" },
+  "creditText": "Valentine Golden Ghanem",
+  "copyrightNotice": "© {{ 'now' | date: '%Y' }} {{ site.data.profile.name }}. All rights reserved."
+}{% unless forloop.last %},{% endunless %}
+{%- endfor -%}

@@ -916,6 +916,11 @@ document.addEventListener('DOMContentLoaded', function () {
       else if (video.mozRequestFullScreen) video.mozRequestFullScreen();
     }
     playBtn.addEventListener('click', function () {
+      // Fullscreen must be requested synchronously inside the click handler
+      // to count as a user gesture on Safari/iOS -- waiting on video.play()'s
+      // promise first (even though it usually resolves within a tick) drops
+      // out of that gesture window there and silently fails. Firing both
+      // calls synchronously keeps this working everywhere.
       enterVideoFullscreen();
       // webkitEnterFullscreen() (Safari/iOS's native fullscreen video player)
       // starts playback itself as part of entering -- calling video.play()
