@@ -917,6 +917,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     playBtn.addEventListener('click', function () {
       enterVideoFullscreen();
+      var playPromise = video.play();
       if (playPromise && playPromise.catch) { playPromise.catch(function () {}); }
       playBtn.hidden = true;
     });
