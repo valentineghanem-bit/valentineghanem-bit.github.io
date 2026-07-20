@@ -14,8 +14,10 @@
   "height": { "@type": "QuantitativeValue", "value": {{ img.height }}, "unitCode": "E37" },
   "encodingFormat": "image/jpeg",
   "about": { "@id": "{{ site.url }}/#person" },
-  "creator": { "@id": "{{ site.url }}/#person" },
+  "creator": { "@type": "Person", "name": {{ site.data.profile.name | jsonify }}, "@id": "{{ site.url }}/#person" },
   "creditText": "Valentine Golden Ghanem",
-  "copyrightNotice": "© {{ 'now' | date: '%Y' }} {{ site.data.profile.name }}. All rights reserved."
+  "copyrightNotice": "© {{ 'now' | date: '%Y' }} {{ site.data.profile.name }}. All rights reserved.",
+  "license": {{ site.url | append: "/" | jsonify }},
+  "acquireLicensePage": {{ page.url | absolute_url | jsonify }}
 }{% unless forloop.last %},{% endunless %}
 {%- endfor -%}
