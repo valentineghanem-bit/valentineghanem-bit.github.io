@@ -11,7 +11,7 @@
   "height": { "@type": "QuantitativeValue", "value": {{ img.height }}, "unitCode": "E37" },
   "encodingFormat": "image/jpeg",
   "about": { "@id": "{{ site.url }}/#person" },
-  "creator": { "@id": "{{ site.url }}/#person" },
+  "creator": { "@type": "Person", "name": {{ site.data.profile.name | jsonify }}, "@id": "{{ site.url }}/#person" },
   "creditText": "Valentine Golden Ghanem / Wikimedia Commons",
   "license": "https://creativecommons.org/publicdomain/zero/1.0/",
   "copyrightNotice": "© {{ 'now' | date: '%Y' }} {{ site.data.profile.name }}. Released into the public domain (CC0 1.0).",

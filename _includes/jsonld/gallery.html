@@ -13,7 +13,9 @@
       "mainEntity": { "@id": "{{ site.url }}/#person" },
       "inLanguage": "en"
     },
-    {% include jsonld/gallery-image-nodes.html %}
+        {% include jsonld/gallery-image-nodes.html %},
+    {% include jsonld/person-node.html %},
+    {% include jsonld/organization-node.html %}
   ]
 }
 </script>
