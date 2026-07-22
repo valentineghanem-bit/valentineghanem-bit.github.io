@@ -136,24 +136,24 @@
 }
 .hero-v2__a11y-link:hover { color: var(--v2-gold); }
 
-/* ---------- The alternate hero: portrait right, fading gradually into
-   the ambient helix canvas on the left. Round 15: the source photo's
-   background is genuinely removed now (rembg + u2net_human_seg, plain
-   mask -- alpha matting produced a soft halo on this specific photo's
-   warm stage lighting, verified visually before choosing the plain-mask
-   result instead), colour-enhanced (vibrancy/contrast/brightness/
-   sharpness) and kept in full colour -- no more grayscale+duotone, which
-   was specifically a workaround for the old busy, un-isolated photo. The
-   isolated PNG sits directly on .hero-v2's own white-to-violet gradient,
-   so there's no separate photo background left to reconcile with it.
-   Narrowed twice now (46%/640px -> 36%/480px -> 32%/420px) so the kinetic
-   helix/content zone gets real width, per repeated direct feedback that
-   the old proportions gave too much space to a comparatively empty part
-   of the frame. A flex-gap (declared on .hero-v2__row above) is what actually
-   guarantees this never overlaps the text, not the mask -- the mask is a
-   soft visual dissolve layered on top of a hard, browser-computed
-   boundary. Hidden below 960px: the ambient canvas alone carries the
-   "kinetic data" motif on narrow screens. ---------- */
+/* ---------- The alternate hero: portrait right, fully visible (no left-edge
+   fade -- shown at full opacity against .hero-v2's own white-to-violet
+   gradient, per direct feedback that the earlier dissolve-into-the-helix
+   treatment wasn't wanted). Round 15: the source photo's background is
+   genuinely removed (rembg + u2net_human_seg, plain mask -- alpha matting
+   produced a soft halo on this specific photo's warm stage lighting,
+   verified visually before choosing the plain-mask result instead),
+   colour-enhanced (vibrancy/contrast/brightness/sharpness) and kept in full
+   colour -- no more grayscale+duotone, which was specifically a workaround
+   for the old busy, un-isolated photo. The isolated PNG sits directly on
+   .hero-v2's own gradient, so there's no separate photo background left to
+   reconcile with it. Narrowed twice now (46%/640px -> 36%/480px -> 32%/420px)
+   so the kinetic helix/content zone gets real width, per repeated direct
+   feedback that the old proportions gave too much space to a comparatively
+   empty part of the frame -- a flex-gap (declared on .hero-v2__row above) is
+   what guarantees this never overlaps the text. Hidden below 960px: the
+   ambient canvas alone carries the "kinetic data" motif on narrow
+   screens. ---------- */
 .hero-v2__portrait { display: none; }
 @media (min-width: 960px) {
   .hero-v2__portrait {
@@ -166,8 +166,6 @@
     margin-left: auto;
     align-self: stretch; overflow: hidden; opacity: 0;
     transform: perspective(1400px) rotateX(10deg) scale(0.95); transform-origin: 50% 100%;
-    -webkit-mask-image: linear-gradient(to left, black 0%, black 58%, transparent 92%);
-    mask-image: linear-gradient(to left, black 0%, black 58%, transparent 92%);
   }
 }
 .hero-v2__portrait-img {
@@ -181,9 +179,7 @@
   background: var(--v2-gold); clip-path: polygon(100% 0, 100% 100%, 0 0);
   pointer-events: none;
 }
-/* Floating credibility badge -- anchored to the portrait's top-RIGHT (the
-   fully-opaque zone, well clear of the left-fading mask) so it never
-   dissolves along with the photo's own left edge. */
+/* Floating credibility badge -- anchored to the portrait's top-right corner. */
 .hero-v2__badge {
   position: absolute; z-index: 3; right: 18px; top: 18px; opacity: 0;
   font-family: var(--v2-font-mono); font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase;
