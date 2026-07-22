@@ -1,0 +1,144 @@
+/* v3 template system -- the glassmorphism/pill-nav/blob visual language from
+   the user-provided reference template, applied here almost verbatim.
+   Extended from the template's 2-theme (root/.dark) split to this site's
+   existing 4-theme cycle (dark/dim/light/bright, toggled via
+   [data-v2-theme] on <html> by the pre-existing v2-toolbar.js), so the
+   theme cycle button already on the page keeps working instead of being
+   replaced by a simpler 2-state toggle. */
+:root {
+  --bg-canvas: #F8FAFC;
+  --text-main: #0F172A;
+  --card-bg: rgba(255, 255, 255, 0.82);
+  --border-color: rgba(226, 232, 240, 0.8);
+  --accent-glow: rgba(34, 211, 238, 0.15);
+}
+html[data-v2-theme="dark"] {
+  --bg-canvas: #060B13;
+  --text-main: #F1F5F9;
+  --card-bg: rgba(15, 23, 42, 0.82);
+  --border-color: rgba(51, 65, 85, 0.8);
+  --accent-glow: rgba(139, 92, 246, 0.2);
+}
+html[data-v2-theme="dim"] {
+  --bg-canvas: #101826;
+  --text-main: #E2E8F0;
+  --card-bg: rgba(30, 41, 59, 0.82);
+  --border-color: rgba(71, 85, 105, 0.8);
+  --accent-glow: rgba(139, 92, 246, 0.18);
+}
+html[data-v2-theme="bright"] {
+  --bg-canvas: #FFFFFF;
+  --text-main: #0F172A;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --border-color: rgba(226, 232, 240, 0.9);
+  --accent-glow: rgba(34, 211, 238, 0.12);
+}
+/* dark/dim both count as "dark" for the template's own `.dark`-scoped
+   Tailwind utility classes (dark:hidden, dark:inline, etc.) -- applied via
+   a `dark` class kept in sync with the theme attribute (see v3-template.js). */
+
+.v3-scope {
+  background-color: var(--bg-canvas);
+  color: var(--text-main);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: background-color 0.4s ease, color 0.4s ease;
+  overflow-x: hidden;
+}
+
+.v3-scope .glass-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.04);
+}
+
+#bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+.v3-scope .reveal {
+  opacity: 0;
+  transform: translateY(35px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.v3-scope .reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.v3-scope .nav-link.active-link {
+  font-weight: 700;
+  color: #22D3EE;
+}
+.v3-scope .nav-link.active-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2.5px;
+  background: linear-gradient(90deg, #22D3EE, #8B5CF6);
+  border-radius: 9999px;
+}
+
+.v3-scope .blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: -1;
+  animation: v3-moveBlob 18s infinite alternate ease-in-out;
+}
+@keyframes v3-moveBlob {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(12%, 12%) scale(1.15); }
+}
+
+.v3-scope .pulse-ring {
+  box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4);
+  animation: v3-pulse-ring 2s infinite;
+}
+@keyframes v3-pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(34, 211, 238, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
+}
+
+/* Graded hero overlay -- dark by default, lighter variant for bright/light themes */
+.v3-scope .graded-hero-overlay {
+  background:
+    radial-gradient(circle at 75% 30%, rgba(34, 211, 238, 0.15) 0%, rgba(11, 17, 32, 0) 55%),
+    radial-gradient(circle at 25% 70%, rgba(239, 68, 68, 0.12) 0%, rgba(11, 17, 32, 0) 50%),
+    linear-gradient(180deg,
+      rgba(11, 17, 32, 0.95) 0%,
+      rgba(11, 17, 32, 0.72) 20%,
+      rgba(11, 17, 32, 0.35) 45%,
+      rgba(11, 17, 32, 0.65) 75%,
+      rgba(11, 17, 32, 1.0) 100%
+    );
+}
+html:not([data-v2-theme="dark"]):not([data-v2-theme="dim"]) .v3-scope .graded-hero-overlay {
+  background:
+    radial-gradient(circle at 75% 30%, rgba(14, 165, 233, 0.15) 0%, rgba(248, 250, 252, 0) 55%),
+    radial-gradient(circle at 25% 70%, rgba(225, 29, 72, 0.12) 0%, rgba(248, 250, 252, 0) 50%),
+    linear-gradient(180deg,
+      rgba(248, 250, 252, 0.94) 0%,
+      rgba(248, 250, 252, 0.75) 20%,
+      rgba(248, 250, 252, 0.40) 45%,
+      rgba(248, 250, 252, 0.82) 75%,
+      rgba(248, 250, 252, 1.0) 100%
+    );
+}
+
+/* Custom scrollbar, scoped so it doesn't override the rest of the site */
+.v3-scope::-webkit-scrollbar { width: 8px; }
+.v3-scope::-webkit-scrollbar-track { background: var(--bg-canvas); }
+.v3-scope::-webkit-scrollbar-thumb { background: #94A3B8; border-radius: 4px; }
+.v3-scope::-webkit-scrollbar-thumb:hover { background: #64748B; }

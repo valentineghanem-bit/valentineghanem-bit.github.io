@@ -1,0 +1,63 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.data.profile.name }}</title>
+<meta name="description" content="{{ page.description | default: site.data.profile.short_description | strip_newlines }}">
+<link rel="canonical" href="{{ page.url | absolute_url }}">
+<link rel="icon" href="{{ '/assets/favicon.svg' | relative_url }}" type="image/svg+xml">
+<link rel="icon" href="{{ '/assets/favicon-32.png' | relative_url }}" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="{{ '/assets/apple-touch-icon.png' | relative_url }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="{% if page.title %}{{ page.title }} | {% endif %}{{ site.data.profile.name }}">
+<meta property="og:description" content="{{ page.description | default: site.data.profile.short_description | strip_newlines }}">
+<meta property="og:url" content="{{ page.url | absolute_url }}">
+<meta property="og:site_name" content="{{ site.data.profile.name }}">
+<meta property="og:image" content="{{ '/assets/img/knowledge-panel/portrait-studio-square.jpg' | absolute_url }}">
+
+<!-- External frameworks -- used at the user's explicit direction, matching
+     the provided reference template literally. This is a different
+     technical choice than the rest of the site (hand-rolled vanilla
+     CSS/JS, no CDN frameworks); scoped to pages using this v3 layout only. -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          mint: '#34D399',
+          cyan: '#22D3EE',
+          amber: '#FBBF24',
+          violet: '#8B5CF6',
+          crimson: '#EF4444',
+          brandDark: '#0B1120',
+          cardDark: '#1E293B',
+          emeraldDeep: '#064E3B'
+        },
+        fontFamily: {
+          heading: ['Space Grotesk', 'sans-serif'],
+          sans: ['Plus Jakarta Sans', 'sans-serif'],
+          mono: ['Fira Code', 'monospace']
+        }
+      }
+    }
+  }
+</script>
+
+<link rel="stylesheet" href="{{ '/assets/css/v3-template.css' | relative_url }}">
+<link rel="stylesheet" href="{{ '/assets/css/cursor.css' | relative_url }}">
+
+<script src="{{ '/assets/js/v2-motion.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/js/cursor.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/js/v3-template.js' | relative_url }}" defer></script>
+
+{% include jsonld/home.html %}
