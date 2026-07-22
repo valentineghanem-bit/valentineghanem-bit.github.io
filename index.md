@@ -91,16 +91,31 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
     <div class="hidden md:flex items-center gap-7 font-medium text-slate-600 dark:text-slate-300">
       <a href="#hero" class="nav-link relative py-1 hover:text-cyan-500 transition-colors font-semibold active-link">Home</a>
       <a href="{{ '/about/' | relative_url }}" class="nav-link relative py-1 hover:text-cyan-500 transition-colors">About</a>
-      <a href="#research" class="nav-link relative py-1 hover:text-cyan-500 transition-colors">Domains</a>
-      <a href="#simulator" class="nav-link relative py-1 hover:text-cyan-500 transition-colors">Outbreak Lab</a>
-      <a href="{{ '/map/' | relative_url }}" class="nav-link relative py-1 hover:text-cyan-500 transition-colors">GIS Map</a>
-      <a href="{{ '/publications/' | relative_url }}" class="nav-link relative py-1 hover:text-cyan-500 transition-colors">Papers</a>
-      <a href="{{ '/portfolio/' | relative_url }}" class="nav-link relative py-1 hover:text-cyan-500 transition-colors">Projects</a>
+      <div class="relative" id="exploreDropdown">
+        <button type="button" id="exploreTrigger" onclick="toggleExploreDropdown()" aria-haspopup="true" aria-expanded="false" class="nav-link relative py-1 hover:text-cyan-500 transition-colors flex items-center gap-1.5">
+          Explore
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div id="exploreMenu" class="hidden absolute top-full left-1/2 -translate-x-1/2 mt-3 w-56 glass-card rounded-2xl border shadow-2xl p-2 flex flex-col gap-0.5 z-50">
+          <a href="{{ '/community/' | relative_url }}" class="px-3.5 py-2 rounded-xl text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-cyan-500 transition-colors">Community</a>
+          <a href="{{ '/skills/' | relative_url }}" class="px-3.5 py-2 rounded-xl text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-cyan-500 transition-colors">Skills</a>
+          <a href="{{ '/publications/' | relative_url }}" class="px-3.5 py-2 rounded-xl text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-cyan-500 transition-colors">Publications</a>
+          <a href="{{ '/portfolio/' | relative_url }}" class="px-3.5 py-2 rounded-xl text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-cyan-500 transition-colors">Portfolio</a>
+          <a href="{{ '/certificates/' | relative_url }}" class="px-3.5 py-2 rounded-xl text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-cyan-500 transition-colors">Certificates</a>
+          <a href="{{ '/press/' | relative_url }}" class="px-3.5 py-2 rounded-xl text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-cyan-500 transition-colors">Press</a>
+          <a href="{{ '/map/' | relative_url }}" class="px-3.5 py-2 rounded-xl text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-cyan-500 transition-colors">Field Map</a>
+        </div>
+      </div>
+      <a href="{{ '/gallery/' | relative_url }}" class="nav-link relative py-1 hover:text-cyan-500 transition-colors">Gallery</a>
     </div>
     <div class="flex items-center gap-2.5">
       <button onclick="toggleAiModal()" class="px-3.5 py-1.5 bg-gradient-to-r from-violet-600 to-cyan-600 text-white text-xs font-bold rounded-full hover:shadow-lg hover:shadow-cyan-500/20 transition-all flex items-center gap-2 hover:scale-105">
         <i class="fa-solid fa-sparkles text-amber-300 animate-pulse"></i>
         <span class="hidden sm:inline">Ask AI Assistant</span>
+      </button>
+      <button id="audioToggleBtn" onclick="toggleAudioV3()" class="w-8 h-8 rounded-full border border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="Toggle ambient piano" aria-pressed="true">
+        <i class="fa-solid fa-volume-high icon-audio-on"></i>
+        <i class="fa-solid fa-volume-xmark icon-audio-off hidden"></i>
       </button>
       <button id="themeToggleBtn" onclick="cycleThemeV3()" class="w-8 h-8 rounded-full border border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="Cycle theme">
         <i class="fa-solid fa-moon dark:hidden"></i>
@@ -114,16 +129,23 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       </button>
     </div>
   </div>
-  <div id="mobileDrawer" class="hidden md:hidden mt-4 pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-3 font-semibold text-slate-700 dark:text-slate-200 pb-2">
+  <div id="mobileDrawer" class="hidden md:hidden mt-4 pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-3 font-semibold text-slate-700 dark:text-slate-200 pb-2 max-h-[70vh] overflow-y-auto">
     <a href="#hero" onclick="toggleMobileNav()" class="hover:text-cyan-500 py-1">Home</a>
-    <a href="{{ '/about/' | relative_url }}" class="hover:text-cyan-500 py-1">About &amp; Journey</a>
-    <a href="#research" onclick="toggleMobileNav()" class="hover:text-cyan-500 py-1">Core Expertise</a>
-    <a href="#simulator" onclick="toggleMobileNav()" class="hover:text-cyan-500 py-1">Interactive Outbreak Lab</a>
-    <a href="{{ '/map/' | relative_url }}" class="hover:text-cyan-500 py-1">Field Map</a>
-    <a href="{{ '/publications/' | relative_url }}" class="hover:text-cyan-500 py-1">Publications</a>
-    <a href="{{ '/portfolio/' | relative_url }}" class="hover:text-cyan-500 py-1">Projects Portfolio</a>
-    <a href="#contact" onclick="toggleMobileNav()" class="hover:text-cyan-500 py-1">Contact</a>
-    <button onclick="openCvModal(); toggleMobileNav();" class="text-left py-1 text-red-500 font-bold flex items-center gap-2"><i class="fa-solid fa-file-pdf"></i> View CV</button>
+    <a href="{{ '/about/' | relative_url }}" class="hover:text-cyan-500 py-1">About</a>
+    <p class="text-[10px] font-mono uppercase tracking-widest text-slate-400 pt-2 pb-0">Explore</p>
+    <a href="{{ '/community/' | relative_url }}" class="hover:text-cyan-500 py-1 pl-2">Community</a>
+    <a href="{{ '/skills/' | relative_url }}" class="hover:text-cyan-500 py-1 pl-2">Skills</a>
+    <a href="{{ '/publications/' | relative_url }}" class="hover:text-cyan-500 py-1 pl-2">Publications</a>
+    <a href="{{ '/portfolio/' | relative_url }}" class="hover:text-cyan-500 py-1 pl-2">Portfolio</a>
+    <a href="{{ '/certificates/' | relative_url }}" class="hover:text-cyan-500 py-1 pl-2">Certificates</a>
+    <a href="{{ '/press/' | relative_url }}" class="hover:text-cyan-500 py-1 pl-2">Press</a>
+    <a href="{{ '/map/' | relative_url }}" class="hover:text-cyan-500 py-1 pl-2">Field Map</a>
+    <a href="{{ '/gallery/' | relative_url }}" class="hover:text-cyan-500 py-1 pt-2">Gallery</a>
+    <div class="pt-2 mt-1 border-t border-slate-200 dark:border-slate-800 flex items-center gap-3">
+      <button onclick="toggleAudioV3()" class="p-2 -ml-2 text-slate-500 hover:text-cyan-500" title="Toggle ambient piano"><i class="fa-solid fa-music"></i></button>
+      <button onclick="cycleThemeV3()" class="p-2 text-slate-500 hover:text-cyan-500" title="Cycle theme"><i class="fa-solid fa-circle-half-stroke"></i></button>
+      <button onclick="openCvModal(); toggleMobileNav();" class="text-left py-1 text-red-500 font-bold flex items-center gap-2"><i class="fa-solid fa-file-pdf"></i> View CV</button>
+    </div>
   </div>
 </nav>
 
@@ -165,6 +187,10 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <span class="px-2.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">FRSPH</span>
       </div>
 
+      <p class="text-sm sm:text-base font-mono font-semibold text-cyan-500 dark:text-cyan-400 mb-4 uppercase tracking-wide" aria-hidden="true">
+        <span data-typed-text data-words="{{ site.data.profile.job_titles | jsonify | escape }}"></span><span class="typed-cursor"></span>
+      </p>
+
       <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black font-heading tracking-tight leading-[1.05] mb-6 text-slate-900 dark:text-white">
         I turn scattered field data into <br class="hidden sm:inline">
         <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-violet-400">the pattern that stops an outbreak</span>
@@ -175,10 +201,10 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       </p>
 
       <div class="flex flex-wrap items-center gap-4 mb-10">
-        <a href="#simulator" class="px-7 py-3.5 bg-gradient-to-r from-cyan-500 to-emerald-500 text-slate-950 font-black text-xs uppercase tracking-widest rounded-2xl hover:shadow-xl hover:shadow-cyan-500/25 transition-all hover:scale-105 flex items-center gap-2">
+        <a href="#simulator" class="magnetic-btn px-7 py-3.5 bg-gradient-to-r from-cyan-500 to-emerald-500 text-slate-950 font-black text-xs uppercase tracking-widest rounded-2xl hover:shadow-xl hover:shadow-cyan-500/25 transition-all hover:scale-105 flex items-center gap-2" style="transform: translate(var(--mx, 0px), var(--my, 0px))">
           <i class="fa-solid fa-flask text-sm"></i> Launch Outbreak Lab
         </a>
-        <a href="{{ '/map/' | relative_url }}" class="px-7 py-3.5 glass-card text-slate-800 dark:text-slate-200 font-black text-xs uppercase tracking-widest rounded-2xl hover:border-cyan-500 transition-all flex items-center gap-2">
+        <a href="{{ '/map/' | relative_url }}" class="magnetic-btn px-7 py-3.5 glass-card text-slate-800 dark:text-slate-200 font-black text-xs uppercase tracking-widest rounded-2xl hover:border-cyan-500 transition-all flex items-center gap-2" style="transform: translate(var(--mx, 0px), var(--my, 0px))">
           <i class="fa-solid fa-map-location-dot text-cyan-500"></i> Surveillance Map
         </a>
       </div>
@@ -253,6 +279,13 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
     </div>
   </div>
 </section>
+
+<div class="marquee py-4 bg-slate-50/60 dark:bg-slate-900/50 border-y border-slate-200 dark:border-slate-800" aria-hidden="true">
+  <div class="marquee__track">
+    {% for topic in site.data.profile.knows_about %}<span class="marquee__item">{{ topic }}</span>{% endfor %}
+    {% for topic in site.data.profile.knows_about %}<span class="marquee__item">{{ topic }}</span>{% endfor %}
+  </div>
+</div>
 
 <section id="sub-hero" class="py-24 px-6 bg-slate-50/50 dark:bg-slate-900/40 border-y border-slate-200 dark:border-slate-800 relative">
   <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
@@ -529,8 +562,15 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   </div>
 </section>
 
-<footer id="contact" class="bg-slate-900 text-white py-28 px-6 relative overflow-hidden">
-  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16">
+<footer id="contact" class="bg-slate-900 text-white relative overflow-hidden">
+  <div class="marquee marquee--footer py-3 border-b border-slate-800" aria-hidden="true">
+    <div class="marquee__track">
+      {%- assign footer_ticker = site.data.profile.job_titles | push: "Accra, Ghana" -%}
+      {% for item in footer_ticker %}<span class="marquee__item">{{ item }}</span>{% endfor %}
+      {% for item in footer_ticker %}<span class="marquee__item">{{ item }}</span>{% endfor %}
+    </div>
+  </div>
+  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 py-28 px-6">
     <div class="reveal">
       <h2 class="text-5xl sm:text-6xl font-black font-heading mb-6 leading-tight">
         Let's solve for the <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-amber-400">Unknown.</span>

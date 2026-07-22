@@ -5,6 +5,187 @@
 (function () {
   var DATA = window.SITE_DATA || {};
 
+  // ---------- Explore dropdown (replaces the old nav's flat 7-link row --
+  // matches the existing site-wide nav.html pattern: Home, About, Explore
+  // (dropdown: Community/Skills/Publications/Portfolio/Certificates/Press/
+  // Field Map), Gallery -- same 10 pages, same grouping). ----------
+  window.toggleExploreDropdown = function () {
+    var menu = document.getElementById('exploreMenu');
+    var trigger = document.getElementById('exploreTrigger');
+    if (!menu) return;
+    var isOpen = !menu.classList.contains('hidden');
+    menu.classList.toggle('hidden', isOpen);
+    if (trigger) trigger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+  };
+  document.addEventListener('click', function (e) {
+    var menu = document.getElementById('exploreMenu');
+    var wrap = document.getElementById('exploreDropdown');
+    if (!menu || menu.classList.contains('hidden')) return;
+    if (wrap && !wrap.contains(e.target)) window.toggleExploreDropdown();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      var menu = document.getElementById('exploreMenu');
+      if (menu && !menu.classList.contains('hidden')) window.toggleExploreDropdown();
+    }
+  });
+
+  // ---------- Typewriter: cycles through the real job titles one
+  // character at a time. Deliberately independent of GSAP (a past bug had
+  // this gated behind a GSAP timeline callback, so a slow/blocked GSAP
+  // load silently killed it) -- runs off nothing but setTimeout. ----------
+  function startTypewriter() {
+    var el = document.querySelector('[data-typed-text]');
+    if (!el) return;
+    var words;
+    try { words = JSON.parse(el.getAttribute('data-words')); } catch (e) { words = []; }
+    if (!words || !words.length) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = words[0]; return; }
+    var wordIndex = 0, charIndex = 0, deleting = false;
+    function tick() {
+      var word = words[wordIndex];
+      if (!deleting) {
+        charIndex++;
+        el.textContent = word.slice(0, charIndex);
+        if (charIndex === word.length) { deleting = true; setTimeout(tick, 1800); return; }
+        setTimeout(tick, 55);
+      } else {
+        charIndex--;
+        el.textContent = word.slice(0, charIndex);
+        if (charIndex === 0) { deleting = false; wordIndex = (wordIndex + 1) % words.length; setTimeout(tick, 400); return; }
+        setTimeout(tick, 30);
+      }
+    }
+    tick();
+  }
+
+  // ---------- Ambient piano audio -- ported verbatim from v2-toolbar.js's
+  // vgAudioV2 (same synthesized I-V-vi-IV arpeggio, same engagement-
+  // reactive filter cutoff, same mute key) so the preference/mute state
+  // stays consistent whether the visitor is on a v3 or v2 page. ----------
+  var vgAudioV3 = (function () {
+    var ctx = null, masterGain = null, delayNode = null, feedbackGain = null;
+    var isOn = false, button = null, loopTimer = null, chordIndex = 0;
+    var MUTE_KEY = 'vg-v2-audio-muted';
+    var wantsOn = localStorage.getItem(MUTE_KEY) !== 'true';
+    var lastActivity = Date.now();
+    ['scroll', 'mousemove', 'pointerdown', 'keydown', 'touchstart'].forEach(function (evt) {
+      window.addEventListener(evt, function () { lastActivity = Date.now(); }, { passive: true });
+    });
+    var currentCutoff = 1500;
+    function updateEngagement() {
+      if (!ctx || !isOn) return;
+      var idleMs = Date.now() - lastActivity;
+      var engagement = Math.max(0, 1 - idleMs / 18000);
+      currentCutoff = 1150 + engagement * 1350;
+      feedbackGain.gain.setTargetAtTime(0.30 - engagement * 0.10, ctx.currentTime, 2.5);
+    }
+    setInterval(updateEngagement, 2500);
+    var CHORDS = [
+      [261.63, 329.63, 392.00, 493.88, 587.33],
+      [392.00, 493.88, 587.33, 698.46, 783.99],
+      [220.00, 261.63, 329.63, 392.00, 493.88],
+      [349.23, 440.00, 523.25, 659.25, 698.46]
+    ];
+    function ensureContext() {
+      if (ctx) return ctx;
+      var AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return null;
+      ctx = new AudioCtx();
+      masterGain = ctx.createGain();
+      masterGain.gain.value = 0;
+      delayNode = ctx.createDelay(1.2);
+      delayNode.delayTime.value = 0.34;
+      feedbackGain = ctx.createGain();
+      feedbackGain.gain.value = 0.22;
+      delayNode.connect(feedbackGain);
+      feedbackGain.connect(delayNode);
+      masterGain.connect(delayNode);
+      delayNode.connect(ctx.destination);
+      masterGain.connect(ctx.destination);
+      return ctx;
+    }
+    function pluck(freq, when, peak) {
+      var osc = ctx.createOscillator();
+      var osc2 = ctx.createOscillator();
+      var g = ctx.createGain();
+      var filt = ctx.createBiquadFilter();
+      filt.type = 'lowpass';
+      filt.frequency.value = currentCutoff;
+      osc.type = 'triangle';
+      osc2.type = 'sine';
+      osc.frequency.value = freq;
+      osc2.frequency.value = freq * 1.002;
+      g.gain.setValueAtTime(0, when);
+      g.gain.linearRampToValueAtTime(peak, when + 0.035);
+      g.gain.exponentialRampToValueAtTime(0.0001, when + 3.1);
+      osc.connect(g); osc2.connect(g); g.connect(filt); filt.connect(masterGain);
+      osc.start(when); osc2.start(when);
+      osc.stop(when + 3.3); osc2.stop(when + 3.3);
+    }
+    function scheduleLoop() {
+      if (!isOn || !ctx) return;
+      var chord = CHORDS[chordIndex % CHORDS.length];
+      var now = ctx.currentTime + 0.05;
+      chord.forEach(function (freq, i) { pluck(freq, now + i * 0.5, 0.045 - i * 0.004); });
+      chordIndex++;
+      loopTimer = setTimeout(scheduleLoop, 5200);
+    }
+    function startLoop() {
+      var c = ensureContext();
+      if (!c) return;
+      if (c.state === 'suspended') c.resume();
+      masterGain.gain.cancelScheduledValues(c.currentTime);
+      masterGain.gain.setValueAtTime(masterGain.gain.value, c.currentTime);
+      masterGain.gain.linearRampToValueAtTime(1, c.currentTime + 1.6);
+      updateEngagement();
+      if (!loopTimer) scheduleLoop();
+    }
+    function stopLoop() {
+      if (!ctx) return;
+      clearTimeout(loopTimer);
+      loopTimer = null;
+      masterGain.gain.cancelScheduledValues(ctx.currentTime);
+      masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
+      masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.7);
+    }
+    function syncButton() {
+      if (!button) return;
+      button.setAttribute('aria-pressed', isOn ? 'true' : 'false');
+      var onIcon = button.querySelector('.icon-audio-on');
+      var offIcon = button.querySelector('.icon-audio-off');
+      if (onIcon) onIcon.classList.toggle('hidden', !isOn);
+      if (offIcon) offIcon.classList.toggle('hidden', isOn);
+    }
+    function setOn(next) {
+      isOn = next;
+      localStorage.setItem(MUTE_KEY, isOn ? 'false' : 'true');
+      if (isOn) startLoop(); else stopLoop();
+      syncButton();
+    }
+    function toggle() { setOn(!isOn); }
+    if (wantsOn) {
+      isOn = true;
+      var startOnFirstGesture = function () {
+        startLoop();
+        document.removeEventListener('pointerdown', startOnFirstGesture);
+        document.removeEventListener('keydown', startOnFirstGesture);
+        document.removeEventListener('touchstart', startOnFirstGesture);
+      };
+      document.addEventListener('pointerdown', startOnFirstGesture, { once: true });
+      document.addEventListener('keydown', startOnFirstGesture, { once: true });
+      document.addEventListener('touchstart', startOnFirstGesture, { once: true, passive: true });
+    }
+    return { toggle: toggle, setButton: function (btn) { button = btn; syncButton(); } };
+  })();
+  window.toggleAudioV3 = function () {
+    vgAudioV3.toggle();
+  };
+  document.addEventListener('DOMContentLoaded', function () {
+    var btn = document.getElementById('audioToggleBtn');
+    if (btn) vgAudioV3.setButton(btn);
+  });
+
   // Tailwind's CDN build only reads a literal `.dark` class on <html> (its
   // darkMode:'class' strategy), but this site's existing theme cycle
   // (v2-toolbar.js) toggles a `data-v2-theme` attribute across 4 values,
@@ -545,6 +726,8 @@
     initRadarChart();
     window.calculateOutbreakRisk();
     initMicroscopicInfectionCanvas();
+    startTypewriter();
+    if (window.v2Motion) window.v2Motion.attachMagnetic('.magnetic-btn');
     document.querySelectorAll('.v3-scope .reveal').forEach(function (el) { observer.observe(el); });
   });
 })();
