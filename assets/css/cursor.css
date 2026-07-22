@@ -122,7 +122,28 @@ html.has-custom-cursor, html.has-custom-cursor * { cursor: none !important; }
   to { transform: scale(5.5); opacity: 0; }
 }
 
+/* Trail: a pool of reused dots (assets/js/cursor.js recycles the same 16
+   elements rather than creating/destroying per-frame), each repositioned
+   via --tx/--ty and re-triggered with a one-shot fade+shrink as the pointer
+   moves, cycling through all 6 palette colours in turn. Sits BEHIND the
+   reticle (lower z-index) as ambient atmosphere, not a second cursor --
+   the overhaul this cursor needed: constant motion while travelling, not
+   just a reaction on arrival. */
+.v2-cursor-trail-dot {
+  position: fixed; top: 0; left: 0; z-index: 9997; pointer-events: none;
+  width: 6px; height: 6px; border-radius: 50%; opacity: 0;
+  transform: translate(var(--tx, -100px), var(--ty, -100px)) translate(-50%, -50%) scale(1);
+}
+.v2-cursor-trail-dot.is-fading {
+  animation: v2-cursor-trail-fade 0.6s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+@keyframes v2-cursor-trail-fade {
+  0% { opacity: 0.65; transform: translate(var(--tx), var(--ty)) translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(var(--tx), var(--ty)) translate(-50%, -50%) scale(0.25); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .v2-cursor-ripple { animation: none; display: none; }
   .v2-cursor-tick, .v2-cursor-reticle::before { transition: opacity 0.15s ease; }
+  .v2-cursor-trail-dot { display: none; }
 }

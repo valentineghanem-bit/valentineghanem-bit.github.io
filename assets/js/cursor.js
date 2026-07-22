@@ -7,6 +7,13 @@
 // zoom (ticks pulse +/- with ctrl+wheel/pinch direction -- new), and
 // text-entry (collapses to a thin bar). See cursor.css for the visual
 // side of each.
+// Round 21 overhaul: kept the reticle's five reactions (they work, and a
+// prior direct ask specifically wanted THIS shape kept, not reinvented)
+// but added a genuinely new always-on layer -- a fading particle trail
+// behind the cursor, cycling through all 6 palette colours as it moves.
+// The old cursor only reacted on interaction; this one carries constant
+// ambient motion even at rest-in-transit, which is the actual "hyperkinetic"
+// gap a fifth reticle redesign wouldn't have closed.
 (function () {
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var hasFinePointer = window.matchMedia('(pointer: fine)').matches;
@@ -30,6 +37,38 @@
     bar.className = 'v2-cursor-bar';
     reticle.appendChild(bar);
 
+    // Trail: a small pool of reused dot elements (not created/destroyed
+    // per-frame) repositioned and re-triggered as the pointer moves, each
+    // cycling to the next palette colour and playing a one-shot CSS
+    // fade+shrink. Pool-and-recycle keeps this cheap regardless of how
+    // long the pointer keeps moving.
+    var TRAIL_COLORS = ['--v2-violet', '--v2-crimson', '--v2-cyan', '--v2-yellow', '--v2-mint', '--v2-ink'];
+    var TRAIL_COUNT = 16;
+    var TRAIL_INTERVAL = 40;
+    var trailContainer = document.createElement('div');
+    trailContainer.className = 'v2-cursor-trail';
+    var trailDots = [];
+    for (var ti = 0; ti < TRAIL_COUNT; ti++) {
+      var td = document.createElement('span');
+      td.className = 'v2-cursor-trail-dot';
+      trailContainer.appendChild(td);
+      trailDots.push(td);
+    }
+    document.body.appendChild(trailContainer);
+    var trailIndex = 0, trailColorIndex = 0, lastTrailSpawn = 0;
+    function spawnTrailDot(x, y) {
+      var el = trailDots[trailIndex];
+      trailIndex = (trailIndex + 1) % TRAIL_COUNT;
+      var color = TRAIL_COLORS[trailColorIndex % TRAIL_COLORS.length];
+      trailColorIndex++;
+      el.style.setProperty('--tx', x + 'px');
+      el.style.setProperty('--ty', y + 'px');
+      el.style.background = 'var(' + color + ')';
+      el.classList.remove('is-fading');
+      void el.offsetWidth;
+      el.classList.add('is-fading');
+    }
+
     document.body.appendChild(dot);
     document.body.appendChild(reticle);
     document.documentElement.classList.add('has-custom-cursor');
@@ -52,6 +91,11 @@
       mx = e.clientX; my = e.clientY;
       dot.style.transform = 'translate(' + mx + 'px,' + my + 'px)';
       if (!active) { active = true; dot.classList.add('is-active'); reticle.classList.add('is-active'); }
+      var now = performance.now();
+      if (now - lastTrailSpawn > TRAIL_INTERVAL) {
+        lastTrailSpawn = now;
+        spawnTrailDot(mx, my);
+      }
       if (pointerIsDown) {
         var dx = mx - downX, dy = my - downY;
         if (!isDragging && Math.hypot(dx, dy) > DRAG_THRESHOLD) {
