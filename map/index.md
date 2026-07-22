@@ -10,7 +10,7 @@ description: "An interactive coordinate map of Valentine Golden Ghanem's medical
 {%- for e in site.data.community_activities.conferences -%}{%- assign geo_events = geo_events | push: e -%}{%- endfor -%}
 {%- for e in site.data.community_activities.outreach -%}{%- assign geo_events = geo_events | push: e -%}{%- endfor -%}
 
-<section class="map-v2 wrap wrap--wide" data-reveal>
+<section class="map-v2 v2-scope wrap wrap--wide" data-reveal>
   <p class="breadcrumb"><a href="{{ '/' | relative_url }}">Home</a> / Field Map</p>
   <h1 class="page-title">Surveillance field map</h1>
   <p class="section__intro v2-corner-frame">

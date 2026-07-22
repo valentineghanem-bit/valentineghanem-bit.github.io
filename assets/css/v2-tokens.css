@@ -74,8 +74,10 @@ html {
   --v2-cyan-dim: oklch(54% 0.09 205 / 0.18);
   --v2-yellow: oklch(82% 0.17 90);            /* decorative pigment, all themes -- egg-yolk hue */
   --v2-yellow-ink: oklch(23% 0.19 90);        /* text-safe fallback, light/bright only */
+  --v2-yellow-ink-dim: oklch(23% 0.19 90 / 0.18);
   --v2-mint: oklch(88% 0.18 168);
   --v2-mint-ink: oklch(12% 0.19 168);
+  --v2-mint-ink-dim: oklch(12% 0.19 168 / 0.18);
 
   --v2-gold: var(--v2-crimson); --v2-gold-soft: var(--v2-crimson-dim);
   --v2-wine: var(--v2-cyan); --v2-wine-bright: var(--v2-cyan-bright); --v2-wine-dim: var(--v2-cyan-dim);
@@ -100,8 +102,10 @@ html[data-v2-theme="dark"] {
   --v2-cyan-dim: oklch(75% 0.13 205 / 0.26);
   --v2-yellow: oklch(82% 0.17 90);            /* 11.37:1 vs dark void */
   --v2-yellow-ink: var(--v2-yellow);
+  --v2-yellow-ink-dim: oklch(82% 0.17 90 / 0.26);
   --v2-mint: oklch(88% 0.18 168);             /* 14.93:1 vs dark void */
   --v2-mint-ink: var(--v2-mint);
+  --v2-mint-ink-dim: oklch(88% 0.18 168 / 0.26);
 
   --v2-gold: var(--v2-crimson); --v2-gold-soft: var(--v2-crimson-dim);
   --v2-wine: var(--v2-cyan); --v2-wine-bright: var(--v2-cyan-bright); --v2-wine-dim: var(--v2-cyan-dim);
@@ -126,8 +130,10 @@ html[data-v2-theme="dim"] {
   --v2-cyan-dim: oklch(75% 0.13 205 / 0.26);
   --v2-yellow: oklch(82% 0.17 90);            /* 9.66:1 vs dim void */
   --v2-yellow-ink: var(--v2-yellow);
+  --v2-yellow-ink-dim: oklch(82% 0.17 90 / 0.26);
   --v2-mint: oklch(88% 0.18 168);             /* 12.68:1 vs dim void */
   --v2-mint-ink: var(--v2-mint);
+  --v2-mint-ink-dim: oklch(88% 0.18 168 / 0.26);
 
   --v2-gold: var(--v2-crimson); --v2-gold-soft: var(--v2-crimson-dim);
   --v2-wine: var(--v2-cyan); --v2-wine-bright: var(--v2-cyan-bright); --v2-wine-dim: var(--v2-cyan-dim);
@@ -151,8 +157,10 @@ html[data-v2-theme="bright"] {
   --v2-cyan-dim: oklch(55% 0.09 205 / 0.16);
   --v2-yellow: oklch(82% 0.17 90);            /* decorative pigment only -- see -ink */
   --v2-yellow-ink: oklch(23% 0.19 90);        /* 16.67:1 vs bright void */
+  --v2-yellow-ink-dim: oklch(23% 0.19 90 / 0.16);
   --v2-mint: oklch(88% 0.18 168);
   --v2-mint-ink: oklch(12% 0.19 168);         /* 18.72:1 vs bright void */
+  --v2-mint-ink-dim: oklch(12% 0.19 168 / 0.16);
 
   --v2-gold: var(--v2-crimson); --v2-gold-soft: var(--v2-crimson-dim);
   --v2-wine: var(--v2-cyan); --v2-wine-bright: var(--v2-cyan-bright); --v2-wine-dim: var(--v2-cyan-dim);
@@ -228,29 +236,29 @@ html[data-v2-theme="bright"] {
 .v2-scope a { color: var(--v2-wine-bright, var(--v2-wine)); text-decoration-thickness: 1px; text-underline-offset: 2px; }
 .v2-scope a:hover { color: var(--v2-gold); }
 
-/* Per-page accent rebalancing -- "gold" (this system's primary-accent
-   alias) resolved to crimson on every single page before this, so despite
-   round 19's fix being correct that each page/component needs ONE
-   consistent accent rather than a rainbow cycle, the site AS A WHOLE still
-   read as crimson-dominated -- the same one colour, page after page, isn't
-   what "balance all 6 colours" meant.
-   Limited to violet and crimson ONLY, not the full 6 -- checked every
-   `var(--v2-gold)` usage site-wide first, and it drives literal `color:`
-   (real text) in dozens of rules (nav links, section indices, active
-   states), not just backgrounds. Yellow and mint are decorative-only
-   pigments on light/bright themes per this file's own OKLCH verification
-   (too light to clear 4.5:1 as text without collapsing to near-black) --
-   assigning either to --v2-gold would silently fail contrast the moment
-   any of those text-colour rules rendered on a yellow/mint-accented page.
-   Cyan is excluded too: it's the fixed site-wide "links" alias (--v2-wine)
-   already, so reusing it here would collapse two different semantic roles
-   into one colour on that page. Split 10 pages 5/5 across the two hues
-   that are actually safe everywhere. Yellow/mint keep their existing
-   decorative/data-encoding roles (stat-band confetti, skills-network
-   canvas nodes) rather than being forced into a text-bearing role they
-   were never verified for. */
-.about-v2, .community-v2, .skills-v2, .publications-v2, .gallery-v2 { --v2-gold: var(--v2-violet); --v2-gold-soft: var(--v2-violet-soft); }
-/* home-v2, press-v2, portfolio-v2, map-v2, certificates-v2 keep the default crimson. */
+/* Per-page accent rebalancing, take 2 -- direct feedback: splitting 10
+   pages 5/5 across only violet+crimson (below) still read as red-
+   dominant site-wide, because crimson is the *default* (nothing overrides
+   it to something else falls back to crimson) AND it happened to land on
+   Home, the highest-traffic page, plus Press/Portfolio/Certificates/Map.
+   "Use all 6 in equal proportion" doesn't hold if 4 of the 6 are excluded
+   from this role entirely. Fix: every page gets an EXPLICIT assignment
+   below (no silent crimson fallback for any page), spread across all 6
+   hues, max 2 pages per hue. The yellow/mint text-contrast concern from
+   take 1 is resolved, not sidestepped: --v2-yellow-ink/--v2-mint-ink were
+   already verified text-safe (see the palette block above, 16-19:1
+   contrast) -- take 1 just never used them here. Cyan's dual-role concern
+   (also the fixed --v2-wine "links" alias) is a minor stylistic overlap
+   on its 2 assigned pages, not a real conflict -- two different custom
+   properties, and a much smaller cost than leaving red as the only
+   fallback. Themed loosely, not just round-robin: recognition/credential
+   pages get the warmest hue, data/exploration pages get cyan, etc. */
+.home-v2, .map-v2 { --v2-gold: var(--v2-cyan); --v2-gold-soft: var(--v2-cyan-dim); }
+.about-v2, .skills-v2 { --v2-gold: var(--v2-violet); --v2-gold-soft: var(--v2-violet-soft); }
+.community-v2, .gallery-v2 { --v2-gold: var(--v2-mint-ink); --v2-gold-soft: var(--v2-mint-ink-dim); }
+.press-v2, .certificates-v2 { --v2-gold: var(--v2-yellow-ink); --v2-gold-soft: var(--v2-yellow-ink-dim); }
+.portfolio-v2 { --v2-gold: var(--v2-crimson); --v2-gold-soft: var(--v2-crimson-dim); }
+.publications-v2 { --v2-gold: var(--v2-ink); --v2-gold-soft: var(--v2-glass); }
 
 /* ---------- Spotlight panel/card: mouse-following radial glow.
    Dialed subtler than the first pass -- smaller radius, lower peak

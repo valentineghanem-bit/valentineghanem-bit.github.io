@@ -1,114 +1,124 @@
 # Studio and posed professional photography (distinct from candid Google Sites
 # event photos in gallery_photos.yml). Shown as a second carousel on the
-# Gallery page. Captions verified against actual file content (viewed each
-# image directly — the on-disk filenames do not reliably describe their
-# contents, so captions below describe what is actually in each photo).
+# Gallery page and as the hero's floating photo-web captions.
+# Captions below were rewritten after direct feedback that most were wrong --
+# re-verified by opening every image file in this list, one at a time, and
+# describing only what is actually visible in THAT file (shirt colour/pattern,
+# setting, activity). The on-disk filenames remain unreliable (many describe
+# a different photo than the one at that path -- e.g. "-maroon-shirt" is
+# actually a solid blue shirt in a mall hallway) and were NOT used as a
+# source of truth this pass. Original Google Sites captions, if they differed
+# from these, could not be recovered: no EXIF/IPTC metadata survives in these
+# files, repo history has no earlier version of this data (this mismatch
+# predates the first commit), and the local reference folders contain only
+# unrelated design mood-board images, not a Sites export. If a Takeout
+# archive or export surfaces later, reconcile against it.
 - url: "/assets/img/gallery/portraits/studio-tuxedo-portrait.jpg"
-  caption: "Portrait at an evening event venue."
+  caption: "Portrait at an event venue, patterned maroon shirt, stage screens behind him."
   width: 1086
   height: 1448
 - url: "/assets/img/gallery/portraits/desk-health-policy-books.jpg"
-  caption: "Portrait in a wicker chair, outdoors."
+  caption: "Seated in a hanging wicker chair outdoors, navy suit, holding a magazine."
   width: 1200
   height: 895
 - url: "/assets/img/gallery/portraits/cocoa-clinic-map-wall.jpg"
-  caption: "Briefing the Cocoa Clinic team beside the ambulance."
+  caption: "Briefing the Cocoa Clinic team beside the ambulance at an outreach tent."
   width: 1683
   height: 934
 - url: "/assets/img/gallery/portraits/policy-stakeholder-meeting.jpg"
-  caption: "Portrait, Ghana COCOBOD 70th Anniversary shirt."
+  caption: "Portrait, arms crossed, Ghana COCOBOD 70th Anniversary patterned shirt."
   width: 1086
   height: 1448
 - url: "/assets/img/gallery/portraits/conference-participant-screens.jpg"
-  caption: "At the laboratory desk, reviewing sample records."
+  caption: "At the laboratory desk, yellow shirt, reviewing the Lab Information System's sample list."
   width: 1085
   height: 1450
   contain: true
 - url: "/assets/img/gallery/portraits/lab-yellow-shirt-microscope.jpg"
-  caption: "Portrait at a residential gate, beside flowering shrubs."
+  caption: "Portrait at a residential gate, light blue shirt, flowering shrubs behind him."
   width: 1536
   height: 1024
 - url: "/assets/img/gallery/portraits/lab-yellow-shirt-lis-samples.jpg"
-  caption: "At the laboratory desk, reviewing the LIS dashboard."
+  caption: "At the laboratory desk, yellow shirt, reviewing the Lab Information System's dashboard."
   width: 1085
   height: 1450
   contain: true
 - url: "/assets/img/gallery/portraits/lab-biosafety-cabinet.jpg"
-  caption: "At his desk with health-policy literature."
+  caption: "At his desk with health-policy textbooks, red patterned shirt."
   width: 1537
   height: 1023
 - url: "/assets/img/gallery/portraits/lab-coat-with-team.jpg"
-  caption: "Seated portrait, Ghana COCOBOD 70th Anniversary shirt."
+  caption: "Seated portrait, Ghana COCOBOD 70th Anniversary patterned shirt."
   width: 1254
   height: 1254
 - url: "/assets/img/gallery/portraits/lab-coat-tablet-stool.jpg"
-  caption: "In the laboratory, reviewing results on a tablet."
+  caption: "On a lab stool, mint-green shirt, reviewing a tablet, coat draped behind him."
   width: 1086
   height: 1448
 - url: "/assets/img/gallery/portraits/lab-desk-checkered-shirt.jpg"
-  caption: "At the laboratory desk, beside the microscope."
+  caption: "At a biosafety cabinet, gloved hands, white lab coat."
   width: 534
   height: 611
 - url: "/assets/img/gallery/portraits/clinic-tablet-review.jpg"
-  caption: "With the Cocoa Clinic medical team at an outreach tent."
+  caption: "At the laboratory desk, checkered shirt, beside the microscope."
   width: 1254
   height: 1254
 - url: "/assets/img/gallery/portraits/ambulance-heart-hands.jpg"
-  caption: "Beside the Cocoa Clinic ambulance."
+  caption: "Beside the Cocoa Clinic ambulance, hands forming a heart."
   width: 1448
   height: 1086
 - url: "/assets/img/gallery/portraits/medical-team-dispensing.jpg"
-  caption: "As a conference participant, reviewing epidemiological data."
+  caption: "As a conference participant, reviewing epidemiological data on screen."
   width: 1536
   height: 1024
 - url: "/assets/img/gallery/portraits/cocoa-clinic-locations-map.jpg"
-  caption: "At his desk, arms resting beside health-policy texts."
+  caption: "At his desk, arms resting beside health-policy texts, red patterned shirt."
   width: 1536
   height: 1024
 - url: "/assets/img/gallery/portraits/cocobod-70-seated-portrait.jpg"
-  caption: "Seated studio portrait, Ghana COCOBOD 70th Anniversary shirt."
+  caption: "Portrait in an event hall, blue patterned shirt."
   width: 1122
   height: 1402
 - url: "/assets/img/gallery/portraits/cocobod-70-portrait-closeup.jpg"
-  caption: "Portrait in an event hall, blue patterned shirt."
+  caption: "Outdoor portrait, teal patterned shirt, green shrubs behind him."
   width: 1254
   height: 1254
 - url: "/assets/img/gallery/portraits/venue-portrait-maroon-shirt.jpg"
-  caption: "Outdoor portrait, teal patterned shirt."
+  caption: "Portrait in a mall hallway, blue shirt."
   width: 1122
   height: 1402
 - url: "/assets/img/gallery/portraits/hall-portrait-blue-pattern.jpg"
-  caption: "Portrait in a mall hallway."
+  caption: "Studio portrait, seated, red patterned shirt."
   width: 1081
   height: 1455
   contain: true
 - url: "/assets/img/gallery/portraits/outdoor-portrait-green-pattern.jpg"
-  caption: "Studio portrait, red patterned shirt."
+  caption: "Beside a laboratory analyser, mint-green shirt, reviewing a tablet."
   width: 1448
   height: 1086
 - url: "/assets/img/gallery/portraits/street-portrait-blue-shirt.jpg"
-  caption: "Portrait at a residential gate, street view beyond."
+  caption: "Portrait on a residential street, light blue shirt."
   width: 1254
   height: 1254
 - url: "/assets/img/gallery/portraits/gate-portrait-blue-shirt.jpg"
-  caption: "Portrait at home, beside a display cabinet."
+  caption: "Portrait at home, beside a display cabinet, navy checkered shirt."
   width: 1254
   height: 1254
 - url: "/assets/img/gallery/portraits/outdoor-portrait-blue-shirt-2.jpg"
-  caption: "Studio portrait in black tie."
+  caption: "Studio portrait in a black tuxedo and bow tie."
   width: 1023
   height: 1537
   contain: true
 - url: "/assets/img/gallery/portraits/mall-hallway-portrait.jpg"
-  caption: "Beside a wall-mounted map of Cocoa Clinic locations, Ghana."
+  caption: "Beside a wall-mounted map of Cocoa Clinic locations, Ghana COCOBOD 70th Anniversary shirt."
   width: 1023
   height: 1537
   contain: true
 - url: "/assets/img/gallery/portraits/wicker-chair-portrait.jpg"
-  caption: "Portrait in an office hallway."
+  caption: "Portrait in an office hallway, lime-green shirt."
   width: 1230
   height: 1279
 - url: "/assets/img/gallery/portraits/living-room-portrait.jpg"
-  caption: "Portrait against a stone wall."
+  caption: "Portrait against a stone wall, navy patterned shirt, phone in hand."
   width: 1254
   height: 1254

@@ -34,19 +34,30 @@
 
 /* Small floating accent sparks in the gap between text and portrait --
    the same "scattered accent confetti" idea already used on the Home
-   stat-band, extended into the hero itself (which had none), for the
-   kinetic richness a single flat background can't carry alone. Hidden
-   below 960px: that gap doesn't exist once the layout stacks. */
+   stat-band, extended into the hero itself, for the kinetic richness a
+   single flat background can't carry alone. Hidden below 960px: that gap
+   doesn't exist once the layout stacks.
+   Doubled from 3 to 7 and given a 4th colour (mint) to replace the grid-
+   floor/noise texture layers removed above (direct feedback: they read as
+   an "ugly, burnt-out screen" glaze) -- the sparks now carry BOTH jobs,
+   texture and colour, using exactly the cursor's own 4-particle palette
+   (violet/crimson/cyan/mint) so the cursor and hero visibly share one
+   identity instead of the cursor being a one-off. Varied durations
+   (4.8-6.5s) so the field drifts organically rather than in lockstep. */
 .hero-v2__spark { display: none; }
 @media (min-width: 960px) {
   .hero-v2__spark {
     display: block; position: absolute; z-index: 1; border-radius: 50%; pointer-events: none;
-    animation: hv2-spark-float 5.5s ease-in-out infinite;
+    animation-name: hv2-spark-float; animation-timing-function: ease-in-out; animation-iteration-count: infinite;
   }
 }
-.hero-v2__spark--a { top: 16%; left: 39%; width: 7px; height: 7px; background: var(--v2-cyan); opacity: 0.55; animation-delay: 0s; }
-.hero-v2__spark--b { top: 64%; left: 47%; width: 5px; height: 5px; background: var(--v2-crimson); opacity: 0.5; animation-delay: 1.8s; }
-.hero-v2__spark--c { top: 34%; left: 55%; width: 9px; height: 9px; border: 1.5px solid var(--v2-violet); background: none; opacity: 0.6; animation-delay: 3.2s; }
+.hero-v2__spark--a { top: 16%; left: 39%; width: 7px; height: 7px; background: var(--v2-cyan); opacity: 0.55; animation-delay: 0s; animation-duration: 5.5s; }
+.hero-v2__spark--b { top: 64%; left: 47%; width: 5px; height: 5px; background: var(--v2-crimson); opacity: 0.5; animation-delay: 1.8s; animation-duration: 5.5s; }
+.hero-v2__spark--c { top: 34%; left: 55%; width: 9px; height: 9px; border: 1.5px solid var(--v2-violet); background: none; opacity: 0.6; animation-delay: 3.2s; animation-duration: 5.5s; }
+.hero-v2__spark--d { top: 50%; left: 43%; width: 6px; height: 6px; background: var(--v2-mint); opacity: 0.55; animation-delay: 2.6s; animation-duration: 6.5s; }
+.hero-v2__spark--e { top: 24%; left: 49%; width: 4px; height: 4px; background: var(--v2-violet); opacity: 0.5; animation-delay: 4.1s; animation-duration: 4.8s; }
+.hero-v2__spark--f { top: 74%; left: 51%; width: 8px; height: 8px; border: 1.5px solid var(--v2-cyan); background: none; opacity: 0.55; animation-delay: 0.9s; animation-duration: 6s; }
+.hero-v2__spark--g { top: 42%; left: 37%; width: 5px; height: 5px; background: var(--v2-crimson); opacity: 0.45; animation-delay: 3.7s; animation-duration: 5s; }
 @keyframes hv2-spark-float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-12px); }
@@ -249,16 +260,6 @@
   position: absolute; inset: 0; z-index: 0; display: block; width: 100%; height: 100%;
   background: var(--v2-void-raised);
 }
-.hero-v2__grid-floor {
-  position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.14;
-  background-image:
-    linear-gradient(var(--v2-glass-border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--v2-glass-border) 1px, transparent 1px);
-  background-size: 56px 56px;
-  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 100%, black 0%, transparent 70%);
-  mask-image: radial-gradient(ellipse 75% 65% at 50% 100%, black 0%, transparent 70%);
-  transform: perspective(600px) rotateX(58deg); transform-origin: 50% 100%;
-}
 /* Text-protection scrim: sits between the now hero-wide canvas (z-index 0)
    and the content row (z-index 2). A uniform wash by default -- safe at
    any width, including the fully-stacked mobile layout where content now
@@ -273,10 +274,6 @@
   .hero-v2__scrim {
     background: linear-gradient(100deg, var(--v2-void) 0%, var(--v2-void) 38%, color-mix(in oklch, var(--v2-void) 45%, transparent) 58%, transparent 78%);
   }
-}
-.hero-v2__noise {
-  position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0.025; mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 .hero-v2__scroll-cue {
   position: absolute; left: 20px; bottom: 16px; z-index: 3; opacity: 0;

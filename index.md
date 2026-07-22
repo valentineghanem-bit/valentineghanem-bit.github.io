@@ -33,13 +33,15 @@ description: "Official website of Valentine Golden Ghanem, a Ghanaian medical sc
        text/photo overlap fix already established, just re-applied to a
        new layer. -->
   <canvas class="hero-v2__canvas" aria-hidden="true"></canvas>
-  <div class="hero-v2__grid-floor" aria-hidden="true"></div>
   <div class="hero-v2__scrim" aria-hidden="true"></div>
-  <div class="hero-v2__noise" aria-hidden="true"></div>
   <div class="hero-v2__block" aria-hidden="true"></div>
   <span class="hero-v2__spark hero-v2__spark--a" aria-hidden="true"></span>
   <span class="hero-v2__spark hero-v2__spark--b" aria-hidden="true"></span>
   <span class="hero-v2__spark hero-v2__spark--c" aria-hidden="true"></span>
+  <span class="hero-v2__spark hero-v2__spark--d" aria-hidden="true"></span>
+  <span class="hero-v2__spark hero-v2__spark--e" aria-hidden="true"></span>
+  <span class="hero-v2__spark hero-v2__spark--f" aria-hidden="true"></span>
+  <span class="hero-v2__spark hero-v2__spark--g" aria-hidden="true"></span>
 
   <div class="hero-v2__row">
   <div class="hero-v2__content">
