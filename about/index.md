@@ -1,13 +1,15 @@
 ---
-layout: default
+layout: v3
 permalink: /about/
 jsonld: about
 title: "About"
 description: "Biography, biodata and professional profile of Valentine Golden Ghanem, a Ghanaian medical scientist, epidemiologist and public health researcher."
+extra_css: ["about-v2.css"]
+extra_js: ["canvas-field.js", "about-fx.js"]
 ---
-
+{% include nav-v3.html %}
 {%- assign rep_img = site.data.images | where: "representative", true | first -%}
-<div class="about-v2 v2-scope">
+<div class="about-v2 v2-scope pt-32">
 
 <section class="about-v2__hero">
   <div class="canvas-field" data-canvas-field data-palette="v2" data-intensity="0.5" aria-hidden="true"></div>
@@ -21,7 +23,7 @@ description: "Biography, biodata and professional profile of Valentine Golden Gh
         <p>{{ site.data.profile.description }}</p>
       </div>
       <figure class="about-v2__portrait" data-parallax="0.08">
-        <div class="about-v2__portrait-badge">Dual-licensed · Ghana &amp; Ireland</div>
+        <div class="about-v2__portrait-badge">Dual-licensed &middot; Ghana &amp; Ireland</div>
         <img src="{{ rep_img.content_url }}" alt="{{ rep_img.name }}" width="{{ rep_img.width }}" height="{{ rep_img.height }}" loading="lazy" onerror="this.closest('figure').style.display='none'">
         <figcaption>{{ rep_img.caption }}</figcaption>
       </figure>
@@ -107,7 +109,7 @@ description: "Biography, biodata and professional profile of Valentine Golden Gh
       {% for c in site.data.profile.credentials %}
       <li class="about-v2__cred {% if c.status == 'in progress' %}about-v2__cred--pending{% endif %}">
         <span class="about-v2__cred-name">{{ c.name }}</span><br>
-        <span class="about-v2__cred-meta">{{ c.institution }}{% if c.year %} · {{ c.year }}{% endif %}{% if c.note %} · {{ c.note }}{% endif %}{% if c.status == 'in progress' %} · in progress{% endif %}</span>
+        <span class="about-v2__cred-meta">{{ c.institution }}{% if c.year %} &middot; {{ c.year }}{% endif %}{% if c.note %} &middot; {{ c.note }}{% endif %}{% if c.status == 'in progress' %} &middot; in progress{% endif %}</span>
       </li>
       {% endfor %}
     </ul>
@@ -119,14 +121,7 @@ description: "Biography, biodata and professional profile of Valentine Golden Gh
   <div class="about-v2__title-row">
     <h2 class="about-v2__title"><span class="about-v2__index">06</span> Academic &amp; professional timeline</h2>
   </div>
-  <p class="about-v2__timeline-hint">{{ site.data.timeline | size }} entries, reverse-chronological — tap any record for the full detail.</p>
-  <!-- Record-card grid + lightbox: reorganised from the earlier tall
-       vertical rail-accordion into a compact grid of minimal tiles (icon,
-       dates, title only), reusing the fan-carousel's pop-out lightbox
-       TECHNIQUE (grow from the card's own on-screen rect to a centered
-       detail view) rather than a per-row expand/collapse, per the "compact
-       with the option to extend" brief. Real dataset (site.data.timeline),
-       no fabricated content. -->
+  <p class="about-v2__timeline-hint">{{ site.data.timeline | size }} entries, reverse-chronological &mdash; tap any record for the full detail.</p>
   <div class="about-v2__record-grid" data-record-grid>
     {% for t in site.data.timeline %}
     <button type="button" class="about-v2__record-card v2-bento-tint"
@@ -145,4 +140,4 @@ description: "Biography, biodata and professional profile of Valentine Golden Gh
 
 </div>
 
-<script src="{{ '/assets/js/about-fx.js' | relative_url }}" defer></script>
+{% include footer-v3.html %}
