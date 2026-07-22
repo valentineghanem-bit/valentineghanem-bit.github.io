@@ -64,8 +64,46 @@
 <link rel="stylesheet" href="{{ '/assets/css/cursor.css' | relative_url }}">
 
 <script src="{{ '/assets/js/vendor/gsap.min.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/js/vendor/ScrollTrigger.min.js' | relative_url }}" defer></script>
 <script src="{{ '/assets/js/v2-motion.js' | relative_url }}" defer></script>
 <script src="{{ '/assets/js/cursor.js' | relative_url }}" defer></script>
 <script src="{{ '/assets/js/v3-template.js' | relative_url }}" defer></script>
 
-{% include jsonld/home.html %}
+<!-- Per-page bespoke CSS/JS -- each v3 page keeps its own already-polished
+     specialised component (About's record-lightbox, Skills' network canvas,
+     Community's accordion, Gallery's fan-carousel) rather than everything
+     being rewritten from scratch in Tailwind; declared via front matter
+     (extra_css: [...], extra_js: [...]) instead of duplicating the tags
+     into every page body. -->
+{% if page.extra_css %}{% for f in page.extra_css %}<link rel="stylesheet" href="{{ '/assets/css/' | append: f | relative_url }}">
+{% endfor %}{% endif %}
+{% if page.extra_js %}{% for f in page.extra_js %}<script src="{{ '/assets/js/' | append: f | relative_url }}" defer></script>
+{% endfor %}{% endif %}
+
+{% if page.jsonld == "home" %}
+  {% include jsonld/home.html %}
+{% elsif page.jsonld == "about" %}
+  {% include jsonld/about.html %}
+{% elsif page.jsonld == "community" %}
+  {% include jsonld/community.html %}
+{% elsif page.jsonld == "gallery" %}
+  {% include jsonld/gallery.html %}
+{% else %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "{{ page.url | absolute_url }}#webpage",
+      "url": "{{ page.url | absolute_url }}",
+      "name": {% if page.title %}"{{ page.title }} | {{ site.data.profile.name }}"{% else %}{{ site.data.profile.name | jsonify }}{% endif %},
+      "description": {{ page.description | default: site.data.profile.short_description | strip_newlines | jsonify }},
+      "isPartOf": { "@id": "{{ site.url }}/#website" },
+      "about": { "@id": "{{ site.url }}/#person" },
+      "inLanguage": "en"
+    }
+  ]
+}
+</script>
+{% endif %}
