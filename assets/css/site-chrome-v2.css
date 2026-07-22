@@ -1,0 +1,120 @@
+/* ============================================================
+   Site-wide chrome (header/nav + footer), rebuilt onto the v2 system.
+   The single biggest gap in the rebuild -- every v2 page was still
+   wrapped in the old teal/gold header/footer from _layouts/default.html.
+   Functional class names (.nav-toggle, .site-nav, .nav-dropdown*,
+   .site-footer__icons) are kept exactly as-is so the existing mobile-nav
+   and dropdown JS in site.js needs zero changes -- visual layer only.
+   ============================================================ */
+.site-header {
+  border-bottom: 1px solid var(--v2-glass-border);
+  background: color-mix(in oklch, var(--v2-void-raised) 88%, transparent);
+  backdrop-filter: blur(10px) saturate(1.1); -webkit-backdrop-filter: blur(10px) saturate(1.1);
+  position: sticky; top: 0; z-index: 90;
+}
+.site-header__row { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; gap: 12px; }
+.site-header__name {
+  font-family: var(--v2-font-display); font-weight: 600; font-variation-settings: "opsz" 24; font-size: 1.05rem;
+  color: var(--v2-ink); text-decoration: none; letter-spacing: 0.005em;
+}
+.site-nav { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.site-nav a {
+  position: relative; color: var(--v2-ink-soft); text-decoration: none; font-family: var(--v2-font-mono);
+  font-size: 0.82rem; letter-spacing: 0.02em; padding: 4px 0;
+}
+.site-nav a::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px; background: var(--v2-gold);
+  transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease;
+}
+.site-nav a:hover { color: var(--v2-ink); }
+.site-nav a:hover::after, .site-nav a.is-active::after { transform: scaleX(1); }
+.site-nav a.is-active { color: var(--v2-ink); font-weight: 500; }
+
+.nav-dropdown { position: relative; }
+.nav-dropdown__trigger {
+  background: none; border: none; font: inherit; cursor: pointer; display: flex; align-items: center; gap: 6px;
+  color: var(--v2-ink-soft); font-family: var(--v2-font-mono); font-size: 0.82rem; letter-spacing: 0.02em; padding: 4px 0;
+  position: relative;
+}
+.nav-dropdown__trigger::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px; background: var(--v2-gold);
+  transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease;
+}
+.nav-dropdown__trigger:hover, .nav-dropdown__trigger.is-active { color: var(--v2-ink); }
+.nav-dropdown__trigger:hover::after, .nav-dropdown__trigger.is-active::after,
+.nav-dropdown.is-open .nav-dropdown__trigger::after { transform: scaleX(1); }
+.nav-dropdown__chevron { transition: transform 0.22s ease; }
+.nav-dropdown.is-open .nav-dropdown__chevron { transform: rotate(180deg); }
+.nav-dropdown__menu {
+  position: absolute; top: calc(100% + 16px); left: 50%; transform: translate(-50%, 6px);
+  min-width: 200px; background: var(--v2-void-raised); border: 1px solid var(--v2-glass-border);
+  box-shadow: var(--v2-shadow); padding: 8px; display: flex; flex-direction: column; gap: 1px;
+  opacity: 0; pointer-events: none; transition: opacity 0.2s ease, transform 0.2s ease; z-index: 95;
+}
+.nav-dropdown.is-open .nav-dropdown__menu { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
+.nav-dropdown__menu a {
+  padding: 10px 12px; border-radius: 2px; font-family: var(--v2-font-mono); font-size: 0.8rem;
+  color: var(--v2-ink); text-decoration: none;
+}
+.nav-dropdown__menu a:hover { background: var(--v2-glass); color: var(--v2-gold); }
+.nav-dropdown__menu a.is-active { color: var(--v2-gold); font-weight: 600; }
+
+.nav-toggle {
+  display: none; flex-direction: column; justify-content: center; gap: 4px; width: 32px; height: 32px;
+  background: none; border: 1px solid var(--v2-glass-border); cursor: pointer; padding: 0;
+}
+.nav-toggle__bar { width: 16px; height: 1.5px; background: var(--v2-ink); margin: 0 auto; }
+@media (max-width: 860px) {
+  .nav-toggle { display: flex; }
+  .site-nav {
+    display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: flex-start;
+    gap: 4px; background: var(--v2-void-raised); border-bottom: 1px solid var(--v2-glass-border); padding: 12px 24px 18px;
+  }
+  .site-nav.is-open { display: flex; }
+  .nav-dropdown { width: 100%; }
+  .nav-dropdown__menu { position: static; transform: none; opacity: 1; pointer-events: auto; box-shadow: none; border: none; padding: 4px 0 4px 12px; display: none; }
+  .nav-dropdown.is-open .nav-dropdown__menu { display: flex; }
+}
+
+/* ---------- Footer ---------- */
+.site-footer { border-top: 1px solid var(--v2-glass-border); background: var(--v2-void-raised); padding-top: 8px; }
+.site-footer .marquee { overflow: hidden; border-bottom: 1px solid var(--v2-glass-border); padding: 14px 0; }
+.site-footer .marquee__track { display: flex; gap: 36px; width: max-content; animation: v2-marquee 42s linear infinite; }
+.site-footer .marquee__item { font-family: var(--v2-font-mono); font-size: 0.72rem; color: var(--v2-ink-soft); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.05em; }
+.site-footer__row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding: 26px 24px; }
+.site-footer__copy { font-family: var(--v2-font-mono); font-size: 0.76rem; color: var(--v2-ink-soft); margin: 0; }
+
+/* "App tray" of external-profile icons -- a dock-like row of real SVG
+   icons (not text labels), the concrete ask behind "app tray for
+   external site links". Each icon lifts + picks up the seasonal accent
+   on hover, magnetic-adjacent restraint (no elastic drift, just a clean
+   lift) to keep the footer calm rather than another kinetic showcase. */
+.site-footer__icons {
+  list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px;
+}
+.site-footer__icons li { display: contents; }
+.site-footer__icons a {
+  --fan: 0deg; --lift: 0px;
+  width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--v2-glass-border);
+  background: var(--v2-glass); color: var(--v2-ink-soft); display: flex; align-items: center; justify-content: center;
+  transform: rotate(var(--fan)) translateY(var(--lift));
+  transform-origin: 50% 220%;
+  transition: transform 0.32s cubic-bezier(0.22,1,0.36,1), color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+/* Slight fan spread on tray hover -- each icon rotates outward from a shared
+   pivot below the row, echoing the gallery fan-carousel's motif at a much
+   calmer scale (a nod, not a repeat performance). */
+.site-footer__icons:hover a { --lift: -5px; }
+.site-footer__icons:hover li:nth-child(1) a { --fan: -30deg; }
+.site-footer__icons:hover li:nth-child(2) a { --fan: -20deg; }
+.site-footer__icons:hover li:nth-child(3) a { --fan: -11deg; }
+.site-footer__icons:hover li:nth-child(4) a { --fan: 0deg; }
+.site-footer__icons:hover li:nth-child(5) a { --fan: 11deg; }
+.site-footer__icons:hover li:nth-child(6) a { --fan: 20deg; }
+.site-footer__icons:hover li:nth-child(7) a { --fan: 30deg; }
+.site-footer__icons a:hover { color: var(--v2-gold); border-color: var(--v2-gold); background: var(--v2-gold-soft); --lift: -14px; z-index: 1; }
+.site-footer__icons svg { width: 17px; height: 17px; display: block; }
+@media (prefers-reduced-motion: reduce) {
+  .site-footer__icons a { transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease; }
+  .site-footer__icons:hover a, .site-footer__icons a:hover { --fan: 0deg; --lift: 0px; }
+}

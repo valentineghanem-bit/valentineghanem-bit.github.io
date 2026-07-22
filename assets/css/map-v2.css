@@ -1,0 +1,106 @@
+/* ============================================================
+   Field Map v2 -- reskinned onto the hero-v2 dark/gold/cyan system
+   for visual continuity with the Home hero (which CTAs directly here
+   as "See the Surveillance Map"). Token values duplicated from
+   hero-v2.css rather than shared, since the rest of the site hasn't
+   graduated onto that system yet -- merge when Task #5 (global token
+   rebuild) lands.
+   ============================================================ */
+.map-v2 {
+  background: var(--v2-void);
+  color: var(--v2-ink);
+  font-family: var(--v2-font-structure);
+  padding: 64px 24px 80px;
+  border-top: none;
+}
+.map-v2 .breadcrumb { font-family: var(--v2-font-mono); font-size: 0.8rem; color: var(--v2-ink-soft); }
+.map-v2 .breadcrumb a { color: var(--v2-ink-soft); }
+.map-v2 .page-title { font-family: var(--v2-font-display); font-weight: 700; color: var(--v2-ink); font-size: clamp(2rem, 4.5vw, 3rem); }
+.map-v2 .section__intro { color: var(--v2-ink-soft); }
+
+.map-v2 .geo-layout { display: grid; grid-template-columns: minmax(260px, 420px) minmax(0, 1fr); gap: 20px 48px; align-items: start; margin-top: 32px; }
+.map-v2 .geo-map-wrap { position: sticky; top: 96px; }
+.map-v2 .geo-map-frame {
+  --sx: 50%; --sy: 50%;
+  position: relative; border: 1px solid var(--v2-glass-border); background: var(--v2-void-raised);
+  border-radius: 4px; overflow: hidden;
+}
+.map-v2 .geo-map-frame::after {
+  content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; transition: opacity 0.4s ease;
+  background: radial-gradient(420px circle at var(--sx) var(--sy), var(--v2-wine-dim), transparent 70%);
+}
+.map-v2 .geo-map-frame:hover::after { opacity: 1; }
+.map-v2 .geo-map-echarts { width: 100%; height: 620px; max-height: 78vh; }
+@media (max-width: 720px) { .map-v2 .geo-map-echarts { height: 440px; } }
+
+.map-v2 .geo-map-hint {
+  font-family: var(--v2-font-mono); font-size: 0.66rem; color: var(--v2-ink-soft);
+  background: rgba(10,10,13,0.75); border: 1px solid var(--v2-glass-border); backdrop-filter: blur(8px);
+}
+.map-v2 .geo-compass, .map-v2 .geo-compass svg { color: var(--v2-ink-soft); }
+.map-v2 .geo-scale__bar, .map-v2 .geo-scale__bar::before, .map-v2 .geo-scale__bar::after { background: var(--v2-ink-soft); }
+.map-v2 .geo-scale__label { color: var(--v2-ink-soft); font-family: var(--v2-font-mono); }
+.map-v2 .geo-zoom__btn {
+  background: var(--v2-glass); border-color: var(--v2-glass-border); color: var(--v2-ink);
+  backdrop-filter: blur(8px); font-family: var(--v2-font-mono);
+}
+.map-v2 .geo-zoom__btn:hover { background: var(--v2-gold); color: #14100a; border-color: var(--v2-gold); }
+.map-v2 .geo-map__caption { color: var(--v2-ink-soft); font-family: var(--v2-font-mono); }
+
+.map-v2 .geo-legend { font-family: var(--v2-font-mono); color: var(--v2-ink-soft); }
+.map-v2 .geo-legend__item--screening .geo-legend__swatch { background: var(--v2-gold); }
+.map-v2 .geo-legend__item--conference .geo-legend__swatch { background: var(--v2-wine-bright, var(--v2-wine)); }
+.map-v2 .geo-legend__item--outreach .geo-legend__swatch { background: var(--v2-clay); }
+.map-v2 .geo-legend__swatch--district { border-color: var(--v2-glass-border); }
+
+/* ---------- Timeline scrubber -- a bespoke, content-specific addition:
+   with only a handful of dated events spanning 2016-2024, a year axis
+   reads as a deliberate "outbreak/activity over time" strip rather than
+   a generic slider widget. Clicking a year filters + animates the map
+   to frame that year's events. ---------- */
+.map-v2 .geo-timeline { margin: 28px 0 0; }
+.map-v2 .geo-timeline__label {
+  font-family: var(--v2-font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--v2-ink-soft); margin: 0 0 14px;
+}
+.map-v2 .geo-timeline__track { position: relative; display: flex; justify-content: space-between; align-items: center; height: 2px; background: var(--v2-glass-border); margin: 0 6px; }
+.map-v2 .geo-timeline__year {
+  position: relative; background: none; border: none; cursor: pointer; padding: 14px 4px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  font-family: var(--v2-font-mono); font-size: 0.76rem; color: var(--v2-ink-soft);
+  transition: color 0.2s ease;
+}
+.map-v2 .geo-timeline__year::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--v2-void-raised);
+  border: 1.5px solid var(--v2-ink-soft); transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.map-v2 .geo-timeline__year:hover { color: var(--v2-ink); }
+.map-v2 .geo-timeline__year:hover::before { border-color: var(--v2-gold); transform: scale(1.15); }
+.map-v2 .geo-timeline__year.is-active { color: var(--v2-gold); }
+.map-v2 .geo-timeline__year.is-active::before { background: var(--v2-gold); border-color: var(--v2-gold); box-shadow: 0 0 10px 2px var(--v2-gold-soft); }
+.map-v2 .geo-timeline__reset {
+  font-family: var(--v2-font-mono); font-size: 0.7rem; color: var(--v2-ink-soft); background: none;
+  border: 1px solid var(--v2-glass-border); padding: 6px 12px; cursor: pointer; margin-top: 10px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.map-v2 .geo-timeline__reset:hover { color: var(--v2-gold); border-color: var(--v2-gold); }
+
+.map-v2 .geo-scroll { list-style: none; margin: 0; padding: 0; display: grid; gap: 26px; }
+.map-v2 .geo-card { border-left: 2px solid var(--v2-glass-border); padding: 2px 0 2px 20px; transition: border-left-color 0.3s ease, opacity 0.3s ease; }
+.map-v2 .geo-card.is-active { border-left-color: var(--v2-gold); }
+.map-v2 .geo-card.is-dimmed { opacity: 0.35; }
+.map-v2 .geo-card__coord { font-family: var(--v2-font-mono); font-size: 0.7rem; color: var(--v2-wine-bright, var(--v2-wine)); }
+.map-v2 .geo-card__title { font-family: var(--v2-font-display); font-weight: 600; font-size: 1.15rem; color: var(--v2-ink); margin: 5px 0 6px; }
+.map-v2 .geo-card__desc { color: var(--v2-ink-soft); font-size: 0.92rem; margin: 10px 0 14px; max-width: 60ch; }
+.map-v2 .feed-item__meta { font-family: var(--v2-font-mono); font-size: 0.76rem; color: var(--v2-ink-soft); }
+.map-v2 .btn {
+  font-family: var(--v2-font-mono); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.03em;
+  border: 1px solid var(--v2-glass-border); color: var(--v2-ink); padding: 8px 16px; text-decoration: none; display: inline-block;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.map-v2 .btn:hover { border-color: var(--v2-gold); color: var(--v2-gold); }
+
+@media (max-width: 900px) {
+  .map-v2 .geo-layout { grid-template-columns: 1fr; }
+  .map-v2 .geo-map-wrap { position: static; margin-bottom: 24px; }
+}

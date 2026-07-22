@@ -1,0 +1,116 @@
+.home-v2 { padding-top: 8px; }
+
+/* Career-highlights stat strip -- real, sourced numbers (see index.md),
+   reusing site.js's existing count-up-on-reveal behaviour (.stat__number
+   [data-target]), which had no page actually using it until now. */
+.home-v2__stat-band { padding: 44px 24px 40px; position: relative; overflow: hidden; }
+/* Scattered accent confetti -- a few small seasonal-colour shapes, not
+   symmetric or centered, echoing the hand-placed decorative dots/shapes
+   in several reference boards rather than a perfectly tidy grid. */
+.home-v2__stat-band::before, .home-v2__stat-band::after {
+  content: ''; position: absolute; pointer-events: none; z-index: 0;
+}
+.home-v2__stat-band::before { top: 8px; right: 14%; width: 9px; height: 9px; border-radius: 50%; background: var(--v2-clay, var(--v2-gold)); opacity: 0.5; }
+.home-v2__stat-band::after {
+  bottom: 4px; left: 42%; width: 12px; height: 12px; opacity: 0.4;
+  background: var(--v2-wine-bright, var(--v2-gold)); clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+.home-v2__stat-band .stat-strip { display: flex; flex-wrap: wrap; gap: 20px 48px; margin: 0; position: relative; z-index: 1; }
+/* Glass stat cards -- each figure sits on its own translucent-blur panel
+   instead of bare text on the page background. */
+.home-v2__stat-band .stat {
+  flex: 1 1 180px; display: flex; flex-direction: column; gap: 4px; padding: 16px 18px;
+  background: var(--v2-glass); border: 1px solid var(--v2-glass-border);
+  backdrop-filter: blur(12px) saturate(1.1); -webkit-backdrop-filter: blur(12px) saturate(1.1);
+}
+.home-v2__stat-band .stat__number {
+  font-family: var(--v2-font-display); font-size: clamp(2rem, 4.2vw, 2.9rem); font-weight: 600;
+  color: var(--v2-ink); line-height: 1; letter-spacing: -0.01em;
+}
+/* Round 19 correction: this cycled a different accent per "+" (round 18)
+   until studying real reference templates page by page showed that
+   pattern was actually wrong -- every professional example checked
+   (medical + portfolio templates in the mood-board folder) keeps stat
+   figures in ONE consistent accent colour, never rainbow-cycled across
+   otherwise-identical repeated numbers; colour variety in those
+   references only ever appears for a genuine reason (different data
+   series, a single featured/highlighted item), not as decoration on a
+   repeated list. One consistent accent here reads as "this is the brand
+   colour" the way the references do it; cycling read as confetti. */
+.home-v2__stat-band .stat__suffix { color: var(--v2-crimson, var(--v2-gold)); }
+.home-v2__stat-band .stat__label { font-family: var(--v2-font-mono); font-size: 0.78rem; color: var(--v2-ink-soft); letter-spacing: 0.01em; max-width: 22ch; }
+@media (max-width: 640px) {
+  .home-v2__stat-band { padding: 32px 20px 28px; }
+  .home-v2__stat-band .stat-strip { gap: 20px 32px; }
+}
+.home-v2 .marquee { overflow: hidden; border-top: 1px solid var(--v2-glass-border); border-bottom: 1px solid var(--v2-glass-border); padding: 16px 0; }
+.home-v2 .marquee__track { display: flex; gap: 40px; width: max-content; animation: v2-marquee 48s linear infinite; }
+@keyframes v2-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.home-v2 .marquee__item { font-family: var(--v2-font-mono); font-size: 0.8rem; color: var(--v2-ink-soft); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.05em; }
+.home-v2 .section { padding: 56px 24px; border-top: 1px solid var(--v2-glass-border); position: relative; }
+/* Oversized ghost numeral -- a huge, near-invisible background numeral
+   behind each section, borrowed from bold editorial portfolio references:
+   a graphic anchor rather than a plain text label, breaking up the
+   otherwise uniform card/list rhythm. */
+.section__ghost-num {
+  position: absolute; top: -0.22em; left: -0.01em; z-index: 0; pointer-events: none;
+  font-family: var(--v2-font-display); font-weight: 800; line-height: 0.8;
+  font-size: clamp(6rem, 16vw, 13rem); color: var(--v2-ink); opacity: 0.06;
+  user-select: none;
+}
+.home-v2 .section > *:not(.section__ghost-num):not(.canvas-field) { position: relative; z-index: 1; }
+.home-v2 .section--credentials { padding: 56px 24px; }
+.home-v2 .section p { color: var(--v2-ink-soft); line-height: 1.7; }
+.home-v2 .section p strong { color: var(--v2-ink); font-weight: 600; }
+.home-v2 .section__subtitle { font-family: var(--v2-font-mono); font-size: 0.82rem; color: var(--v2-gold); margin: 0 0 22px; }
+/* 01: paragraph-by-paragraph wipe reveal, rather than one flat block fade --
+   each line of the biography un-masks left-to-right as it scrolls into view. */
+.home-v2__prose p:not(.section__subtitle) {
+  opacity: 0; clip-path: inset(0 100% 0 0);
+  transition: opacity 0.6s ease, clip-path 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.home-v2__prose p:not(.section__subtitle).is-visible { opacity: 1; clip-path: inset(0 0 0 0); }
+
+.home-v2 .tag-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.home-v2 .tag { padding: 14px 18px; }
+/* 02: credentials deal in like a dealt hand -- slight rotate + rise, staggered,
+   instead of the parent section's single flat fade. */
+.home-v2 .section--credentials .tag {
+  opacity: 0; transform: translateY(16px) rotate(-1.2deg); transform-origin: 0% 100%;
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.home-v2 .section--credentials .tag:nth-child(even) { transform: translateY(16px) rotate(1.2deg); }
+.home-v2 .section--credentials .tag.is-visible { opacity: 1; transform: none; }
+
+.home-v2 .toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+@media (min-width: 860px) {
+  .home-v2 .toc-grid { grid-template-columns: repeat(4, 1fr); grid-auto-rows: 1fr; }
+  .home-v2 .toc-grid .toc-card:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+  .home-v2 .toc-grid .toc-card:nth-child(3) { grid-column: span 2; }
+}
+.home-v2 .toc-card {
+  display: flex; flex-direction: column; gap: 6px; padding: 18px 20px; text-decoration: none; color: var(--v2-ink);
+  border-left: 2px solid var(--v2-gold); opacity: 0; transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.5s ease, border-left-color 0.25s ease;
+}
+.home-v2 .toc-card.is-visible { opacity: 1; transform: none; }
+.home-v2 .toc-grid .toc-card:nth-child(1) { justify-content: flex-end; }
+.home-v2 .toc-grid .toc-card:nth-child(1) .toc-card__title { font-size: 1.35rem; }
+.home-v2 .toc-card:hover { border-left-color: var(--v2-wine-bright, var(--v2-wine)); }
+/* Bento-style tinted backgrounds -- a cycling wash of the three seasonal
+   accents rather than every card sharing one flat surface colour. */
+/* Round 19: was a 3-way gold/wine/clay cycle -- see the bento-tint comment
+   in v2-tokens.css for why that pattern was wrong (reference templates
+   keep repeated card grids in one consistent accent, not a rainbow). */
+.home-v2 .toc-grid .toc-card { background: color-mix(in oklch, var(--v2-gold) 7%, transparent); }
+.home-v2 .toc-card__index { font-family: var(--v2-font-mono); font-size: 0.7rem; color: var(--v2-ink-soft); }
+.home-v2 .toc-card__title { font-family: var(--v2-font-display); font-weight: 600; font-variation-settings: "opsz" 24; font-size: 1.05rem; }
+.home-v2 .toc-card__desc { font-size: 0.86rem; color: var(--v2-ink-soft); }
+
+@media (prefers-reduced-motion: reduce) {
+  .home-v2__prose p:not(.section__subtitle),
+  .home-v2 .section--credentials .tag,
+  .home-v2 .toc-card {
+    opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none !important;
+  }
+}

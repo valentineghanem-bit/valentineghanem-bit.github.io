@@ -1,0 +1,30 @@
+.certificates-v2 { padding: 64px 24px 80px; text-align: center; }
+.certificates-v2 .section__title { justify-content: center; }
+.certificates-v2 .community-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 4px 0 32px; }
+.certificates-v2 .community-nav a {
+  padding: 8px 16px; border: 1px solid var(--v2-glass-border); font-family: var(--v2-font-mono); font-size: 0.76rem;
+  text-transform: uppercase; letter-spacing: 0.05em; color: var(--v2-ink-soft); text-decoration: none; transition: color 0.2s ease, border-color 0.2s ease;
+}
+.certificates-v2 .community-nav a:hover { color: var(--v2-gold); border-color: var(--v2-gold); }
+.certificates-v2 .tag-list { list-style: none; margin: 0 auto 40px; padding: 0; display: grid; gap: 10px; max-width: 760px; text-align: left; }
+/* Dealt-hand entrance -- same motif as the Home credentials section (echoed
+   deliberately, not duplicated by accident): each row rises with a hairline
+   rotate alternating direction, rather than one flat block fade. */
+.certificates-v2 .tag {
+  padding: 14px 18px; opacity: 0; transform: translateY(12px) rotate(-0.9deg); transform-origin: 0% 100%;
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.certificates-v2 .tag:nth-child(even) { transform: translateY(12px) rotate(0.9deg); }
+.certificates-v2 .tag.is-visible { opacity: 1; transform: none; }
+.certificates-v2 .feed-item .link-row a { --mx: 0px; --my: 0px; transform: translate(var(--mx), var(--my)); display: inline-block; }
+@media (prefers-reduced-motion: reduce) {
+  .certificates-v2 .tag { transition: opacity 0.3s ease; }
+}
+.certificates-v2 [data-cpd-root] { max-width: 760px; margin: 0 auto; text-align: left; }
+.certificates-v2 .filter-toolbar { padding: 18px 20px; margin: 4px 0 20px; }
+.certificates-v2 .cpd-year-group h3 {
+  font-family: var(--v2-font-mono); font-size: 0.85rem; color: var(--v2-gold); margin: 32px 0 12px; text-transform: uppercase;
+  letter-spacing: 0.05em; border-bottom: 1px solid var(--v2-glass-border); padding-bottom: 8px; text-align: left;
+}
+.certificates-v2 .feed-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.certificates-v2 .feed-item { padding: 18px 22px; text-align: left; }

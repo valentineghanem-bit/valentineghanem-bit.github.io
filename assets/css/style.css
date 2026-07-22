@@ -474,6 +474,19 @@ body.has-custom-cursor, body.has-custom-cursor a, body.has-custom-cursor button 
 
 /* ---------- Floating toolbar (theme toggle / back-to-top) ---------- */
 .scroll-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: var(--gold); z-index: 70; }
+
+/* ---------- Page transitions (site.js) ---------- */
+.page-veil { position: fixed; inset: 0; z-index: 500; pointer-events: none; }
+.page-veil__bar {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+  background: var(--v2-gold, var(--gold)); box-shadow: 0 0 10px 1px var(--v2-gold-soft, rgba(232,163,61,0.5));
+  transition: width 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.page-veil.is-active .page-veil__bar { width: 92%; }
+body.is-leaving {
+  transition: opacity 0.32s ease, transform 0.32s ease, filter 0.32s ease;
+  opacity: 0.35; transform: scale(0.988); filter: saturate(0.7);
+}
 .site-toolbar { position: fixed; right: 22px; bottom: 22px; display: flex; flex-direction: column; gap: 10px; z-index: 60; }
 .site-toolbar__btn {
   --magnet-x: 0px; --magnet-y: 0px; --btn-lift: 0px; --btn-hidden-y: 0px;
@@ -559,7 +572,7 @@ body.has-custom-cursor, body.has-custom-cursor a, body.has-custom-cursor button 
   font-weight: 500;
   margin: 0 0 22px;
 }
-.section__intro { color: var(--ink-soft); max-width: 62ch; margin: 0 0 24px; }
+.section__intro { color: var(--ink-soft); margin: 0 0 24px; }
 .page-title { font-size: clamp(1.9rem, 4vw, 2.4rem); margin: 6px 0 8px; }
 .breadcrumb {
   font-family: var(--font-mono);
@@ -1154,7 +1167,7 @@ body.lightbox-open { overflow: hidden; }
 .feed-item:first-child { border-top: none; padding-top: 0; }
 .feed-item__title { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; margin: 0 0 6px; }
 .feed-item__meta { font-family: var(--font-mono); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--teal-dark); }
-.feed-item__summary { margin: 10px 0 0; font-size: 0.95rem; color: var(--ink); max-width: 68ch; }
+.feed-item__summary { margin: 10px 0 0; font-size: 0.95rem; color: var(--ink); }
 
 @media (max-width: 780px) {
   .nav-toggle { display: flex; }

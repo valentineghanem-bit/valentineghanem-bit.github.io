@@ -1,0 +1,128 @@
+/* Custom cursor (assets/js/cursor.js) -- a field-reticle, not a plain
+   dot-and-ring: four independent ticks + a connecting ring, tying into the
+   site's own surveillance/specimen/field-record visual language (the
+   corner-bracket frames, the hero's "field record" badge) instead of a
+   generic circle. The small dot tracks the pointer exactly; the reticle
+   trails it with a lerped lag. Five distinct personalities:
+     - resting: ticks at their base distance from the ring
+     - .is-hovering: ticks open outward + gold, over links/buttons/cards
+     - .is-pressed: ticks snap inward (a camera-aperture close) on mousedown
+     - .is-dragging: the whole reticle stretches along the drag direction
+       (JS supplies rotate+scale directly, same reasoning as before -- the
+       position transform is already driven per-frame by the trail-lag loop)
+     - .is-zooming: ticks pulse and a +/- glyph appears at the centre,
+       driven by ctrl+wheel / trackpad-pinch detection (new)
+     - .is-texting: collapses to a thin vertical bar over real text fields
+       (unchanged from the previous cursor -- already the right shape)
+   Only ever active on fine-pointer, motion-OK devices; the JS never runs
+   otherwise, so this CSS has no effect (native cursors stay untouched)
+   elsewhere. */
+html.has-custom-cursor, html.has-custom-cursor * { cursor: none !important; }
+
+.v2-cursor-dot, .v2-cursor-reticle {
+  position: fixed; top: 0; left: 0; z-index: 9999; pointer-events: none;
+  opacity: 0; transition: opacity 0.2s ease;
+}
+.v2-cursor-dot.is-active, .v2-cursor-reticle.is-active { opacity: 1; }
+
+.v2-cursor-dot {
+  width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%;
+  background: var(--v2-crimson, var(--v2-gold, #c9902f));
+}
+
+.v2-cursor-reticle {
+  width: 34px; height: 34px; margin: -17px 0 0 -17px;
+}
+.v2-cursor-reticle::before {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  border: 1.5px solid var(--v2-ink, #1a1a1a); opacity: 0.55;
+  transition: border-color 0.2s ease, opacity 0.2s ease, transform 0.25s cubic-bezier(0.22,1,0.36,1);
+}
+.v2-cursor-tick {
+  position: absolute; background: var(--v2-ink, #1a1a1a); border-radius: 1px; opacity: 0.75;
+  transition: transform 0.28s cubic-bezier(0.22,1,0.36,1), background 0.2s ease, opacity 0.2s ease;
+}
+.v2-cursor-tick--n, .v2-cursor-tick--s { width: 2px; height: 7px; left: 16px; }
+.v2-cursor-tick--e, .v2-cursor-tick--w { width: 7px; height: 2px; top: 16px; }
+.v2-cursor-tick--n { top: -8px; }
+.v2-cursor-tick--s { top: 35px; }
+.v2-cursor-tick--e { left: 35px; }
+.v2-cursor-tick--w { left: -8px; }
+
+.v2-cursor-glyph {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-family: var(--v2-font-mono, monospace); font-size: 13px; font-weight: 700; line-height: 1;
+  color: var(--v2-crimson, var(--v2-gold, #c9902f)); opacity: 0; transition: opacity 0.15s ease;
+}
+.v2-cursor-reticle.is-zooming .v2-cursor-glyph { opacity: 1; }
+
+/* Hover: ticks open outward, ring/ticks gold -- "this is interactive". */
+.v2-cursor-reticle.is-hovering::before { border-color: var(--v2-gold, #c9902f); opacity: 0.9; }
+.v2-cursor-reticle.is-hovering .v2-cursor-tick { background: var(--v2-gold, #c9902f); opacity: 1; }
+.v2-cursor-reticle.is-hovering .v2-cursor-tick--n { transform: translateY(-7px); }
+.v2-cursor-reticle.is-hovering .v2-cursor-tick--s { transform: translateY(7px); }
+.v2-cursor-reticle.is-hovering .v2-cursor-tick--e { transform: translateX(7px); }
+.v2-cursor-reticle.is-hovering .v2-cursor-tick--w { transform: translateX(-7px); }
+
+/* Press: an aperture snapping shut -- ticks pull in tight, ring shrinks. */
+.v2-cursor-reticle.is-pressed::before { transform: scale(0.72); }
+.v2-cursor-reticle.is-pressed .v2-cursor-tick--n { transform: translateY(5px); }
+.v2-cursor-reticle.is-pressed .v2-cursor-tick--s { transform: translateY(-5px); }
+.v2-cursor-reticle.is-pressed .v2-cursor-tick--e { transform: translateX(-5px); }
+.v2-cursor-reticle.is-pressed .v2-cursor-tick--w { transform: translateX(5px); }
+
+/* Drag: the whole reticle stretches along the movement direction -- JS
+   writes rotate()+scale() directly into the same inline transform that
+   carries the per-frame trail-lag position (a class alone can't win
+   against a property set every frame). Ticks fan out slightly to read as
+   "in motion" rather than just a squashed circle. */
+.v2-cursor-reticle.is-dragging::before { border-color: var(--v2-crimson, var(--v2-wine, #8a3b32)); }
+.v2-cursor-reticle.is-dragging .v2-cursor-tick { background: var(--v2-crimson, var(--v2-wine, #8a3b32)); opacity: 0.9; }
+
+/* Zoom: ticks pulse in/out with the wheel direction (ctrl+wheel / trackpad
+   pinch), a +/- glyph appears at the centre. Detected globally, not tied
+   to one page -- fires naturally over the Field Map's own ctrl+scroll
+   zoom without any page-specific wiring. */
+.v2-cursor-reticle.is-zooming::before { border-color: var(--v2-mint, #2f9e6e); }
+.v2-cursor-reticle.is-zooming .v2-cursor-tick { background: var(--v2-mint, #2f9e6e); }
+.v2-cursor-reticle.is-zooming.is-zooming-in .v2-cursor-tick--n { transform: translateY(-11px); }
+.v2-cursor-reticle.is-zooming.is-zooming-in .v2-cursor-tick--s { transform: translateY(11px); }
+.v2-cursor-reticle.is-zooming.is-zooming-in .v2-cursor-tick--e { transform: translateX(11px); }
+.v2-cursor-reticle.is-zooming.is-zooming-in .v2-cursor-tick--w { transform: translateX(-11px); }
+.v2-cursor-reticle.is-zooming.is-zooming-out .v2-cursor-tick--n { transform: translateY(-3px); }
+.v2-cursor-reticle.is-zooming.is-zooming-out .v2-cursor-tick--s { transform: translateY(3px); }
+.v2-cursor-reticle.is-zooming.is-zooming-out .v2-cursor-tick--e { transform: translateX(3px); }
+.v2-cursor-reticle.is-zooming.is-zooming-out .v2-cursor-tick--w { transform: translateX(-3px); }
+
+/* Text-entry: collapses to a thin vertical bar (an "I-beam companion")
+   instead of expanding -- unchanged shape/reasoning from the previous
+   cursor: a big reticle over a text field would obscure what's being
+   read/typed. */
+.v2-cursor-reticle.is-texting::before { opacity: 0; }
+.v2-cursor-reticle.is-texting .v2-cursor-tick { opacity: 0; }
+.v2-cursor-reticle.is-texting .v2-cursor-bar {
+  position: absolute; left: 16px; top: -3px; width: 2px; height: 40px; border-radius: 1px;
+  background: var(--v2-ink, #1a1a1a); opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.v2-cursor-reticle.is-texting .v2-cursor-bar { opacity: 1; }
+
+/* Click ripple: a short-lived, independent element spawned at the click
+   point (not part of the trailing reticle) -- an expanding, fading ring,
+   the "something just happened here" cue a plain shrink-on-press doesn't
+   give on its own. */
+.v2-cursor-ripple {
+  position: fixed; top: 0; left: 0; z-index: 9998; pointer-events: none;
+  width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%;
+  border: 1.5px solid var(--v2-crimson, var(--v2-gold, #c9902f));
+  opacity: 0.8; transform: scale(1);
+  animation: v2-cursor-ripple 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+@keyframes v2-cursor-ripple {
+  to { transform: scale(5.5); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-cursor-ripple { animation: none; display: none; }
+  .v2-cursor-tick, .v2-cursor-reticle::before { transition: opacity 0.15s ease; }
+}

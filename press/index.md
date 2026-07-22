@@ -5,7 +5,8 @@ title: "Press"
 description: "Media coverage, interviews and public recognition of Valentine Golden Ghanem."
 ---
 
-<section class="section wrap wrap--centered">
+{%- assign press_outlets = site.data.press | map: "outlet" | uniq -%}
+<section class="press-v2 v2-scope wrap">
   <p class="breadcrumb"><a href="{{ '/' | relative_url }}">Home</a> / Press</p>
   <h1 class="page-title">Press &amp; recognition</h1>
   <p class="section__intro">
@@ -14,9 +15,17 @@ description: "Media coverage, interviews and public recognition of Valentine Gol
     original publication.
   </p>
 
+  <div class="press-v2__ticker marquee" aria-hidden="true">
+    <p class="press-v2__ticker-label">As featured in</p>
+    <div class="marquee__track">
+      {% for o in press_outlets %}<span class="marquee__item">{{ o }}</span>{% endfor %}
+      {% for o in press_outlets %}<span class="marquee__item">{{ o }}</span>{% endfor %}
+    </div>
+  </div>
+
   <ul class="feed-list">
     {% for a in site.data.press %}
-    <li class="feed-item">
+    <li class="feed-item v2-spotlight">
       <p class="feed-item__title">{{ a.headline }}</p>
       <span class="feed-item__meta">{{ a.outlet }} · {{ a.date }}{% if a.byline %} · {{ a.byline }}{% endif %}</span>
       <p class="feed-item__summary">{{ a.summary }}</p>
@@ -35,3 +44,5 @@ description: "Media coverage, interviews and public recognition of Valentine Gol
     <a href="https://commons.wikimedia.org/wiki/Category:Valentine_Golden_Ghanem" target="_blank" rel="noopener">Wikimedia Commons</a>
   </div>
 </section>
+
+<script src="{{ '/assets/js/press-fx.js' | relative_url }}" defer></script>

@@ -5,7 +5,7 @@ title: "Certificates & CPDs"
 description: "Academic qualifications, licensure, professional memberships and continuing professional development of Valentine Golden Ghanem."
 ---
 
-<section class="section wrap wrap--wide wrap--centered">
+<section class="certificates-v2 v2-scope wrap wrap--wide">
   <p class="breadcrumb"><a href="{{ '/' | relative_url }}">Home</a> / Certificates</p>
   <h1 class="page-title">Certificates &amp; CPDs</h1>
   <p class="section__intro">
@@ -25,7 +25,7 @@ description: "Academic qualifications, licensure, professional memberships and c
   <h2 class="section__title section__title--sub" id="academic-qualifications"><span class="section__index">01</span> Academic qualifications</h2>
   <ul class="tag-list">
     {% for c in site.data.profile.credentials %}
-    <li class="tag {% if c.status == 'in progress' %}tag--pending{% endif %}">
+    <li class="tag v2-spotlight v2-bento-tint {% if c.status == 'in progress' %}tag--pending{% endif %}">
       <span class="tag__name">{{ c.name }}</span>
       <span class="tag__meta">{{ c.institution }}{% if c.year %} · {{ c.year }}{% endif %}{% if c.note %} · {{ c.note }}{% endif %}{% if c.status == 'in progress' %} · in progress{% endif %}</span>
     </li>
@@ -35,7 +35,7 @@ description: "Academic qualifications, licensure, professional memberships and c
   <h2 class="section__title section__title--sub" id="licensure"><span class="section__index">02</span> Licensure &amp; registration</h2>
   <ul class="tag-list">
     {% for l in site.data.profile.licensure %}
-    <li class="tag">
+    <li class="tag v2-spotlight v2-bento-tint">
       <span class="tag__name">{{ l.credential }} — {{ l.jurisdiction }}</span>
       <span class="tag__meta">{{ l.body }}{% if l.abbreviation %} ({{ l.abbreviation }}){% endif %}{% if l.reg_no %} · Reg. No. {{ l.reg_no }}{% endif %}</span>
     </li>
@@ -45,7 +45,7 @@ description: "Academic qualifications, licensure, professional memberships and c
   <h2 class="section__title section__title--sub" id="memberships"><span class="section__index">03</span> Professional memberships</h2>
   <ul class="tag-list">
     {% for m in site.data.profile.memberships %}
-    <li class="tag">
+    <li class="tag v2-spotlight v2-bento-tint">
       <span class="tag__name">{{ m.name }}{% if m.role %} — {{ m.role }}{% endif %}</span>
       <span class="tag__meta">{% if m.abbreviation %}{{ m.abbreviation }}{% endif %}{% if m.reg_no %} · No. {{ m.reg_no }}{% endif %}</span>
     </li>
@@ -55,7 +55,7 @@ description: "Academic qualifications, licensure, professional memberships and c
   <h2 class="section__title section__title--sub" id="in-progress"><span class="section__index">04</span> Certifications in progress</h2>
   <ul class="tag-list">
     {% for c in site.data.profile.certifications_in_progress %}
-    <li class="tag tag--pending">
+    <li class="tag tag--pending v2-spotlight">
       <span class="tag__name">{{ c.name }}</span>
       <span class="tag__meta">{{ c.note }}</span>
     </li>
@@ -77,7 +77,7 @@ description: "Academic qualifications, licensure, professional memberships and c
     </div>
     {% for yr in site.data.cpd %}
     <div class="cpd-year-group" data-year="{{ yr.year }}">
-      <h3 style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--ink-soft); margin: 28px 0 10px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--line); padding-bottom: 6px;">{{ yr.year }}</h3>
+      <h3>{{ yr.year }}</h3>
       <ul class="feed-list">
         {% for e in yr.entries %}
         <li class="feed-item">
@@ -92,3 +92,5 @@ description: "Academic qualifications, licensure, professional memberships and c
     {% endfor %}
   </div>
 </section>
+
+<script src="{{ '/assets/js/certificates-fx.js' | relative_url }}" defer></script>

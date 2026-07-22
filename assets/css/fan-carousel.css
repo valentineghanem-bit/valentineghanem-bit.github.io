@@ -1,0 +1,84 @@
+.fan-carousel {
+  position: relative; max-width: 980px; margin: 0 auto 56px; padding: 40px 0 96px;
+}
+.fan-carousel__deck {
+  position: relative; height: 420px; display: flex; align-items: center; justify-content: center;
+  perspective: 1200px;
+}
+.fan-carousel__card {
+  position: absolute; width: 190px; height: 270px; border-radius: 14px; overflow: hidden;
+  box-shadow: var(--v2-shadow); border: 1px solid var(--v2-glass-border);
+  transition: transform 0.55s cubic-bezier(0.22,1,0.36,1), opacity 0.55s ease, z-index 0s 0.1s;
+  cursor: pointer; background: var(--v2-void-raised);
+}
+.fan-carousel__card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fan-carousel__card::after {
+  content: ''; position: absolute; inset: 0; background: oklch(from var(--v2-void) l c h / 0.35);
+  opacity: 1; transition: opacity 0.4s ease;
+}
+.fan-carousel__card.is-active::after { opacity: 0; }
+.fan-carousel__card:not(.is-active):hover::after { opacity: 0.12; }
+.fan-carousel__caption {
+  position: absolute; left: 6vw; right: 6vw; bottom: 0; z-index: 5;
+  text-align: center; font-family: var(--v2-font-mono); font-size: 0.82rem; color: var(--v2-ink-soft);
+  opacity: 0; transition: opacity 0.4s ease; pointer-events: none;
+}
+.fan-carousel__caption.is-visible { opacity: 1; }
+.fan-carousel__arrow {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid var(--v2-glass-border); background: var(--v2-void-raised); color: var(--v2-ink);
+  display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--v2-shadow);
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+.fan-carousel__arrow:hover { border-color: var(--v2-gold); color: var(--v2-gold); }
+.fan-carousel__arrow--prev { left: 0; }
+.fan-carousel__arrow--next { right: 0; }
+.fan-carousel__dots { position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; max-width: 70%; }
+.fan-carousel__dot { width: 6px; height: 6px; border-radius: 50%; border: none; background: var(--v2-glass-border); cursor: pointer; padding: 0; transition: background 0.25s ease, transform 0.25s ease; }
+.fan-carousel__dot.is-active { background: var(--v2-gold); transform: scale(1.4); }
+@media (max-width: 640px) {
+  .fan-carousel__deck { height: 320px; }
+  .fan-carousel__card { width: 140px; height: 200px; }
+  .fan-carousel__arrow { width: 38px; height: 38px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fan-carousel__card { transition: opacity 0.3s ease; }
+}
+
+/* ---------- Lightbox: clicking the centered/active card pops it out of the
+   deck and grows it to full, uncropped size. The "flyer" is a clone of the
+   card positioned at its exact on-screen rect, then animated to a viewport-
+   centered box sized to the image's real aspect ratio -- so the crop never
+   visibly jumps, it just un-crops as it grows. ---------- */
+.fan-lightbox-backdrop {
+  position: fixed; inset: 0; z-index: 200; background: color-mix(in oklch, var(--v2-void) 90%, transparent);
+  backdrop-filter: blur(14px) saturate(1.1); -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  opacity: 0; pointer-events: none; transition: opacity 0.35s ease;
+}
+.fan-lightbox-backdrop.is-open { opacity: 1; pointer-events: auto; }
+.fan-lightbox-flyer {
+  position: fixed; z-index: 201; overflow: hidden; box-shadow: var(--v2-shadow);
+  border: 1px solid var(--v2-glass-border); background: var(--v2-void-raised);
+  transition: left 0.55s cubic-bezier(0.22,1,0.36,1), top 0.55s cubic-bezier(0.22,1,0.36,1),
+              width 0.55s cubic-bezier(0.22,1,0.36,1), height 0.55s cubic-bezier(0.22,1,0.36,1),
+              border-radius 0.55s cubic-bezier(0.22,1,0.36,1);
+}
+.fan-lightbox-flyer img { width: 100%; height: 100%; display: block; }
+.fan-lightbox-caption {
+  position: fixed; z-index: 201; font-family: var(--v2-font-mono); font-size: 0.84rem; color: var(--v2-ink-soft);
+  text-align: center; max-width: min(90vw, 60ch); opacity: 0; transition: opacity 0.3s ease 0.2s; pointer-events: none;
+  left: 50%; transform: translateX(-50%);
+}
+.fan-lightbox-caption.is-open { opacity: 1; }
+.fan-lightbox-close {
+  position: fixed; z-index: 202; width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--v2-glass-border); background: var(--v2-void-raised); color: var(--v2-ink);
+  display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--v2-shadow);
+  opacity: 0; pointer-events: none; transition: opacity 0.25s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.fan-lightbox-close.is-open { opacity: 1; pointer-events: auto; }
+.fan-lightbox-close:hover { border-color: var(--v2-gold); color: var(--v2-gold); transform: rotate(90deg); }
+@media (prefers-reduced-motion: reduce) {
+  .fan-lightbox-flyer { transition: opacity 0.25s ease; }
+  .fan-lightbox-backdrop, .fan-lightbox-caption, .fan-lightbox-close { transition: opacity 0.25s ease; }
+}

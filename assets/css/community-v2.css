@@ -1,0 +1,98 @@
+.community-v2 { padding: 64px 24px 80px; }
+.community-v2 .community-layout { display: grid; grid-template-columns: 236px minmax(0, 1fr); gap: 16px 56px; align-items: start; }
+.community-v2 .community-sidebar { position: sticky; top: 96px; display: flex; flex-direction: column; gap: 26px; }
+.community-v2 .community-nav { display: flex; flex-direction: column; gap: 8px; margin: 0; }
+.community-v2 .community-nav a {
+  padding: 9px 14px; border: 1px solid var(--v2-glass-border); font-family: var(--v2-font-mono); font-size: 0.76rem;
+  text-transform: uppercase; letter-spacing: 0.04em; color: var(--v2-ink-soft); text-decoration: none; text-align: left;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.community-v2 .community-nav a:hover { color: var(--v2-gold); border-color: var(--v2-gold); }
+.community-v2 .community-nav a.is-active { color: var(--v2-gold); border-color: var(--v2-gold); background: var(--v2-gold-soft); }
+.community-v2 .community-main { min-width: 0; }
+.community-v2 .event-grid { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 20px; margin-bottom: 20px; perspective: 900px; }
+.community-v2 .event-grid > .event-card { flex: 1 1 400px; margin-bottom: 20px; }
+.community-v2 .event-grid__col { display: flex; flex-direction: column; flex: 1 1 0; min-width: 0; }
+.community-v2 .event-grid__col .event-card { margin-bottom: 20px; }
+.community-v2 .event-card {
+  padding: 26px 28px; scroll-margin-top: 104px; opacity: 0; transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.community-v2 .event-card.is-visible { opacity: 1; transform: none; }
+.community-v2 .event-card:target { animation: v2-target-flash 1.8s ease; }
+@keyframes v2-target-flash { 0% { box-shadow: 0 0 0 2px var(--v2-gold); } 100% { box-shadow: none; } }
+.community-v2 .event-card__head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 14px; }
+.community-v2 .event-media { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 16px; }
+.community-v2 .event-media__item { position: relative; margin: 0; overflow: hidden; border: 1px solid var(--v2-glass-border); aspect-ratio: 4 / 3; background: var(--v2-void-raised); }
+.community-v2 .event-media__item img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; transition: transform 0.3s ease; cursor: zoom-in; }
+.community-v2 .event-media__item--contain img { object-fit: contain; }
+.community-v2 .event-media__item:hover img { transform: scale(1.04); }
+/* Caption overlay -- every photo already carries a real caption (used as
+   alt text only, until now); shown here too, not just to screen readers.
+   Fixed dark-scrim/light-text (not the theme's --v2-ink/--v2-void tokens)
+   is deliberate: this sits over a photograph, not the page background, and
+   needs to stay legible against whatever that photo's own brightness is,
+   independent of which of the 4 site themes is active -- the standard
+   photo-caption-overlay convention. */
+.community-v2 .event-media__caption {
+  position: absolute; left: 0; right: 0; bottom: 0; margin: 0; padding: 16px 8px 6px;
+  font-family: var(--v2-font-mono); font-size: 0.7rem; color: #f5f0e8; line-height: 1.3;
+  background: linear-gradient(to top, rgba(10,8,6,0.82), transparent);
+  pointer-events: none; z-index: 2;
+}
+.community-v2 .event-media__more summary {
+  list-style: none; cursor: pointer; font-family: var(--v2-font-mono); font-size: 0.74rem; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--v2-gold); padding: 10px; border: 1px dashed var(--v2-glass-border); margin-top: 4px; text-align: center;
+}
+.community-v2 .event-media__more summary::-webkit-details-marker { display: none; }
+.community-v2 .event-media__more[open] summary { display: none; }
+
+/* ---------- Interactive image accordion: the primary photo strip (first
+   6 photos of each event) reads as a hand of narrow, equal strips at rest;
+   hovering one grows it to reveal the full frame while its neighbours
+   yield width -- a browsing affordance layered on top of the existing
+   click-to-lightbox behaviour (unchanged), not a replacement for it. ---------- */
+.community-v2 .event-media--accordion {
+  display: flex; gap: 8px; height: 190px; overflow: hidden;
+}
+.community-v2 .event-media--accordion .event-media__item {
+  flex: 1 1 0%; min-width: 44px; aspect-ratio: auto; height: 100%;
+  transition: flex-grow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.community-v2 .event-media--accordion .event-media__item img { object-position: center; }
+.community-v2 .event-media--accordion:hover .event-media__item { flex-grow: 1; }
+.community-v2 .event-media--accordion:hover .event-media__item:hover { flex-grow: 6; }
+/* Caption reads vertically while a strip is narrow (there's no horizontal
+   room for it), un-rotating to a normal horizontal line once that strip is
+   the active/widened one -- centred-anchor rotation (translateX(-50%) then
+   rotate), not corner-anchored, so no separate translate compensation is
+   needed for the two states. */
+.community-v2 .event-media--accordion .event-media__caption {
+  left: 50%; right: auto; bottom: 34px; width: max-content; max-width: 140px;
+  padding: 4px 2px; background: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  /* No gradient scrim here -- "to top" reads as an odd diagonal smear once
+     rotated 90 degrees. A text-shadow keeps it legible against the photo
+     in both the rotated and un-rotated state instead. */
+  text-shadow: 0 1px 2px rgba(0,0,0,0.9), 0 0 6px rgba(0,0,0,0.6);
+  transform: translateX(-50%) rotate(-90deg); transform-origin: center;
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), bottom 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+.community-v2 .event-media--accordion .event-media__item:hover .event-media__caption {
+  bottom: 8px; max-width: calc(100% - 16px); transform: translateX(-50%) rotate(0deg);
+}
+@media (max-width: 640px) {
+  .community-v2 .event-media--accordion { height: 140px; }
+  /* Hover has no equivalent on touch -- fall back to the plain even grid so
+     every photo stays legible instead of being permanently squeezed thin. */
+  .community-v2 .event-media--accordion .event-media__item { flex: 1 1 88px; }
+  /* Same reason the fan-out itself is disabled on touch: no hover to
+     un-rotate on. Read horizontally at rest instead of staying sideways
+     with no way to trigger the un-rotate. */
+  .community-v2 .event-media--accordion .event-media__caption {
+    bottom: 6px; transform: translateX(-50%) rotate(0deg); max-width: 90%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .community-v2 .event-media--accordion .event-media__item { transition: none; }
+  .community-v2 .event-media--accordion .event-media__caption { transition: none; }
+}

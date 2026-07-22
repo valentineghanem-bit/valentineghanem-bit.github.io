@@ -104,6 +104,7 @@ memberships:
     reg_no: "AS 1206"
   - name: "Dutch Epidemiology Society"
     abbreviation: "VvE"
+    reg_no: "1637"
 licensure:
   - credential: "Medical Scientist"
     jurisdiction: "Ghana"
