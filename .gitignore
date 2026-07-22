@@ -4,5 +4,6 @@ _site/
 .bundle/
 vendor/
 .sass-cache/
+graphify-out/
 # Gemfile.lock is intentionally committed -- it pins exact gem versions so
 # the GitHub Actions build reproduces the same site every time.

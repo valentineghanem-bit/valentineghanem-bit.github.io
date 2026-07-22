@@ -1,120 +1,72 @@
-/* Custom cursor (assets/js/cursor.js) -- a field-reticle, not a plain
-   dot-and-ring: four independent ticks + a connecting ring, tying into the
-   site's own surveillance/specimen/field-record visual language (the
-   corner-bracket frames, the hero's "field record" badge) instead of a
-   generic circle. The small dot tracks the pointer exactly; the reticle
-   trails it with a lerped lag. Five distinct personalities:
-     - resting: ticks at their base distance from the ring
-     - .is-hovering: ticks open outward + gold, over links/buttons/cards
-     - .is-pressed: ticks snap inward (a camera-aperture close) on mousedown
-     - .is-dragging: the whole reticle stretches along the drag direction
-       (JS supplies rotate+scale directly, same reasoning as before -- the
-       position transform is already driven per-frame by the trail-lag loop)
-     - .is-zooming: ticks pulse and a +/- glyph appears at the centre,
-       driven by ctrl+wheel / trackpad-pinch detection (new)
-     - .is-texting: collapses to a thin vertical bar over real text fields
-       (unchanged from the previous cursor -- already the right shape)
-   Only ever active on fine-pointer, motion-OK devices; the JS never runs
-   otherwise, so this CSS has no effect (native cursors stay untouched)
-   elsewhere. */
+/* Custom cursor (assets/js/cursor.js) -- round 24 total redesign,
+   replacing the field-reticle entirely per direct feedback ("i dislike
+   mouse and cursor style... change this to something unique... you may
+   use a multicolored approach"). New shape: a small precise dot tracking
+   the exact pointer position, plus 4 palette-coloured particles in
+   continuous orbit around it -- the cursor's resting state is already
+   colourful and in motion, not a targeting-reticle that only reacts on
+   interaction. Only ever active on fine-pointer, motion-OK devices; the
+   JS never runs otherwise, so this CSS has no effect elsewhere. */
 html.has-custom-cursor, html.has-custom-cursor * { cursor: none !important; }
 
-.v2-cursor-dot, .v2-cursor-reticle {
+.v2-cursor-dot, .v2-cursor-cluster {
   position: fixed; top: 0; left: 0; z-index: 9999; pointer-events: none;
   opacity: 0; transition: opacity 0.2s ease;
 }
-.v2-cursor-dot.is-active, .v2-cursor-reticle.is-active { opacity: 1; }
+.v2-cursor-dot.is-active, .v2-cursor-cluster.is-active { opacity: 1; }
 
 .v2-cursor-dot {
-  width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%;
-  background: var(--v2-crimson, var(--v2-gold, #c9902f));
+  width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; border-radius: 50%;
+  background: var(--v2-ink, #1a1a1a); opacity: 1;
 }
 
-.v2-cursor-reticle {
-  width: 34px; height: 34px; margin: -17px 0 0 -17px;
+/* Each particle is positioned independently every frame by JS (orbit
+   maths), so the cluster container itself carries no transform of its
+   own -- only the fade-in/out opacity above. */
+.v2-cursor-particle {
+  position: fixed; top: 0; left: 0; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%; opacity: 0.85;
+  transition: width 0.2s ease, height 0.2s ease, margin 0.2s ease, opacity 0.2s ease;
 }
-.v2-cursor-reticle::before {
-  content: ''; position: absolute; inset: 0; border-radius: 50%;
-  border: 1.5px solid var(--v2-ink, #1a1a1a); opacity: 0.55;
-  transition: border-color 0.2s ease, opacity 0.2s ease, transform 0.25s cubic-bezier(0.22,1,0.36,1);
-}
-.v2-cursor-tick {
-  position: absolute; background: var(--v2-ink, #1a1a1a); border-radius: 1px; opacity: 0.75;
-  transition: transform 0.28s cubic-bezier(0.22,1,0.36,1), background 0.2s ease, opacity 0.2s ease;
-}
-.v2-cursor-tick--n, .v2-cursor-tick--s { width: 2px; height: 7px; left: 16px; }
-.v2-cursor-tick--e, .v2-cursor-tick--w { width: 7px; height: 2px; top: 16px; }
-.v2-cursor-tick--n { top: -8px; }
-.v2-cursor-tick--s { top: 35px; }
-.v2-cursor-tick--e { left: 35px; }
-.v2-cursor-tick--w { left: -8px; }
 
-.v2-cursor-glyph {
-  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-  font-family: var(--v2-font-mono, monospace); font-size: 13px; font-weight: 700; line-height: 1;
-  color: var(--v2-crimson, var(--v2-gold, #c9902f)); opacity: 0; transition: opacity 0.15s ease;
-}
-.v2-cursor-reticle.is-zooming .v2-cursor-glyph { opacity: 1; }
+/* Hover: particles grow slightly and sit fully opaque -- "this is
+   interactive" without needing a colour change, since colour is already
+   the cursor's baseline identity. */
+.v2-cursor-cluster.is-hovering .v2-cursor-particle { width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; opacity: 1; }
 
-/* Hover: ticks open outward, ring/ticks gold -- "this is interactive". */
-.v2-cursor-reticle.is-hovering::before { border-color: var(--v2-gold, #c9902f); opacity: 0.9; }
-.v2-cursor-reticle.is-hovering .v2-cursor-tick { background: var(--v2-gold, #c9902f); opacity: 1; }
-.v2-cursor-reticle.is-hovering .v2-cursor-tick--n { transform: translateY(-7px); }
-.v2-cursor-reticle.is-hovering .v2-cursor-tick--s { transform: translateY(7px); }
-.v2-cursor-reticle.is-hovering .v2-cursor-tick--e { transform: translateX(7px); }
-.v2-cursor-reticle.is-hovering .v2-cursor-tick--w { transform: translateX(-7px); }
+/* Press: particles shrink (the orbit itself collapses inward via JS
+   radius target; this just shrinks the dots to match the tighter space). */
+.v2-cursor-cluster.is-pressed .v2-cursor-particle { width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; }
 
-/* Press: an aperture snapping shut -- ticks pull in tight, ring shrinks. */
-.v2-cursor-reticle.is-pressed::before { transform: scale(0.72); }
-.v2-cursor-reticle.is-pressed .v2-cursor-tick--n { transform: translateY(5px); }
-.v2-cursor-reticle.is-pressed .v2-cursor-tick--s { transform: translateY(-5px); }
-.v2-cursor-reticle.is-pressed .v2-cursor-tick--e { transform: translateX(-5px); }
-.v2-cursor-reticle.is-pressed .v2-cursor-tick--w { transform: translateX(5px); }
+/* Drag: JS flattens the orbit into an ellipse and rotates it to the drag
+   angle directly via transform, so no extra CSS state is needed here
+   beyond a slightly longer/thinner particle to read as "streaking". */
+.v2-cursor-cluster.is-dragging .v2-cursor-particle { width: 8px; height: 5px; margin: -2.5px 0 0 -4px; opacity: 0.95; }
 
-/* Drag: the whole reticle stretches along the movement direction -- JS
-   writes rotate()+scale() directly into the same inline transform that
-   carries the per-frame trail-lag position (a class alone can't win
-   against a property set every frame). Ticks fan out slightly to read as
-   "in motion" rather than just a squashed circle. */
-.v2-cursor-reticle.is-dragging::before { border-color: var(--v2-crimson, var(--v2-wine, #8a3b32)); }
-.v2-cursor-reticle.is-dragging .v2-cursor-tick { background: var(--v2-crimson, var(--v2-wine, #8a3b32)); opacity: 0.9; }
-
-/* Zoom: ticks pulse in/out with the wheel direction (ctrl+wheel / trackpad
-   pinch), a +/- glyph appears at the centre. Detected globally, not tied
-   to one page -- fires naturally over the Field Map's own ctrl+scroll
-   zoom without any page-specific wiring. */
-.v2-cursor-reticle.is-zooming::before { border-color: var(--v2-mint, #2f9e6e); }
-.v2-cursor-reticle.is-zooming .v2-cursor-tick { background: var(--v2-mint, #2f9e6e); }
-.v2-cursor-reticle.is-zooming.is-zooming-in .v2-cursor-tick--n { transform: translateY(-11px); }
-.v2-cursor-reticle.is-zooming.is-zooming-in .v2-cursor-tick--s { transform: translateY(11px); }
-.v2-cursor-reticle.is-zooming.is-zooming-in .v2-cursor-tick--e { transform: translateX(11px); }
-.v2-cursor-reticle.is-zooming.is-zooming-in .v2-cursor-tick--w { transform: translateX(-11px); }
-.v2-cursor-reticle.is-zooming.is-zooming-out .v2-cursor-tick--n { transform: translateY(-3px); }
-.v2-cursor-reticle.is-zooming.is-zooming-out .v2-cursor-tick--s { transform: translateY(3px); }
-.v2-cursor-reticle.is-zooming.is-zooming-out .v2-cursor-tick--e { transform: translateX(3px); }
-.v2-cursor-reticle.is-zooming.is-zooming-out .v2-cursor-tick--w { transform: translateX(-3px); }
+/* Zoom: particles pulse brighter (fully opaque, slightly larger) while
+   the JS radius target does the actual in/out motion -- direction reads
+   from the motion itself, no glyph needed. */
+.v2-cursor-cluster.is-zooming .v2-cursor-particle { opacity: 1; width: 8px; height: 8px; margin: -4px 0 0 -4px; }
 
 /* Text-entry: collapses to a thin vertical bar (an "I-beam companion")
-   instead of expanding -- unchanged shape/reasoning from the previous
-   cursor: a big reticle over a text field would obscure what's being
-   read/typed. */
-.v2-cursor-reticle.is-texting::before { opacity: 0; }
-.v2-cursor-reticle.is-texting .v2-cursor-tick { opacity: 0; }
-.v2-cursor-reticle.is-texting .v2-cursor-bar {
-  position: absolute; left: 16px; top: -3px; width: 2px; height: 40px; border-radius: 1px;
-  background: var(--v2-ink, #1a1a1a); opacity: 0;
-  transition: opacity 0.2s ease;
+   instead of the orbit -- a big cluster over a text field would obscure
+   what's being read/typed. Particles fade out, the bar fades in. */
+.v2-cursor-cluster.is-texting .v2-cursor-particle { opacity: 0; }
+.v2-cursor-bar {
+  position: fixed; top: 0; left: 0; width: 2px; height: 20px; margin: -10px 0 0 8px; border-radius: 1px;
+  background: var(--v2-ink, #1a1a1a); opacity: 0; transition: opacity 0.2s ease;
 }
-.v2-cursor-reticle.is-texting .v2-cursor-bar { opacity: 1; }
+.v2-cursor-cluster.is-texting .v2-cursor-bar { opacity: 1; }
 
 /* Click ripple: a short-lived, independent element spawned at the click
-   point (not part of the trailing reticle) -- an expanding, fading ring,
-   the "something just happened here" cue a plain shrink-on-press doesn't
-   give on its own. */
+   point -- an expanding, fading ring, the "something just happened here"
+   cue a plain shrink-on-press doesn't give on its own. Unchanged concept
+   from the previous cursor, since it was never the part called out as
+   disliked. */
 .v2-cursor-ripple {
   position: fixed; top: 0; left: 0; z-index: 9998; pointer-events: none;
   width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%;
-  border: 1.5px solid var(--v2-crimson, var(--v2-gold, #c9902f));
+  border: 1.5px solid var(--v2-violet, #b57cff);
   opacity: 0.8; transform: scale(1);
   animation: v2-cursor-ripple 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
 }
@@ -122,28 +74,7 @@ html.has-custom-cursor, html.has-custom-cursor * { cursor: none !important; }
   to { transform: scale(5.5); opacity: 0; }
 }
 
-/* Trail: a pool of reused dots (assets/js/cursor.js recycles the same 16
-   elements rather than creating/destroying per-frame), each repositioned
-   via --tx/--ty and re-triggered with a one-shot fade+shrink as the pointer
-   moves, cycling through all 6 palette colours in turn. Sits BEHIND the
-   reticle (lower z-index) as ambient atmosphere, not a second cursor --
-   the overhaul this cursor needed: constant motion while travelling, not
-   just a reaction on arrival. */
-.v2-cursor-trail-dot {
-  position: fixed; top: 0; left: 0; z-index: 9997; pointer-events: none;
-  width: 6px; height: 6px; border-radius: 50%; opacity: 0;
-  transform: translate(var(--tx, -100px), var(--ty, -100px)) translate(-50%, -50%) scale(1);
-}
-.v2-cursor-trail-dot.is-fading {
-  animation: v2-cursor-trail-fade 0.6s cubic-bezier(0.22,1,0.36,1) forwards;
-}
-@keyframes v2-cursor-trail-fade {
-  0% { opacity: 0.65; transform: translate(var(--tx), var(--ty)) translate(-50%, -50%) scale(1); }
-  100% { opacity: 0; transform: translate(var(--tx), var(--ty)) translate(-50%, -50%) scale(0.25); }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .v2-cursor-ripple { animation: none; display: none; }
-  .v2-cursor-tick, .v2-cursor-reticle::before { transition: opacity 0.15s ease; }
-  .v2-cursor-trail-dot { display: none; }
+  .v2-cursor-particle { transition: opacity 0.15s ease; }
 }

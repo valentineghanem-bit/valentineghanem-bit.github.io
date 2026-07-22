@@ -112,7 +112,27 @@
 .site-footer__icons:hover li:nth-child(5) a { --fan: 11deg; }
 .site-footer__icons:hover li:nth-child(6) a { --fan: 20deg; }
 .site-footer__icons:hover li:nth-child(7) a { --fan: 30deg; }
-.site-footer__icons a:hover { color: var(--v2-gold); border-color: var(--v2-gold); background: var(--v2-gold-soft); --lift: -14px; z-index: 1; }
+/* Each icon carries its own palette colour at rest (not a uniform grey) --
+   7 icons, 6 real hues, so the 7th repeats the 1st rather than introducing
+   a 7th ad-hoc colour. Recolouring social glyphs to the site's own palette
+   rather than each platform's literal brand colour (LinkedIn blue, etc.)
+   is a deliberate personal-brand-over-platform-brand choice, not an
+   oversight -- the icons stay identifiable by shape regardless of tint. */
+.site-footer__icons li:nth-child(1) a { color: var(--v2-violet); }
+.site-footer__icons li:nth-child(2) a { color: var(--v2-crimson); }
+.site-footer__icons li:nth-child(3) a { color: var(--v2-cyan); }
+.site-footer__icons li:nth-child(4) a { color: var(--v2-yellow-ink); }
+.site-footer__icons li:nth-child(5) a { color: var(--v2-mint-ink); }
+.site-footer__icons li:nth-child(6) a { color: var(--v2-ink); }
+.site-footer__icons li:nth-child(7) a { color: var(--v2-violet); }
+.site-footer__icons li:nth-child(1) a:hover { background: var(--v2-violet); border-color: var(--v2-violet); color: var(--v2-void); }
+.site-footer__icons li:nth-child(2) a:hover { background: var(--v2-crimson); border-color: var(--v2-crimson); color: var(--v2-void); }
+.site-footer__icons li:nth-child(3) a:hover { background: var(--v2-cyan); border-color: var(--v2-cyan); color: var(--v2-void); }
+.site-footer__icons li:nth-child(4) a:hover { background: var(--v2-yellow); border-color: var(--v2-yellow); color: var(--v2-yellow-ink); }
+.site-footer__icons li:nth-child(5) a:hover { background: var(--v2-mint); border-color: var(--v2-mint); color: var(--v2-mint-ink); }
+.site-footer__icons li:nth-child(6) a:hover { background: var(--v2-ink); border-color: var(--v2-ink); color: var(--v2-void); }
+.site-footer__icons li:nth-child(7) a:hover { background: var(--v2-violet); border-color: var(--v2-violet); color: var(--v2-void); }
+.site-footer__icons a:hover { --lift: -14px; z-index: 1; }
 .site-footer__icons svg { width: 17px; height: 17px; display: block; }
 @media (prefers-reduced-motion: reduce) {
   .site-footer__icons a { transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease; }

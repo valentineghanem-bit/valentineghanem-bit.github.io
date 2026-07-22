@@ -96,19 +96,37 @@ import * as THREE from '/assets/js/vendor/three.module.min.js';
     sprites.push(sprite);
   });
 
-  const DUST_COUNT = isSmall ? 50 : 120;
-  const dustGeo = new THREE.BufferGeometry();
-  const dustPos = new Float32Array(DUST_COUNT * 3);
-  for (let i = 0; i < DUST_COUNT; i++) {
-    const angle = Math.random() * Math.PI * 2;
-    const r = HELIX_RADIUS * 1.7 + Math.random() * 1.4;
-    dustPos[i * 3] = r * Math.cos(angle);
-    dustPos[i * 3 + 1] = (Math.random() - 0.5) * (HELIX_HEIGHT + 3);
-    dustPos[i * 3 + 2] = r * Math.sin(angle) - 1;
-  }
-  dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
-  const dustMat = new THREE.PointsMaterial({ color: 0x8b4a42, size: 0.035, transparent: true, opacity: 0.45 });
-  scene.add(new THREE.Points(dustGeo, dustMat));
+  // Round 24: direct feedback marked out the WHOLE right-hand zone of the
+  // hero (not just "reach toward the portrait") and asked for the web to
+  // visibly fill it, portrait superimposed on top. The old dust was a thin
+  // torus shell far outside the helix's own radius -- fine as a subtle
+  // outer glow, but it left the actual marked area (inside/around the
+  // helix, between it and the portrait) looking sparse: ~15-26 photo
+  // sprites plus 120 distant points can't read as "full" across that much
+  // screen space. Tripled the count and switched to a disc-ish fill
+  // (random radius, not a fixed band) spanning from near the centre out
+  // past the old outer band, so density is real everywhere in the zone,
+  // not just at its outer rim.
+  // Two colour groups (not one flat tone) -- ties the fill dust to the same
+  // multicoloured language as everything else in this pass (cursor trail,
+  // per-page accents) instead of a single muted maroon.
+  const DUST_COUNT = isSmall ? 90 : 360;
+  const DUST_COLORS = [0xb57cff, 0x00c5d5];
+  DUST_COLORS.forEach(function (color, ci) {
+    var count = Math.round(DUST_COUNT / DUST_COLORS.length);
+    var dustGeo = new THREE.BufferGeometry();
+    var dustPos = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const r = HELIX_RADIUS * 0.3 + Math.random() * HELIX_RADIUS * 2.4;
+      dustPos[i * 3] = r * Math.cos(angle);
+      dustPos[i * 3 + 1] = (Math.random() - 0.5) * (HELIX_HEIGHT + 4);
+      dustPos[i * 3 + 2] = r * Math.sin(angle) - 1;
+    }
+    dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
+    var dustMat = new THREE.PointsMaterial({ color: color, size: 0.038, transparent: true, opacity: 0.38 });
+    scene.add(new THREE.Points(dustGeo, dustMat));
+  });
 
   // Sequential same-strand connections (each strand reads as one continuous
   // spiral) plus cross "rungs" between the two strands' paired nodes (the
