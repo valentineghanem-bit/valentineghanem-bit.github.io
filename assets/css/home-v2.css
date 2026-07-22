@@ -27,17 +27,15 @@
   font-family: var(--v2-font-display); font-size: clamp(2rem, 4.2vw, 2.9rem); font-weight: 600;
   color: var(--v2-ink); line-height: 1; letter-spacing: -0.01em;
 }
-/* Round 19 correction: this cycled a different accent per "+" (round 18)
-   until studying real reference templates page by page showed that
-   pattern was actually wrong -- every professional example checked
-   (medical + portfolio templates in the mood-board folder) keeps stat
-   figures in ONE consistent accent colour, never rainbow-cycled across
-   otherwise-identical repeated numbers; colour variety in those
-   references only ever appears for a genuine reason (different data
-   series, a single featured/highlighted item), not as decoration on a
-   repeated list. One consistent accent here reads as "this is the brand
-   colour" the way the references do it; cycling read as confetti. */
-.home-v2__stat-band .stat__suffix { color: var(--v2-crimson, var(--v2-gold)); }
+/* Round 22: explicit, repeated direct instruction reversed round 19's
+   single-accent-per-list finding for this element specifically -- "the +
+   signs should have different colours... no one colour must dominate."
+   Cycles the 3 real "+"-bearing stats through 3 distinct, genuinely
+   text-safe hues (yellow/mint substitute their darker -ink variants here,
+   since this IS literal text colour, not a background wash). */
+.home-v2__stat-band .stat:nth-child(1) .stat__suffix { color: var(--v2-violet); }
+.home-v2__stat-band .stat:nth-child(2) .stat__suffix { color: var(--v2-crimson); }
+.home-v2__stat-band .stat:nth-child(3) .stat__suffix { color: var(--v2-cyan); }
 .home-v2__stat-band .stat__label { font-family: var(--v2-font-mono); font-size: 0.78rem; color: var(--v2-ink-soft); letter-spacing: 0.01em; max-width: 22ch; }
 @media (max-width: 640px) {
   .home-v2__stat-band { padding: 32px 20px 28px; }
@@ -99,10 +97,19 @@
 .home-v2 .toc-card:hover { border-left-color: var(--v2-wine-bright, var(--v2-wine)); }
 /* Bento-style tinted backgrounds -- a cycling wash of the three seasonal
    accents rather than every card sharing one flat surface colour. */
-/* Round 19: was a 3-way gold/wine/clay cycle -- see the bento-tint comment
-   in v2-tokens.css for why that pattern was wrong (reference templates
-   keep repeated card grids in one consistent accent, not a rainbow). */
-.home-v2 .toc-grid .toc-card { background: color-mix(in oklch, var(--v2-gold) 7%, transparent); }
+/* Round 22: explicit, repeated direct instruction reversed round 19's
+   single-accent finding here too -- cycles all 6 real palette colours
+   (background-only wash, so yellow/mint's full vivid pigment is fine;
+   no text-contrast concern the way the stat suffixes above have). 8 cards
+   -> colours 1-6 then repeat for cards 7-8, not a coincidence: with only
+   6 real accent hues and 8 cards some repetition is unavoidable, but
+   every hue still gets genuine, visible use. */
+.home-v2 .toc-grid .toc-card:nth-child(6n+1) { background: color-mix(in oklch, var(--v2-violet) 8%, transparent); }
+.home-v2 .toc-grid .toc-card:nth-child(6n+2) { background: color-mix(in oklch, var(--v2-crimson) 8%, transparent); }
+.home-v2 .toc-grid .toc-card:nth-child(6n+3) { background: color-mix(in oklch, var(--v2-cyan) 8%, transparent); }
+.home-v2 .toc-grid .toc-card:nth-child(6n+4) { background: color-mix(in oklch, var(--v2-yellow) 10%, transparent); }
+.home-v2 .toc-grid .toc-card:nth-child(6n+5) { background: color-mix(in oklch, var(--v2-mint) 10%, transparent); }
+.home-v2 .toc-grid .toc-card:nth-child(6n+6) { background: color-mix(in oklch, var(--v2-ink) 6%, transparent); }
 .home-v2 .toc-card__index { font-family: var(--v2-font-mono); font-size: 0.7rem; color: var(--v2-ink-soft); }
 .home-v2 .toc-card__title { font-family: var(--v2-font-display); font-weight: 600; font-variation-settings: "opsz" 24; font-size: 1.05rem; }
 .home-v2 .toc-card__desc { font-size: 0.86rem; color: var(--v2-ink-soft); }

@@ -21,23 +21,15 @@
      out of the base page canvas everywhere else). Same wash the isolated
      portrait sits against -- no separate photo background to reconcile
      with it, since the portrait PNG has none.
-     Round 20: the flat two-stop gradient alone read as plain white --
-     layered in a fine ambient dot-field (echoes the site's own "kinetic
-     data-node" motif as a base texture, not just the literal helix
-     sprites) plus two soft off-centre colour glows, borrowed from a
-     mood-board reference's ambient-light technique but tuned down hard
-     for a light base (that reference runs the same idea on a near-black
-     canvas at far higher opacity -- copied directly here it would look
-     like dirt, not atmosphere). Layer order below is paint order,
-     frontmost first. */
+     Round 20 layered a fine dot-grid + two off-centre colour glows on top
+     of this, borrowed from a mood-board reference's ambient-light
+     technique. Round 22 direct feedback called the result an ugly
+     "burnout"/glazed-screen look and asked for it removed -- reverted to
+     the plain two-stop wash; the floating accent sparks (below) carry the
+     extra visual interest instead, without a texture layer sitting over
+     everything. */
   background-color: var(--v2-void);
-  background-image:
-    radial-gradient(circle, color-mix(in oklch, var(--v2-ink) 16%, transparent) 1px, transparent 1.5px),
-    radial-gradient(52% 60% at 90% 12%, color-mix(in oklch, var(--v2-cyan) 16%, transparent) 0%, transparent 70%),
-    radial-gradient(44% 55% at 6% 94%, color-mix(in oklch, var(--v2-crimson) 12%, transparent) 0%, transparent 68%),
-    linear-gradient(100deg, color-mix(in oklch, var(--v2-violet) 20%, var(--v2-void)) 0%, var(--v2-void) 100%);
-  background-size: 34px 34px, auto, auto, auto;
-  background-repeat: repeat, no-repeat, no-repeat, no-repeat;
+  background-image: linear-gradient(100deg, color-mix(in oklch, var(--v2-violet) 20%, var(--v2-void)) 0%, var(--v2-void) 100%);
 }
 
 /* Small floating accent sparks in the gap between text and portrait --
@@ -68,12 +60,26 @@
    every viewport >=960px without hand-verifying pixel math per breakpoint. */
 .hero-v2__row { position: relative; z-index: 2; display: flex; flex-direction: column; }
 @media (min-width: 960px) {
-  .hero-v2__row { flex-direction: row; align-items: stretch; gap: 5vw; min-height: 72vh; }
+  /* Was 72vh -- on most real viewport heights that's noticeably taller than
+     either child (text column or portrait) actually needs, leaving a dead
+     empty band at the row's bottom with nothing in it but sparse ambient
+     helix decoration. Dropped to 58vh: still gives the hero real arrival
+     presence without forcing that much excess. */
+  .hero-v2__row { flex-direction: row; align-items: stretch; gap: 5vw; min-height: 58vh; }
 }
 
 .hero-v2__content { position: relative; }
 @media (min-width: 960px) {
-  .hero-v2__content { flex: 1 1 0; min-width: 0; max-width: 640px; align-self: center; }
+  /* Was align-self:center -- on any viewport where the text column's own
+     natural height falls short of the row's (portrait-driven) height,
+     centering splits the slack into two gaps, above AND below the content,
+     with nothing in either but the ambient canvas. The portrait's own img
+     is bottom-anchored (object-position: 50% 100%), so anchoring the text
+     column to the row's bottom edge too (flex-end) means both columns'
+     bottoms line up and any slack collects as a single gap ABOVE the
+     eyebrow line instead -- still empty, but above the content where it
+     reads as breathing room before the name, not dead space after the CTAs. */
+  .hero-v2__content { flex: 1 1 0; min-width: 0; max-width: 640px; align-self: flex-end; }
 }
 
 .hero-v2__eyebrow {
@@ -111,7 +117,13 @@
    a time, with a blinking caret. Marked aria-hidden since .hero-v2__role
    right below states the same fact plainly for assistive tech. */
 .hero-v2__typed {
-  font-family: var(--v2-font-mono); font-size: clamp(0.9rem, 1.6vw, 1.05rem); color: var(--v2-ink-soft);
+  /* Coloured with the page accent (not the muted ink-soft grey the static
+     .hero-v2__role line below uses) -- verified the typing/deleting loop
+     itself was never broken (setTimeout-driven, independent of any stalled
+     render pipeline), but at small size + muted grey it read as inert
+     leftover text rather than the one part of the hero actually animating
+     continuously, not just once on load. */
+  font-family: var(--v2-font-mono); font-size: clamp(0.95rem, 1.7vw, 1.15rem); font-weight: 600; color: var(--v2-gold);
   margin: 18px 0 0; min-height: 1.4em; opacity: 0;
 }
 .hero-v2__typed-cursor {

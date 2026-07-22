@@ -5,6 +5,20 @@
 // harmless no-ops without it; v2-toolbar.js owns real audio now.
 var vgAudio = { toggle: function () {}, blip: function () {}, tick: function () {}, setButton: function () {} };
 
+// Bento-tint 6-colour cycle, assigned by GLOBAL page position rather than
+// left to CSS :nth-child -- several pages (Skills, Portfolio) render their
+// bento-tint cards inside several separate .card-grid containers (one per
+// section), and :nth-child counts a child's position among ITS OWN
+// siblings only, so the CSS-only cycle silently restarted at 1 in every
+// group and only ever showed the first 3 of the 6 colours. Tagging each
+// card with its true page-wide index (data-tint-cycle) and switching the
+// CSS to attribute selectors fixes that without needing every page's
+// markup restructured into one flat list.
+(function () {
+  var tints = document.querySelectorAll('.v2-bento-tint');
+  tints.forEach(function (el, i) { el.setAttribute('data-tint-cycle', i % 6); });
+})();
+
 function vgShowToast(msg) {
   var toast = document.querySelector('.toast');
   if (!toast) {

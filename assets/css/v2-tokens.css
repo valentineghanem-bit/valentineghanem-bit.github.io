@@ -194,30 +194,37 @@ html[data-v2-theme="bright"] {
 .v2-corner-frame::before { top: -6px; left: 0; border-right: none; border-bottom: none; }
 .v2-corner-frame::after { bottom: -6px; left: 0; border-right: none; border-top: none; }
 
-/* Bento-tint -- ONE consistent accent wash across siblings (card grids,
-   tag lists) instead of one flat UNTINTED repeated surface colour.
-   Round 19 correction: this cycled 5 different hues per card (round 12)
-   until a page-by-page study of real reference templates (the mood-board
-   folder) showed that was the actual mistake -- every professional
-   example checked keeps repeated UI chrome (card grids, stat figures) in
-   ONE consistent brand accent; the only colour variety that ever shows up
-   in those references is for a genuine reason (distinct data series, one
-   deliberately-featured item against otherwise-neutral siblings), never
-   as decoration cycled across an otherwise-identical list. Also silently
-   fixed a real latent bug while removing this: the old 5th slot
-   referenced `--v2-blue`, a token retired in round 15 (renamed to
-   --v2-cyan) but never updated here, so that slot was already resolving
-   to nothing. */
-/* .v2-scope prefix + :nth-child(n) (matches every child, same as a plain
-   class selector would, but still counts as a pseudo-class) is deliberate,
-   not decorative -- raises specificity to (0,3,0) so this beats the
-   later, equal-specificity `.v2-scope .card` background rule below
-   without relying on source order. Dropping the pseudo-class entirely
-   when this stopped needing per-child cycling (round 19) silently
-   re-introduced the exact specificity trap round 7 already fixed once --
-   caught by checking the actual computed background colour live instead
-   of assuming the rule text alone was enough. */
-.v2-scope .v2-bento-tint:nth-child(n) { background: color-mix(in oklch, var(--v2-gold) 16%, var(--v2-glass)); }
+/* Bento-tint -- a genuine 6-way wash across siblings (card grids, tag
+   lists), one full palette hue per card in rotation.
+   Round 19 had reverted this to one flat consistent accent, reasoning from
+   the mood-board reference templates that repeated UI chrome stays in one
+   brand colour there. Round 22 explicit, repeated direct instruction
+   overrode that finding for this site specifically: "drop bento[-tint's
+   single-accent rule] and use all given colours in equal proportions...
+   no one colour must dominate." A direct, repeated instruction about the
+   user's own site beats a general pattern inferred from OTHER people's
+   templates -- reverted to real per-card colour variety, this time
+   covering all 6 hues (round 12's version only had 5 and one of those
+   referenced a token retired since). */
+/* [data-tint-cycle] (assets/js/site.js assigns this by true page-wide
+   position, see its own comment) rather than :nth-child -- several pages
+   split their bento-tint cards across multiple separate .card-grid
+   containers, and :nth-child only counts among same-parent siblings, so
+   it silently restarted at 1 in every group and never reached colours
+   4-6. Falls back to the :nth-child version for the rare no-JS case
+   (same 3-colour limitation then, but still tinted rather than flat). */
+.v2-scope .v2-bento-tint:nth-child(6n+1) { background: color-mix(in oklch, var(--v2-violet) 16%, var(--v2-glass)); }
+.v2-scope .v2-bento-tint:nth-child(6n+2) { background: color-mix(in oklch, var(--v2-crimson) 16%, var(--v2-glass)); }
+.v2-scope .v2-bento-tint:nth-child(6n+3) { background: color-mix(in oklch, var(--v2-cyan) 16%, var(--v2-glass)); }
+.v2-scope .v2-bento-tint:nth-child(6n+4) { background: color-mix(in oklch, var(--v2-yellow) 18%, var(--v2-glass)); }
+.v2-scope .v2-bento-tint:nth-child(6n+5) { background: color-mix(in oklch, var(--v2-mint) 18%, var(--v2-glass)); }
+.v2-scope .v2-bento-tint:nth-child(6n+6) { background: color-mix(in oklch, var(--v2-ink) 10%, var(--v2-glass)); }
+.v2-scope .v2-bento-tint[data-tint-cycle="0"] { background: color-mix(in oklch, var(--v2-violet) 16%, var(--v2-glass)); }
+.v2-scope .v2-bento-tint[data-tint-cycle="1"] { background: color-mix(in oklch, var(--v2-crimson) 16%, var(--v2-glass)); }
+.v2-scope .v2-bento-tint[data-tint-cycle="2"] { background: color-mix(in oklch, var(--v2-cyan) 16%, var(--v2-glass)); }
+.v2-scope .v2-bento-tint[data-tint-cycle="3"] { background: color-mix(in oklch, var(--v2-yellow) 18%, var(--v2-glass)); }
+.v2-scope .v2-bento-tint[data-tint-cycle="4"] { background: color-mix(in oklch, var(--v2-mint) 18%, var(--v2-glass)); }
+.v2-scope .v2-bento-tint[data-tint-cycle="5"] { background: color-mix(in oklch, var(--v2-ink) 10%, var(--v2-glass)); }
 .v2-scope a { color: var(--v2-wine-bright, var(--v2-wine)); text-decoration-thickness: 1px; text-underline-offset: 2px; }
 .v2-scope a:hover { color: var(--v2-gold); }
 
