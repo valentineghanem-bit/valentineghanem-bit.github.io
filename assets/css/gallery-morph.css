@@ -1,0 +1,44 @@
+/* Gallery morph-hero: scatter -> line -> circle (on load), then a
+   scroll-pinned circle -> arc morph + shuffle. Ported from a React/Framer
+   reference into vanilla JS + CSS transforms, pinned via GSAP ScrollTrigger
+   (not a manual wheel-preventDefault virtual scroll -- that traps the
+   user's scroll indefinitely; a pinned section releases naturally once
+   its scroll distance is used up). */
+.gallery-morph { position: relative; background: var(--v2-void); }
+.gallery-morph__scroller { position: relative; height: 260vh; }
+.gallery-morph__stage {
+  position: sticky; top: 0; height: 100vh; overflow: hidden;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+}
+.gallery-morph__intro {
+  position: absolute; top: 46%; left: 50%; transform: translate(-50%, -50%); z-index: 1;
+  pointer-events: none; padding: 0 24px; max-width: 640px;
+}
+.gallery-morph__eyebrow {
+  font-family: var(--v2-font-mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--v2-gold); margin: 0 0 14px;
+}
+.gallery-morph__title {
+  font-family: var(--v2-font-display); font-weight: 600; font-variation-settings: "opsz" 40;
+  font-size: clamp(1.6rem, 3.4vw, 2.6rem); color: var(--v2-ink); margin: 0;
+}
+.gallery-morph__hint {
+  font-family: var(--v2-font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--v2-ink-soft); margin: 16px 0 0;
+}
+.gallery-morph__card {
+  position: absolute; top: 50%; left: 50%; width: 78px; height: 108px; margin: -54px 0 0 -39px;
+  border-radius: 12px; overflow: hidden; box-shadow: var(--v2-shadow);
+  cursor: pointer; will-change: transform, opacity; opacity: 0;
+}
+.gallery-morph__card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+@media (max-width: 720px) {
+  .gallery-morph__card { width: 56px; height: 78px; margin: -39px 0 0 -28px; }
+  .gallery-morph__hint { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gallery-morph__scroller { height: auto; }
+  .gallery-morph__stage { position: static; height: auto; padding: 60px 24px; flex-wrap: wrap; gap: 10px; }
+  .gallery-morph__card { position: static; margin: 0; opacity: 1 !important; transform: none !important; }
+  .gallery-morph__intro { display: none; }
+}

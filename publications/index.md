@@ -5,7 +5,7 @@ title: "Publications"
 description: "Peer-reviewed research and publication record of Valentine Golden Ghanem, including spatial epidemiology of HIV/AIDS and health insurance coverage in Ghana."
 ---
 
-<section class="section wrap wrap--wide" data-pubs-root>
+<section class="publications-v2 v2-scope wrap wrap--wide" data-pubs-root>
   <p class="breadcrumb"><a href="{{ '/' | relative_url }}">Home</a> / Publications</p>
   <h1 class="page-title">Publications</h1>
   <p class="section__intro">
@@ -44,7 +44,8 @@ description: "Peer-reviewed research and publication record of Valentine Golden 
   <p class="filter-empty">No publications match that search.</p>
   <ul class="feed-list" data-pub-list>
     {% for pub in site.data.publications %}
-    <li class="feed-item" data-year="{{ pub.year }}" data-title="{{ pub.title }}">
+    <li class="feed-item v2-spotlight" data-year="{{ pub.year }}" data-title="{{ pub.title }}">
+      <span class="feed-item__record-id" aria-hidden="true">PUB-{{ forloop.index | prepend: "00" | slice: -2, 2 }}</span>
       <p class="feed-item__title">{{ pub.title }}</p>
       <span class="feed-item__meta">{{ pub.journal }} · {{ pub.year }} · {{ pub.status }}</span>
       <p class="feed-item__summary">{{ pub.summary }}</p>
@@ -62,7 +63,7 @@ description: "Peer-reviewed research and publication record of Valentine Golden 
   <h2 class="section__title section__title--sub">Academic positions</h2>
   <ul class="feed-list">
     {% for r in site.data.peer_review %}
-    <li class="feed-item">
+    <li class="feed-item v2-spotlight">
       <p class="feed-item__title">Peer Reviewer — {{ r.journal }}</p>
       <span class="feed-item__meta">{{ r.institution }} · {{ r.status }}</span>
       <div class="link-row" style="margin: 10px 0 0;">
@@ -84,3 +85,5 @@ description: "Peer-reviewed research and publication record of Valentine Golden 
     <a href="https://papers.ssrn.com/Sol3/Cf_Dev/AbsByAuth.cfm?per_id=10047916" target="_blank" rel="noopener">SSRN</a>
   </div>
 </section>
+
+<script src="{{ '/assets/js/publications-fx.js' | relative_url }}" defer></script>

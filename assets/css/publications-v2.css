@@ -1,0 +1,30 @@
+.publications-v2 { padding: 64px 24px 80px; }
+.publications-v2 .filter-toolbar { padding: 20px 22px; margin: 4px 0 32px; }
+.publications-v2 .feed-list { list-style: none; margin: 0 0 40px; padding: 0; display: grid; gap: 16px; }
+.publications-v2 .feed-item { position: relative; padding: 22px 26px 22px 68px; opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.2s ease; }
+.publications-v2 .feed-item.is-visible { opacity: 1; transform: none; }
+.publications-v2 .feed-item__title { font-family: var(--v2-font-display); font-weight: 600; font-size: 1.08rem; margin: 0 0 6px; }
+.publications-v2 .feed-item__summary { margin: 10px 0 0; font-size: 0.92rem; line-height: 1.55; }
+.publications-v2 .link-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.publications-v2 .link-row a, .publications-v2 .copy-btn {
+  --mx: 0px; --my: 0px; padding: 7px 14px; text-decoration: none; display: inline-block; transform: translate(var(--mx), var(--my));
+}
+.publications-v2 .copy-btn.is-copied { color: var(--v2-gold); border-color: var(--v2-gold); }
+
+/* Record-ID badge -- reads like a specimen/report accession number, tying
+   the publication list back to the lab-record framing used elsewhere on
+   the site, and giving each entry a distinct anchor point rather than a
+   flat undifferentiated list. */
+.publications-v2 .feed-item__record-id {
+  position: absolute; left: 22px; top: 24px; font-family: var(--v2-font-mono); font-size: 0.72rem;
+  color: var(--v2-ink-soft); border: 1px solid var(--v2-glass-border); border-radius: 3px; padding: 3px 6px;
+  letter-spacing: 0.03em; opacity: 0; transform: scale(0.6); transition: opacity 0.4s ease 0.15s, transform 0.4s cubic-bezier(0.22,1,0.36,1) 0.15s;
+}
+.publications-v2 .feed-item.is-visible .feed-item__record-id { opacity: 1; transform: scale(1); }
+@media (max-width: 560px) {
+  .publications-v2 .feed-item { padding-left: 26px; }
+  .publications-v2 .feed-item__record-id { position: static; display: inline-block; margin-bottom: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .publications-v2 .feed-item__record-id { transition: none; }
+}

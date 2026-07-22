@@ -14,6 +14,17 @@
 
   var CATS = ['screening', 'conference', 'outreach'];
   var CAT_LABELS = { screening: 'Medical screening', conference: 'Conference or seminar', outreach: 'Community outreach' };
+
+  // Every date string in community_activities.yml ends in a 4-digit year
+  // ("6 November 2024", "13-16 October 2021", ...) -- the last whitespace
+  // token is reliably the year regardless of day-range formatting.
+  function yearOf(dateStr) {
+    if (!dateStr) return null;
+    var parts = String(dateStr).trim().split(/\s+/);
+    var last = parts[parts.length - 1];
+    return /^\d{4}$/.test(last) ? last : null;
+  }
+
   var events = [];
   var runningIndex = 0;
   CATS.forEach(function (cat) {
@@ -26,6 +37,7 @@
         title: e.title,
         meta: e.location || e.provider || '',
         photo: photo,
+        year: yearOf(e.date),
         href: '/community/#community-event-' + runningIndex
       });
       runningIndex++;
@@ -39,38 +51,43 @@
 
   function palette() {
     return {
-      fill: cssVar('--teal-tint') || '#dff0ee',
-      stroke: cssVar('--teal-dark') || '#2b5c58',
-      hoverFill: cssVar('--gold-tint') || '#f6e6c8',
-      ink: cssVar('--ink') || '#1b2733',
-      inkSoft: cssVar('--ink-soft') || '#5a6b78',
-      paperRaised: cssVar('--paper-raised') || '#fff',
-      line: cssVar('--line') || '#ddd',
-      shadow: cssVar('--shadow-lg') || '0 20px 44px -18px rgba(0,0,0,0.45)',
-      screening: cssVar('--gold') || '#c9922a',
-      conference: cssVar('--teal-dark') || '#2b5c58',
-      outreach: cssVar('--clay') || '#a5502b'
+      fill: cssVar('--mv2-void-raised') || '#131218',
+      stroke: cssVar('--mv2-glass-border') || 'rgba(244,241,234,0.25)',
+      hoverFill: 'rgba(232,163,61,0.14)',
+      ink: cssVar('--mv2-ink') || '#f4f1ea',
+      inkSoft: cssVar('--mv2-ink-soft') || '#9b968c',
+      paperRaised: cssVar('--mv2-void-raised') || '#131218',
+      line: cssVar('--mv2-glass-border') || 'rgba(244,241,234,0.25)',
+      shadow: '0 20px 44px -18px rgba(0,0,0,0.6)',
+      screening: cssVar('--mv2-gold') || '#e8a33d',
+      conference: cssVar('--v2-wine-bright') || cssVar('--v2-wine') || '#8b4a42',
+      outreach: cssVar('--mv2-clay') || '#d9784f'
     };
   }
 
-  function pinSeries(cat, color, p) {
+  // effectScatter (not plain scatter): ECharts' built-in continuous ripple
+  // gives every pin a live "surveillance ping" at rest, not just on hover --
+  // reinforces the same network/surveillance motif as the Home hero.
+  function pinSeries(cat, color, p, yearFilter) {
     return {
       id: cat,
       name: cat,
-      type: 'scatter',
+      type: 'effectScatter',
       coordinateSystem: 'geo',
-      data: events.filter(function (e) { return e.category === cat; }).map(function (e) {
+      data: events.filter(function (e) { return e.category === cat && (!yearFilter || e.year === yearFilter); }).map(function (e) {
         return { name: e.title, value: [e.lng, e.lat], event: e };
       }),
-      symbolSize: 20,
-      itemStyle: { color: color, borderColor: p.paperRaised, borderWidth: 2, shadowBlur: 6, shadowColor: 'rgba(0,0,0,0.25)' },
-      emphasis: { scale: 1.35, itemStyle: { borderColor: p.stroke } },
+      symbolSize: 16,
+      showEffectOn: 'render',
+      rippleEffect: { brushType: 'stroke', scale: 2.2, period: 4.2 },
+      itemStyle: { color: color, borderColor: p.paperRaised, borderWidth: 2, shadowBlur: 8, shadowColor: color },
+      emphasis: { scale: 1.35, itemStyle: { borderColor: p.ink } },
       zlevel: 2,
       cursor: 'pointer'
     };
   }
 
-  function buildOption(prevZoom, prevCenter) {
+  function buildOption(prevZoom, prevCenter, yearFilter) {
     var p = palette();
     return {
       backgroundColor: 'transparent',
@@ -105,17 +122,28 @@
         emphasis: { itemStyle: { areaColor: p.hoverFill, borderColor: p.stroke, borderWidth: 1.5 }, label: { show: false } },
         select: { disabled: true }
       },
-      series: CATS.map(function (cat) { return pinSeries(cat, p[cat], p); })
+      series: CATS.map(function (cat) { return pinSeries(cat, p[cat], p, yearFilter); })
     };
   }
 
   var chart = null;
+  var activeYear = null;
 
   function themeAndRedraw() {
     if (!chart) return;
     var zoom = chart.getOption().geo[0].zoom;
     var center = chart.getOption().geo[0].center;
-    chart.setOption(buildOption(zoom, center), true);
+    chart.setOption(buildOption(zoom, center, activeYear), true);
+  }
+
+  // Average lat/lng of a set of events -- simple centroid, not a proper
+  // bounding-box fit, but with Ghana-scale event clusters this centres the
+  // view well without the complexity of a real fit-bounds calculation.
+  function centroidOf(evts) {
+    if (!evts.length) return null;
+    var sumLat = 0, sumLng = 0;
+    evts.forEach(function (e) { sumLat += e.lat; sumLng += e.lng; });
+    return [sumLng / evts.length, sumLat / evts.length];
   }
 
   fetch(container.getAttribute('data-geojson-url'))
@@ -227,8 +255,16 @@
         });
       });
 
-      // ---- Scrollytelling sync (community list <-> pins), same pattern as before ----
+      // ---- Scrollytelling sync (community list <-> pins), same pattern as before,
+      // now with a smooth animated pan/zoom to the active pin rather than just a
+      // highlight -- ECharts animates geo center/zoom changes by default. ----
       var geoCards = document.querySelectorAll('[data-geo-card]');
+      function panToEvent(idx) {
+        var e = events[idx];
+        if (!e) return;
+        var zoom = Math.max(currentZoom(), 2.4);
+        chart.setOption({ geo: { center: [e.lng, e.lat], zoom: zoom } }, false);
+      }
       if (geoCards.length && 'IntersectionObserver' in window) {
         var activeIdx = -1;
         function setActive(idx) {
@@ -240,6 +276,7 @@
             var within = events.filter(function (e) { return e.category === cat; });
             var dataIndex = within.indexOf(events[idx]);
             chart.dispatchAction({ type: 'highlight', seriesId: cat, dataIndex: dataIndex });
+            panToEvent(idx);
           }
         }
         var geoIo = new IntersectionObserver(function (entries) {
@@ -254,6 +291,73 @@
           }
         }, { threshold: [0.3, 0.5, 0.7], rootMargin: '-20% 0px -20% 0px' });
         geoCards.forEach(function (c) { geoIo.observe(c); });
+      }
+
+      // ---- Timeline scrubber: distinct years across the real event set,
+      // built dynamically (not hand-authored in the template) so it never
+      // drifts out of sync with the data. Clicking a year re-renders the
+      // map filtered to that year and pans/zooms to its centroid; the
+      // community-list cards dim to match. ----
+      var timelineRoot = document.querySelector('[data-geo-timeline]');
+      if (timelineRoot) {
+        var years = [];
+        events.forEach(function (e) { if (e.year && years.indexOf(e.year) === -1) years.push(e.year); });
+        years.sort();
+
+        geoCards.forEach(function (card, i) { card.setAttribute('data-year', events[i].year || ''); });
+
+        var track = document.createElement('div');
+        track.className = 'geo-timeline__track';
+        years.forEach(function (year) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'geo-timeline__year';
+          btn.textContent = year;
+          btn.setAttribute('aria-pressed', 'false');
+          btn.addEventListener('click', function () {
+            var next = activeYear === year ? null : year;
+            activeYear = next;
+            Array.prototype.forEach.call(track.children, function (b) {
+              var on = b.textContent === next;
+              b.classList.toggle('is-active', on);
+              b.setAttribute('aria-pressed', on ? 'true' : 'false');
+            });
+            geoCards.forEach(function (card) {
+              card.classList.toggle('is-dimmed', !!next && card.getAttribute('data-year') !== next);
+            });
+            var zoom = currentZoom(), center = chart.getOption().geo[0].center;
+            chart.setOption(buildOption(zoom, center, activeYear), true);
+            if (next) {
+              var centroid = centroidOf(events.filter(function (e) { return e.year === next; }));
+              if (centroid) chart.setOption({ geo: { center: centroid, zoom: Math.max(zoom, 2.6) } }, false);
+            }
+          });
+          track.appendChild(btn);
+        });
+        timelineRoot.appendChild(track);
+
+        var resetBtn = document.createElement('button');
+        resetBtn.type = 'button';
+        resetBtn.className = 'geo-timeline__reset';
+        resetBtn.textContent = 'Show all years';
+        resetBtn.addEventListener('click', function () {
+          activeYear = null;
+          Array.prototype.forEach.call(track.children, function (b) { b.classList.remove('is-active'); b.setAttribute('aria-pressed', 'false'); });
+          geoCards.forEach(function (card) { card.classList.remove('is-dimmed'); });
+          chart.setOption(buildOption(), true);
+        });
+        timelineRoot.appendChild(resetBtn);
+      }
+
+      // ---- Cursor-glow on the map frame (mouse-following radial highlight,
+      // same spotlight technique used on the Home hero's credential panels). ----
+      var frame = document.querySelector('.geo-map-frame');
+      if (frame) {
+        frame.addEventListener('pointermove', function (e) {
+          var r = frame.getBoundingClientRect();
+          frame.style.setProperty('--sx', ((e.clientX - r.left) / r.width * 100) + '%');
+          frame.style.setProperty('--sy', ((e.clientY - r.top) / r.height * 100) + '%');
+        });
       }
     });
 })();
