@@ -1,160 +1,9 @@
-(function () {
-  var saved = localStorage.getItem('vg-theme');
-  if (saved === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
-})();
-
-// Ambient audio: a slow, soft procedurally-generated piano/jazz chord loop
-// (plucked triangle+sine notes through a lowpass filter -- no audio files
-// to fetch, everything is synthesized) plus short UI blips and a distinct
-// click-tick. On by default (persisted only as an explicit mute, in
-// localStorage) but browsers block real autoplay before a gesture no
-// matter what a site wants, so playback actually begins on this page's
-// first click/keydown/touch -- as close to "plays automatically" as the
-// platform allows without every tab on the internet blasting sound on load.
-var vgAudio = (function () {
-  var ctx = null, masterGain = null, isOn = false, button = null, loopTimer = null, chordIndex = 0;
-  var MUTE_KEY = 'vg-audio-muted';
-  var wantsOn = localStorage.getItem(MUTE_KEY) !== 'true';
-
-  // Soft jazz-ish voicings, each an arpeggiated "pluck" rather than a held
-  // drone: Cmaj9 -> Am9 -> Dm9 -> G9, four bars, looping.
-  var CHORDS = [
-    [261.63, 329.63, 392.00, 493.88, 587.33],
-    [220.00, 261.63, 329.63, 392.00, 493.88],
-    [293.66, 349.23, 440.00, 523.25, 587.33],
-    [196.00, 246.94, 293.66, 349.23, 440.00]
-  ];
-
-  function ensureContext() {
-    if (ctx) return ctx;
-    var AudioCtx = window.AudioContext || window.webkitAudioContext;
-    if (!AudioCtx) return null;
-    ctx = new AudioCtx();
-    masterGain = ctx.createGain();
-    masterGain.gain.value = 0;
-    masterGain.connect(ctx.destination);
-    return ctx;
-  }
-
-  function pluck(freq, when, peak) {
-    var osc = ctx.createOscillator();
-    var osc2 = ctx.createOscillator();
-    var g = ctx.createGain();
-    var filt = ctx.createBiquadFilter();
-    filt.type = 'lowpass';
-    filt.frequency.value = 2200;
-    osc.type = 'triangle';
-    osc2.type = 'sine';
-    osc.frequency.value = freq;
-    osc2.frequency.value = freq * 1.003;
-    g.gain.setValueAtTime(0, when);
-    g.gain.linearRampToValueAtTime(peak, when + 0.02);
-    g.gain.exponentialRampToValueAtTime(0.0001, when + 2.6);
-    osc.connect(g); osc2.connect(g); g.connect(filt); filt.connect(masterGain);
-    osc.start(when); osc2.start(when);
-    osc.stop(when + 2.8); osc2.stop(when + 2.8);
-  }
-
-  function scheduleLoop() {
-    if (!isOn || !ctx) return;
-    var chord = CHORDS[chordIndex % CHORDS.length];
-    var now = ctx.currentTime + 0.05;
-    chord.forEach(function (freq, i) { pluck(freq, now + i * 0.42, 0.05 - i * 0.005); });
-    chordIndex++;
-    loopTimer = setTimeout(scheduleLoop, 4200);
-  }
-
-  function startLoop() {
-    var c = ensureContext();
-    if (!c) return;
-    if (c.state === 'suspended') c.resume();
-    masterGain.gain.cancelScheduledValues(c.currentTime);
-    masterGain.gain.setValueAtTime(masterGain.gain.value, c.currentTime);
-    masterGain.gain.linearRampToValueAtTime(1, c.currentTime + 1.4);
-    if (!loopTimer) scheduleLoop();
-  }
-
-  function stopLoop() {
-    if (!ctx) return;
-    clearTimeout(loopTimer);
-    loopTimer = null;
-    masterGain.gain.cancelScheduledValues(ctx.currentTime);
-    masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
-    masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.6);
-  }
-
-  function blip() {
-    if (!isOn) return;
-    var c = ensureContext();
-    if (!c) return;
-    var osc = c.createOscillator();
-    var gain = c.createGain();
-    osc.type = 'sine';
-    osc.frequency.value = 640;
-    gain.gain.setValueAtTime(0, c.currentTime);
-    gain.gain.linearRampToValueAtTime(0.05, c.currentTime + 0.01);
-    gain.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 0.16);
-    osc.connect(gain);
-    gain.connect(masterGain || c.destination);
-    osc.start();
-    osc.stop(c.currentTime + 0.18);
-  }
-
-  // A distinct, quick percussive tick for actual clicks (haptics have no
-  // web API, but a crisp short click is the closest audible stand-in).
-  function tick() {
-    if (!isOn) return;
-    var c = ensureContext();
-    if (!c) return;
-    var osc = c.createOscillator();
-    var gain = c.createGain();
-    osc.type = 'square';
-    osc.frequency.value = 1100;
-    gain.gain.setValueAtTime(0.055, c.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 0.045);
-    osc.connect(gain);
-    gain.connect(masterGain || c.destination);
-    osc.start();
-    osc.stop(c.currentTime + 0.05);
-  }
-
-  function syncButton() {
-    if (!button) return;
-    button.setAttribute('aria-pressed', isOn ? 'true' : 'false');
-    button.classList.toggle('is-audio-on', isOn);
-    var onIcon = button.querySelector('.icon-audio-on');
-    var offIcon = button.querySelector('.icon-audio-off');
-    if (onIcon) onIcon.hidden = !isOn;
-    if (offIcon) offIcon.hidden = isOn;
-  }
-
-  function setOn(next) {
-    isOn = next;
-    localStorage.setItem(MUTE_KEY, isOn ? 'false' : 'true');
-    if (isOn) startLoop(); else stopLoop();
-    syncButton();
-  }
-
-  function toggle() { setOn(!isOn); }
-
-  // Reflect the intended state immediately (icon shows "on" if the user
-  // hasn't muted before), then wait for this page's first gesture to
-  // actually start sound, since no browser allows real autoplay.
-  if (wantsOn) {
-    isOn = true;
-    var startOnFirstGesture = function () {
-      startLoop();
-      document.removeEventListener('pointerdown', startOnFirstGesture);
-      document.removeEventListener('keydown', startOnFirstGesture);
-      document.removeEventListener('touchstart', startOnFirstGesture);
-    };
-    document.addEventListener('pointerdown', startOnFirstGesture, { once: true });
-    document.addEventListener('keydown', startOnFirstGesture, { once: true });
-    document.addEventListener('touchstart', startOnFirstGesture, { once: true, passive: true });
-  }
-
-  return { toggle: toggle, blip: blip, tick: tick, setButton: function (btn) { button = btn; syncButton(); } };
-})();
+// Legacy theme + ambient-audio system removed -- superseded entirely by
+// v2-toolbar.js (four-way dark/dim/light/bright theme cycle + classical
+// piano audio + scroll-to-top). vgAudio kept as an inert stub only because
+// the click-tick/hover-blip call sites further down in this file are
+// harmless no-ops without it; v2-toolbar.js owns real audio now.
+var vgAudio = { toggle: function () {}, blip: function () {}, tick: function () {}, setButton: function () {} };
 
 function vgShowToast(msg) {
   var toast = document.querySelector('.toast');
@@ -172,134 +21,6 @@ function vgShowToast(msg) {
 document.addEventListener('DOMContentLoaded', function () {
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Hero title kinetic reveal: wrap each word so CSS can stagger it in on
-  // load (a purposeful first-impression moment on the one piece of text
-  // that matters most -- the name -- not decoration elsewhere).
-  if (!prefersReduced) {
-    var heroTitle = document.querySelector('.hero__title');
-    if (heroTitle) {
-      var words = heroTitle.textContent.trim().split(/\s+/);
-      heroTitle.innerHTML = words.map(function (w, i) {
-        return '<span class="word-reveal"><span class="word-reveal__inner" style="--i:' + i + '">' + w + '</span></span>';
-      }).join(' ');
-    }
-  }
-
-  // Custom cursor: a spring-lagged ring trails an instant dot, and grows
-  // over interactive elements -- only on fine-pointer, motion-ok devices
-  // (touch screens and reduced-motion users keep the native cursor
-  // untouched; nothing here ever blocks a click, it's purely decorative
-  // and sits at pointer-events: none).
-  if (!prefersReduced && window.matchMedia('(pointer: fine)').matches) {
-    var dot = document.createElement('div');
-    dot.className = 'cursor-dot is-hidden';
-    var ring = document.createElement('div');
-    ring.className = 'cursor-ring is-hidden';
-    var label = document.createElement('div');
-    label.className = 'cursor-label';
-    document.body.appendChild(dot);
-    document.body.appendChild(ring);
-    document.body.appendChild(label);
-    document.body.classList.add('has-custom-cursor');
-
-    // Short verb labels shown inside the difference-blob cursor over
-    // specific target families -- a quiet hint of what a hover will do,
-    // without adding any visible markup to the elements themselves.
-    var CURSOR_LABELS = [
-      { selector: '.toc-card', text: 'View' },
-      { selector: '.event-media__video__play', text: 'Play' },
-      { selector: '.event-media__item, .carousel__slide img', text: 'Zoom' },
-      { selector: '.carousel__arrow, .carousel__dot', text: '' },
-      { selector: '.carousel__slide, .carousel', text: 'Drag' },
-      { selector: '.event-card', text: '' },
-      { selector: '.card', text: '' },
-      { selector: 'a[target="_blank"]', text: 'Open' },
-      { selector: '.geo-pin', text: 'View' },
-      { selector: '.site-toolbar__btn--theme', text: '' },
-      { selector: '.site-toolbar__btn--top', text: 'Top' },
-      { selector: '.site-toolbar__btn--audio', text: '' }
-    ];
-    function cursorLabelFor(target) {
-      for (var i = 0; i < CURSOR_LABELS.length; i++) {
-        if (target.closest && target.closest(CURSOR_LABELS[i].selector)) return CURSOR_LABELS[i].text;
-      }
-      return '';
-    }
-
-    var ringX = { value: 0, velocity: 0, target: 0 };
-    var ringY = { value: 0, velocity: 0, target: 0 };
-    var ringScale = { value: 1, velocity: 0, target: 1 };
-    var shown = false;
-    function stepCursorAxis(axis, dt, stiffness, damping) {
-      var accel = -stiffness * (axis.value - axis.target) - damping * axis.velocity;
-      axis.velocity += accel * dt;
-      axis.value += axis.velocity * dt;
-    }
-    var lastCursorTs = null;
-    function cursorLoop(ts) {
-      if (!lastCursorTs) lastCursorTs = ts;
-      var dt = Math.min((ts - lastCursorTs) / 1000, 0.032);
-      lastCursorTs = ts;
-      stepCursorAxis(ringX, dt, 220, 18);
-      stepCursorAxis(ringY, dt, 220, 18);
-      stepCursorAxis(ringScale, dt, 300, 18);
-      // Velocity-based squash/stretch: the ring elongates slightly along
-      // its direction of travel (a rotate/scale/counter-rotate composite,
-      // capped so it never reads as rubbery) and a separate scale spring
-      // gives it a press-down/release bounce on click -- small "juicy
-      // cursor" touches that a flat translate() alone doesn't have.
-      var speed = Math.sqrt(ringX.velocity * ringX.velocity + ringY.velocity * ringY.velocity);
-      var stretch = Math.min(speed / 2200, 0.32);
-      var angle = Math.atan2(ringY.velocity, ringX.velocity) * 180 / Math.PI;
-      var sx = (ringScale.value + stretch).toFixed(3);
-      var sy = (ringScale.value - stretch * 0.6).toFixed(3);
-      ring.style.transform = 'translate(' + ringX.value.toFixed(1) + 'px, ' + ringY.value.toFixed(1) + 'px) translate(-50%, -50%) rotate(' + angle.toFixed(1) + 'deg) scale(' + sx + ', ' + sy + ') rotate(' + (-angle).toFixed(1) + 'deg)';
-      requestAnimationFrame(cursorLoop);
-    }
-    requestAnimationFrame(cursorLoop);
-
-    document.addEventListener('pointermove', function (e) {
-      if (e.pointerType === 'touch') return;
-      if (!shown) { shown = true; dot.classList.remove('is-hidden'); ring.classList.remove('is-hidden'); }
-      dot.style.transform = 'translate(' + e.clientX + 'px, ' + e.clientY + 'px) translate(-50%, -50%)';
-      label.style.transform = 'translate(' + e.clientX + 'px, ' + e.clientY + 'px) translate(-50%, -50%)';
-      ringX.target = e.clientX;
-      ringY.target = e.clientY;
-    }, { passive: true });
-
-    document.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'touch') { dot.classList.add('is-hidden'); ringScale.target = 0.78; } });
-    document.addEventListener('pointerup', function (e) { if (e.pointerType !== 'touch') { dot.classList.remove('is-hidden'); ringScale.target = 1; } });
-
-    var interactiveSelector = 'a, button, .btn, .card, .toc-card, .event-card, input, select, summary, .geo-pin';
-    document.addEventListener('pointerover', function (e) {
-      if (e.target.closest && e.target.closest(interactiveSelector)) {
-        ring.classList.add('is-interactive');
-        var text = cursorLabelFor(e.target);
-        label.textContent = text;
-        label.classList.toggle('is-visible', !!text);
-      }
-    });
-    document.addEventListener('pointerout', function (e) {
-      if (e.target.closest && e.target.closest(interactiveSelector)) {
-        ring.classList.remove('is-interactive');
-        label.classList.remove('is-visible');
-      }
-    });
-    document.addEventListener('mouseleave', function () {
-      dot.classList.add('is-hidden'); ring.classList.add('is-hidden'); label.classList.remove('is-visible');
-    });
-  }
-
-  // Kinetic hover arrow for the home "Explore" tiles -- injected once here
-  // so every toc-card gets it without touching index.md's markup.
-  document.querySelectorAll('.toc-card').forEach(function (card) {
-    var arrow = document.createElement('span');
-    arrow.className = 'toc-card__arrow';
-    arrow.setAttribute('aria-hidden', 'true');
-    arrow.textContent = '↗';
-    card.appendChild(arrow);
-  });
-
   // Scroll progress bar
   var progress = document.createElement('div');
   progress.className = 'scroll-progress';
@@ -313,58 +34,9 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('scroll', updateProgress, { passive: true });
   updateProgress();
 
-  // Floating toolbar: dark-mode toggle + back-to-top
-  var toolbar = document.createElement('div');
-  toolbar.className = 'site-toolbar';
-  toolbar.innerHTML =
-    '<button type="button" class="site-toolbar__btn site-toolbar__btn--audio" aria-label="Toggle ambient sound" title="Toggle ambient sound" aria-pressed="false">' +
-      '<svg class="icon-audio-off" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M18 9l4 6M22 9l-4 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>' +
-      '<svg class="icon-audio-on" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" hidden><path d="M4 9v6h4l5 4V5L8 9H4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M17 8.5a5 5 0 0 1 0 7M19.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>' +
-    '</button>' +
-    '<button type="button" class="site-toolbar__btn site-toolbar__btn--theme" aria-label="Toggle dark mode" title="Toggle dark mode">' +
-      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36A5.5 5.5 0 0 1 12 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>' +
-    '</button>' +
-    '<button type="button" class="site-toolbar__btn site-toolbar__btn--top" aria-label="Back to top" title="Back to top">' +
-      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-    '</button>';
-  document.body.appendChild(toolbar);
-  var themeBtn = toolbar.querySelector('.site-toolbar__btn--theme');
-  var topBtn = toolbar.querySelector('.site-toolbar__btn--top');
-  var audioBtn = toolbar.querySelector('.site-toolbar__btn--audio');
-  vgAudio.setButton(audioBtn);
-  audioBtn.addEventListener('click', function () { vgAudio.toggle(); });
-
-  // Quiet hover blips on primary interactive affordances -- silent unless
-  // the ambient toggle above is on, so this never surprises anyone.
-  if (!prefersReduced && window.matchMedia('(pointer: fine)').matches) {
-    var BLIP_SELECTOR = '.btn, .toc-card, .site-nav > a, .carousel__arrow, .filter-chip, .site-toolbar__btn';
-    var lastBlipTarget = null;
-    document.addEventListener('pointerover', function (e) {
-      if (e.pointerType === 'touch') return;
-      var match = e.target.closest && e.target.closest(BLIP_SELECTOR);
-      if (match && match !== lastBlipTarget) { lastBlipTarget = match; vgAudio.blip(); }
-      else if (!match) { lastBlipTarget = null; }
-    });
-  }
-
-  // A quiet click "tick" on any real interaction -- the closest audible
-  // stand-in for haptic feedback the Web platform offers; works for touch
-  // too, since touch has no hover state for the blip above to fire on.
-  document.addEventListener('pointerdown', function (e) {
-    if (e.target.closest && e.target.closest('a, button')) vgAudio.tick();
-  });
-
-  function isDark() { return document.documentElement.getAttribute('data-theme') === 'dark'; }
-  themeBtn.addEventListener('click', function () {
-    if (isDark()) { document.documentElement.removeAttribute('data-theme'); localStorage.setItem('vg-theme', 'light'); }
-    else { document.documentElement.setAttribute('data-theme', 'dark'); localStorage.setItem('vg-theme', 'dark'); }
-  });
-  topBtn.addEventListener('click', function () {
-    window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
-  });
-  window.addEventListener('scroll', function () {
-    topBtn.classList.toggle('is-visible', window.scrollY > 480);
-  }, { passive: true });
+  // Theme cycle, ambient audio and scroll-to-top now all live in
+  // v2-toolbar.js -- one coherent floating toolbar instead of this file's
+  // old dark/light-only version.
 
   // Mobile nav toggle
   var toggle = document.querySelector('.nav-toggle');
@@ -410,100 +82,36 @@ document.addEventListener('DOMContentLoaded', function () {
     revealEls.forEach(function (el) { el.classList.add('is-visible'); });
   }
 
-  // Kinetic word-split heading reveal: every .section__title and
-  // .page-title gets the same masked word-rise treatment the hero title
-  // gets on load, except triggered on scroll-into-view. Walks text nodes
-  // only, so existing child markup (e.g. <span class="section__index">)
-  // is left completely alone.
-  function splitHeadingWords(el) {
-    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
-    var nodes = [];
-    var n;
-    while ((n = walker.nextNode())) nodes.push(n);
-    var i = 0;
-    nodes.forEach(function (node) {
-      if (!node.nodeValue.trim()) return;
-      var parts = node.nodeValue.split(/(\s+)/);
-      var frag = document.createDocumentFragment();
-      parts.forEach(function (part) {
-        if (part === '') return;
-        if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
-        var outer = document.createElement('span');
-        outer.className = 'kinetic-word';
-        outer.style.setProperty('--i', i++);
-        var inner = document.createElement('span');
-        inner.className = 'kinetic-word__inner';
-        inner.textContent = part;
-        outer.appendChild(inner);
-        frag.appendChild(outer);
-      });
-      node.parentNode.replaceChild(frag, node);
-    });
-  }
-  var headingEls = document.querySelectorAll('.section__title, .page-title');
-  if (!prefersReduced && headingEls.length && 'IntersectionObserver' in window) {
-    headingEls.forEach(splitHeadingWords);
-    var headingIo = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) { entry.target.classList.add('is-kinetic-visible'); headingIo.unobserve(entry.target); }
-      });
-    }, { threshold: 0.2 });
-    headingEls.forEach(function (el) { headingIo.observe(el); });
-  }
-
-  // Text scramble: cycles random glyphs into place, left to right, before
-  // settling on the exact original text. Purely a hover flourish -- final
-  // state always equals the starting textContent, gated to fine-pointer/
-  // motion-ok so it never touches touch devices or reduced-motion users.
-  var SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*+=-/\\';
-  function scrambleInto(el, finalText) {
-    if (el._scrambleRaf) cancelAnimationFrame(el._scrambleRaf);
-    var duration = 420;
-    var start = null;
-    function frame(ts) {
-      if (!start) start = ts;
-      var progress = Math.min((ts - start) / duration, 1);
-      var revealCount = Math.floor(progress * finalText.length);
-      var out = '';
-      for (var i = 0; i < finalText.length; i++) {
-        if (finalText[i] === ' ') { out += ' '; continue; }
-        out += i < revealCount ? finalText[i] : SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
-      }
-      el.textContent = out;
-      if (progress < 1) { el._scrambleRaf = requestAnimationFrame(frame); }
-      else { el.textContent = finalText; el._scrambleRaf = null; }
-    }
-    el._scrambleRaf = requestAnimationFrame(frame);
-  }
-  if (!prefersReduced && window.matchMedia('(pointer: fine)').matches) {
-    // .nav-dropdown__trigger is deliberately excluded: it has a non-text
-    // SVG chevron child, and scrambleInto's el.textContent assignment
-    // would silently delete it.
-    var scrambleTargets = document.querySelectorAll(
-      '.hero__title .word-reveal__inner, .site-nav > a, .toc-card__title'
-    );
-    scrambleTargets.forEach(function (el) {
-      var original = el.textContent;
-      el.addEventListener('pointerenter', function (e) {
-        if (e.pointerType === 'touch') return;
-        scrambleInto(el, original);
-      });
-    });
-  }
-
-  // Stat counters (count up when scrolled into view)
+  // Stat counters (count up when scrolled into view). The "+" suffix gets
+  // its own span (cycled through the palette's accent hues in CSS) instead
+  // of being plain text glued onto the number -- a flat single-colour
+  // stat row reads as one block; a coloured accent per figure reads as a
+  // set of distinct, deliberate data points.
   var stats = document.querySelectorAll('.stat__number[data-target]');
+  function buildStatNodes(el) {
+    var suffix = el.getAttribute('data-suffix') || '';
+    el.textContent = '';
+    var numText = document.createTextNode('0');
+    el.appendChild(numText);
+    if (suffix) {
+      var suffixEl = document.createElement('span');
+      suffixEl.className = 'stat__suffix';
+      suffixEl.textContent = suffix;
+      el.appendChild(suffixEl);
+    }
+    return numText;
+  }
   function animateStat(el) {
     var target = parseFloat(el.getAttribute('data-target'));
-    var suffix = el.getAttribute('data-suffix') || '';
-    if (prefersReduced) { el.textContent = target + suffix; return; }
+    var numText = buildStatNodes(el);
+    if (prefersReduced) { numText.data = target.toLocaleString('en-US'); return; }
     var start = null, duration = 1100;
     function step(ts) {
       if (!start) start = ts;
       var progress = Math.min((ts - start) / duration, 1);
       var eased = 1 - Math.pow(1 - progress, 3);
       var val = Math.round(target * eased);
-      el.textContent = val + suffix;
+      numText.data = val.toLocaleString('en-US');
       if (progress < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
@@ -516,7 +124,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }, { threshold: 0.5 });
     stats.forEach(function (el) { statIo.observe(el); });
   } else {
-    stats.forEach(function (el) { el.textContent = el.getAttribute('data-target') + (el.getAttribute('data-suffix') || ''); });
+    stats.forEach(function (el) {
+      var numText = buildStatNodes(el);
+      numText.data = parseFloat(el.getAttribute('data-target')).toLocaleString('en-US');
+    });
   }
 
   // Hero portrait parallax
@@ -534,65 +145,6 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('scroll', function () {
       if (!ticking) { requestAnimationFrame(updateParallax); ticking = true; }
     }, { passive: true });
-  }
-
-  // Hero exit + mouse tilt: --hero-scroll drives the CSS shrink/fade/blur
-  // as the visitor scrolls past the first screen; --hero-tilt-x/-y is a
-  // spring-damped response to cursor position, applied only to
-  // .hero__content (the portrait keeps its own parallax transform above
-  // untouched -- this never writes a transform to it).
-  var heroEl = document.querySelector('.hero');
-  if (heroEl && !prefersReduced) {
-    var heroScrollTicking = false;
-    function updateHeroScroll() {
-      var progress = Math.min(Math.max(window.scrollY / (heroEl.offsetHeight * 0.6), 0), 1);
-      heroEl.style.setProperty('--hero-scroll', progress.toFixed(4));
-      heroScrollTicking = false;
-    }
-    window.addEventListener('scroll', function () {
-      if (!heroScrollTicking) { requestAnimationFrame(updateHeroScroll); heroScrollTicking = true; }
-    }, { passive: true });
-    updateHeroScroll();
-
-    if (window.matchMedia('(pointer: fine)').matches) {
-      var heroContent = heroEl.querySelector('.hero__content');
-      var tiltX = { value: 0, velocity: 0, target: 0 };
-      var tiltY = { value: 0, velocity: 0, target: 0 };
-      var heroTiltRunning = false;
-      var heroTiltLastTs = null;
-      function stepHeroTilt(axis, dt) {
-        var accel = -180 * (axis.value - axis.target) - 16 * axis.velocity;
-        axis.velocity += accel * dt;
-        axis.value += axis.velocity * dt;
-      }
-      function heroTiltLoop(ts) {
-        if (!heroTiltLastTs) heroTiltLastTs = ts;
-        var dt = Math.min((ts - heroTiltLastTs) / 1000, 0.032);
-        heroTiltLastTs = ts;
-        stepHeroTilt(tiltX, dt);
-        stepHeroTilt(tiltY, dt);
-        heroContent.style.setProperty('--hero-tilt-x', tiltX.value.toFixed(3) + 'deg');
-        heroContent.style.setProperty('--hero-tilt-y', tiltY.value.toFixed(3) + 'deg');
-        var atRestX = Math.abs(tiltX.value - tiltX.target) < 0.01 && Math.abs(tiltX.velocity) < 0.01;
-        var atRestY = Math.abs(tiltY.value - tiltY.target) < 0.01 && Math.abs(tiltY.velocity) < 0.01;
-        if (!(atRestX && atRestY)) { requestAnimationFrame(heroTiltLoop); }
-        else { heroTiltRunning = false; heroTiltLastTs = null; }
-      }
-      if (heroContent) {
-        heroEl.addEventListener('pointermove', function (e) {
-          var r = heroEl.getBoundingClientRect();
-          var px = (e.clientX - r.left) / r.width - 0.5;
-          var py = (e.clientY - r.top) / r.height - 0.5;
-          tiltY.target = px * 2.4;
-          tiltX.target = py * -2.4;
-          if (!heroTiltRunning) { heroTiltRunning = true; requestAnimationFrame(heroTiltLoop); }
-        }, { passive: true });
-        heroEl.addEventListener('pointerleave', function () {
-          tiltX.target = 0; tiltY.target = 0;
-          if (!heroTiltRunning) { heroTiltRunning = true; requestAnimationFrame(heroTiltLoop); }
-        });
-      }
-    }
   }
 
   // Skills toolkit filter (category select + domain select + live search)
@@ -1153,32 +705,59 @@ document.addEventListener('DOMContentLoaded', function () {
     }, { passive: true });
   }
 
-  // Marquee scroll-skew: a quick flick of the wheel racks every .marquee
-  // band over briefly (scroll-velocity driven), easing back to level once
-  // scrolling settles. The steady horizontal scroll itself is a plain CSS
-  // keyframe animation on .marquee__track, so the band keeps moving even
-  // if this never runs.
-  var marquees = document.querySelectorAll('.marquee');
-  if (marquees.length && !prefersReduced) {
-    var lastMarqueeScrollY = window.scrollY;
-    var marqueeSkew = 0;
-    var marqueeDecayRaf = null;
-    function applyMarqueeSkew() {
-      marquees.forEach(function (m) { m.style.setProperty('--marquee-skew', marqueeSkew.toFixed(2) + 'deg'); });
-    }
-    function decayMarqueeSkew() {
-      marqueeSkew *= 0.85;
-      if (Math.abs(marqueeSkew) < 0.05) { marqueeSkew = 0; applyMarqueeSkew(); marqueeDecayRaf = null; return; }
-      applyMarqueeSkew();
-      marqueeDecayRaf = requestAnimationFrame(decayMarqueeSkew);
-    }
-    window.addEventListener('scroll', function () {
-      var y = window.scrollY;
-      var delta = y - lastMarqueeScrollY;
-      lastMarqueeScrollY = y;
-      marqueeSkew = Math.max(-14, Math.min(14, marqueeSkew + delta * 0.6));
-      applyMarqueeSkew();
-      if (!marqueeDecayRaf) marqueeDecayRaf = requestAnimationFrame(decayMarqueeSkew);
-    }, { passive: true });
+  // Marquee is now a plain, constant-speed CSS animation (home-v2.css) --
+  // no scroll-velocity skew. Classical/subtle: a steady drift, not a
+  // reactive flourish on top of everything else already moving.
+
+  // Page transitions -- this is a static multi-page site, so every internal
+  // link is a hard reload by default. That's a flat, un-kinetic moment next
+  // to everything else on the page.
+  //
+  // Two tiers: browsers that support the CSS View Transitions API's
+  // cross-document mode (opted into already, near the top of style.css --
+  // `@view-transition { navigation: auto }` plus custom vg-page-out/
+  // vg-page-in root animations and a persistent view-transition-name on
+  // the header logo -- a real browser-native snapshot-and-morph between
+  // the old and new document, genuinely more "cinematic/spatial" than
+  // anything a JS fade can fake) get that and nothing else from here --
+  // this `supportsViewTransitions` check is the fix for a real bug that
+  // predates this comment: without it, the JS veil below and the browser's
+  // own view transition were BOTH firing on every navigation, two
+  // transitions fighting each other instead of one cohesive effect. Older
+  // browsers still fall back to the JS veil (brief fade+scale exit with a
+  // thin top progress cue) so the moment is still not a flat page-load
+  // jolt there either. Only the exit is ever animated by JS -- gating the
+  // *incoming* page behind a "hidden until JS runs" state risks leaving
+  // content invisible if a script fails, so the new page just loads and
+  // reveals normally via the existing [data-reveal]/stagger treatments
+  // already on every section.
+  if (!prefersReduced) {
+    var supportsViewTransitions = 'startViewTransition' in document;
+    var veil = document.createElement('div');
+    veil.className = 'page-veil';
+    veil.innerHTML = '<div class="page-veil__bar"></div>';
+    document.body.appendChild(veil);
+    var navigatingAway = false;
+    document.addEventListener('click', function (e) {
+      if (navigatingAway || e.defaultPrevented) return;
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest('a[href]');
+      if (!a || (a.target && a.target !== '_self') || a.hasAttribute('download')) return;
+      var href = a.getAttribute('href');
+      if (!href || href.charAt(0) === '#' || /^(mailto:|tel:|javascript:)/i.test(href)) return;
+      var url;
+      try { url = new URL(href, window.location.href); } catch (err) { return; }
+      if (url.origin !== window.location.origin) return;
+      if (url.pathname === window.location.pathname && url.hash) return;
+      navigatingAway = true;
+      e.preventDefault();
+      if (supportsViewTransitions) {
+        window.location.href = href;
+      } else {
+        document.body.classList.add('is-leaving');
+        veil.classList.add('is-active');
+        setTimeout(function () { window.location.href = href; }, 380);
+      }
+    });
   }
 });

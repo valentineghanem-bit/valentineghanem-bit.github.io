@@ -5,7 +5,7 @@ title: "Skills"
 description: "Technical, analytical and leadership skills of Valentine Golden Ghanem across public health, data science and biomedical science."
 ---
 
-<section class="section wrap wrap--wide" data-skills-root>
+<section class="skills-v2 v2-scope wrap wrap--wide" data-skills-root>
   <p class="breadcrumb"><a href="{{ '/' | relative_url }}">Home</a> / Skills</p>
   <h1 class="page-title">Skills &amp; toolkit</h1>
   <p class="section__intro">
@@ -13,6 +13,20 @@ description: "Technical, analytical and leadership skills of Valentine Golden Gh
     analysis pipeline. Filter by category, by domain, or search directly for a
     tool, method or platform.
   </p>
+
+  <!-- Interconnected-domains network: a kinetic at-a-glance visual for the
+       real 15 domains this site's own JSON-LD already declares
+       (site.data.profile.knows_about), reusing the cursor-repulsion
+       physics technique built for the Home hero's helix (ported from the
+       "Woven Light" reference) -- applied here to plain labelled nodes
+       instead of photos, a distinct visual from both the hero and the
+       skills-matrix heatmap below. Hidden on narrow screens: 15 labels
+       have no room to stay legible there, and the matrix/cards below
+       already carry the same information. -->
+  <div class="skills-v2__network" data-skills-network aria-hidden="true">
+    <canvas class="skills-v2__network-canvas"></canvas>
+  </div>
+  <script type="application/json" id="skills-network-data">{{ site.data.profile.knows_about | jsonify }}</script>
 
   <div class="filter-toolbar">
     <div class="filter-toolbar__field">
@@ -56,7 +70,10 @@ description: "Technical, analytical and leadership skills of Valentine Golden Gh
         <th scope="row">{{ g.icon }} {{ g.name }}</th>
         {% for section in site.data.skills %}
         {% assign match = section.groups | where: "name", g.name | first %}
-        <td><button type="button" class="skills-matrix__cell" data-category="{{ section.category }}" data-domain="{{ g.name }}">{{ match.items.size }}</button></td>
+        {% assign n = match.items.size %}
+        {% assign heat = "var(--v2-ink-soft)" %}
+        {% if n >= 5 %}{% assign heat = "var(--v2-gold)" %}{% elsif n >= 2 %}{% assign heat = "var(--v2-blue)" %}{% endif %}
+        <td><button type="button" class="skills-matrix__cell" style="--v2-heat: {{ heat }};" data-category="{{ section.category }}" data-domain="{{ g.name }}">{{ n }}</button></td>
         {% endfor %}
       </tr>
       {% endfor %}
@@ -70,7 +87,8 @@ description: "Technical, analytical and leadership skills of Valentine Golden Gh
     <h2 class="section__title section__title--sub"><span class="section__index">0{{ forloop.index }}</span> {{ section.category }}</h2>
     <div class="card-grid">
       {% for g in section.groups %}
-      <div class="card" data-domain="{{ g.name }}">
+      <div class="card v2-scan-card v2-bento-tint" data-domain="{{ g.name }}">
+        <div class="v2-scan-sweep" aria-hidden="true"></div>
         <h3 class="card__title">{{ g.icon }} {{ g.name }}</h3>
         <ul class="card__list">
           {% for item in g.items %}
@@ -90,3 +108,6 @@ description: "Technical, analytical and leadership skills of Valentine Golden Gh
   </details>
   <p><a href="{{ '/assets/files/valentine-golden-ghanem-resume.pdf' | relative_url }}" target="_blank" rel="noopener">Open résumé in a new tab ↗</a></p>
 </section>
+
+<script src="{{ '/assets/js/skills-fx.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/js/skills-network.js' | relative_url }}" defer></script>

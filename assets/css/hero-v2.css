@@ -1,0 +1,280 @@
+/* ============================================================
+   Hero v2 -- the alternate composition: a real portrait right-anchored,
+   fading gradually left into an ambient full-bleed helix/data-node
+   canvas, with the text column on the left. A flex row (.hero-v2__row)
+   with a real gap is what guarantees text/photo never overlap -- browser-
+   computed at every width, not hand-verified pixel math -- and the mask
+   fade is a soft dissolve layered on top of that hard boundary, never a
+   substitute for it. Below 960px the portrait is hidden entirely and the
+   ambient canvas alone carries the motif behind the stacked text.
+   Text stays LEFT-aligned throughout -- centering a multi-line editorial
+   headline/mission is the one thing that reads as a template hero.
+   ============================================================ */
+.hero-v2 {
+  position: relative;
+  color: var(--v2-ink);
+  font-family: var(--v2-font-structure);
+  padding: 10vh 4vw 8vh;
+  overflow: hidden;
+  /* Round 15: crisp white into a light violet, fading smoothly right
+     (white) to left (violet) -- the specific "designated background
+     element" moment for violet per the palette brief (used here, kept
+     out of the base page canvas everywhere else). Same wash the isolated
+     portrait sits against -- no separate photo background to reconcile
+     with it, since the portrait PNG has none. */
+  background-color: var(--v2-void);
+  background-image: linear-gradient(100deg, color-mix(in oklch, var(--v2-violet) 20%, var(--v2-void)) 0%, var(--v2-void) 100%);
+}
+
+/* Real flex row, not grid columns -- the portrait item is allowed to
+   stretch taller than the content column and bleed its mask into empty
+   space, which a grid track fights (tracks size to their tallest cell).
+   Flexbox's own gap is the overlap guarantee: browser-computed, holds at
+   every viewport >=960px without hand-verifying pixel math per breakpoint. */
+.hero-v2__row { position: relative; z-index: 2; display: flex; flex-direction: column; }
+@media (min-width: 960px) {
+  .hero-v2__row { flex-direction: row; align-items: stretch; gap: 5vw; min-height: 72vh; }
+}
+
+.hero-v2__content { position: relative; }
+@media (min-width: 960px) {
+  .hero-v2__content { flex: 1 1 0; min-width: 0; max-width: 640px; align-self: center; }
+}
+
+.hero-v2__eyebrow {
+  font-family: var(--v2-font-mono); font-size: 0.76rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--v2-gold); display: inline-flex; align-items: center; gap: 10px; margin: 0 0 26px; opacity: 0;
+}
+.hero-v2__eyebrow::before { content: ''; width: 5px; height: 5px; background: var(--v2-gold); box-shadow: 0 0 8px 1px var(--v2-gold-soft); flex: none; }
+
+.hero-v2__name {
+  font-family: var(--v2-font-display); font-weight: 700; font-variation-settings: "opsz" 96;
+  line-height: 0.92; letter-spacing: -0.01em; margin: 0; font-size: clamp(2.4rem, 7.2vw, 5.8rem); color: var(--v2-ink);
+}
+.hero-v2__name .ln { display: block; overflow: hidden; }
+.hero-v2__name .rise { display: inline-block; will-change: transform; }
+.hero-v2__name .char { display: inline-block; will-change: transform, color; transition: transform 0.22s ease, color 0.22s ease; }
+
+/* Corner-bracket quote frame -- an editorial stamp-of-confidence treatment
+   (thin L-shaped tick marks at two corners) instead of the mission line
+   floating unframed in space. */
+.hero-v2__mission-frame {
+  position: relative; margin: 26px 0 0; padding: 4px 0 4px 22px; opacity: 0;
+}
+.hero-v2__mission-frame::before, .hero-v2__mission-frame::after {
+  content: ''; position: absolute; width: 14px; height: 14px; border: 2px solid var(--v2-gold);
+}
+.hero-v2__mission-frame::before { top: -6px; left: 0; border-right: none; border-bottom: none; }
+.hero-v2__mission-frame::after { bottom: -6px; left: 0; border-right: none; border-top: none; }
+.hero-v2__mission {
+  font-family: var(--v2-font-structure); font-style: italic; font-weight: 400; font-variation-settings: "opsz" 24;
+  font-size: clamp(1.1rem, 2vw, 1.5rem); color: var(--v2-ink); max-width: 60ch; margin: 0; line-height: 1.48;
+}
+.hero-v2__mission .accent { color: var(--v2-gold); font-style: normal; font-weight: 600; }
+
+/* Typed role line -- cycles through the real job titles, one character at
+   a time, with a blinking caret. Marked aria-hidden since .hero-v2__role
+   right below states the same fact plainly for assistive tech. */
+.hero-v2__typed {
+  font-family: var(--v2-font-mono); font-size: clamp(0.9rem, 1.6vw, 1.05rem); color: var(--v2-ink-soft);
+  margin: 18px 0 0; min-height: 1.4em; opacity: 0;
+}
+.hero-v2__typed-cursor {
+  display: inline-block; width: 2px; height: 1em; background: var(--v2-gold); margin-left: 2px; vertical-align: text-bottom;
+  animation: hv2-blink 0.9s step-end infinite;
+}
+@media (prefers-reduced-motion: reduce) { .hero-v2__typed-cursor { animation: none; } }
+
+.hero-v2__role {
+  font-family: var(--v2-font-mono); font-size: clamp(0.82rem, 1.3vw, 0.96rem); color: var(--v2-ink-soft);
+  margin: 20px 0 0; letter-spacing: 0.01em; opacity: 0;
+}
+.hero-v2__role strong { color: var(--v2-ink); font-weight: 500; }
+
+.hero-v2__panels { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 34px; opacity: 0; }
+.hero-v2__panel {
+  --sx: 50%; --sy: 50%;
+  position: relative; background: var(--v2-glass); border: 1px solid var(--v2-glass-border);
+  backdrop-filter: blur(14px) saturate(1.1); -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  padding: 12px 17px; font-family: var(--v2-font-mono); font-size: 0.78rem; color: var(--v2-ink-soft);
+  display: flex; align-items: center; gap: 9px; overflow: hidden;
+}
+.hero-v2__panel::before {
+  content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.35s ease;
+  background: radial-gradient(160px circle at var(--sx) var(--sy), var(--v2-gold-soft), transparent 72%);
+  pointer-events: none;
+}
+.hero-v2__panel:hover::before { opacity: 0.85; }
+.hero-v2__panel strong { color: var(--v2-ink); font-weight: 500; position: relative; }
+.hero-v2__panel .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--v2-wine-bright, var(--v2-wine)); box-shadow: 0 0 6px 1px var(--v2-wine-dim); flex: none; position: relative; }
+
+.hero-v2__ctas { display: flex; gap: 14px; margin-top: 38px; flex-wrap: wrap; opacity: 0; }
+.hero-v2__btn {
+  --mx: 0px; --my: 0px;
+  font-family: var(--v2-font-mono); font-size: 0.8rem; letter-spacing: 0.03em; text-transform: uppercase;
+  padding: 15px 26px; border: 1px solid var(--v2-glass-border); color: var(--v2-ink); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 10px; transform: translate(var(--mx), var(--my));
+  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+.hero-v2__btn--primary { background: var(--v2-gold); color: var(--v2-void); border-color: var(--v2-gold); font-weight: 600; }
+.hero-v2__btn--primary:hover { box-shadow: 0 0 22px var(--v2-gold-soft); }
+.hero-v2__btn--ghost:hover { border-color: var(--v2-wine-bright, var(--v2-wine)); background: var(--v2-wine-dim); }
+/* Blinking cursor tick beside the CTAs -- a small "still live" signal
+   rather than the button row just sitting static once revealed. */
+.hero-v2__blink {
+  width: 2px; height: 22px; background: var(--v2-gold); align-self: center;
+  animation: hv2-blink 1.1s step-end infinite;
+}
+@keyframes hv2-blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .hero-v2__blink { animation: none; opacity: 0.6; }
+}
+
+.hero-v2__a11y-link {
+  position: relative; z-index: 2; font-family: var(--v2-font-mono); font-size: 0.74rem; color: var(--v2-ink-soft);
+  text-decoration: underline; text-underline-offset: 3px; margin-top: 24px; display: inline-block; opacity: 0;
+}
+.hero-v2__a11y-link:hover { color: var(--v2-gold); }
+
+/* ---------- The alternate hero: portrait right, fading gradually into
+   the ambient helix canvas on the left. Round 15: the source photo's
+   background is genuinely removed now (rembg + u2net_human_seg, plain
+   mask -- alpha matting produced a soft halo on this specific photo's
+   warm stage lighting, verified visually before choosing the plain-mask
+   result instead), colour-enhanced (vibrancy/contrast/brightness/
+   sharpness) and kept in full colour -- no more grayscale+duotone, which
+   was specifically a workaround for the old busy, un-isolated photo. The
+   isolated PNG sits directly on .hero-v2's own white-to-violet gradient,
+   so there's no separate photo background left to reconcile with it.
+   Narrowed twice now (46%/640px -> 36%/480px -> 32%/420px) so the kinetic
+   helix/content zone gets real width, per repeated direct feedback that
+   the old proportions gave too much space to a comparatively empty part
+   of the frame. A flex-gap (declared on .hero-v2__row above) is what actually
+   guarantees this never overlaps the text, not the mask -- the mask is a
+   soft visual dissolve layered on top of a hard, browser-computed
+   boundary. Hidden below 960px: the ambient canvas alone carries the
+   "kinetic data" motif on narrow screens. ---------- */
+.hero-v2__portrait { display: none; }
+@media (min-width: 960px) {
+  .hero-v2__portrait {
+    display: block; position: relative; flex: 0 1 32%; max-width: 420px;
+    /* Pushes flush to the row's right edge (the hero's own right margin)
+       regardless of viewport width, instead of leaving unused space past
+       it -- without this, a flex row with only .hero-v2__content set to
+       grow can leave the portrait stranded short of the actual margin on
+       wide screens once content hits its own max-width cap. */
+    margin-left: auto;
+    align-self: stretch; overflow: hidden; opacity: 0;
+    transform: perspective(1400px) rotateX(10deg) scale(0.95); transform-origin: 50% 100%;
+    -webkit-mask-image: linear-gradient(to left, black 0%, black 58%, transparent 92%);
+    mask-image: linear-gradient(to left, black 0%, black 58%, transparent 92%);
+  }
+}
+.hero-v2__portrait-img {
+  width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; display: block;
+}
+/* Bold solid color-block wedge -- graphic confidence in the hero's true
+   corner rather than a plain photo/canvas box. Desktop-only (see the
+   720px query below) -- too prominent against the shorter mobile stack. */
+.hero-v2__block {
+  position: absolute; z-index: 3; top: 0; right: 0; width: 96px; height: 96px;
+  background: var(--v2-gold); clip-path: polygon(100% 0, 100% 100%, 0 0);
+  pointer-events: none;
+}
+/* Floating credibility badge -- anchored to the portrait's top-RIGHT (the
+   fully-opaque zone, well clear of the left-fading mask) so it never
+   dissolves along with the photo's own left edge. */
+.hero-v2__badge {
+  position: absolute; z-index: 3; right: 18px; top: 18px; opacity: 0;
+  font-family: var(--v2-font-mono); font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase;
+  background: var(--v2-ink); color: var(--v2-void); padding: 8px 12px 8px 26px; border-radius: 3px;
+  transition: opacity 0.4s ease;
+}
+.hero-v2__badge::before {
+  content: ''; position: absolute; left: 11px; top: 50%; width: 6px; height: 6px; margin-top: -3px;
+  border-radius: 50%; background: var(--v2-wine-bright, var(--v2-wine));
+  box-shadow: 0 0 0 0 color-mix(in oklch, var(--v2-wine-bright, var(--v2-wine)) 55%, transparent);
+  animation: hv2-badge-pulse 2s ease-out infinite;
+}
+@keyframes hv2-badge-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in oklch, var(--v2-wine-bright, var(--v2-wine)) 55%, transparent); }
+  70% { box-shadow: 0 0 0 7px color-mix(in oklch, var(--v2-wine-bright, var(--v2-wine)) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in oklch, var(--v2-wine-bright, var(--v2-wine)) 0%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) { .hero-v2__badge::before { animation: none; } }
+.hero-v2__canvas {
+  position: absolute; inset: 0; z-index: 0; display: block; width: 100%; height: 100%;
+  background: var(--v2-void-raised);
+}
+.hero-v2__grid-floor {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.14;
+  background-image:
+    linear-gradient(var(--v2-glass-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--v2-glass-border) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 100%, black 0%, transparent 70%);
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 100%, black 0%, transparent 70%);
+  transform: perspective(600px) rotateX(58deg); transform-origin: 50% 100%;
+}
+/* Text-protection scrim: sits between the now hero-wide canvas (z-index 0)
+   and the content row (z-index 2). A uniform wash by default -- safe at
+   any width, including the fully-stacked mobile layout where content now
+   spans edge to edge. From 960px up (real two-zone layout) it becomes an
+   angled gradient instead: solid over the text column, faded out by the
+   time it reaches the portrait, so the wash never muddies the photo. */
+.hero-v2__scrim {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: color-mix(in oklch, var(--v2-void) 74%, transparent);
+}
+@media (min-width: 960px) {
+  .hero-v2__scrim {
+    background: linear-gradient(100deg, var(--v2-void) 0%, var(--v2-void) 38%, color-mix(in oklch, var(--v2-void) 45%, transparent) 58%, transparent 78%);
+  }
+}
+.hero-v2__noise {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0.025; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.hero-v2__scroll-cue {
+  position: absolute; left: 20px; bottom: 16px; z-index: 3; opacity: 0;
+  font-family: var(--v2-font-mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--v2-ink-soft);
+  display: flex; align-items: center; gap: 10px;
+}
+.hero-v2__scroll-cue .track { width: 1px; height: 26px; background: var(--v2-glass-border); position: relative; overflow: hidden; }
+.hero-v2__scroll-cue .track::after {
+  content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: var(--v2-gold);
+  animation: hv2-cue 2.4s cubic-bezier(0.6,0,0.4,1) infinite;
+}
+@keyframes hv2-cue { to { top: 100%; } }
+
+/* Photo caption card -- on hover this now shows the real, UNCROPPED source
+   photo (not the small circular sprite from the helix) briefly, reverting
+   the moment the cursor moves to a different node or away entirely. */
+.hero-v2__photo-caption {
+  position: fixed; z-index: 50; pointer-events: none; font-family: var(--v2-font-mono); font-size: 0.72rem;
+  color: var(--v2-ink); background: var(--v2-void-raised); border: 1px solid var(--v2-glass-border);
+  padding: 10px; width: 200px; opacity: 0; transition: opacity 0.2s ease, transform 0.2s ease;
+  transform: translate(-50%, -100%) translateY(-14px); box-shadow: var(--v2-shadow);
+}
+.hero-v2__photo-caption.is-visible { opacity: 1; }
+.hero-v2__photo-caption-imgwrap {
+  width: 100%; aspect-ratio: 4 / 3; overflow: hidden; background: var(--v2-void); margin-bottom: 8px;
+  border: 1px solid var(--v2-glass-border);
+}
+.hero-v2__photo-caption-img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.hero-v2__photo-caption-text { margin: 0; line-height: 1.4; }
+.hero-v2__photo-caption-meta {
+  margin: 4px 0 0; color: var(--v2-gold); font-size: 0.66rem; letter-spacing: 0.03em; text-transform: uppercase;
+}
+.hero-v2__photo-caption-meta:empty { display: none; }
+
+@media (max-width: 720px) {
+  .hero-v2 { padding: 12vh 6vw 6vh; }
+  .hero-v2__block, .hero-v2__scroll-cue { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-v2__name .rise, .hero-v2__eyebrow, .hero-v2__mission-frame, .hero-v2__role,
+  .hero-v2__panels, .hero-v2__ctas, .hero-v2__scroll-cue, .hero-v2__a11y-link, .hero-v2__portrait, .hero-v2__badge {
+    opacity: 1 !important; transform: none !important; animation: none !important;
+  }
+}

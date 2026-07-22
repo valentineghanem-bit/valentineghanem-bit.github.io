@@ -5,7 +5,7 @@ title: "Portfolio"
 description: "Applied academic and professional projects by Valentine Golden Ghanem in biomedical research, public health data analytics, dashboard development and machine learning."
 ---
 
-<section class="section wrap wrap--wide" data-portfolio-root>
+<section class="portfolio-v2 v2-scope wrap wrap--wide" data-portfolio-root>
   <p class="breadcrumb"><a href="{{ '/' | relative_url }}">Home</a> / Portfolio</p>
   <h1 class="page-title">Portfolio</h1>
   <p class="section__intro">
@@ -24,7 +24,7 @@ description: "Applied academic and professional projects by Valentine Golden Gha
   <h2 class="section__title section__title--sub">Capstone projects</h2>
   <div class="card-grid">
     {% for p in site.data.portfolio.capstone_projects %}
-    <div class="card">
+    <div class="card v2-spotlight v2-bento-tint">
       <h3 class="card__title">{{ p.title }}</h3>
       <p class="card__body">{{ p.context }}</p>
       <p class="card__body" style="margin-top: 8px;">{{ p.summary }}</p>
@@ -40,7 +40,7 @@ description: "Applied academic and professional projects by Valentine Golden Gha
   <h2 class="section__title section__title--sub">Data visualisations</h2>
   <div class="card-grid">
     {% for p in site.data.portfolio.data_visualisations %}
-    <div class="card">
+    <div class="card v2-spotlight v2-bento-tint">
       <h3 class="card__title">{{ p.title }}</h3>
       <p class="card__body">{{ p.summary }}</p>
       <div class="link-row" style="margin: 12px 0 0;">
@@ -56,7 +56,7 @@ description: "Applied academic and professional projects by Valentine Golden Gha
   <h2 class="section__title section__title--sub">Research projects</h2>
   <div class="card-grid">
     {% for p in site.data.portfolio.research_projects %}
-    <div class="card">
+    <div class="card v2-spotlight v2-bento-tint">
       <h3 class="card__title">{{ p.title }}</h3>
       <p class="card__body">{{ p.context }}</p>
       <p class="card__body" style="margin-top: 8px;">{{ p.summary }}</p>
@@ -68,3 +68,5 @@ description: "Applied academic and professional projects by Valentine Golden Gha
   </div>
   </div>
 </section>
+
+<script src="{{ '/assets/js/portfolio-fx.js' | relative_url }}" defer></script>

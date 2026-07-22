@@ -10,14 +10,14 @@ description: "An interactive coordinate map of Valentine Golden Ghanem's medical
 {%- for e in site.data.community_activities.conferences -%}{%- assign geo_events = geo_events | push: e -%}{%- endfor -%}
 {%- for e in site.data.community_activities.outreach -%}{%- assign geo_events = geo_events | push: e -%}{%- endfor -%}
 
-<section class="section wrap wrap--wide" data-reveal>
+<section class="map-v2 wrap wrap--wide" data-reveal>
   <p class="breadcrumb"><a href="{{ '/' | relative_url }}">Home</a> / Field Map</p>
-  <h1 class="page-title">Field map</h1>
-  <p class="section__intro">
+  <h1 class="page-title">Surveillance field map</h1>
+  <p class="section__intro v2-corner-frame">
     Every medical screening, conference and community outreach activity on this site, plotted
-    by its real coordinates against the real boundaries of Ghana's 259 administrative districts.
-    Hover a pin for a preview, click through to its full record, or scroll the list on the
-    right -- the map tracks along with it either way.
+    by its real coordinates against the real boundaries of Ghana's 261 administrative districts.
+    Hover a pin for a preview, click through to its full record, scrub by year below, or scroll
+    the list on the right -- the map pans and zooms to follow it either way.
   </p>
 
   <div class="geo-layout">
@@ -28,7 +28,7 @@ description: "An interactive coordinate map of Valentine Golden Ghanem's medical
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 9-3 3-3-3 3-9z" fill="currentColor"/><path d="M12 22V13M4 12h16M6.5 6.5l11 11M17.5 6.5l-11 11" stroke="currentColor" stroke-width="0.75" opacity="0.4"/></svg>
           <span>N</span>
         </div>
-        <div id="geo-map-echarts" class="geo-map-echarts" role="img" aria-label="Map of Ghana's 259 administrative districts with activity locations marked" data-geojson-url="{{ '/assets/data/ghana-districts.geojson' | relative_url }}"></div>
+        <div id="geo-map-echarts" class="geo-map-echarts" role="img" aria-label="Map of Ghana's 261 administrative districts with activity locations marked" data-geojson-url="{{ '/assets/data/ghana-districts.geojson' | relative_url }}"></div>
         <script type="application/json" id="geo-map-data">
           {
             "screening": {{ site.data.community_activities.medical_screening | jsonify }},
@@ -46,12 +46,16 @@ description: "An interactive coordinate map of Valentine Golden Ghanem's medical
           <button type="button" class="geo-zoom__btn geo-zoom__btn--reset" data-geo-zoom-reset aria-label="Reset map view">&#8634;</button>
         </div>
       </div>
-      <p class="geo-map__caption">Real district boundaries (259 districts) &middot; hover a pin for a preview, click to open its record.</p>
+      <p class="geo-map__caption">Real district boundaries (261 districts) &middot; hover a pin for a preview, click to open its record.</p>
       <div class="geo-legend" data-geo-legend>
         <button type="button" class="geo-legend__item geo-legend__item--screening" data-geo-filter="screening"><i class="geo-legend__swatch"></i>Medical screening</button>
         <button type="button" class="geo-legend__item geo-legend__item--conference" data-geo-filter="conference"><i class="geo-legend__swatch"></i>Conferences &amp; seminars</button>
         <button type="button" class="geo-legend__item geo-legend__item--outreach" data-geo-filter="outreach"><i class="geo-legend__swatch"></i>Community outreach</button>
         <span class="geo-legend__item"><i class="geo-legend__swatch geo-legend__swatch--district"></i>District boundary</span>
+      </div>
+      <div class="geo-timeline">
+        <p class="geo-timeline__label">Scrub by year</p>
+        <div data-geo-timeline></div>
       </div>
     </div>
 

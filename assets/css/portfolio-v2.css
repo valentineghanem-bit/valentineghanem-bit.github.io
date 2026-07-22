@@ -1,0 +1,9 @@
+.portfolio-v2 { padding: 64px 24px 80px; }
+.portfolio-v2 .filter-chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 4px 0 32px; }
+.portfolio-v2 .filter-chip { --mx: 0px; --my: 0px; padding: 9px 18px; transform: translate(var(--mx), var(--my)); }
+.portfolio-v2 .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin-bottom: 8px; }
+.portfolio-v2 .card { padding: 24px 26px; opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.portfolio-v2 .card.is-visible { opacity: 1; transform: none; }
+.portfolio-v2 .card__title { font-size: 1.1rem; margin: 0 0 10px; }
+.portfolio-v2 .card__body + .card__body { margin-top: 10px; }
+.portfolio-v2 .link-row a { padding: 7px 14px; text-decoration: none; }

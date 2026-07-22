@@ -1,0 +1,242 @@
+/* ============================================================
+   About v2 -- same dark/gold/cyan system as hero-v2/map-v2 (token
+   values duplicated again; see map-v2.css's note -- consolidate onto
+   a shared .v2-scope when Task #5 lands). Every section below gets
+   its own distinct, content-specific motion rather than one repeated
+   "fade up on scroll" treatment throughout.
+   ============================================================ */
+.about-v2 {
+  background: var(--v2-void);
+  color: var(--v2-ink);
+  font-family: var(--v2-font-structure);
+}
+.about-v2 .breadcrumb { font-family: var(--v2-font-mono); font-size: 0.8rem; color: var(--v2-ink-soft); }
+.about-v2 .breadcrumb a { color: var(--v2-ink-soft); }
+.about-v2__section { padding: 56px 24px; border-top: 1px solid var(--v2-glass-border); position: relative; }
+.about-v2__section:first-child { border-top: none; }
+/* Oversized ghost numeral, same motif as Home -- reuses .section__ghost-num
+   (defined once in home-v2.css, unscoped so any page can use it). */
+.about-v2__section > *:not(.section__ghost-num):not(.canvas-field) { position: relative; z-index: 1; }
+.about-v2__index {
+  font-family: var(--v2-font-display); font-size: 1.6rem; font-weight: 600; color: var(--v2-gold);
+}
+.about-v2__title {
+  font-family: var(--v2-font-display); font-weight: 600; font-size: 1.5rem; color: var(--v2-ink);
+  display: flex; align-items: baseline; gap: 12px; margin: 0 0 28px;
+}
+
+/* ---------- Header ---------- */
+.about-v2__hero { position: relative; padding: 64px 24px; overflow: hidden; }
+.about-v2__hero .canvas-field { position: absolute; inset: 0; z-index: 0; }
+.about-v2__hero-inner { position: relative; z-index: 1; max-width: 1240px; margin: 0 auto; }
+.about-v2__page-title { font-family: var(--v2-font-display); font-weight: 700; font-size: clamp(2rem, 4.5vw, 3.2rem); margin: 8px 0 22px; }
+.about-v2__quote {
+  --sx: 50%; --sy: 50%;
+  position: relative; font-family: var(--v2-font-display); font-style: italic; font-weight: 500;
+  font-size: clamp(1.1rem, 2vw, 1.5rem); max-width: 62ch; line-height: 1.5; color: var(--v2-ink);
+  background: var(--v2-glass); border: 1px solid var(--v2-glass-border); backdrop-filter: blur(14px);
+  padding: 26px 30px; overflow: hidden; margin: 0 0 32px;
+}
+.about-v2__quote::before {
+  content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s ease;
+  background: radial-gradient(320px circle at var(--sx) var(--sy), var(--v2-gold-soft), transparent 70%);
+  pointer-events: none;
+}
+.about-v2__quote:hover::before { opacity: 0.6; }
+
+.about-v2__layout { display: flex; gap: 40px; flex-wrap: wrap-reverse; align-items: flex-start; }
+.about-v2__body { flex: 1 1 420px; min-width: 0; color: var(--v2-ink-soft); font-size: 1.02rem; line-height: 1.7; }
+.about-v2__portrait { position: relative; flex: 0 0 220px; width: 220px; margin: 0; }
+.about-v2__portrait-badge {
+  position: absolute; z-index: 2; left: 10px; top: 10px;
+  font-family: var(--v2-font-mono); font-size: 0.66rem; letter-spacing: 0.04em; text-transform: uppercase;
+  background: var(--v2-ink); color: var(--v2-void); padding: 7px 11px; border-radius: 3px; line-height: 1.3; max-width: 150px;
+}
+.about-v2__portrait img { width: 100%; height: auto; border: 1px solid var(--v2-glass-border); display: block; }
+.about-v2__portrait figcaption { font-family: var(--v2-font-mono); font-size: 0.72rem; color: var(--v2-ink-soft); margin-top: 10px; line-height: 1.4; }
+
+/* ---------- 01: Specimen cards -- a microscope-slide label metaphor,
+   literal to the "medical scientist" identity rather than a generic card.
+   A single light sweep crosses each card once on scroll-reveal, like a
+   scanner/reader passing over a sample. ---------- */
+.about-v2__specimens { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+.about-v2__specimen {
+  position: relative; border: 1px solid var(--v2-glass-border); background: var(--v2-void-raised);
+  padding: 22px 24px; overflow: hidden;
+}
+.about-v2__specimen::before, .about-v2__specimen::after {
+  content: ''; position: absolute; width: 10px; height: 10px; border: 1.5px solid var(--v2-gold); opacity: 0.6;
+}
+.about-v2__specimen::before { top: 8px; left: 8px; border-right: none; border-bottom: none; }
+.about-v2__specimen::after { bottom: 8px; right: 8px; border-left: none; border-top: none; }
+.about-v2__specimen-title {
+  font-family: var(--v2-font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--v2-gold); margin: 0 0 16px;
+}
+.about-v2__specimen-scan {
+  position: absolute; left: 0; right: 0; top: 0; height: 40%; pointer-events: none;
+  background: linear-gradient(180deg, var(--v2-wine-dim), transparent);
+  transform: translateY(-100%); opacity: 0;
+}
+.about-v2__specimen.is-scanned .about-v2__specimen-scan { animation: av2-scan 1.1s ease-out forwards; }
+@keyframes av2-scan { 0% { transform: translateY(-100%); opacity: 0.9; } 100% { transform: translateY(250%); opacity: 0; } }
+.about-v2__field { display: flex; justify-content: space-between; gap: 14px; font-family: var(--v2-font-mono); font-size: 0.86rem; border-bottom: 1px dashed var(--v2-glass-border); padding: 8px 0; }
+.about-v2__field:last-child { border-bottom: none; }
+.about-v2__field-label { color: var(--v2-ink-soft); text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.05em; }
+.about-v2__field-value { color: var(--v2-ink); text-align: right; }
+
+/* ---------- 02: Purpose -- a reading-progress rail down the left edge
+   of the manifesto text, filling gold as you actually read through it
+   (scroll-scrubbed), not a decorative animation independent of scroll. ---------- */
+.about-v2__manifesto { position: relative; padding-left: 24px; margin: 0 0 32px; }
+.about-v2__manifesto-rail { position: absolute; left: 0; top: 4px; bottom: 4px; width: 2px; background: var(--v2-glass-border); }
+.about-v2__manifesto-rail-fill { position: absolute; left: 0; top: 0; width: 100%; height: 0%; background: var(--v2-gold); box-shadow: 0 0 8px 1px var(--v2-gold-soft); }
+.about-v2__manifesto-text { font-family: var(--v2-font-display); font-style: italic; font-size: clamp(1.1rem, 1.8vw, 1.4rem); line-height: 1.55; color: var(--v2-ink); }
+
+.about-v2__cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+.about-v2__card { border: 1px solid var(--v2-glass-border); background: var(--v2-glass); backdrop-filter: blur(10px); padding: 22px 24px; }
+.about-v2__cards .about-v2__card:nth-child(1) { background: color-mix(in oklch, var(--v2-gold) 8%, var(--v2-glass)); }
+.about-v2__cards .about-v2__card:nth-child(2) { background: color-mix(in oklch, var(--v2-wine, var(--v2-gold)) 7%, var(--v2-glass)); }
+.about-v2__card-title { font-family: var(--v2-font-display); font-weight: 600; font-size: 1.05rem; margin: 0 0 10px; }
+.about-v2__card-body { color: var(--v2-ink-soft); font-size: 0.94rem; line-height: 1.6; margin: 0; }
+.about-v2__card ul { margin: 12px 0 0; padding-left: 18px; color: var(--v2-ink); font-size: 0.92rem; }
+.about-v2__card li { margin-bottom: 6px; }
+
+/* ---------- 03: Expertise pills -- staggered reveal + magnetic hover,
+   the same spring/spotlight vocabulary as the hero, not a new pattern. ---------- */
+.about-v2__pills { display: flex; flex-wrap: wrap; gap: 10px; }
+.about-v2__pill {
+  --mx: 0px; --my: 0px;
+  background: var(--v2-glass); border: 1px solid var(--v2-glass-border); color: var(--v2-ink-soft);
+  font-family: var(--v2-font-mono); font-size: 0.8rem; padding: 8px 16px;
+  transform: translate(var(--mx), var(--my)) translateY(14px); opacity: 0;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.about-v2__pill:hover { border-color: var(--v2-gold); color: var(--v2-ink); }
+.about-v2__pill.is-visible { animation: av2-pill-in 0.6s cubic-bezier(0.16,1,0.3,1) forwards; }
+@keyframes av2-pill-in { to { opacity: 1; transform: translate(var(--mx), var(--my)) translateY(0); } }
+
+/* ---------- 04: Identifiers -- terminal scan-reveal, monospace-native. ---------- */
+.about-v2__ident-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+@media (min-width: 640px) { .about-v2__ident-list { grid-template-columns: 1fr 1fr; gap: 2px 24px; } }
+.about-v2__ident {
+  display: flex; justify-content: space-between; gap: 14px; font-family: var(--v2-font-mono); font-size: 0.86rem;
+  border-bottom: 1px dashed var(--v2-glass-border); padding: 10px 0; opacity: 0;
+}
+.about-v2__ident.is-visible { animation: av2-ident-in 0.5s ease forwards; }
+@keyframes av2-ident-in { from { opacity: 0; } to { opacity: 1; } }
+.about-v2__ident-label { color: var(--v2-ink-soft); text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.74rem; }
+.about-v2__ident-value { color: var(--v2-wine-bright, var(--v2-wine)); text-decoration: none; }
+.about-v2__ident-value:hover { text-decoration: underline; }
+.about-v2__ident-cursor {
+  display: inline-block; width: 7px; height: 1em; background: var(--v2-gold); margin-left: 2px; vertical-align: text-bottom;
+  animation: av2-blink 0.9s step-end infinite;
+}
+@keyframes av2-blink { 50% { opacity: 0; } }
+
+/* ---------- 05: Credentials -- spotlight-glow tags, the signature
+   hover motif reused (established on the hero + map), not reinvented. ---------- */
+.about-v2__creds { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.about-v2__cred {
+  --sx: 50%; --sy: 50%;
+  position: relative; overflow: hidden; border: 1px solid var(--v2-glass-border); border-left: 3px solid var(--v2-gold);
+  background: var(--v2-void-raised); padding: 14px 18px;
+}
+.about-v2__cred--pending { border-left-color: var(--v2-wine-bright, var(--v2-wine)); }
+.about-v2__creds .about-v2__cred:nth-child(3n+1) { background: color-mix(in oklch, var(--v2-gold) 5%, var(--v2-void-raised)); }
+.about-v2__creds .about-v2__cred:nth-child(3n+2) { background: color-mix(in oklch, var(--v2-wine, var(--v2-gold)) 5%, var(--v2-void-raised)); }
+.about-v2__creds .about-v2__cred:nth-child(3n+3) { background: color-mix(in oklch, var(--v2-clay, var(--v2-gold)) 6%, var(--v2-void-raised)); }
+.about-v2__cred::before {
+  content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+  background: radial-gradient(200px circle at var(--sx) var(--sy), var(--v2-gold-soft), transparent 70%);
+}
+.about-v2__cred--pending::before { background: radial-gradient(200px circle at var(--sx) var(--sy), var(--v2-wine-dim), transparent 70%); }
+.about-v2__cred:hover::before { opacity: 0.5; }
+.about-v2__cred-name { font-weight: 600; position: relative; }
+.about-v2__cred-meta { font-family: var(--v2-font-mono); font-size: 0.78rem; color: var(--v2-ink-soft); position: relative; }
+
+/* ---------- 06: Timeline, reorganised (round 12) from a tall vertical
+   rail-accordion into a compact record-card grid + lightbox. The
+   accordion made this the longest scroll on the page even collapsed (15
+   full-width rows); a grid of minimal tiles (icon + dates + title) reads
+   as a specimen/record wall at a glance, with the fan-carousel's
+   pop-out-lightbox TECHNIQUE reused for the "option to extend" -- click a
+   card, it grows from its own on-screen rect into a centered detail view,
+   rather than a per-row expand-in-place. ---------- */
+.about-v2__title-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin: 0 0 6px; }
+.about-v2__title-row .about-v2__title { margin: 0; }
+.about-v2__timeline-hint { font-family: var(--v2-font-mono); font-size: 0.78rem; color: var(--v2-ink-soft); margin: 0 0 12px; }
+
+.about-v2__record-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; margin: 20px 0 0;
+}
+.about-v2__record-card {
+  position: relative; text-align: left; font: inherit; color: inherit; cursor: pointer;
+  border: 1px solid var(--v2-glass-border); padding: 14px 16px 16px; min-height: 108px;
+  display: flex; flex-direction: column; gap: 4px; overflow: hidden;
+  opacity: 0; transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.about-v2__record-card.is-visible { opacity: 1; transform: none; }
+.about-v2__record-card:hover, .about-v2__record-card:focus-visible {
+  border-color: var(--v2-ink); box-shadow: var(--v2-shadow); transform: translateY(-3px);
+}
+.about-v2__record-card:focus-visible { outline: 2px solid var(--v2-gold); outline-offset: 2px; }
+.about-v2__record-card-icon { font-size: 1.3rem; line-height: 1; }
+.about-v2__record-card-dates { font-family: var(--v2-font-mono); font-size: 0.7rem; color: var(--v2-ink-soft); }
+.about-v2__record-card-title {
+  font-family: var(--v2-font-display); font-weight: 600; font-size: 0.94rem; color: var(--v2-ink); line-height: 1.28;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+/* Small "+" flag -- the only visual cue that a card has a full description
+   behind it (the lightbox), so it doesn't read as a dead-end tile. */
+.about-v2__record-card-flag {
+  position: absolute; top: 10px; right: 12px; font-family: var(--v2-font-mono); font-size: 0.8rem;
+  color: var(--v2-gold); opacity: 0.7;
+}
+
+/* ---------- Record lightbox -- same grow-from-origin-rect technique as
+   the gallery's fan-carousel lightbox (assets/js/fan-carousel.js), built
+   as its own small component here since it displays text (icon/dates/
+   title/description), not an image. One instance per page, built lazily
+   in about-fx.js. ---------- */
+.record-lightbox-backdrop {
+  position: fixed; inset: 0; z-index: 200; background: color-mix(in oklch, var(--v2-void) 90%, transparent);
+  backdrop-filter: blur(14px) saturate(1.1); -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  opacity: 0; pointer-events: none; transition: opacity 0.35s ease;
+}
+.record-lightbox-backdrop.is-open { opacity: 1; pointer-events: auto; }
+.record-lightbox-flyer {
+  position: fixed; z-index: 201; overflow: auto; box-shadow: var(--v2-shadow);
+  border: 1px solid var(--v2-glass-border); background: var(--v2-void-raised);
+  padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 4px;
+  transition: left 0.55s cubic-bezier(0.22,1,0.36,1), top 0.55s cubic-bezier(0.22,1,0.36,1),
+              width 0.55s cubic-bezier(0.22,1,0.36,1), height 0.55s cubic-bezier(0.22,1,0.36,1),
+              padding 0.55s cubic-bezier(0.22,1,0.36,1), border-radius 0.55s cubic-bezier(0.22,1,0.36,1);
+}
+.record-lightbox-flyer .about-v2__record-card-title { -webkit-line-clamp: unset; }
+.record-lightbox-desc {
+  color: var(--v2-ink-soft); font-size: 0.96rem; line-height: 1.6; margin: 8px 0 0; opacity: 0; transition: opacity 0.3s ease 0.25s;
+}
+.record-lightbox-flyer.is-grown .record-lightbox-desc { opacity: 1; }
+.record-lightbox-close {
+  position: fixed; z-index: 202; width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--v2-glass-border); background: var(--v2-void-raised); color: var(--v2-ink);
+  display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--v2-shadow);
+  opacity: 0; pointer-events: none; transition: opacity 0.25s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.record-lightbox-close.is-open { opacity: 1; pointer-events: auto; }
+.record-lightbox-close:hover { border-color: var(--v2-gold); color: var(--v2-gold); transform: rotate(90deg); }
+@media (prefers-reduced-motion: reduce) {
+  .record-lightbox-flyer { transition: opacity 0.25s ease; }
+  .record-lightbox-backdrop, .record-lightbox-close, .record-lightbox-desc { transition: opacity 0.25s ease; }
+}
+
+@media (max-width: 640px) {
+  .about-v2__section { padding: 40px 20px; }
+  .about-v2__hero { padding: 40px 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-v2__pill, .about-v2__ident, .about-v2__record-card { opacity: 1 !important; transform: none !important; animation: none !important; }
+  .about-v2__specimen-scan { display: none; }
+}

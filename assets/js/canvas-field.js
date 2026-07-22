@@ -122,6 +122,13 @@
     var LIGHT_B = [0.74, 0.55, 0.20]; // gold (palette v2)
     var DARK_A = [0.10, 0.46, 0.44];
     var DARK_B = [0.85, 0.62, 0.24];
+    // "v2" palette: the new hero/map/about design system (near-black +
+    // gold/cyan) -- always used regardless of the site's light/dark toggle,
+    // since v2 pages have no light mode. Opt-in via data-palette="v2" so
+    // every page not yet rebuilt keeps its existing teal/gold behavior.
+    var V2_A = [0.04, 0.04, 0.05];
+    var V2_B = [0.91, 0.64, 0.24];
+    var isV2 = host.getAttribute('data-palette') === 'v2';
 
     var pointer = { x: 0, y: 0 };
     var targetPointer = { x: 0, y: 0 };
@@ -172,8 +179,8 @@
       pointer.y += (targetPointer.y - pointer.y) * 0.06;
 
       var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      var a = isDark ? DARK_A : LIGHT_A;
-      var b = isDark ? DARK_B : LIGHT_B;
+      var a = isV2 ? V2_A : (isDark ? DARK_A : LIGHT_A);
+      var b = isV2 ? V2_B : (isDark ? DARK_B : LIGHT_B);
 
       gl.uniform2f(uResolution, canvas.width, canvas.height);
       gl.uniform2f(uPointer, pointer.x, pointer.y);
