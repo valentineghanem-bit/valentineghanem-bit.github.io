@@ -44,7 +44,11 @@
     });
   });
 
-  if (prefersReduced || typeof gsap === 'undefined') {
+  if (prefersReduced) {
+    // Reduced-motion: a constantly-rewriting typewriter IS the kind of
+    // motion this preference asks to skip, so it stays a single static
+    // word here deliberately -- unlike the GSAP-missing branch below,
+    // this one is intentional, not a fallback for a failure.
     heroEl.querySelectorAll(
       '.hero-v2__eyebrow, .hero-v2__name .rise, .hero-v2__typed, .hero-v2__mission-frame, .hero-v2__role, .hero-v2__panels, .hero-v2__ctas, .hero-v2__a11y-link, .hero-v2__portrait, .hero-v2__badge, .hero-v2__scroll-cue'
     ).forEach((el) => { el.style.opacity = 1; el.style.transform = 'none'; });
@@ -52,6 +56,20 @@
     if (typedFallback) {
       try { typedFallback.textContent = JSON.parse(typedFallback.getAttribute('data-words'))[0] || ''; } catch (e) {}
     }
+    return;
+  }
+
+  if (typeof gsap === 'undefined') {
+    // GSAP failing to load (slow connection, blocked script, CDN hiccup)
+    // used to mean the typewriter never started at all -- it was wired
+    // to fire only via a GSAP timeline's onStart callback, so a missing
+    // library silently killed an unrelated, GSAP-free feature along with
+    // it. The typewriter itself only needs setTimeout; run it regardless
+    // of whether GSAP came up, same as the reveal opacities below.
+    heroEl.querySelectorAll(
+      '.hero-v2__eyebrow, .hero-v2__name .rise, .hero-v2__typed, .hero-v2__mission-frame, .hero-v2__role, .hero-v2__panels, .hero-v2__ctas, .hero-v2__a11y-link, .hero-v2__portrait, .hero-v2__badge, .hero-v2__scroll-cue'
+    ).forEach((el) => { el.style.opacity = 1; el.style.transform = 'none'; });
+    startTypewriter();
     return;
   }
 

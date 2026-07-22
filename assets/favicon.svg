@@ -1,17 +1,40 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
   <!--
-    Abstract "VG": the V is two solid rounded bars (a clean, legible
-    diagonal letterform); the G is a broken ring with a short inward bar
-    at its gap, the same minimalist trick many wordmarks use for a G.
-    Held to 4 flat colours total this time, no gradients, no background.
+    Abstract "VG", faceted geometric (gem-cut) style: every shape rebuilt
+    from straight-edged polygons instead of the prior rounded bars/circles,
+    each split into a light and dark tonal facet of the same hue so it
+    reads as cut-crystal planes catching light rather than flat shapes.
+    Same 4-colour palette and same V/G silhouette positions as the prior
+    flat version, only the cut changes. Small white facets mark two
+    shard tips as highlights, the way a real gem-cut icon shows a spark
+    where light hits an edge-on facet.
   -->
-  <!-- V: left bar (crimson) + right bar (violet) -->
-  <rect x="13" y="8" width="13" height="38" rx="6.5" fill="#ff5a66" transform="rotate(-22 19.5 27)"/>
-  <rect x="33" y="8" width="13" height="38" rx="6.5" fill="#b57cff" transform="rotate(22 39.5 27)"/>
-  <!-- accent circle on the left arm (cyan) -->
-  <circle cx="18" cy="20" r="6" fill="#00c5d5"/>
+  <!-- V: left arm, crimson shard (two tonal facets + tip highlight) -->
+  <g transform="rotate(-22 19.5 27)">
+    <polygon points="19.5,4 13,12 13,42 19.5,50" fill="#ff5a66"/>
+    <polygon points="19.5,4 26,12 26,42 19.5,50" fill="#d43d49"/>
+    <polygon points="19.5,4 16,10.5 19.5,14 23,10.5" fill="#fff" opacity="0.55"/>
+  </g>
+  <!-- V: right arm, violet shard (two tonal facets + tip highlight) -->
+  <g transform="rotate(22 39.5 27)">
+    <polygon points="39.5,4 33,12 33,42 39.5,50" fill="#b57cff"/>
+    <polygon points="39.5,4 46,12 46,42 39.5,50" fill="#8f52e0"/>
+    <polygon points="39.5,4 36,10.5 39.5,14 43,10.5" fill="#fff" opacity="0.55"/>
+  </g>
+  <!-- accent facet on the left arm: cyan diamond, two tonal halves -->
+  <polygon points="18,14 12,20 18,26" fill="#00c5d5"/>
+  <polygon points="18,14 24,20 18,26" fill="#009aa8"/>
 
-  <!-- G: broken ring + inward bar (mint), sitting at the V's own vertex -->
-  <circle cx="32" cy="49" r="9" fill="none" stroke="#00fcc1" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="40 16.6" stroke-dashoffset="-6"/>
-  <rect x="31.5" y="45.5" width="8" height="4.5" rx="2" fill="#00fcc1"/>
+  <!-- G: faceted ring built from 6 straight segments (alternating mint
+       tones instead of a smooth stroke) with the same gap + inward bar
+       as before, the bar now an angular chevron rather than a rounded tab -->
+  <g fill="none" stroke-width="4.5" stroke-linecap="round">
+    <line x1="41" y1="49" x2="38.36" y2="55.36" stroke="#00fcc1"/>
+    <line x1="38.36" y1="55.36" x2="32" y2="58" stroke="#00b892"/>
+    <line x1="32" y1="58" x2="25.64" y2="55.36" stroke="#00fcc1"/>
+    <line x1="25.64" y1="55.36" x2="23" y2="49" stroke="#00b892"/>
+    <line x1="23" y1="49" x2="25.64" y2="42.64" stroke="#00fcc1"/>
+    <line x1="25.64" y1="42.64" x2="32" y2="40" stroke="#00b892"/>
+  </g>
+  <polygon points="31.5,45.5 39.5,45.5 38,50 30,50" fill="#00b892"/>
 </svg>

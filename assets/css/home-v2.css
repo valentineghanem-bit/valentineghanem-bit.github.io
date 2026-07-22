@@ -41,10 +41,35 @@
   .home-v2__stat-band { padding: 32px 20px 28px; }
   .home-v2__stat-band .stat-strip { gap: 20px 32px; }
 }
-.home-v2 .marquee { overflow: hidden; border-top: 1px solid var(--v2-glass-border); border-bottom: 1px solid var(--v2-glass-border); padding: 16px 0; }
-.home-v2 .marquee__track { display: flex; gap: 40px; width: max-content; animation: v2-marquee 48s linear infinite; }
+/* Ticker: matches the footer ticker's redesign (site-chrome-v2.css) --
+   color-cycled bold labels joined by a colored "+" instead of flat grey
+   text on empty gaps, plus edge-fade + hover response. */
+.home-v2 .marquee {
+  overflow: hidden; border-top: 1px solid var(--v2-glass-border); border-bottom: 1px solid var(--v2-glass-border); padding: 20px 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+}
+.home-v2 .marquee__track { display: flex; gap: 0; width: max-content; animation: v2-marquee 48s linear infinite; }
+.home-v2 .marquee__track:hover { animation-play-state: paused; }
 @keyframes v2-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.home-v2 .marquee__item { font-family: var(--v2-font-mono); font-size: 0.8rem; color: var(--v2-ink-soft); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.05em; }
+.home-v2 .marquee__item {
+  font-family: var(--v2-font-mono); font-size: 1rem; font-weight: 600; white-space: nowrap;
+  text-transform: uppercase; letter-spacing: 0.06em; transition: color 0.2s ease, transform 0.2s ease;
+}
+.home-v2 .marquee__item:hover { transform: translateY(-1px) scale(1.05); }
+.home-v2 .marquee__item::after { content: '+'; display: inline-block; margin: 0 24px; font-weight: 700; }
+.home-v2 .marquee__item:nth-child(6n+1) { color: var(--v2-violet); }
+.home-v2 .marquee__item:nth-child(6n+2) { color: var(--v2-crimson); }
+.home-v2 .marquee__item:nth-child(6n+3) { color: var(--v2-cyan); }
+.home-v2 .marquee__item:nth-child(6n+4) { color: var(--v2-yellow-ink); }
+.home-v2 .marquee__item:nth-child(6n+5) { color: var(--v2-mint-ink); }
+.home-v2 .marquee__item:nth-child(6n+6) { color: var(--v2-ink); }
+.home-v2 .marquee__item:nth-child(6n+1)::after { color: var(--v2-cyan); }
+.home-v2 .marquee__item:nth-child(6n+2)::after { color: var(--v2-yellow-ink); }
+.home-v2 .marquee__item:nth-child(6n+3)::after { color: var(--v2-mint-ink); }
+.home-v2 .marquee__item:nth-child(6n+4)::after { color: var(--v2-ink); }
+.home-v2 .marquee__item:nth-child(6n+5)::after { color: var(--v2-violet); }
+.home-v2 .marquee__item:nth-child(6n+6)::after { color: var(--v2-crimson); }
 .home-v2 .section { padding: 56px 24px; border-top: 1px solid var(--v2-glass-border); position: relative; }
 /* Oversized ghost numeral -- a huge, near-invisible background numeral
    behind each section, borrowed from bold editorial portfolio references:

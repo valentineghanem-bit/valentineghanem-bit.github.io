@@ -78,9 +78,36 @@
 
 /* ---------- Footer ---------- */
 .site-footer { border-top: 1px solid var(--v2-glass-border); background: var(--v2-void-raised); padding-top: 8px; }
-.site-footer .marquee { overflow: hidden; border-bottom: 1px solid var(--v2-glass-border); padding: 14px 0; }
-.site-footer .marquee__track { display: flex; gap: 36px; width: max-content; animation: v2-marquee 42s linear infinite; }
-.site-footer .marquee__item { font-family: var(--v2-font-mono); font-size: 0.72rem; color: var(--v2-ink-soft); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.05em; }
+/* Ticker: was flat grey mono text on thin `gap` spacing -- "boring" per
+   direct feedback, twice. Now: bold color-cycled labels (same 6-token
+   recipe as the toc-card cycle) joined by a colored "+" -- the site's own
+   signature glyph from the stat band -- instead of empty space, plus an
+   edge-fade mask and a hover response so it reads as alive, not wallpaper. */
+.site-footer .marquee {
+  overflow: hidden; border-bottom: 1px solid var(--v2-glass-border); padding: 18px 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+}
+.site-footer .marquee__track { display: flex; gap: 0; width: max-content; animation: v2-marquee 42s linear infinite; }
+.site-footer .marquee__track:hover { animation-play-state: paused; }
+.site-footer .marquee__item {
+  font-family: var(--v2-font-mono); font-size: 0.92rem; font-weight: 600; white-space: nowrap;
+  text-transform: uppercase; letter-spacing: 0.06em; transition: color 0.2s ease, transform 0.2s ease;
+}
+.site-footer .marquee__item:hover { transform: translateY(-1px) scale(1.05); }
+.site-footer .marquee__item::after { content: '+'; display: inline-block; margin: 0 22px; font-weight: 700; }
+.site-footer .marquee__item:nth-child(6n+1) { color: var(--v2-violet); }
+.site-footer .marquee__item:nth-child(6n+2) { color: var(--v2-crimson); }
+.site-footer .marquee__item:nth-child(6n+3) { color: var(--v2-cyan); }
+.site-footer .marquee__item:nth-child(6n+4) { color: var(--v2-yellow-ink); }
+.site-footer .marquee__item:nth-child(6n+5) { color: var(--v2-mint-ink); }
+.site-footer .marquee__item:nth-child(6n+6) { color: var(--v2-ink); }
+.site-footer .marquee__item:nth-child(6n+1)::after { color: var(--v2-cyan); }
+.site-footer .marquee__item:nth-child(6n+2)::after { color: var(--v2-yellow-ink); }
+.site-footer .marquee__item:nth-child(6n+3)::after { color: var(--v2-mint-ink); }
+.site-footer .marquee__item:nth-child(6n+4)::after { color: var(--v2-ink); }
+.site-footer .marquee__item:nth-child(6n+5)::after { color: var(--v2-violet); }
+.site-footer .marquee__item:nth-child(6n+6)::after { color: var(--v2-crimson); }
 .site-footer__row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding: 26px 24px; }
 .site-footer__copy { font-family: var(--v2-font-mono); font-size: 0.76rem; color: var(--v2-ink-soft); margin: 0; }
 
