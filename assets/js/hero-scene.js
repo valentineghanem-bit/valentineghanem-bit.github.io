@@ -46,13 +46,16 @@ import * as THREE from '/assets/js/vendor/three.module.min.js';
   // The canvas now spans the whole hero, not a bounded side frame -- shift
   // the helix left of center so it reads as sitting behind the text
   // column (the "kinetic data-node web on the left" the alternate hero
-  // asked for) instead of dead-center of a much wider frame. Pulled the
-  // offset in (-3.4 -> -2.1) on direct feedback to extend the web further
-  // toward the portrait instead of stopping short of it -- it now reaches
-  // into the gap and under the portrait's own left-fade zone, where it
-  // shows through, rather than staying confined to strictly the text side.
+  // asked for) instead of dead-center of a much wider frame. Round 18 had
+  // pulled this in to -2.1 so the web reached under the portrait's own
+  // left-fade mask (where it showed through the translucent edge). Round 20
+  // removed that fade per direct feedback -- the portrait is fully opaque
+  // now, so any nodes still reaching that far right would just render
+  // hidden behind solid photo instead of showing through. Pulled back out
+  // to -2.9 (short of the original -3.4) to clear the portrait's real
+  // bounding box while still filling most of the gap between text and photo.
   const isWide = visualEl.clientWidth > 960;
-  scene.position.x = isWide ? -2.1 : 0;
+  scene.position.x = isWide ? -2.9 : 0;
 
   const files = isSmall ? ALL_FILES.filter((_, i) => i % 2 === 0) : ALL_FILES;
   const loader = new THREE.TextureLoader();

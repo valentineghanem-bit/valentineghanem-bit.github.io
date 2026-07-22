@@ -37,6 +37,9 @@ description: "Official website of Valentine Golden Ghanem, a Ghanaian medical sc
   <div class="hero-v2__scrim" aria-hidden="true"></div>
   <div class="hero-v2__noise" aria-hidden="true"></div>
   <div class="hero-v2__block" aria-hidden="true"></div>
+  <span class="hero-v2__spark hero-v2__spark--a" aria-hidden="true"></span>
+  <span class="hero-v2__spark hero-v2__spark--b" aria-hidden="true"></span>
+  <span class="hero-v2__spark hero-v2__spark--c" aria-hidden="true"></span>
 
   <div class="hero-v2__row">
   <div class="hero-v2__content">
@@ -75,15 +78,15 @@ description: "Official website of Valentine Golden Ghanem, a Ghanaian medical sc
     <a href="{{ '/gallery/' | relative_url }}" class="hero-v2__a11y-link">The {{ site.data.gallery_portraits | size }} photographs behind this scene — view the full story in Gallery →</a>
   </div>
 
-  <!-- The alternate hero: a real portrait, right-anchored, fading
-       gradually left into the helix/data-node canvas -- replacing the
-       earlier bounded photo-network frame the user found "distasteful".
-       Background genuinely removed (rembg) and colour-enhanced, kept in
-       full colour, sitting directly on the hero's own white-to-violet
-       gradient. A hard flex-gap (not the mask alone) keeps this clear of
-       the text column at every width. Hidden below 960px -- the ambient
-       canvas alone carries the motif on narrow screens, where there's no
-       safe room for a fading side portrait. -->
+  <!-- The alternate hero: a real portrait, right-anchored, shown at full
+       opacity against the hero's own gradient (round 20: removed the
+       earlier left-edge fade into the helix canvas per direct feedback) --
+       replacing the even earlier bounded photo-network frame the user
+       found "distasteful". Background genuinely removed (rembg) and
+       colour-enhanced, kept in full colour. A hard flex-gap keeps this
+       clear of the text column at every width. Hidden below 960px -- the
+       ambient canvas alone carries the motif on narrow screens, where
+       there's no safe room for a side portrait. -->
   <div class="hero-v2__portrait">
     <img class="hero-v2__portrait-img" src="{{ '/assets/img/gallery/portraits/hero-portrait-isolated.png' | relative_url }}" alt="{{ site.data.profile.name }}">
     <div class="hero-v2__badge">Field record since 2013</div>

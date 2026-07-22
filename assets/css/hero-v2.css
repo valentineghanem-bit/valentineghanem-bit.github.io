@@ -1,14 +1,13 @@
 /* ============================================================
-   Hero v2 -- the alternate composition: a real portrait right-anchored,
-   fading gradually left into an ambient full-bleed helix/data-node
-   canvas, with the text column on the left. A flex row (.hero-v2__row)
-   with a real gap is what guarantees text/photo never overlap -- browser-
-   computed at every width, not hand-verified pixel math -- and the mask
-   fade is a soft dissolve layered on top of that hard boundary, never a
-   substitute for it. Below 960px the portrait is hidden entirely and the
-   ambient canvas alone carries the motif behind the stacked text.
-   Text stays LEFT-aligned throughout -- centering a multi-line editorial
-   headline/mission is the one thing that reads as a template hero.
+   Hero v2 -- the alternate composition: a real portrait right-anchored at
+   full opacity, an ambient full-bleed helix/data-node canvas behind it,
+   with the text column on the left. A flex row (.hero-v2__row) with a
+   real gap is what guarantees text/photo never overlap -- browser-computed
+   at every width, not hand-verified pixel math. Below 960px the portrait
+   is hidden entirely and the ambient canvas alone carries the motif
+   behind the stacked text. Text stays LEFT-aligned throughout --
+   centering a multi-line editorial headline/mission is the one thing
+   that reads as a template hero.
    ============================================================ */
 .hero-v2 {
   position: relative;
@@ -21,10 +20,46 @@
      element" moment for violet per the palette brief (used here, kept
      out of the base page canvas everywhere else). Same wash the isolated
      portrait sits against -- no separate photo background to reconcile
-     with it, since the portrait PNG has none. */
+     with it, since the portrait PNG has none.
+     Round 20: the flat two-stop gradient alone read as plain white --
+     layered in a fine ambient dot-field (echoes the site's own "kinetic
+     data-node" motif as a base texture, not just the literal helix
+     sprites) plus two soft off-centre colour glows, borrowed from a
+     mood-board reference's ambient-light technique but tuned down hard
+     for a light base (that reference runs the same idea on a near-black
+     canvas at far higher opacity -- copied directly here it would look
+     like dirt, not atmosphere). Layer order below is paint order,
+     frontmost first. */
   background-color: var(--v2-void);
-  background-image: linear-gradient(100deg, color-mix(in oklch, var(--v2-violet) 20%, var(--v2-void)) 0%, var(--v2-void) 100%);
+  background-image:
+    radial-gradient(circle, color-mix(in oklch, var(--v2-ink) 16%, transparent) 1px, transparent 1.5px),
+    radial-gradient(52% 60% at 90% 12%, color-mix(in oklch, var(--v2-cyan) 16%, transparent) 0%, transparent 70%),
+    radial-gradient(44% 55% at 6% 94%, color-mix(in oklch, var(--v2-crimson) 12%, transparent) 0%, transparent 68%),
+    linear-gradient(100deg, color-mix(in oklch, var(--v2-violet) 20%, var(--v2-void)) 0%, var(--v2-void) 100%);
+  background-size: 34px 34px, auto, auto, auto;
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat;
 }
+
+/* Small floating accent sparks in the gap between text and portrait --
+   the same "scattered accent confetti" idea already used on the Home
+   stat-band, extended into the hero itself (which had none), for the
+   kinetic richness a single flat background can't carry alone. Hidden
+   below 960px: that gap doesn't exist once the layout stacks. */
+.hero-v2__spark { display: none; }
+@media (min-width: 960px) {
+  .hero-v2__spark {
+    display: block; position: absolute; z-index: 1; border-radius: 50%; pointer-events: none;
+    animation: hv2-spark-float 5.5s ease-in-out infinite;
+  }
+}
+.hero-v2__spark--a { top: 16%; left: 39%; width: 7px; height: 7px; background: var(--v2-cyan); opacity: 0.55; animation-delay: 0s; }
+.hero-v2__spark--b { top: 64%; left: 47%; width: 5px; height: 5px; background: var(--v2-crimson); opacity: 0.5; animation-delay: 1.8s; }
+.hero-v2__spark--c { top: 34%; left: 55%; width: 9px; height: 9px; border: 1.5px solid var(--v2-violet); background: none; opacity: 0.6; animation-delay: 3.2s; }
+@keyframes hv2-spark-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+@media (prefers-reduced-motion: reduce) { .hero-v2__spark { animation: none; } }
 
 /* Real flex row, not grid columns -- the portrait item is allowed to
    stretch taller than the content column and bleed its mask into empty
