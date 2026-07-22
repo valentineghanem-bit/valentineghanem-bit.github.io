@@ -217,9 +217,33 @@ html[data-v2-theme="bright"] {
    re-introduced the exact specificity trap round 7 already fixed once --
    caught by checking the actual computed background colour live instead
    of assuming the rule text alone was enough. */
-.v2-scope .v2-bento-tint:nth-child(n) { background: color-mix(in oklch, var(--v2-crimson) 16%, var(--v2-glass)); }
+.v2-scope .v2-bento-tint:nth-child(n) { background: color-mix(in oklch, var(--v2-gold) 16%, var(--v2-glass)); }
 .v2-scope a { color: var(--v2-wine-bright, var(--v2-wine)); text-decoration-thickness: 1px; text-underline-offset: 2px; }
 .v2-scope a:hover { color: var(--v2-gold); }
+
+/* Per-page accent rebalancing -- "gold" (this system's primary-accent
+   alias) resolved to crimson on every single page before this, so despite
+   round 19's fix being correct that each page/component needs ONE
+   consistent accent rather than a rainbow cycle, the site AS A WHOLE still
+   read as crimson-dominated -- the same one colour, page after page, isn't
+   what "balance all 6 colours" meant.
+   Limited to violet and crimson ONLY, not the full 6 -- checked every
+   `var(--v2-gold)` usage site-wide first, and it drives literal `color:`
+   (real text) in dozens of rules (nav links, section indices, active
+   states), not just backgrounds. Yellow and mint are decorative-only
+   pigments on light/bright themes per this file's own OKLCH verification
+   (too light to clear 4.5:1 as text without collapsing to near-black) --
+   assigning either to --v2-gold would silently fail contrast the moment
+   any of those text-colour rules rendered on a yellow/mint-accented page.
+   Cyan is excluded too: it's the fixed site-wide "links" alias (--v2-wine)
+   already, so reusing it here would collapse two different semantic roles
+   into one colour on that page. Split 10 pages 5/5 across the two hues
+   that are actually safe everywhere. Yellow/mint keep their existing
+   decorative/data-encoding roles (stat-band confetti, skills-network
+   canvas nodes) rather than being forced into a text-bearing role they
+   were never verified for. */
+.about-v2, .community-v2, .skills-v2, .publications-v2, .gallery-v2 { --v2-gold: var(--v2-violet); --v2-gold-soft: var(--v2-violet-soft); }
+/* home-v2, press-v2, portfolio-v2, map-v2, certificates-v2 keep the default crimson. */
 
 /* ---------- Spotlight panel/card: mouse-following radial glow.
    Dialed subtler than the first pass -- smaller radius, lower peak
