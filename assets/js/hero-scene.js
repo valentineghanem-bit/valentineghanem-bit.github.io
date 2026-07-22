@@ -43,19 +43,19 @@ import * as THREE from '/assets/js/vendor/three.module.min.js';
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(50, visualEl.clientWidth / visualEl.clientHeight, 0.1, 100);
   camera.position.z = 11;
-  // The canvas now spans the whole hero, not a bounded side frame -- shift
-  // the helix left of center so it reads as sitting behind the text
-  // column (the "kinetic data-node web on the left" the alternate hero
-  // asked for) instead of dead-center of a much wider frame. Round 18 had
-  // pulled this in to -2.1 so the web reached under the portrait's own
-  // left-fade mask (where it showed through the translucent edge). Round 20
-  // removed that fade per direct feedback -- the portrait is fully opaque
-  // now, so any nodes still reaching that far right would just render
-  // hidden behind solid photo instead of showing through. Pulled back out
-  // to -2.9 (short of the original -3.4) to clear the portrait's real
-  // bounding box while still filling most of the gap between text and photo.
+  // The canvas spans the whole hero, not a bounded side frame -- the helix
+  // sits left-of-centre so it reads as behind the text column, but stretches
+  // rightward far enough to reach under the portrait itself: direct feedback
+  // asked for the web to extend to the page's right margin with the
+  // portrait sitting superimposed on top of it (not stopping short in the
+  // gap the way round 20's -2.9 pullback did -- that was for when the
+  // portrait still needed to show nodes through a translucent fade; now
+  // that it's fully opaque, overlap is exactly the point, not a bug to
+  // avoid). Widened the radius too (3.6 -> 4.2) so the reach reads as a
+  // deliberate full-width stretch, verified against the portrait's real
+  // screen position via the camera's own projection math rather than eyeballed.
   const isWide = visualEl.clientWidth > 960;
-  scene.position.x = isWide ? -2.9 : 0;
+  scene.position.x = isWide ? -1.2 : 0;
 
   const files = isSmall ? ALL_FILES.filter((_, i) => i % 2 === 0) : ALL_FILES;
   const loader = new THREE.TextureLoader();
@@ -66,7 +66,7 @@ import * as THREE from '/assets/js/vendor/three.module.min.js';
   // Two strands wound around a shared vertical axis, 180 degrees out of
   // phase, like a double helix -- an actual genetic-data motif rather than
   // an undirected cloud.
-  const HELIX_RADIUS = 3.6;
+  const HELIX_RADIUS = 4.2;
   const HELIX_HEIGHT = 10.5;
   const HELIX_TURNS = 2.6;
   const totalPairs = Math.max(Math.ceil(files.length / 2), 1);
