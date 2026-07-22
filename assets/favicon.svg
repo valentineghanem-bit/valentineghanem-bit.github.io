@@ -1,18 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
   <!--
-    Abstract V: each arm is a solid rounded bar (a clean, unbroken diagonal
-    stroke so the letterform reads clearly), with smaller circular accents
-    overlaid in the remaining palette colours, applying the same idea
-    Figma's own mark uses: a letterform read from a small stack of flat
-    colour pieces, in a shape vocabulary that still holds together at 16px.
+    Abstract "VG": the V is two solid rounded bars (a clean, legible
+    diagonal letterform); the G is a broken ring with a short inward bar
+    at its gap, the same minimalist trick many wordmarks use for a G.
+    Held to 4 flat colours total this time, no gradients, no background.
   -->
-  <!-- Left arm: crimson bar, violet + cyan accents -->
-  <rect x="15" y="8" width="14" height="40" rx="7" fill="#ff5a66" transform="rotate(-24 22 28)"/>
-  <circle cx="19" cy="21" r="7.5" fill="#b57cff"/>
-  <circle cx="27.5" cy="40" r="7" fill="#00c5d5"/>
+  <!-- V: left bar (crimson) + right bar (violet) -->
+  <rect x="13" y="8" width="13" height="38" rx="6.5" fill="#ff5a66" transform="rotate(-22 19.5 27)"/>
+  <rect x="33" y="8" width="13" height="38" rx="6.5" fill="#b57cff" transform="rotate(22 39.5 27)"/>
+  <!-- accent circle on the left arm (cyan) -->
+  <circle cx="18" cy="20" r="6" fill="#00c5d5"/>
 
-  <!-- Right arm: egg-yellow bar, mint + white accents -->
-  <rect x="35" y="8" width="14" height="40" rx="7" fill="#efbd00" transform="rotate(24 42 28)"/>
-  <circle cx="45" cy="21" r="7.5" fill="#00fcc1"/>
-  <circle cx="36.5" cy="40" r="7" fill="#ffffff" stroke="#0d1220" stroke-width="1.5"/>
+  <!-- G: broken ring + inward bar (mint), sitting at the V's own vertex -->
+  <circle cx="32" cy="49" r="9" fill="none" stroke="#00fcc1" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="40 16.6" stroke-dashoffset="-6"/>
+  <rect x="31.5" y="45.5" width="8" height="4.5" rx="2" fill="#00fcc1"/>
 </svg>
