@@ -28,18 +28,19 @@
       </div>
       <ul class="site-footer__icons" aria-label="Social and contact profiles">
         {%- for icon in site.data.social.icons -%}
+        {%- assign icon_bg = "" -%}
         {%- case icon.icon -%}
           {%- when "linkedin" -%}{%- assign fa_class = "fa-brands fa-linkedin-in" -%}{%- assign native_color = "#0A66C2" -%}
           {%- when "github" -%}{%- assign fa_class = "fa-brands fa-github" -%}{%- assign native_color = "#F0F6FC" -%}
           {%- when "orcid" -%}{%- assign fa_class = "fa-brands fa-orcid" -%}{%- assign native_color = "#A6CE39" -%}
-          {%- when "x" -%}{%- assign fa_class = "fa-brands fa-x-twitter" -%}{%- assign native_color = "#F1F5F9" -%}
-          {%- when "email" -%}{%- assign fa_class = "fa-solid fa-envelope" -%}{%- assign native_color = "#EA4335" -%}
+          {%- when "x" -%}{%- assign fa_class = "fa-brands fa-x-twitter" -%}{%- assign native_color = "#FFFFFF" -%}{%- assign icon_bg = "#000000" -%}
+          {%- when "email" -%}{%- assign fa_class = "fa-brands fa-google" -%}{%- assign native_color = "#EA4335" -%}{%- assign icon_bg = "#FFFFFF" -%}
           {%- when "phone" -%}{%- assign fa_class = "fa-solid fa-phone" -%}{%- assign native_color = "#3B82F6" -%}
           {%- when "whatsapp" -%}{%- assign fa_class = "fa-brands fa-whatsapp" -%}{%- assign native_color = "#25D366" -%}
           {%- else -%}{%- assign fa_class = "fa-solid fa-link" -%}{%- assign native_color = "#94A3B8" -%}
         {%- endcase -%}
         <li>
-          <a href="{{ icon.url }}" target="_blank" rel="noopener" aria-label="{{ icon.label }}, Valentine Golden Ghanem" title="{{ icon.label }}" style="color: {{ native_color }};">
+          <a href="{{ icon.url }}" target="_blank" rel="noopener" aria-label="{{ icon.label }}, Valentine Golden Ghanem" title="{{ icon.label }}" style="color: {{ native_color }};{% if icon_bg != "" %} background: {{ icon_bg }}; border-color: {{ icon_bg }};{% endif %}">
             <i class="{{ fa_class }}" aria-hidden="true"></i>
           </a>
         </li>
