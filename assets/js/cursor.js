@@ -54,6 +54,7 @@
     var scrollTimer = null;
     var zoomTimer = null;
     var idleTimer = null;
+    var movingTimer = null;
     var lastLeftClick = { time: 0, x: 0, y: 0 };
     var nativeEdge = false;
     var soundHaptics = (function () {
@@ -216,13 +217,21 @@
       }, duration || 240);
     }
 
-    window.addEventListener('pointermove', function (e) {
+    function handleMove(e) {
       if (isScrollbarEdge(e.clientX, e.clientY)) {
         setNativeEdge(true);
         return;
       }
       setNativeEdge(false);
       activate(e.clientX, e.clientY);
+      cluster.classList.add('is-moving');
+      window.clearTimeout(movingTimer);
+      movingTimer = window.setTimeout(function () {
+        cluster.classList.remove('is-moving');
+        if (active && !nativeEdge && !pointerIsDown && !cluster.classList.contains('is-texting')) {
+          cluster.classList.add('is-idle');
+        }
+      }, 240);
       clearIdleState();
       scheduleIdleState();
       if (pointerIsDown) {
@@ -235,7 +244,10 @@
         }
         if (isDragging) dragAngle = Math.atan2(dy, dx);
       }
-    }, { passive: true });
+    }
+
+    window.addEventListener('pointermove', handleMove, { passive: true });
+    window.addEventListener('mousemove', handleMove, { passive: true });
 
     window.addEventListener('pointerdown', function (e) {
       if (isScrollbarEdge(e.clientX, e.clientY)) {
@@ -317,7 +329,7 @@
 
     var TEXT_SELECTOR = 'input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]), textarea, [contenteditable="true"], [contenteditable=""]';
     var HOVER_SELECTOR = 'a, button, [role="button"], select, summary, label, .toc-card, .fan-carousel__card, .about-v2__pill, .about-v2__record-card, .card, .event-card, .glass-card';
-    document.addEventListener('pointerover', function (e) {
+    function handleOver(e) {
       if (!e.target.closest) return;
       if (e.target.closest(TEXT_SELECTOR)) {
         arrow.classList.add('is-texting');
@@ -335,8 +347,9 @@
           speedTarget = HOVER_SPEED;
         }
       }
-    });
-    document.addEventListener('pointerout', function (e) {
+    }
+
+    function handleOut(e) {
       if (!e.target.closest) return;
       if (e.target.closest(TEXT_SELECTOR)) {
         arrow.classList.remove('is-texting');
@@ -351,7 +364,12 @@
           speedTarget = BASE_SPEED;
         }
       }
-    });
+    }
+
+    document.addEventListener('pointerover', handleOver);
+    document.addEventListener('mouseover', handleOver);
+    document.addEventListener('pointerout', handleOut);
+    document.addEventListener('mouseout', handleOut);
 
     window.addEventListener('wheel', function (e) {
       if (!active || nativeEdge) return;
