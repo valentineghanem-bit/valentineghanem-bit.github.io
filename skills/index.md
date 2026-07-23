@@ -1,113 +1,99 @@
 ---
-layout: default
+layout: v3
 permalink: /skills/
 title: "Skills"
 description: "Technical, analytical and leadership skills of Valentine Golden Ghanem across public health, data science and biomedical science."
+extra_js: ["skills-network.js"]
 ---
+{% include nav-v3.html %}
+<section class="v2-scope pt-40 pb-24 px-6" data-skills-root>
+  <div class="max-w-[1800px] mx-auto">
+    <p class="font-mono text-xs text-slate-400 mb-6"><a href="{{ '/' | relative_url }}" class="hover:text-cyan-500">Home</a> / Skills</p>
+    <h1 class="text-4xl sm:text-5xl md:text-6xl font-black font-heading tracking-tight text-slate-900 dark:text-white mb-5">Skills &amp; toolkit</h1>
+    <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mb-10">
+      A working toolkit built across the laboratory bench, the field, and the analysis pipeline. Filter by category, by domain, or search directly for a tool, method or platform.
+    </p>
 
-<section class="skills-v2 v2-scope wrap wrap--wide" data-skills-root>
-  <p class="breadcrumb"><a href="{{ '/' | relative_url }}">Home</a> / Skills</p>
-  <h1 class="page-title">Skills &amp; toolkit</h1>
-  <p class="section__intro">
-    A working toolkit built across the laboratory bench, the field, and the
-    analysis pipeline. Filter by category, by domain, or search directly for a
-    tool, method or platform.
-  </p>
-
-  <!-- Interconnected-domains network: a kinetic at-a-glance visual for the
-       real 15 domains this site's own JSON-LD already declares
-       (site.data.profile.knows_about), reusing the cursor-repulsion
-       physics technique built for the Home hero's helix (ported from the
-       "Woven Light" reference) -- applied here to plain labelled nodes
-       instead of photos, a distinct visual from both the hero and the
-       skills-matrix heatmap below. Hidden on narrow screens: 15 labels
-       have no room to stay legible there, and the matrix/cards below
-       already carry the same information. -->
-  <div class="skills-v2__network" data-skills-network aria-hidden="true">
-    <canvas class="skills-v2__network-canvas"></canvas>
-  </div>
-  <script type="application/json" id="skills-network-data">{{ site.data.profile.knows_about | jsonify }}</script>
-
-  <div class="filter-toolbar">
-    <div class="filter-toolbar__field">
-      <label for="skills-category">Category</label>
-      <select id="skills-category">
-        <option value="all">All categories</option>
-        {% for section in site.data.skills %}
-        <option value="{{ section.category }}">{{ section.category }}</option>
-        {% endfor %}
-      </select>
+    <div class="relative h-72 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden bg-slate-900 mb-10" data-skills-network aria-hidden="true">
+      <canvas class="skills-v2__network-canvas absolute inset-0 w-full h-full"></canvas>
     </div>
-    <div class="filter-toolbar__field">
-      <label for="skills-domain">Domain</label>
-      <select id="skills-domain">
-        <option value="all">All domains</option>
-        {% for g in site.data.skills[0].groups %}
-        <option value="{{ g.name }}">{{ g.icon }} {{ g.name }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="filter-toolbar__field filter-toolbar__field--search">
-      <label for="skills-search">Search</label>
-      <input type="search" id="skills-search" placeholder="e.g. Python, GeneXpert, SOP…">
-    </div>
-    <button type="button" class="filter-toolbar__reset">Reset</button>
-  </div>
+    <script type="application/json" id="skills-network-data">{{ site.data.profile.knows_about | jsonify }}</script>
 
-  <table class="skills-matrix">
-    <caption>Toolkit at a glance — item count by domain and category</caption>
-    <thead>
-      <tr>
-        <th scope="col"></th>
-        {% for section in site.data.skills %}
-        <th scope="col">{{ section.category }}</th>
-        {% endfor %}
-      </tr>
-    </thead>
-    <tbody>
-      {% for g in site.data.skills[0].groups %}
-      <tr>
-        <th scope="row">{{ g.icon }} {{ g.name }}</th>
-        {% for section in site.data.skills %}
-        {% assign match = section.groups | where: "name", g.name | first %}
-        {% assign n = match.items.size %}
-        {% assign heat = "var(--v2-ink-soft)" %}
-        {% if n >= 5 %}{% assign heat = "var(--v2-gold)" %}{% elsif n >= 2 %}{% assign heat = "var(--v2-blue)" %}{% endif %}
-        <td><button type="button" class="skills-matrix__cell" style="--v2-heat: {{ heat }};" data-category="{{ section.category }}" data-domain="{{ g.name }}">{{ n }}</button></td>
-        {% endfor %}
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  <p class="filter-empty">No skills match that combination — try Reset.</p>
-
-  {% for section in site.data.skills %}
-  <div class="skills-section" data-category="{{ section.category }}">
-    <h2 class="section__title section__title--sub"><span class="section__index">0{{ forloop.index }}</span> {{ section.category }}</h2>
-    <div class="card-grid">
-      {% for g in section.groups %}
-      <div class="card v2-scan-card v2-bento-tint" data-domain="{{ g.name }}">
-        <div class="v2-scan-sweep" aria-hidden="true"></div>
-        <h3 class="card__title">{{ g.icon }} {{ g.name }}</h3>
-        <ul class="card__list">
-          {% for item in g.items %}
-          <li>{{ item }}</li>
-          {% endfor %}
-        </ul>
+    <div class="glass-card rounded-2xl border p-5 mb-10 flex flex-wrap items-end gap-5">
+      <div class="flex flex-col gap-1.5">
+        <label for="skills-category" class="text-[11px] font-mono uppercase tracking-wide text-slate-400">Category</label>
+        <select id="skills-category" class="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-slate-700 dark:text-slate-200 focus:outline-none focus:border-cyan-500">
+          <option value="all">All categories</option>
+          {% for section in site.data.skills %}<option value="{{ section.category }}">{{ section.category }}</option>{% endfor %}
+        </select>
       </div>
-      {% endfor %}
+      <div class="flex flex-col gap-1.5">
+        <label for="skills-domain" class="text-[11px] font-mono uppercase tracking-wide text-slate-400">Domain</label>
+        <select id="skills-domain" class="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-slate-700 dark:text-slate-200 focus:outline-none focus:border-cyan-500">
+          <option value="all">All domains</option>
+          {% for g in site.data.skills[0].groups %}<option value="{{ g.name }}">{{ g.icon }} {{ g.name }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="flex flex-col gap-1.5 flex-1 min-w-[180px]">
+        <label for="skills-search" class="text-[11px] font-mono uppercase tracking-wide text-slate-400">Search</label>
+        <input type="search" id="skills-search" placeholder="e.g. Python, GeneXpert, SOP&hellip;" class="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-slate-700 dark:text-slate-200 focus:outline-none focus:border-cyan-500 w-full">
+      </div>
+      <button type="button" class="filter-toolbar__reset px-4 py-2 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold uppercase tracking-wide">Reset</button>
     </div>
-  </div>
-  {% endfor %}
 
-  <h2 class="section__title section__title--sub" id="resume"><span class="section__index">04</span> Résumé</h2>
-  <details class="resume-embed">
-    <summary>View embedded résumé (PDF)</summary>
-    <iframe src="{{ '/assets/files/valentine-golden-ghanem-resume.pdf' | relative_url }}" title="Valentine Golden Ghanem — Résumé" loading="lazy"></iframe>
-  </details>
-  <p><a href="{{ '/assets/files/valentine-golden-ghanem-resume.pdf' | relative_url }}" target="_blank" rel="noopener">Open résumé in a new tab ↗</a></p>
+    <div class="overflow-x-auto mb-4 glass-card rounded-2xl border p-4">
+      <p class="font-mono text-xs text-slate-400 mb-3">Toolkit at a glance &mdash; item count by domain and category</p>
+      <table class="w-full text-sm border-collapse">
+        <thead>
+          <tr class="border-b border-slate-200 dark:border-slate-700">
+            <th class="text-left py-2 pr-4"></th>
+            {% for section in site.data.skills %}<th class="text-left py-2 px-3 font-mono text-xs uppercase text-slate-400">{{ section.category }}</th>{% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for g in site.data.skills[0].groups %}
+          <tr class="border-b border-slate-100 dark:border-slate-800">
+            <th class="text-left py-2 pr-4 font-semibold text-slate-700 dark:text-slate-200 whitespace-nowrap">{{ g.icon }} {{ g.name }}</th>
+            {% for section in site.data.skills %}
+            {% assign match = section.groups | where: "name", g.name | first %}
+            {% assign n = match.items.size %}
+            {% assign heatClass = "bg-slate-100 dark:bg-slate-800 text-slate-500" %}
+            {% if n >= 5 %}{% assign heatClass = "bg-cyan-500 text-white" %}{% elsif n >= 2 %}{% assign heatClass = "bg-cyan-500/20 text-cyan-700 dark:text-cyan-300" %}{% endif %}
+            <td class="p-1.5"><button type="button" class="skills-matrix__cell w-10 h-10 rounded-lg font-bold text-sm transition-transform hover:scale-110 {{ heatClass }}" data-category="{{ section.category }}" data-domain="{{ g.name }}">{{ n }}</button></td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <p class="filter-empty hidden text-center py-10 text-slate-400 font-mono text-sm">No skills match that combination &mdash; try Reset.</p>
+
+    {% for section in site.data.skills %}
+    <div class="skills-section mt-14" data-category="{{ section.category }}">
+      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-emerald-500 mb-2">0{{ forloop.index }}</h2>
+      <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">{{ section.category }}</h3>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {% for g in section.groups %}
+        <div class="card v2-bento-tint relative overflow-hidden glass-card rounded-2xl border p-6" data-domain="{{ g.name }}">
+          <h4 class="font-bold font-heading text-lg text-slate-900 dark:text-white mb-3">{{ g.icon }} {{ g.name }}</h4>
+          <ul class="card__list space-y-2 text-sm text-slate-600 dark:text-slate-300 list-disc pl-4">
+            {% for item in g.items %}<li>{{ item }}</li>{% endfor %}
+          </ul>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+
+    <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mt-16 mb-2">04</h2>
+    <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">R&eacute;sum&eacute;</h3>
+    <details class="glass-card rounded-2xl border p-6">
+      <summary class="cursor-pointer font-semibold text-slate-700 dark:text-slate-200">View embedded r&eacute;sum&eacute; (PDF)</summary>
+      <iframe src="{{ '/assets/files/valentine-golden-ghanem-resume.pdf' | relative_url }}" title="Valentine Golden Ghanem &mdash; R&eacute;sum&eacute;" loading="lazy" class="w-full h-[600px] mt-4 rounded-xl border border-slate-200 dark:border-slate-700"></iframe>
+    </details>
+    <p class="mt-3"><a href="{{ '/assets/files/valentine-golden-ghanem-resume.pdf' | relative_url }}" target="_blank" rel="noopener" class="text-cyan-500 hover:underline text-sm font-semibold">Open r&eacute;sum&eacute; in a new tab &#8599;</a></p>
+  </div>
 </section>
 
-<script src="{{ '/assets/js/skills-fx.js' | relative_url }}" defer></script>
-<script src="{{ '/assets/js/skills-network.js' | relative_url }}" defer></script>
+{% include footer-v3.html %}
