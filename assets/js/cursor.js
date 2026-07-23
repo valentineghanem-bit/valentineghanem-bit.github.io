@@ -54,6 +54,7 @@
     var scrollTimer = null;
     var zoomTimer = null;
     var lastLeftClick = { time: 0, x: 0, y: 0 };
+    var nativeEdge = false;
     var soundHaptics = (function () {
       var ctx = null, out = null;
       var last = {};
@@ -68,7 +69,7 @@
         if (!ctx) {
           ctx = new AudioCtx();
           out = ctx.createGain();
-          out.gain.value = 0.16;
+          out.gain.value = 0.74;
           out.connect(ctx.destination);
         }
         if (ctx.state === 'suspended') ctx.resume();
@@ -102,35 +103,75 @@
         osc.stop(start + duration + 0.04);
       }
       function play(kind) {
+        if (navigator.vibrate && kind !== 'hover' && kind !== 'text') {
+          var patterns = {
+            click: 18,
+            double: [14, 30, 18],
+            context: [24, 35, 24],
+            scroll: 10,
+            drag: 22
+          };
+          if (patterns[kind]) navigator.vibrate(patterns[kind]);
+        }
         if (kind === 'hover') {
           if (throttled(kind, 180)) return;
-          tone(740, 0.055, 0.024, 'sine');
+          tone(740, 0.065, 0.088, 'sine');
         } else if (kind === 'click') {
-          tone(196, 0.085, 0.050, 'triangle');
-          tone(392, 0.060, 0.026, 'sine', 0.012);
+          tone(196, 0.100, 0.180, 'triangle');
+          tone(392, 0.078, 0.104, 'sine', 0.012);
         } else if (kind === 'double') {
-          tone(329.63, 0.075, 0.040, 'triangle');
-          tone(493.88, 0.095, 0.034, 'triangle', 0.075);
+          tone(329.63, 0.092, 0.142, 'triangle');
+          tone(493.88, 0.112, 0.126, 'triangle', 0.075);
         } else if (kind === 'context') {
-          tone(146.83, 0.120, 0.055, 'triangle');
+          tone(146.83, 0.140, 0.188, 'triangle');
         } else if (kind === 'scroll') {
           if (throttled(kind, 220)) return;
-          tone(246.94, 0.060, 0.026, 'sine');
+          tone(246.94, 0.078, 0.112, 'sine');
         } else if (kind === 'drag') {
           if (throttled(kind, 320)) return;
-          tone(164.81, 0.100, 0.034, 'triangle');
+          tone(164.81, 0.120, 0.142, 'triangle');
         } else if (kind === 'text') {
           if (throttled(kind, 260)) return;
-          tone(523.25, 0.045, 0.020, 'sine');
+          tone(523.25, 0.058, 0.086, 'sine');
         }
       }
       return { play: play };
     })();
 
+    function isScrollbarEdge(x, y) {
+      var doc = document.documentElement;
+      var hasVerticalScroll = doc.scrollHeight > doc.clientHeight + 2;
+      var hasHorizontalScroll = doc.scrollWidth > doc.clientWidth + 2;
+      var edgeWidth = Math.max(20, window.innerWidth - doc.clientWidth + 16);
+      var bottomHeight = Math.max(20, window.innerHeight - doc.clientHeight + 16);
+      return (hasVerticalScroll && x >= doc.clientWidth - edgeWidth) ||
+        (hasHorizontalScroll && y >= doc.clientHeight - bottomHeight);
+    }
+
+    function setNativeEdge(on) {
+      if (nativeEdge === on) return;
+      nativeEdge = on;
+      document.documentElement.classList.toggle('cursor-native-edge', on);
+      if (on) {
+        active = false;
+        dot.classList.remove('is-active');
+        arrow.classList.remove('is-active');
+        cluster.classList.remove('is-active');
+        releasePointer();
+      }
+    }
+
     function activate(x, y) {
+      if (isScrollbarEdge(x, y)) {
+        setNativeEdge(true);
+        return;
+      }
+      setNativeEdge(false);
       mx = x;
       my = y;
       if (!active) {
+        cx = x;
+        cy = y;
         active = true;
         dot.classList.add('is-active');
         arrow.classList.add('is-active');
@@ -158,6 +199,11 @@
     }
 
     window.addEventListener('pointermove', function (e) {
+      if (isScrollbarEdge(e.clientX, e.clientY)) {
+        setNativeEdge(true);
+        return;
+      }
+      setNativeEdge(false);
       activate(e.clientX, e.clientY);
       if (pointerIsDown) {
         var dx = mx - downX, dy = my - downY;
@@ -172,6 +218,10 @@
     }, { passive: true });
 
     window.addEventListener('pointerdown', function (e) {
+      if (isScrollbarEdge(e.clientX, e.clientY)) {
+        setNativeEdge(true);
+        return;
+      }
       activate(e.clientX, e.clientY);
       pointerIsDown = true;
       downX = e.clientX;
@@ -222,6 +272,7 @@
     window.addEventListener('pointerup', releasePointer);
     window.addEventListener('pointercancel', releasePointer);
     window.addEventListener('dblclick', function (e) {
+      if (nativeEdge || isScrollbarEdge(e.clientX, e.clientY)) return;
       activate(e.clientX, e.clientY);
       spawnAction(e.clientX, e.clientY, 'v2-cursor-burst');
       soundHaptics.play('double');
@@ -278,7 +329,7 @@
     });
 
     window.addEventListener('wheel', function (e) {
-      if (!active) return;
+      if (!active || nativeEdge) return;
       if (e.ctrlKey) {
         cluster.classList.add('is-zooming');
         radiusTarget = e.deltaY < 0 ? HOVER_RADIUS + 7 : PRESS_RADIUS + 2;
@@ -305,14 +356,14 @@
     }, { passive: true });
 
     function loop() {
-      cx += (mx - cx) * 0.18;
-      cy += (my - cy) * 0.18;
-      radius += (radiusTarget - radius) * 0.14;
-      speed += (speedTarget - speed) * 0.1;
+      cx += (mx - cx) * 0.46;
+      cy += (my - cy) * 0.46;
+      radius += (radiusTarget - radius) * 0.22;
+      speed += (speedTarget - speed) * 0.16;
       orbitAngle += speed;
 
-      dot.style.transform = 'translate(' + mx + 'px,' + my + 'px)';
-      arrow.style.transform = 'translate(' + (mx + 5) + 'px,' + (my + 6) + 'px) rotate(-7deg)';
+      dot.style.transform = 'translate3d(' + mx + 'px,' + my + 'px,0)';
+      arrow.style.transform = 'translate3d(' + (mx + 4) + 'px,' + (my + 5) + 'px,0) rotate(-7deg)';
 
       PARTICLES.forEach(function (particle) {
         var angle = orbitAngle + particle.baseAngle;
@@ -330,9 +381,9 @@
           px = rpx;
           py = rpy;
         }
-        particle.el.style.transform = 'translate(' + (cx + px) + 'px,' + (cy + py) + 'px)';
+        particle.el.style.transform = 'translate3d(' + (cx + px) + 'px,' + (cy + py) + 'px,0)';
       });
-      bar.style.transform = 'translate(' + cx + 'px,' + cy + 'px)';
+      bar.style.transform = 'translate3d(' + cx + 'px,' + cy + 'px,0)';
       requestAnimationFrame(loop);
     }
 

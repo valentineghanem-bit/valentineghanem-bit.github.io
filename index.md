@@ -179,13 +179,6 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   </div>
 </section>
 
-<div class="marquee py-4 bg-slate-50/60 dark:bg-slate-900/50 border-y border-slate-200 dark:border-slate-800" aria-hidden="true">
-  <div class="marquee__track">
-    {% for topic in site.data.profile.knows_about %}<span class="marquee__item">{{ topic }}</span>{% endfor %}
-    {% for topic in site.data.profile.knows_about %}<span class="marquee__item">{{ topic }}</span>{% endfor %}
-  </div>
-</div>
-
 <section id="sub-hero" class="py-24 px-6 bg-slate-50/50 dark:bg-slate-900/40 border-y border-slate-200 dark:border-slate-800 relative">
   <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
     <div class="lg:col-span-7 reveal">
@@ -303,7 +296,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
             <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg">02</div>
             <h4 class="text-xl font-bold font-heading">Clinical Diagnostic Leadership</h4>
           </div>
-          <p class="text-sm text-slate-300 pl-14">High-complexity clinical chemistry &amp; haematology (Beckman AU5800, Sysmex XN-550, Mindray BS600, Roche), molecular diagnostics (GeneXpert, real-time PCR), ISO 15189 quality management.</p>
+          <p class="text-sm text-slate-300 pl-14">High-complexity clinical chemistry &amp; haematology (Beckman AU5800, Sysmex XN-550, Mindray BS600, Roche), GeneXpert and real-time PCR workflows, ISO 15189 quality management.</p>
         </div>
         <div class="p-6 glass-card bg-slate-800/40 rounded-2xl border border-slate-700 hover:border-violet-400 transition-all">
           <div class="flex items-center gap-4 mb-3">
