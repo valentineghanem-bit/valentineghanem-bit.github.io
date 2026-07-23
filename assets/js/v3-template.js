@@ -313,27 +313,24 @@
     showToast(next.charAt(0).toUpperCase() + next.slice(1) + ' theme');
   };
 
-  // ---------- Scroll-to-top + auto-hide/reveal nav ----------
+  // ---------- Logo top action + auto-hide/reveal nav ----------
   // One scroll listener drives both: the nav slides out of view on scroll
   // DOWN past a small threshold (so it doesn't flicker on tiny scrolls) and
   // slides back in on any scroll UP, regardless of position -- the common
-  // "get out of the way while reading, come back the moment you want it"
-  // pattern. The scroll-to-top button in the nav only appears once there's
-  // somewhere to scroll back to.
-  window.scrollToTopV3 = function () {
+  // "get out of the way while reading, come back the moment you want it" pattern.
+  window.scrollToTopV3 = function (event) {
+    var path = window.location.pathname.replace(/\/+$/, '') || '/';
+    if (event && path === '/') event.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   (function initNavScrollBehavior() {
     var nav = document.getElementById('site-nav');
-    var topBtn = document.getElementById('scrollTopBtn');
     if (!nav) return;
     var lastY = window.scrollY;
     var ticking = false;
     var REVEAL_THRESHOLD = 80;
     function onScroll() {
       var y = window.scrollY;
-      if (topBtn) topBtn.classList.toggle('hidden', y < 400);
-      if (topBtn) topBtn.classList.toggle('flex', y >= 400);
       if (y <= REVEAL_THRESHOLD) {
         nav.style.transform = '';
       } else if (y > lastY) {
@@ -345,7 +342,7 @@
       ticking = false;
     }
     window.addEventListener('scroll', function () {
-      if (!ticking) { requestAnimationFrame(onScroll); ticking = true; }
+      if (!ticking) { ticking = true; setTimeout(onScroll, 16); }
     }, { passive: true });
   })();
 
