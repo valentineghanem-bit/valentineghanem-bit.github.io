@@ -106,10 +106,16 @@
           var e = params.data.event;
           var imgAlt = (e.title || 'Field record') + ', Valentine Golden Ghanem';
           var img = e.photo ? '<img src="' + e.photo + '" alt="' + imgAlt.replace(/"/g, '&quot;') + '" style="width:200px;height:112px;object-fit:cover;border-radius:6px;display:block;margin-bottom:8px;">' : '';
-          return '<div style="max-width:220px;">' + img +
-            '<strong style="display:block;margin-bottom:3px;font-size:0.92em;">' + e.title + '</strong>' +
-            '<span style="opacity:0.72;font-size:0.78em;">' + e.meta + '</span>' +
-            '<div style="margin-top:6px;font-size:0.72em;text-transform:uppercase;letter-spacing:0.05em;opacity:0.75;">View record &rarr;</div></div>';
+          // width (not just max-width) plus an explicit wrap/nowrap override on
+          // every text node: ECharts' own tooltip wrapper measures content with
+          // white-space:nowrap before it lays the box out, and that nowrap was
+          // inherited straight through into this HTML -- titles/meta longer than
+          // ~220px rendered on one un-wrapped line and spilled past the card
+          // edge instead of breaking onto a second line.
+          return '<div style="width:200px;white-space:normal;word-wrap:break-word;overflow-wrap:break-word;box-sizing:border-box;">' + img +
+            '<strong style="display:block;margin-bottom:3px;font-size:0.92em;white-space:normal;word-wrap:break-word;overflow-wrap:break-word;">' + e.title + '</strong>' +
+            '<span style="display:block;opacity:0.72;font-size:0.78em;white-space:normal;word-wrap:break-word;overflow-wrap:break-word;">' + e.meta + '</span>' +
+            '<div style="margin-top:6px;font-size:0.72em;text-transform:uppercase;letter-spacing:0.05em;opacity:0.75;white-space:normal;">View record &rarr;</div></div>';
         },
         backgroundColor: p.paperRaised,
         borderColor: p.line,
