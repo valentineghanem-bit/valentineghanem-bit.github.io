@@ -224,7 +224,7 @@
       if (!isOn || !ctx) return;
       var chord = CHORDS[chordIndex % CHORDS.length];
       var now = ctx.currentTime + 0.05;
-      chord.forEach(function (freq, i) { pluck(freq, now + i * 0.94, Math.max(0.014, 0.030 - i * 0.003)); });
+      chord.forEach(function (freq, i) { pluck(freq, now + i * 0.94, Math.max(0.023, 0.050 - i * 0.004)); });
       chordIndex++;
       loopTimer = setTimeout(scheduleLoop, 11800);
     }
@@ -234,7 +234,7 @@
       if (c.state === 'suspended') c.resume();
       masterGain.gain.cancelScheduledValues(c.currentTime);
       masterGain.gain.setValueAtTime(masterGain.gain.value, c.currentTime);
-      masterGain.gain.linearRampToValueAtTime(1, c.currentTime + 1.6);
+      masterGain.gain.linearRampToValueAtTime(1.25, c.currentTime + 1.6);
       updateEngagement();
       if (!loopTimer) scheduleLoop();
     }
@@ -624,27 +624,45 @@
   }
 
   // ---------- Reveal-on-scroll + stat count-up ----------
-  var observer = new IntersectionObserver(function (entries) {
+  function animateCounter(counter) {
+    if (!counter || counter.dataset.counted === 'true') return;
+    counter.dataset.counted = 'true';
+    var target = +counter.getAttribute('data-target');
+    var suffix = counter.getAttribute('data-suffix') || '';
+    var count = 0;
+    var speed = Math.max(target / 40, 1);
+    (function update() {
+      count += speed;
+      if (count < target) {
+        counter.textContent = Math.ceil(count).toLocaleString('en-US') + suffix;
+        setTimeout(update, 25);
+      } else {
+        counter.textContent = target.toLocaleString('en-US') + suffix;
+      }
+    })();
+  }
+
+  function activateReveal(el) {
+    if (!el) return;
+    el.classList.add('active');
+    el.querySelectorAll('[data-target]').forEach(animateCounter);
+  }
+
+  var observer = 'IntersectionObserver' in window ? new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (!entry.isIntersecting) return;
-      entry.target.classList.add('active');
-      entry.target.querySelectorAll('[data-target]').forEach(function (counter) {
-        var target = +counter.getAttribute('data-target');
-        var suffix = counter.getAttribute('data-suffix') || '';
-        var count = 0;
-        var speed = Math.max(target / 40, 1);
-        (function update() {
-          count += speed;
-          if (count < target) {
-            counter.textContent = Math.ceil(count) + suffix;
-            setTimeout(update, 25);
-          } else {
-            counter.textContent = target + suffix;
-          }
-        })();
-      });
+      activateReveal(entry.target);
+      observer.unobserve(entry.target);
     });
-  }, { threshold: 0.1 });
+  }, { threshold: 0.1 }) : null;
+
+  function forceInitialReveals() {
+    var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    document.querySelectorAll('.v3-scope .reveal').forEach(function (el) {
+      var rect = el.getBoundingClientRect();
+      if (rect.top < viewportHeight * 1.15 && rect.bottom > -80) activateReveal(el);
+    });
+  }
 
   // ---------- Hero microscopic infection canvas (bacillus rods, cocci
   // chains, eukaryotic host cells) -- ported directly from the reference
@@ -1132,7 +1150,10 @@
     });
   }
 
-  window.addEventListener('load', function () {
+  var didBootV3 = false;
+  function bootV3Template() {
+    if (didBootV3) return;
+    didBootV3 = true;
     window.switchJourneyTab('education');
     renderPublications(DATA.publications || []);
     window.filterPortfolio('all');
@@ -1142,7 +1163,11 @@
     initMicroscopicInfectionCanvas();
     startTypewriter();
     if (window.v2Motion) window.v2Motion.attachMagnetic('.magnetic-btn');
-    document.querySelectorAll('.v3-scope .reveal').forEach(function (el) { observer.observe(el); });
+    document.querySelectorAll('.v3-scope .reveal').forEach(function (el) {
+      if (observer) observer.observe(el);
+    });
+    forceInitialReveals();
+    setTimeout(forceInitialReveals, 120);
 
     // .card/.event-card both get tilt-physics sitewide, matching site.js's
     // original unconditional `.card, .toc-card, .event-card` selector --
@@ -1161,5 +1186,12 @@
     initPublicationsFilter();
     initPortfolioCategoryFilter();
     initCpdFilter();
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootV3Template, { once: true });
+  } else {
+    bootV3Template();
+  }
+  window.addEventListener('load', bootV3Template, { once: true });
 })();

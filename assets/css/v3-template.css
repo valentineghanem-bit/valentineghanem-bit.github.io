@@ -71,8 +71,13 @@ html.no-biofield #bg-canvas { display: none; }
   transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .v3-scope .reveal.active {
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition-property: border-color, box-shadow, background-color, color;
+}
+html .v3-scope .reveal.active {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
 }
 
 .v3-scope .nav-link.active-link {
