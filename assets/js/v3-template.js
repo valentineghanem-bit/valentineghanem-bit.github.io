@@ -5,6 +5,98 @@
 (function () {
   var DATA = window.SITE_DATA || {};
 
+  // Bento-tint 6-colour cycle by true page-wide position, not CSS
+  // :nth-child -- several pages (Skills, Portfolio) split .v2-bento-tint
+  // cards across multiple .card-grid containers, and :nth-child only counts
+  // same-parent siblings, so it silently restarts at 1 in every group
+  // without this tagging pass. Ported from site.js (JS-only, no new DOM/
+  // CSS needed) rather than loading that whole legacy file -- several of
+  // its other features create new elements (scroll-progress bar, page-veil
+  // transitions, lightbox) that need their own CSS carefully pulled out of
+  // style.css first to avoid its broad body/a/h1-h3 rules leaking into the
+  // Tailwind-based v3 pages; deferred rather than rushed.
+  document.querySelectorAll('.v2-bento-tint').forEach(function (el, i) {
+    el.setAttribute('data-tint-cycle', i % 6);
+  });
+
+  // Skills toolkit filter (category select + domain select + live search),
+  // ported verbatim from site.js.
+  var skillsRoot = document.querySelector('[data-skills-root]');
+  if (skillsRoot) {
+    var catSelect = skillsRoot.querySelector('#skills-category');
+    var domSelect = skillsRoot.querySelector('#skills-domain');
+    var searchInput = skillsRoot.querySelector('#skills-search');
+    var resetBtn = skillsRoot.querySelector('.filter-toolbar__reset');
+    var emptyMsg = skillsRoot.querySelector('.filter-empty');
+    var sections = Array.prototype.slice.call(skillsRoot.querySelectorAll('.skills-section'));
+
+    var applyFilters = function () {
+      var cat = catSelect.value;
+      var dom = domSelect.value;
+      var q = searchInput.value.trim().toLowerCase();
+      var anySectionVisible = false;
+      sections.forEach(function (sec) {
+        var secCat = sec.getAttribute('data-category');
+        var catMatch = (cat === 'all' || cat === secCat);
+        var anyCardVisible = false;
+        sec.querySelectorAll('.card').forEach(function (card) {
+          var cardDom = card.getAttribute('data-domain');
+          var domMatch = (dom === 'all' || dom === cardDom);
+          var anyItemVisible = false;
+          card.querySelectorAll('.card__list li').forEach(function (li) {
+            var text = li.textContent.toLowerCase();
+            var visible = catMatch && domMatch && (!q || text.indexOf(q) !== -1);
+            li.hidden = !visible;
+            if (visible) anyItemVisible = true;
+          });
+          card.hidden = !(catMatch && domMatch && anyItemVisible);
+          if (!card.hidden) anyCardVisible = true;
+        });
+        sec.hidden = !anyCardVisible;
+        if (!sec.hidden) anySectionVisible = true;
+      });
+      if (emptyMsg) emptyMsg.classList.toggle('is-visible', !anySectionVisible);
+      skillsRoot.querySelectorAll('.skills-matrix__cell').forEach(function (btn) {
+        var match = btn.getAttribute('data-category') === cat && btn.getAttribute('data-domain') === dom;
+        btn.classList.toggle('is-active', match && cat !== 'all' && dom !== 'all');
+      });
+    };
+
+    if (catSelect) catSelect.addEventListener('change', applyFilters);
+    if (domSelect) domSelect.addEventListener('change', applyFilters);
+    if (searchInput) searchInput.addEventListener('input', applyFilters);
+    if (resetBtn) resetBtn.addEventListener('click', function () {
+      catSelect.value = 'all'; domSelect.value = 'all'; searchInput.value = '';
+      applyFilters();
+    });
+    skillsRoot.querySelectorAll('.skills-matrix__cell').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        catSelect.value = btn.getAttribute('data-category');
+        domSelect.value = btn.getAttribute('data-domain');
+        applyFilters();
+      });
+    });
+  }
+
+  // Hero/portrait parallax -- ported from site.js so About's
+  // data-parallax="0.08" portrait (previously inert on v3, nothing read the
+  // attribute) actually works.
+  var parallaxEls = document.querySelectorAll('[data-parallax]');
+  if (parallaxEls.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var parallaxTicking = false;
+    var updateParallax = function () {
+      var y = window.scrollY;
+      parallaxEls.forEach(function (el) {
+        var speed = parseFloat(el.getAttribute('data-parallax')) || 0.15;
+        el.style.transform = 'translateY(' + Math.min(y * speed, 60) + 'px)';
+      });
+      parallaxTicking = false;
+    };
+    window.addEventListener('scroll', function () {
+      if (!parallaxTicking) { requestAnimationFrame(updateParallax); parallaxTicking = true; }
+    }, { passive: true });
+  }
+
   // ---------- Explore dropdown (replaces the old nav's flat 7-link row --
   // matches the existing site-wide nav.html pattern: Home, About, Explore
   // (dropdown: Community/Skills/Publications/Portfolio/Certificates/Press/
@@ -316,11 +408,6 @@
   };
 
   // ---------- Modals ----------
-  window.toggleAiModal = function () {
-    var modal = document.getElementById('aiModal');
-    modal.classList.toggle('opacity-0');
-    modal.classList.toggle('pointer-events-none');
-  };
   window.openCvModal = function () {
     document.getElementById('cvModal').classList.remove('opacity-0', 'pointer-events-none');
   };
@@ -340,48 +427,6 @@
     document.getElementById('mobileDrawer').classList.toggle('hidden');
   };
 
-  // ---------- AI assistant panel ----------
-  // No backend proxy exists for this static site, so a real API key can't
-  // live here safely (anyone can view-source a public GitHub Pages repo).
-  // The panel is fully functional UI-wise but answers from a small set of
-  // real, honest canned responses about Valentine's actual work instead of
-  // pretending to call a live model.
-  var CANNED_TOPICS = [
-    { match: /focus|research|about/i, reply: "Valentine's research centres on spatial epidemiology and machine learning for infectious disease surveillance in Ghana — particularly HIV/AIDS incidence forecasting, using tools like XGBoost, SHAP, and spatial LISA statistics across Ghana's 261 districts." },
-    { match: /credential|qualif|degree/i, reply: "He holds an MSc in Data Science (University of East London, Distinction) and an MSc in Public Health (University of Suffolk, Merit), plus a BSc in Medical Laboratory Science (University of Ghana). He is a Fellow of the Royal Society for Public Health (FRSPH 140437) and holds registrations with ACSLM/CORU (Ireland), GAMLS (Ghana), and VvE (Netherlands)." },
-    { match: /publicat|paper|journal/i, reply: "His most recent publication, in Cureus (2026), analyses NHIS non-enrolment inequities across Ghana's 261 districts using spatial LISA statistics and machine learning — see the Publications section below for the full list with DOIs." },
-    { match: /cocoa|clinic|job|work/i, reply: "He currently serves as Principal Biomedical Scientist at Cocoa Clinic, the medical department of the Ghana Cocoa Board (COCOBOD), leading laboratory operations and ISO 15189 compliance." }
-  ];
-  function appendAiMessage(role, text) {
-    var history = document.getElementById('aiChatHistory');
-    var id = 'msg-' + history.children.length;
-    var msg = document.createElement('div');
-    msg.className = role === 'user'
-      ? 'p-3 rounded-2xl bg-cyan-500/20 text-cyan-200 border border-cyan-500/30 ml-auto max-w-[85%]'
-      : 'p-3 rounded-2xl bg-slate-800 text-slate-200 border border-slate-700 max-w-[85%]';
-    msg.id = id;
-    msg.textContent = text;
-    history.appendChild(msg);
-    history.scrollTop = history.scrollHeight;
-    return id;
-  }
-  window.sendAiMessage = function () {
-    var input = document.getElementById('aiInput');
-    var text = input.value.trim();
-    if (!text) return;
-    appendAiMessage('user', text);
-    input.value = '';
-    var hit = CANNED_TOPICS.filter(function (t) { return t.match.test(text); })[0];
-    var reply = hit ? hit.reply : "That's a great question — for a full answer, browse the Publications and About sections below, or reach Valentine directly via the contact links in the footer.";
-    setTimeout(function () { appendAiMessage('assistant', reply); }, 350);
-  };
-  window.sendSamplePrompt = function (prompt) {
-    document.getElementById('aiInput').value = prompt;
-    window.sendAiMessage();
-  };
-  window.handleAiKeyPress = function (e) {
-    if (e.key === 'Enter') window.sendAiMessage();
-  };
 
   // ---------- Outbreak risk simulator ----------
   // A transparent, simplified illustrative weighting (not a validated

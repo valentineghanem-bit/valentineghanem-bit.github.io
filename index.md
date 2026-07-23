@@ -88,18 +88,10 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
     <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/70 to-slate-950/90 dark:from-slate-950/95 dark:via-slate-950/75 dark:to-slate-950/95"></div>
   </div>
 
-  <div class="absolute top-28 right-6 lg:right-12 z-20 hidden md:flex items-center gap-3 px-4 py-2 glass-card rounded-2xl border border-cyan-500/30 text-xs font-mono backdrop-blur-xl shadow-2xl">
-    <span class="w-3 h-3 rounded-full bg-cyan-400 pulse-ring"></span>
-    <div>
-      <div class="text-[10px] text-cyan-400 font-bold uppercase tracking-widest">Illustrative Simulation</div>
-      <div class="text-slate-200 font-semibold text-[11px]">Spatial-cluster demo below reacts to your inputs live</div>
-    </div>
-  </div>
-
   <div class="blob w-[550px] h-[550px] bg-cyan-400/15 top-1/4 -left-32 pointer-events-none z-10"></div>
   <div class="blob w-[500px] h-[500px] bg-violet-500/15 bottom-10 -right-20 pointer-events-none z-10"></div>
 
-  <div class="max-w-7xl mx-auto w-full grid lg:grid-cols-12 gap-12 items-center relative z-10">
+  <div class="max-w-[1800px] mx-auto w-full grid lg:grid-cols-12 gap-x-8 gap-y-12 items-center relative z-10 px-2 lg:px-4">
     <div class="lg:col-span-7 reveal text-left">
       <div class="inline-flex items-center gap-2.5 px-4 py-1.5 border border-slate-300 dark:border-slate-700 rounded-full text-xs font-mono font-semibold tracking-wider mb-6 bg-white/70 dark:bg-slate-900/70 shadow-sm backdrop-blur-md">
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -113,8 +105,9 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <span>&bull;</span>
         <span class="px-2.5 py-0.5 rounded bg-slate-200/80 dark:bg-slate-800 text-slate-700 dark:text-slate-300">MSc</span>
         <span class="px-2.5 py-0.5 rounded bg-slate-200/80 dark:bg-slate-800 text-slate-700 dark:text-slate-300">MSPH</span>
-        <span class="px-2.5 py-0.5 rounded bg-slate-200/80 dark:bg-slate-800 text-slate-700 dark:text-slate-300">MLS (CORU)</span>
+        <span class="px-2.5 py-0.5 rounded bg-slate-200/80 dark:bg-slate-800 text-slate-700 dark:text-slate-300">MLS (CORU, ACSLM)</span>
         <span class="px-2.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">FRSPH</span>
+        <span class="px-2.5 py-0.5 rounded bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20">VvE</span>
       </div>
 
       <p class="text-sm sm:text-base font-mono font-semibold text-cyan-500 dark:text-cyan-400 mb-4 uppercase tracking-wide" aria-hidden="true">
@@ -153,37 +146,13 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       </div>
     </div>
 
-    <div class="lg:col-span-5 reveal flex justify-center lg:justify-end">
-      <div class="w-full max-w-md glass-card rounded-[32px] p-8 border shadow-2xl relative group">
-        <div class="relative w-32 h-32 mx-auto rounded-3xl overflow-hidden border-2 border-cyan-500/80 shadow-xl mb-6">
-          <img src="{{ '/assets/img/gallery/portraits/Valentine Golden Ghanem Portrait-18.webp' | relative_url }}"
-               alt="{{ site.data.profile.name }}"
-               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-          <span class="absolute bottom-2 right-2 w-4 h-4 bg-emerald-400 border-2 border-slate-900 rounded-full"></span>
-        </div>
-        <div class="text-center mb-6">
-          <h3 class="font-bold font-heading text-xl text-slate-900 dark:text-white">{{ site.data.profile.name }}</h3>
-          <p class="text-xs text-cyan-500 font-mono font-semibold mt-1">{{ site.data.profile.job_titles[0] }}</p>
-          <p class="text-[11px] text-slate-400 mt-0.5">{{ site.data.organization.cocoa_clinic.name }}, {{ site.data.organization.cocoa_clinic.parent_organization.name }}</p>
-        </div>
-        <div class="space-y-2.5 text-xs font-mono mb-6">
-          <div class="p-3 rounded-xl bg-slate-100/80 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 flex items-center justify-between">
-            <span class="text-slate-500 dark:text-slate-400">Specialization</span>
-            <span class="font-bold text-slate-800 dark:text-slate-200">Spatial ML &amp; GIS</span>
-          </div>
-          <div class="p-3 rounded-xl bg-slate-100/80 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 flex items-center justify-between">
-            <span class="text-slate-500 dark:text-slate-400">Fellowship</span>
-            <span class="font-bold text-amber-500">{{ frsph.abbreviation }} (UK) #{{ frsph.reg_no }}</span>
-          </div>
-          <div class="p-3 rounded-xl bg-slate-100/80 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 flex items-center justify-between">
-            <span class="text-slate-500 dark:text-slate-400">EU Registration</span>
-            <span class="font-bold text-emerald-500">{{ acslm.abbreviation }} / CORU #{{ acslm.reg_no }}</span>
-          </div>
-        </div>
-        <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-xs font-mono">
-          <a href="{{ '/about/' | relative_url }}" class="text-slate-400 hover:text-white transition-colors">Career Timeline &rarr;</a>
-          <a href="#simulator" class="text-cyan-500 font-bold hover:underline">Outbreak Lab &rarr;</a>
-        </div>
+    <div class="lg:col-span-5 reveal relative flex justify-center lg:justify-end lg:self-end h-[440px] sm:h-[560px] lg:h-[78vh] lg:min-h-[560px] lg:max-h-[820px]">
+      <img src="{{ '/assets/img/gallery/portraits/hero-green-shirt-cutout.png' | relative_url }}"
+           alt="{{ site.data.profile.name }}"
+           class="h-full w-auto max-w-none object-contain object-bottom drop-shadow-[0_30px_60px_rgba(6,182,212,0.25)]">
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 lg:left-auto lg:right-4 lg:translate-x-0 flex items-center gap-2.5 px-4 py-2 glass-card rounded-full border border-cyan-500/30 text-xs font-mono backdrop-blur-xl shadow-2xl whitespace-nowrap">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-slate-700 dark:text-slate-200 font-semibold">{{ site.data.organization.cocoa_clinic.name }}, {{ site.data.organization.cocoa_clinic.parent_organization.name }}</span>
       </div>
     </div>
   </div>
