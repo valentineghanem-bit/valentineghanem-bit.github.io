@@ -1,12 +1,15 @@
-// About page: per-section bespoke motion (not one repeated "fade up" treatment).
+// About page: per-section bespoke motion (not one repeated "fade up"
+// treatment). Rebuilt for the v3 Tailwind/glass-card redesign -- same
+// mechanics as before, renamed selectors (no more about-v2__ prefix, since
+// the old about-v2.css visual skin is gone; these are now pure JS hooks,
+// styled via the small behavioural block in v3-template.css instead).
 (function () {
   var root = document.querySelector('.about-v2');
   if (!root) return;
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Spotlight glow (quote card + credential tags) -- shared cursor-follow
-  // technique already established on the hero and map.
-  root.querySelectorAll('.about-v2__quote, .about-v2__cred').forEach(function (el) {
+  // Spotlight glow (quote card + credential tags).
+  root.querySelectorAll('.spotlight-glow').forEach(function (el) {
     el.addEventListener('pointermove', function (e) {
       var r = el.getBoundingClientRect();
       el.style.setProperty('--sx', ((e.clientX - r.left) / r.width * 100) + '%');
@@ -19,9 +22,8 @@
   // Wired unconditionally, ABOVE the reduced-motion early-return below:
   // this is a content-disclosure control (the description isn't shown
   // anywhere else), not decorative motion, and must keep working for
-  // motion-sensitive users too -- only the CSS grow-transition easing is
-  // what reduced-motion should remove (see about-v2.css).
-  var recordCards = Array.prototype.slice.call(root.querySelectorAll('.about-v2__record-card'));
+  // motion-sensitive users too.
+  var recordCards = Array.prototype.slice.call(root.querySelectorAll('.record-card'));
   if (recordCards.length) {
     var rlBackdrop, rlFlyer, rlIcon, rlDates, rlTitle, rlDesc, rlClose;
     var rlOpen = false, rlOrigin = null, rlTrigger = null;
@@ -34,12 +36,12 @@
       rlFlyer.setAttribute('role', 'dialog');
       rlFlyer.setAttribute('aria-modal', 'true');
       rlIcon = document.createElement('span');
-      rlIcon.className = 'about-v2__record-card-icon';
+      rlIcon.className = 'record-card-icon text-2xl';
       rlIcon.setAttribute('aria-hidden', 'true');
       rlDates = document.createElement('span');
-      rlDates.className = 'about-v2__record-card-dates';
+      rlDates.className = 'record-card-dates text-xs font-mono text-slate-400';
       rlTitle = document.createElement('span');
-      rlTitle.className = 'about-v2__record-card-title';
+      rlTitle.className = 'record-card-title';
       rlDesc = document.createElement('p');
       rlDesc.className = 'record-lightbox-desc';
       rlFlyer.append(rlIcon, rlDates, rlTitle, rlDesc);
@@ -92,10 +94,6 @@
         document.addEventListener('keydown', onRlKey);
         rlBackdrop.classList.add('is-open');
 
-        // Measure the natural height of the full description at the
-        // target width (rendered off-screen for one synchronous instant,
-        // never painted) so the height transition has a real end value --
-        // text has no "naturalHeight" the way an <img> does.
         var targetW = Math.min(window.innerWidth * 0.92, 560);
         var prevLeft = rlFlyer.style.left, prevTop = rlFlyer.style.top, prevW = rlFlyer.style.width, prevH = rlFlyer.style.height;
         rlFlyer.style.transition = 'none';
@@ -104,7 +102,6 @@
         rlFlyer.style.height = 'auto';
         var measuredH = rlFlyer.getBoundingClientRect().height;
         rlFlyer.style.left = prevLeft; rlFlyer.style.top = prevTop; rlFlyer.style.width = prevW; rlFlyer.style.height = prevH;
-        // eslint-disable-next-line no-unused-expressions
         rlFlyer.getBoundingClientRect();
         rlFlyer.style.transition = '';
 
@@ -140,7 +137,7 @@
   if (prefersReduced) return;
 
   // 01: specimen scan-line sweep, once, on reveal.
-  var specimens = root.querySelectorAll('.about-v2__specimen');
+  var specimens = root.querySelectorAll('.specimen');
   if (specimens.length && 'IntersectionObserver' in window) {
     var scanIo = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -151,7 +148,7 @@
   }
 
   // 03: pills stagger in, magnetic hover.
-  var pills = root.querySelectorAll('.about-v2__pill');
+  var pills = root.querySelectorAll('.reveal-pill');
   if (pills.length && 'IntersectionObserver' in window) {
     var pillsRevealed = false;
     var pillIo = new IntersectionObserver(function (entries) {
@@ -162,7 +159,7 @@
         el.classList.add('is-visible');
       });
     }, { threshold: 0.2 });
-    pillIo.observe(root.querySelector('.about-v2__pills') || pills[0]);
+    pillIo.observe(root.querySelector('[data-pills]') || pills[0]);
   }
   if (window.gsap && window.matchMedia('(pointer: fine)').matches) {
     pills.forEach(function (el) {
@@ -178,7 +175,7 @@
   }
 
   // 04: identifiers stagger in, terminal-style.
-  var idents = root.querySelectorAll('.about-v2__ident');
+  var idents = root.querySelectorAll('.reveal-ident');
   if (idents.length && 'IntersectionObserver' in window) {
     var identRevealed = false;
     var identIo = new IntersectionObserver(function (entries) {
@@ -189,7 +186,7 @@
         el.classList.add('is-visible');
       });
     }, { threshold: 0.2 });
-    identIo.observe(root.querySelector('.about-v2__ident-list') || idents[0]);
+    identIo.observe(root.querySelector('[data-idents]') || idents[0]);
   }
 
   // 06: record cards stagger in as the grid scrolls into view.
@@ -208,11 +205,11 @@
 
   if (window.gsap && window.ScrollTrigger) {
     gsap.registerPlugin(ScrollTrigger);
-    var manifestoRail = root.querySelector('.about-v2__manifesto-rail-fill');
+    var manifestoRail = root.querySelector('.manifesto-rail-fill');
     if (manifestoRail) {
       gsap.to(manifestoRail, {
         height: '100%', ease: 'none',
-        scrollTrigger: { trigger: '.about-v2__manifesto', start: 'top 80%', end: 'bottom 60%', scrub: true }
+        scrollTrigger: { trigger: '[data-manifesto]', start: 'top 80%', end: 'bottom 60%', scrub: true }
       });
     }
   }

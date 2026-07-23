@@ -186,3 +186,78 @@ html:not([data-v2-theme="dark"]):not([data-v2-theme="dim"]) .v3-scope .graded-he
   .v3-scope .typed-cursor { animation: none; }
   .v3-scope .marquee__track { animation: none; }
 }
+
+/* ============================================================
+   Behavioural CSS for ported interactions (About/Skills/etc.) --
+   the JS hooks (about-fx.js and friends) are kept as-is and still target
+   these exact class names, but the old about-v2.css/skills-v2.css visual
+   skin is NOT loaded on these pages any more -- every section is rebuilt in
+   the v3 glass-card/Tailwind language instead. Only the actual motion/
+   interaction mechanics live here (nothing about colour, spacing or type,
+   which come from Tailwind utility classes directly in the markup). ---- */
+
+/* Specimen scan-line sweep (About §01) */
+.v3-scope .specimen-scan { position: absolute; left: 0; right: 0; top: 0; height: 40%; pointer-events: none; background: linear-gradient(180deg, rgba(34,211,238,0.35), transparent); transform: translateY(-100%); opacity: 0; }
+.v3-scope .is-scanned .specimen-scan { animation: v3-scan 1.1s ease-out forwards; }
+@keyframes v3-scan { 0% { transform: translateY(-100%); opacity: 0.9; } 100% { transform: translateY(250%); opacity: 0; } }
+
+/* Manifesto reading-progress rail (About §02) */
+.v3-scope .manifesto-rail-fill { position: absolute; left: 0; top: 0; width: 100%; height: 0%; background: linear-gradient(180deg, #22D3EE, #8B5CF6); }
+
+/* Expertise pill stagger-in (About §03) */
+.v3-scope .reveal-pill { transform: translate(var(--mx, 0px), var(--my, 0px)) translateY(14px); opacity: 0; }
+.v3-scope .reveal-pill.is-visible { animation: v3-pill-in 0.6s cubic-bezier(0.16,1,0.3,1) forwards; }
+@keyframes v3-pill-in { to { opacity: 1; transform: translate(var(--mx, 0px), var(--my, 0px)) translateY(0); } }
+
+/* Identifier terminal-reveal (About §04) */
+.v3-scope .reveal-ident { opacity: 0; }
+.v3-scope .reveal-ident.is-visible { animation: v3-ident-in 0.5s ease forwards; }
+@keyframes v3-ident-in { from { opacity: 0; } to { opacity: 1; } }
+.v3-scope .ident-cursor { display: inline-block; width: 7px; height: 1em; background: #22D3EE; margin-left: 2px; vertical-align: text-bottom; animation: v3-blink 0.9s step-end infinite; }
+@keyframes v3-blink { 50% { opacity: 0; } }
+
+/* Spotlight glow (About §02 quote, §05 creds -- reuses --sx/--sy already set by v2Motion.attachSpotlight) */
+.v3-scope .spotlight-glow { position: relative; overflow: hidden; }
+.v3-scope .spotlight-glow::before {
+  content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+  background: radial-gradient(260px circle at var(--sx, 50%) var(--sy, 50%), rgba(34,211,238,0.18), transparent 70%);
+}
+.v3-scope .spotlight-glow:hover::before { opacity: 1; }
+
+/* Record-card grid reveal + lightbox (About §06 timeline) */
+.v3-scope .reveal-record { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
+.v3-scope .reveal-record.is-visible { opacity: 1; transform: none; }
+.record-lightbox-backdrop {
+  position: fixed; inset: 0; z-index: 200; background: rgba(15,23,42,0.85);
+  backdrop-filter: blur(14px) saturate(1.1); -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  opacity: 0; pointer-events: none; transition: opacity 0.35s ease;
+}
+.record-lightbox-backdrop.is-open { opacity: 1; pointer-events: auto; }
+.record-lightbox-flyer {
+  position: fixed; z-index: 201; overflow: auto; box-shadow: 0 20px 60px -12px rgba(0,0,0,0.4);
+  border: 1px solid rgba(148,163,184,0.3); background: #fff; color: #0F172A;
+  padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 6px; border-radius: 18px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: left 0.55s cubic-bezier(0.22,1,0.36,1), top 0.55s cubic-bezier(0.22,1,0.36,1),
+              width 0.55s cubic-bezier(0.22,1,0.36,1), height 0.55s cubic-bezier(0.22,1,0.36,1),
+              padding 0.55s cubic-bezier(0.22,1,0.36,1), border-radius 0.55s cubic-bezier(0.22,1,0.36,1);
+}
+html[data-v2-theme="dark"] .record-lightbox-flyer, html[data-v2-theme="dim"] .record-lightbox-flyer { background: #1E293B; color: #F1F5F9; border-color: rgba(51,65,85,0.8); }
+.record-lightbox-flyer .record-card-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.05rem; }
+.record-lightbox-desc { font-size: 0.95rem; line-height: 1.6; margin: 6px 0 0; opacity: 0; transition: opacity 0.3s ease 0.25s; color: #64748B; }
+.record-lightbox-flyer.is-grown .record-lightbox-desc { opacity: 1; }
+.record-lightbox-close {
+  position: fixed; z-index: 202; width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid rgba(148,163,184,0.3); background: #fff; color: #0F172A;
+  display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 24px -8px rgba(0,0,0,0.3);
+  opacity: 0; pointer-events: none; transition: opacity 0.25s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+html[data-v2-theme="dark"] .record-lightbox-close, html[data-v2-theme="dim"] .record-lightbox-close { background: #1E293B; color: #F1F5F9; }
+.record-lightbox-close.is-open { opacity: 1; pointer-events: auto; }
+.record-lightbox-close:hover { border-color: #22D3EE; color: #22D3EE; transform: rotate(90deg); }
+@media (prefers-reduced-motion: reduce) {
+  .v3-scope .reveal-pill, .v3-scope .reveal-ident, .v3-scope .reveal-record { opacity: 1 !important; transform: none !important; animation: none !important; }
+  .v3-scope .specimen-scan { display: none; }
+  .record-lightbox-flyer { transition: opacity 0.25s ease; }
+  .record-lightbox-backdrop, .record-lightbox-close, .record-lightbox-desc { transition: opacity 0.25s ease; }
+}
