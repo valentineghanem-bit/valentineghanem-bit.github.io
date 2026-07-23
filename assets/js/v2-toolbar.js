@@ -50,16 +50,49 @@
     }
     setInterval(updateEngagement, 2500);
 
-    // Slow classical voicings, each voiced as a rising arpeggio
-    // rather than a struck block chord: enough movement to feel intentional,
-    // enough repetition to stay quiet behind reading.
-    var CHORDS = [
-      [130.81, 196.00, 261.63, 329.63, 392.00],
-      [98.00, 196.00, 246.94, 293.66, 392.00],
-      [110.00, 164.81, 220.00, 261.63, 329.63],
-      [87.31, 174.61, 220.00, 261.63, 349.23],
-      [146.83, 220.00, 293.66, 349.23, 392.00],
-      [98.00, 146.83, 196.00, 246.94, 293.66]
+    // Slow melodic piano phrases: left-hand bass, soft inner harmony, and a
+    // restrained right-hand melody. This deliberately avoids fast arpeggio
+    // loops, which read as phone/ringtone patterns.
+    var PIANO_PHRASES = [
+      [
+        { t: 0.00, f: 130.81, v: 0.135, d: 7.2, k: 'bass' },
+        { t: 0.48, f: 261.63, v: 0.064, d: 6.6, k: 'harmony' },
+        { t: 1.18, f: 329.63, v: 0.092, d: 5.4, k: 'melody' },
+        { t: 2.62, f: 392.00, v: 0.082, d: 5.2, k: 'melody' },
+        { t: 4.15, f: 349.23, v: 0.070, d: 5.0, k: 'melody' },
+        { t: 5.52, f: 293.66, v: 0.074, d: 5.8, k: 'melody' },
+        { t: 7.25, f: 196.00, v: 0.056, d: 6.4, k: 'harmony' },
+        { t: 8.80, f: 261.63, v: 0.082, d: 6.2, k: 'melody' }
+      ],
+      [
+        { t: 0.00, f: 110.00, v: 0.128, d: 7.4, k: 'bass' },
+        { t: 0.62, f: 220.00, v: 0.060, d: 6.8, k: 'harmony' },
+        { t: 1.64, f: 329.63, v: 0.080, d: 5.2, k: 'melody' },
+        { t: 3.08, f: 293.66, v: 0.074, d: 5.5, k: 'melody' },
+        { t: 4.78, f: 261.63, v: 0.072, d: 5.4, k: 'melody' },
+        { t: 6.32, f: 246.94, v: 0.064, d: 5.8, k: 'melody' },
+        { t: 8.30, f: 164.81, v: 0.054, d: 6.2, k: 'harmony' },
+        { t: 9.72, f: 220.00, v: 0.076, d: 6.0, k: 'melody' }
+      ],
+      [
+        { t: 0.00, f: 98.00, v: 0.132, d: 7.5, k: 'bass' },
+        { t: 0.56, f: 196.00, v: 0.058, d: 6.9, k: 'harmony' },
+        { t: 1.42, f: 293.66, v: 0.078, d: 5.3, k: 'melody' },
+        { t: 2.88, f: 392.00, v: 0.084, d: 5.0, k: 'melody' },
+        { t: 4.62, f: 440.00, v: 0.076, d: 4.8, k: 'melody' },
+        { t: 6.18, f: 392.00, v: 0.070, d: 5.4, k: 'melody' },
+        { t: 8.18, f: 246.94, v: 0.056, d: 6.3, k: 'harmony' },
+        { t: 9.82, f: 329.63, v: 0.078, d: 6.0, k: 'melody' }
+      ],
+      [
+        { t: 0.00, f: 87.31, v: 0.126, d: 7.6, k: 'bass' },
+        { t: 0.70, f: 174.61, v: 0.056, d: 7.0, k: 'harmony' },
+        { t: 1.92, f: 261.63, v: 0.076, d: 5.7, k: 'melody' },
+        { t: 3.42, f: 329.63, v: 0.080, d: 5.4, k: 'melody' },
+        { t: 5.22, f: 293.66, v: 0.068, d: 5.9, k: 'melody' },
+        { t: 7.10, f: 220.00, v: 0.060, d: 6.5, k: 'harmony' },
+        { t: 9.18, f: 261.63, v: 0.074, d: 6.4, k: 'melody' }
+      ]
     ];
 
     function ensureContext() {
@@ -81,36 +114,49 @@
       return ctx;
     }
 
-    function pluck(freq, when, peak) {
+    function pluck(freq, when, peak, decay, noteKind) {
       var osc = ctx.createOscillator();
-      var osc2 = ctx.createOscillator();
+      var octave = ctx.createOscillator();
+      var felt = ctx.createOscillator();
+      var octaveGain = ctx.createGain();
+      var feltGain = ctx.createGain();
+      var mix = ctx.createGain();
       var g = ctx.createGain();
       var filt = ctx.createBiquadFilter();
       filt.type = 'lowpass';
-      filt.frequency.value = currentCutoff;
-      filt.Q.value = 0.42;
+      filt.frequency.value = noteKind === 'melody' ? currentCutoff + 260 : currentCutoff - 140;
+      filt.Q.value = 0.28;
       osc.type = 'triangle';
-      osc2.type = 'sine';
+      octave.type = 'sine';
+      felt.type = 'sine';
       osc.frequency.value = freq;
-      osc.detune.setValueAtTime(-4, when);
-      osc2.frequency.value = freq * 1.498;
-      osc2.detune.setValueAtTime(3, when);
+      osc.detune.setValueAtTime(noteKind === 'melody' ? -2 : -5, when);
+      octave.frequency.value = freq * 2.004;
+      octave.detune.setValueAtTime(2, when);
+      felt.frequency.value = freq * 0.502;
+      felt.detune.setValueAtTime(-3, when);
+      octaveGain.gain.value = noteKind === 'melody' ? 0.20 : 0.13;
+      feltGain.gain.value = noteKind === 'bass' ? 0.22 : 0.08;
+      mix.gain.value = 1;
       g.gain.setValueAtTime(0, when);
-      g.gain.linearRampToValueAtTime(peak, when + 0.014);
-      g.gain.exponentialRampToValueAtTime(Math.max(0.0008, peak * 0.32), when + 0.32);
-      g.gain.exponentialRampToValueAtTime(0.0001, when + 5.6);
-      osc.connect(g); osc2.connect(g); g.connect(filt); filt.connect(masterGain);
-      osc.start(when); osc2.start(when);
-      osc.stop(when + 5.9); osc2.stop(when + 5.9);
+      g.gain.linearRampToValueAtTime(peak, when + (noteKind === 'bass' ? 0.032 : 0.020));
+      g.gain.exponentialRampToValueAtTime(Math.max(0.001, peak * 0.42), when + 0.52);
+      g.gain.exponentialRampToValueAtTime(0.0001, when + decay);
+      osc.connect(mix);
+      octave.connect(octaveGain); octaveGain.connect(mix);
+      felt.connect(feltGain); feltGain.connect(mix);
+      mix.connect(g); g.connect(filt); filt.connect(masterGain);
+      osc.start(when); octave.start(when); felt.start(when);
+      osc.stop(when + decay + 0.12); octave.stop(when + decay + 0.12); felt.stop(when + decay + 0.12);
     }
 
     function scheduleLoop() {
       if (!isOn || !ctx) return;
-      var chord = CHORDS[chordIndex % CHORDS.length];
-      var now = ctx.currentTime + 0.05;
-      chord.forEach(function (freq, i) { pluck(freq, now + i * 0.82, Math.max(0.070, 0.150 - i * 0.012)); });
+      var phrase = PIANO_PHRASES[chordIndex % PIANO_PHRASES.length];
+      var now = ctx.currentTime + 0.08;
+      phrase.forEach(function (note) { pluck(note.f, now + note.t, note.v, note.d, note.k); });
       chordIndex++;
-      loopTimer = setTimeout(scheduleLoop, 11800);
+      loopTimer = setTimeout(scheduleLoop, 20500);
     }
 
     function startLoop() {
