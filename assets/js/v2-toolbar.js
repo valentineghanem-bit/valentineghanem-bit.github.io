@@ -50,49 +50,58 @@
     }
     setInterval(updateEngagement, 2500);
 
-    // Slow melodic piano phrases: left-hand bass, soft inner harmony, and a
-    // restrained right-hand melody. This deliberately avoids fast arpeggio
-    // loops, which read as phone/ringtone patterns.
-    var NOCTURNE_MELODY = [
-      [
-        { t: 0.00, f: 130.81, v: 0.135, d: 7.2, k: 'bass' },
-        { t: 0.48, f: 261.63, v: 0.064, d: 6.6, k: 'harmony' },
-        { t: 1.18, f: 329.63, v: 0.092, d: 5.4, k: 'melody' },
-        { t: 2.62, f: 392.00, v: 0.082, d: 5.2, k: 'melody' },
-        { t: 4.15, f: 349.23, v: 0.070, d: 5.0, k: 'melody' },
-        { t: 5.52, f: 293.66, v: 0.074, d: 5.8, k: 'melody' },
-        { t: 7.25, f: 196.00, v: 0.056, d: 6.4, k: 'harmony' },
-        { t: 8.80, f: 261.63, v: 0.082, d: 6.2, k: 'melody' }
-      ],
-      [
-        { t: 0.00, f: 110.00, v: 0.128, d: 7.4, k: 'bass' },
-        { t: 0.62, f: 220.00, v: 0.060, d: 6.8, k: 'harmony' },
-        { t: 1.64, f: 329.63, v: 0.080, d: 5.2, k: 'melody' },
-        { t: 3.08, f: 293.66, v: 0.074, d: 5.5, k: 'melody' },
-        { t: 4.78, f: 261.63, v: 0.072, d: 5.4, k: 'melody' },
-        { t: 6.32, f: 246.94, v: 0.064, d: 5.8, k: 'melody' },
-        { t: 8.30, f: 164.81, v: 0.054, d: 6.2, k: 'harmony' },
-        { t: 9.72, f: 220.00, v: 0.076, d: 6.0, k: 'melody' }
-      ],
-      [
-        { t: 0.00, f: 98.00, v: 0.132, d: 7.5, k: 'bass' },
-        { t: 0.56, f: 196.00, v: 0.058, d: 6.9, k: 'harmony' },
-        { t: 1.42, f: 293.66, v: 0.078, d: 5.3, k: 'melody' },
-        { t: 2.88, f: 392.00, v: 0.084, d: 5.0, k: 'melody' },
-        { t: 4.62, f: 440.00, v: 0.076, d: 4.8, k: 'melody' },
-        { t: 6.18, f: 392.00, v: 0.070, d: 5.4, k: 'melody' },
-        { t: 8.18, f: 246.94, v: 0.056, d: 6.3, k: 'harmony' },
-        { t: 9.82, f: 329.63, v: 0.078, d: 6.0, k: 'melody' }
-      ],
-      [
-        { t: 0.00, f: 87.31, v: 0.126, d: 7.6, k: 'bass' },
-        { t: 0.70, f: 174.61, v: 0.056, d: 7.0, k: 'harmony' },
-        { t: 1.92, f: 261.63, v: 0.076, d: 5.7, k: 'melody' },
-        { t: 3.42, f: 329.63, v: 0.080, d: 5.4, k: 'melody' },
-        { t: 5.22, f: 293.66, v: 0.068, d: 5.9, k: 'melody' },
-        { t: 7.10, f: 220.00, v: 0.060, d: 6.5, k: 'harmony' },
-        { t: 9.18, f: 261.63, v: 0.074, d: 6.4, k: 'melody' }
-      ]
+    // Original 32-second miniature: A minor -> Fmaj7 -> C/G -> Gsus -> Dm9
+    // -> Am/E -> Fmaj7 -> Gsus/C cadence. It is through-composed enough to
+    // feel like a small piano piece, not a ringtone loop.
+    var PIANO_MINIATURE = [
+      { t: 0.00, f: 110.00, v: 0.116, d: 2.9, k: 'bass' },
+      { t: 0.54, f: 164.81, v: 0.055, d: 2.3, k: 'harmony' },
+      { t: 1.08, f: 220.00, v: 0.052, d: 2.2, k: 'harmony' },
+      { t: 1.72, f: 261.63, v: 0.074, d: 2.6, k: 'melody' },
+      { t: 2.46, f: 329.63, v: 0.079, d: 2.2, k: 'melody' },
+      { t: 3.20, f: 392.00, v: 0.071, d: 2.4, k: 'melody' },
+      { t: 4.00, f: 87.31, v: 0.104, d: 3.0, k: 'bass' },
+      { t: 4.58, f: 174.61, v: 0.052, d: 2.4, k: 'harmony' },
+      { t: 5.16, f: 220.00, v: 0.048, d: 2.3, k: 'harmony' },
+      { t: 5.84, f: 349.23, v: 0.073, d: 2.5, k: 'melody' },
+      { t: 6.62, f: 329.63, v: 0.064, d: 2.2, k: 'melody' },
+      { t: 7.34, f: 293.66, v: 0.067, d: 2.6, k: 'melody' },
+      { t: 8.00, f: 98.00, v: 0.110, d: 3.0, k: 'bass' },
+      { t: 8.50, f: 196.00, v: 0.050, d: 2.2, k: 'harmony' },
+      { t: 9.06, f: 261.63, v: 0.048, d: 2.3, k: 'harmony' },
+      { t: 9.78, f: 392.00, v: 0.074, d: 2.5, k: 'melody' },
+      { t: 10.58, f: 440.00, v: 0.080, d: 2.1, k: 'melody' },
+      { t: 11.30, f: 392.00, v: 0.067, d: 2.4, k: 'melody' },
+      { t: 12.00, f: 98.00, v: 0.106, d: 2.9, k: 'bass' },
+      { t: 12.52, f: 196.00, v: 0.049, d: 2.2, k: 'harmony' },
+      { t: 13.08, f: 246.94, v: 0.048, d: 2.3, k: 'harmony' },
+      { t: 13.78, f: 349.23, v: 0.072, d: 2.4, k: 'melody' },
+      { t: 14.55, f: 329.63, v: 0.066, d: 2.4, k: 'melody' },
+      { t: 15.34, f: 293.66, v: 0.064, d: 2.7, k: 'melody' },
+      { t: 16.00, f: 73.42, v: 0.106, d: 3.2, k: 'bass' },
+      { t: 16.62, f: 146.83, v: 0.049, d: 2.5, k: 'harmony' },
+      { t: 17.20, f: 220.00, v: 0.048, d: 2.5, k: 'harmony' },
+      { t: 18.02, f: 261.63, v: 0.066, d: 2.5, k: 'melody' },
+      { t: 18.82, f: 293.66, v: 0.071, d: 2.2, k: 'melody' },
+      { t: 19.54, f: 349.23, v: 0.067, d: 2.6, k: 'melody' },
+      { t: 20.00, f: 82.41, v: 0.100, d: 3.1, k: 'bass' },
+      { t: 20.58, f: 164.81, v: 0.047, d: 2.4, k: 'harmony' },
+      { t: 21.14, f: 246.94, v: 0.048, d: 2.3, k: 'harmony' },
+      { t: 21.92, f: 392.00, v: 0.070, d: 2.4, k: 'melody' },
+      { t: 22.72, f: 329.63, v: 0.066, d: 2.5, k: 'melody' },
+      { t: 23.48, f: 261.63, v: 0.062, d: 2.8, k: 'melody' },
+      { t: 24.00, f: 87.31, v: 0.100, d: 3.0, k: 'bass' },
+      { t: 24.55, f: 174.61, v: 0.046, d: 2.4, k: 'harmony' },
+      { t: 25.08, f: 220.00, v: 0.046, d: 2.4, k: 'harmony' },
+      { t: 25.86, f: 293.66, v: 0.064, d: 2.4, k: 'melody' },
+      { t: 26.66, f: 349.23, v: 0.068, d: 2.3, k: 'melody' },
+      { t: 27.42, f: 440.00, v: 0.060, d: 2.7, k: 'melody' },
+      { t: 28.00, f: 98.00, v: 0.112, d: 4.0, k: 'bass' },
+      { t: 28.66, f: 196.00, v: 0.052, d: 3.3, k: 'harmony' },
+      { t: 29.28, f: 246.94, v: 0.050, d: 3.0, k: 'harmony' },
+      { t: 30.10, f: 392.00, v: 0.062, d: 2.7, k: 'melody' },
+      { t: 30.88, f: 329.63, v: 0.058, d: 2.8, k: 'melody' },
+      { t: 31.56, f: 261.63, v: 0.070, d: 4.4, k: 'melody' }
     ];
 
     function ensureContext() {
@@ -152,11 +161,10 @@
 
     function scheduleLoop() {
       if (!isOn || !ctx) return;
-      var phrase = NOCTURNE_MELODY[chordIndex % NOCTURNE_MELODY.length];
       var now = ctx.currentTime + 0.08;
-      phrase.forEach(function (note) { pluck(note.f, now + note.t, note.v, note.d, note.k); });
+      PIANO_MINIATURE.forEach(function (note) { pluck(note.f, now + note.t, note.v, note.d, note.k); });
       chordIndex++;
-      loopTimer = setTimeout(scheduleLoop, 20500);
+      loopTimer = setTimeout(scheduleLoop, 34500);
     }
 
     function startLoop() {

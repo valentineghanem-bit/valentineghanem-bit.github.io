@@ -20,7 +20,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   window.SITE_DATA = {
     journey: {
       education: [
-        {% for t in site.data.timeline %}{% if t.title contains "Master of Science" or t.title contains "Bachelor of Science in Medical" %}
+        {% for t in site.data.timeline %}{% if t.title contains "Master of Science" or t.title contains "Master of Laws" or t.title contains "Bachelor of Science in Medical" %}
         { inst: {{ t.dates | jsonify }}, title: {{ t.title | jsonify }}, desc: {{ t.description | default: "" | jsonify }} },
         {% endif %}{% endfor %}
       ],
@@ -250,19 +250,35 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       </div>
       <p class="text-slate-600 dark:text-slate-400 mt-4 text-base">Combining rigorous wet-lab diagnostic accuracy with spatial epidemiology and machine learning to strengthen disease surveillance. Full detail on the <a href="{{ '/about/' | relative_url }}" class="text-cyan-500 hover:underline">About page</a>.</p>
     </div>
-    <div class="reveal glass-card rounded-3xl p-6 sm:p-10 border">
-      <div class="flex flex-wrap justify-center gap-3 mb-10 border-b border-slate-200 dark:border-slate-800 pb-6">
-        <button onclick="switchJourneyTab('education', event)" class="journey-btn px-6 py-2.5 rounded-full text-xs font-bold bg-slate-900 dark:bg-white text-white dark:text-slate-900 transition-all flex items-center gap-2">
-          <i class="fa-solid fa-graduation-cap"></i> Education
-        </button>
-        <button onclick="switchJourneyTab('appointments', event)" class="journey-btn px-6 py-2.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-all flex items-center gap-2">
-          <i class="fa-solid fa-briefcase"></i> Clinical Appointments
-        </button>
-        <button onclick="switchJourneyTab('fellowships', event)" class="journey-btn px-6 py-2.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-all flex items-center gap-2">
-          <i class="fa-solid fa-certificate"></i> Councils &amp; Fellowships
-        </button>
+    <div class="reveal glass-card home-identity-panel rounded-[32px] p-6 sm:p-10 border">
+      <div class="grid lg:grid-cols-[0.9fr_1.35fr] gap-8 items-stretch">
+        <div class="home-identity-rail rounded-[28px] p-6 sm:p-8 relative overflow-hidden">
+          <div class="relative z-10">
+            <p class="font-mono text-[10px] uppercase tracking-[0.34em] text-cyan-500 font-black mb-5">Clinical record meets population signal</p>
+            <h4 class="text-2xl sm:text-3xl font-black font-heading text-slate-950 dark:text-white leading-tight">A three-lens professional identity, built from real practice.</h4>
+            <p class="mt-4 text-sm leading-relaxed text-slate-600 dark:text-slate-300">The Home page summary now distinguishes Valentine Golden Ghanem's laboratory leadership, public-health epidemiology, and applied data-science work without flattening them into one generic biography.</p>
+            <div class="mt-7 grid gap-3">
+              <div class="home-identity-chip" data-accent="cyan"><i class="fa-solid fa-vial-virus"></i><span>Clinical laboratory operations</span></div>
+              <div class="home-identity-chip" data-accent="emerald"><i class="fa-solid fa-people-group"></i><span>Public health and outbreak intelligence</span></div>
+              <div class="home-identity-chip" data-accent="violet"><i class="fa-solid fa-location-dot"></i><span>Spatial statistics and machine learning</span></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="flex flex-wrap gap-3 mb-7 border-b border-slate-200 dark:border-slate-800 pb-5">
+            <button onclick="switchJourneyTab('education', event)" class="journey-btn px-6 py-2.5 rounded-full text-xs font-bold bg-slate-900 dark:bg-white text-white dark:text-slate-900 transition-all flex items-center gap-2">
+              <i class="fa-solid fa-graduation-cap"></i> Education
+            </button>
+            <button onclick="switchJourneyTab('appointments', event)" class="journey-btn px-6 py-2.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-all flex items-center gap-2">
+              <i class="fa-solid fa-briefcase-medical"></i> Clinical Appointments
+            </button>
+            <button onclick="switchJourneyTab('fellowships', event)" class="journey-btn px-6 py-2.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-all flex items-center gap-2">
+              <i class="fa-solid fa-certificate"></i> Councils &amp; Fellowships
+            </button>
+          </div>
+          <div id="journey-content" class="home-journey-grid grid md:grid-cols-2 gap-5"></div>
+        </div>
       </div>
-      <div id="journey-content" class="grid md:grid-cols-2 gap-8"></div>
     </div>
   </div>
 </section>

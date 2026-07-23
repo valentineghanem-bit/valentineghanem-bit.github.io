@@ -94,22 +94,39 @@ html.cursor-native-edge .v2-cursor-action { opacity: 0 !important; }
   position: fixed;
   top: 0;
   left: 0;
-  width: 7px;
-  height: 7px;
-  margin: -3.5px 0 0 -3.5px;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
   border-radius: 50%;
-  opacity: 0.92;
-  box-shadow: 0 0 10px currentColor;
+  opacity: 0;
+  box-shadow: 0 0 10px currentColor, 0 0 0 2px rgba(255,255,255,0.38);
   transition: width 0.18s ease, height 0.18s ease, margin 0.18s ease, opacity 0.18s ease;
   transform: translate3d(-120vw, -120vh, 0);
 }
+
+.v2-cursor-cluster.is-idle .v2-cursor-particle,
+.v2-cursor-cluster.is-hovering .v2-cursor-particle {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  opacity: 1;
+  box-shadow: 0 0 16px currentColor;
+}
+
+.v2-cursor-cluster.is-idle:not(.is-hovering) .v2-cursor-particle {
+  animation: v2-cursor-particle-breathe 1.85s ease-in-out infinite;
+}
+
+.v2-cursor-cluster.is-idle:not(.is-hovering) .v2-cursor-particle:nth-child(2) { animation-delay: 0.12s; }
+.v2-cursor-cluster.is-idle:not(.is-hovering) .v2-cursor-particle:nth-child(3) { animation-delay: 0.24s; }
+.v2-cursor-cluster.is-idle:not(.is-hovering) .v2-cursor-particle:nth-child(4) { animation-delay: 0.36s; }
+.v2-cursor-cluster.is-idle:not(.is-hovering) .v2-cursor-particle:nth-child(5) { animation-delay: 0.48s; }
 
 .v2-cursor-cluster.is-hovering .v2-cursor-particle {
   width: 10px;
   height: 10px;
   margin: -5px 0 0 -5px;
-  opacity: 1;
-  box-shadow: 0 0 16px currentColor;
+  animation: none;
 }
 
 .v2-cursor-arrow.is-hovering .v2-cursor-mark {
@@ -121,7 +138,7 @@ html.cursor-native-edge .v2-cursor-action { opacity: 0 !important; }
   transform: scale(0.84) rotate(3deg) skewX(2deg);
   filter: saturate(1.45) brightness(0.98);
 }
-.v2-cursor-cluster.is-left-click .v2-cursor-particle { transform: scale(0.78); filter: saturate(1.4); }
+.v2-cursor-cluster.is-left-click .v2-cursor-particle { opacity: 1; filter: saturate(1.4); }
 
 .v2-cursor-arrow.is-right-click .v2-cursor-mark {
   transform: rotate(16deg) scale(1.07);
@@ -229,9 +246,23 @@ html.cursor-native-edge .v2-cursor-action { opacity: 0 !important; }
   to { transform: translateY(16px) scaleY(1.15); opacity: 0; }
 }
 
+@keyframes v2-cursor-particle-breathe {
+  0%, 100% {
+    opacity: 0.72;
+    filter: saturate(1.08) brightness(0.98);
+    box-shadow: 0 0 9px currentColor, 0 0 0 2px rgba(255,255,255,0.26);
+  }
+  50% {
+    opacity: 1;
+    filter: saturate(1.32) brightness(1.12);
+    box-shadow: 0 0 18px currentColor, 0 0 0 4px rgba(255,255,255,0.36);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .v2-cursor-action { animation: none; display: none; }
   .v2-cursor-particle,
   .v2-cursor-mark { transition: opacity 0.15s ease; }
   .v2-cursor-mark::before { opacity: 0.45; }
+  .v2-cursor-cluster.is-idle .v2-cursor-particle { animation: none; }
 }

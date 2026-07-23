@@ -95,6 +95,177 @@ html .v3-scope .reveal.active {
   border-radius: 9999px;
 }
 
+/* Home 01: bespoke identity panel. This keeps the v3 glass language, but the
+   section now reads as a dual clinical/data identity instrument rather than a
+   generic tabbed card. */
+.v3-scope .home-identity-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.v3-scope .home-identity-panel::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  background:
+    radial-gradient(620px circle at 10% 0%, rgba(34, 211, 238, 0.18), transparent 58%),
+    radial-gradient(520px circle at 88% 18%, rgba(139, 92, 246, 0.14), transparent 54%),
+    linear-gradient(135deg, rgba(52, 211, 153, 0.08), transparent 42%, rgba(251, 191, 36, 0.08));
+  opacity: 0.8;
+}
+
+.v3-scope .home-identity-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.v3-scope .home-identity-rail {
+  min-height: 100%;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.72), rgba(248,250,252,0.35)),
+    repeating-linear-gradient(90deg, rgba(15,23,42,0.035) 0 1px, transparent 1px 22px);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+html[data-v2-theme="dark"] .v3-scope .home-identity-rail,
+html[data-v2-theme="dim"] .v3-scope .home-identity-rail {
+  background:
+    linear-gradient(135deg, rgba(15,23,42,0.78), rgba(30,41,59,0.42)),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.045) 0 1px, transparent 1px 22px);
+  border-color: rgba(148, 163, 184, 0.22);
+}
+
+.v3-scope .home-identity-rail::after {
+  content: '';
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  right: -56px;
+  bottom: -62px;
+  border-radius: 999px;
+  border: 1px dashed rgba(34, 211, 238, 0.34);
+  background: radial-gradient(circle, rgba(139,92,246,0.13), transparent 64%);
+  animation: home-orbit-drift 9s ease-in-out infinite alternate;
+}
+
+.v3-scope .home-identity-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #334155;
+  background: rgba(255,255,255,0.58);
+  border: 1px solid rgba(148,163,184,0.24);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease, background 0.22s ease;
+}
+
+html[data-v2-theme="dark"] .v3-scope .home-identity-chip,
+html[data-v2-theme="dim"] .v3-scope .home-identity-chip {
+  color: #CBD5E1;
+  background: rgba(15,23,42,0.48);
+}
+
+.v3-scope .home-identity-chip:hover {
+  transform: translateX(6px);
+  background: rgba(255,255,255,0.76);
+}
+
+.v3-scope .home-identity-chip i {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+}
+
+.v3-scope .home-identity-chip[data-accent="cyan"] i { color: #06B6D4; background: rgba(34,211,238,0.14); }
+.v3-scope .home-identity-chip[data-accent="emerald"] i { color: #10B981; background: rgba(52,211,153,0.14); }
+.v3-scope .home-identity-chip[data-accent="violet"] i { color: #8B5CF6; background: rgba(139,92,246,0.14); }
+
+.v3-scope .home-journey-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 178px;
+  padding: 22px;
+  border-radius: 22px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  background: rgba(248, 250, 252, 0.66);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+html[data-v2-theme="dark"] .v3-scope .home-journey-card,
+html[data-v2-theme="dim"] .v3-scope .home-journey-card {
+  background: rgba(15, 23, 42, 0.44);
+  border-color: rgba(100, 116, 139, 0.36);
+}
+
+.v3-scope .home-journey-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--journey-accent, #22D3EE), transparent);
+}
+
+.v3-scope .home-journey-card::after {
+  content: '';
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  right: -34px;
+  top: -34px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--journey-accent, #22D3EE) 18%, transparent);
+  opacity: 0.85;
+  transition: transform 0.22s ease;
+}
+
+.v3-scope .home-journey-card:hover {
+  transform: translateY(-5px);
+  border-color: color-mix(in srgb, var(--journey-accent, #22D3EE) 62%, rgba(148,163,184,0.28));
+  box-shadow: 0 20px 38px -26px color-mix(in srgb, var(--journey-accent, #22D3EE) 70%, rgba(15,23,42,0.5));
+}
+
+.v3-scope .home-journey-card:hover::after { transform: scale(1.22); }
+
+.v3-scope .home-journey-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--journey-accent, #22D3EE);
+}
+
+.v3-scope .home-journey-meta i {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--journey-accent, #22D3EE) 15%, transparent);
+}
+
+@keyframes home-orbit-drift {
+  from { transform: translate3d(0, 0, 0) rotate(0deg); }
+  to { transform: translate3d(-18px, -10px, 0) rotate(8deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v3-scope .home-identity-rail::after { animation: none; }
+  .v3-scope .home-identity-chip,
+  .v3-scope .home-journey-card { transition: none; }
+}
+
 .v3-scope .v3-brand-orb {
   position: relative;
   isolation: isolate;

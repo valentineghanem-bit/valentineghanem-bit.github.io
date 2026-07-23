@@ -53,6 +53,7 @@
     var rightClickTimer = null;
     var scrollTimer = null;
     var zoomTimer = null;
+    var idleTimer = null;
     var lastLeftClick = { time: 0, x: 0, y: 0 };
     var nativeEdge = false;
     var soundHaptics = (function () {
@@ -154,6 +155,7 @@
       document.documentElement.classList.toggle('cursor-native-edge', on);
       if (on) {
         active = false;
+        clearIdleState();
         dot.classList.remove('is-active');
         arrow.classList.remove('is-active');
         cluster.classList.remove('is-active');
@@ -177,6 +179,22 @@
         arrow.classList.add('is-active');
         cluster.classList.add('is-active');
       }
+    }
+
+    function clearIdleState() {
+      window.clearTimeout(idleTimer);
+      cluster.classList.remove('is-idle');
+    }
+
+    function scheduleIdleState() {
+      window.clearTimeout(idleTimer);
+      idleTimer = window.setTimeout(function () {
+        if (active && !nativeEdge && !pointerIsDown && !cluster.classList.contains('is-texting')) {
+          cluster.classList.add('is-idle');
+          radiusTarget = cluster.classList.contains('is-hovering') ? HOVER_RADIUS : 18;
+          speedTarget = cluster.classList.contains('is-hovering') ? HOVER_SPEED : 0.075;
+        }
+      }, 520);
     }
 
     function spawnAction(x, y, className) {
@@ -205,6 +223,8 @@
       }
       setNativeEdge(false);
       activate(e.clientX, e.clientY);
+      clearIdleState();
+      scheduleIdleState();
       if (pointerIsDown) {
         var dx = mx - downX, dy = my - downY;
         if (!isDragging && Math.hypot(dx, dy) > DRAG_THRESHOLD) {
@@ -224,6 +244,7 @@
       }
       activate(e.clientX, e.clientY);
       pointerIsDown = true;
+      clearIdleState();
       downX = e.clientX;
       downY = e.clientY;
       if (e.button === 2) {
@@ -267,6 +288,7 @@
         radiusTarget = BASE_RADIUS;
         speedTarget = BASE_SPEED;
       }
+      if (active && !nativeEdge) scheduleIdleState();
     }
 
     window.addEventListener('pointerup', releasePointer);
@@ -286,6 +308,7 @@
 
     document.addEventListener('mouseleave', function () {
       active = false;
+      clearIdleState();
       dot.classList.remove('is-active');
       arrow.classList.remove('is-active');
       cluster.classList.remove('is-active');
@@ -305,6 +328,7 @@
       if (e.target.closest(HOVER_SELECTOR)) {
         arrow.classList.add('is-hovering');
         cluster.classList.add('is-hovering');
+        cluster.classList.add('is-idle');
         soundHaptics.play('hover');
         if (!pointerIsDown) {
           radiusTarget = HOVER_RADIUS;
@@ -321,6 +345,7 @@
       if (e.target.closest(HOVER_SELECTOR)) {
         arrow.classList.remove('is-hovering');
         cluster.classList.remove('is-hovering');
+        cluster.classList.remove('is-idle');
         if (!pointerIsDown) {
           radiusTarget = BASE_RADIUS;
           speedTarget = BASE_SPEED;
@@ -330,6 +355,7 @@
 
     window.addEventListener('wheel', function (e) {
       if (!active || nativeEdge) return;
+      clearIdleState();
       if (e.ctrlKey) {
         cluster.classList.add('is-zooming');
         radiusTarget = e.deltaY < 0 ? HOVER_RADIUS + 7 : PRESS_RADIUS + 2;
@@ -365,6 +391,16 @@
       dot.style.transform = 'translate3d(' + mx + 'px,' + my + 'px,0)';
       arrow.style.transform = 'translate3d(' + (mx + 4) + 'px,' + (my + 5) + 'px,0) rotate(-7deg)';
 
+      var particlesVisible = cluster.classList.contains('is-idle') ||
+        cluster.classList.contains('is-hovering') ||
+        cluster.classList.contains('is-left-click') ||
+        cluster.classList.contains('is-right-click') ||
+        cluster.classList.contains('is-dragging') ||
+        cluster.classList.contains('is-scrolling') ||
+        cluster.classList.contains('is-zooming');
+      var anchorX = particlesVisible ? mx + 10 : cx;
+      var anchorY = particlesVisible ? my + 12 : cy;
+
       PARTICLES.forEach(function (particle) {
         var angle = orbitAngle + particle.baseAngle;
         var rx = radius, ry = radius;
@@ -381,7 +417,7 @@
           px = rpx;
           py = rpy;
         }
-        particle.el.style.transform = 'translate3d(' + (cx + px) + 'px,' + (cy + py) + 'px,0)';
+        particle.el.style.transform = 'translate3d(' + (anchorX + px) + 'px,' + (anchorY + py) + 'px,0)';
       });
       bar.style.transform = 'translate3d(' + cx + 'px,' + cy + 'px,0)';
       requestAnimationFrame(loop);
