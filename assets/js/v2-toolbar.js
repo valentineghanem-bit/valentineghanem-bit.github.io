@@ -23,7 +23,7 @@
   // ---------------------------------------------------------------
   var vgAudioV2 = (function () {
     var ctx = null, masterGain = null, delayNode = null, feedbackGain = null;
-    var isOn = false, button = null, loopTimer = null, chordIndex = 0;
+    var isOn = false, button = null, loopTimer = null, chordIndex = 0, startedFromGestureAt = 0;
     var MUTE_KEY = 'vg-v2-audio-muted';
     var wantsOn = localStorage.getItem(MUTE_KEY) !== 'true';
 
@@ -46,7 +46,7 @@
       var idleMs = Date.now() - lastActivity;
       var engagement = Math.max(0, 1 - idleMs / 18000); // 1 = just active, 0 = idle 18s+
       currentCutoff = 820 + engagement * 620;            // 820Hz idle .. 1440Hz active
-      feedbackGain.gain.setTargetAtTime(0.30 - engagement * 0.08, ctx.currentTime, 3.8);
+      feedbackGain.gain.setTargetAtTime(0.38 - engagement * 0.08, ctx.currentTime, 3.8);
     }
     setInterval(updateEngagement, 2500);
 
@@ -72,7 +72,7 @@
       delayNode = ctx.createDelay(2.4);
       delayNode.delayTime.value = 0.62;
       feedbackGain = ctx.createGain();
-      feedbackGain.gain.value = 0.20;
+      feedbackGain.gain.value = 0.28;
       delayNode.connect(feedbackGain);
       feedbackGain.connect(delayNode);
       masterGain.connect(delayNode);
@@ -96,7 +96,7 @@
       osc2.frequency.value = freq * 1.498;
       osc2.detune.setValueAtTime(3, when);
       g.gain.setValueAtTime(0, when);
-      g.gain.linearRampToValueAtTime(peak, when + 0.018);
+      g.gain.linearRampToValueAtTime(peak, when + 0.014);
       g.gain.exponentialRampToValueAtTime(Math.max(0.0008, peak * 0.32), when + 0.32);
       g.gain.exponentialRampToValueAtTime(0.0001, when + 5.6);
       osc.connect(g); osc2.connect(g); g.connect(filt); filt.connect(masterGain);
@@ -108,7 +108,7 @@
       if (!isOn || !ctx) return;
       var chord = CHORDS[chordIndex % CHORDS.length];
       var now = ctx.currentTime + 0.05;
-      chord.forEach(function (freq, i) { pluck(freq, now + i * 0.94, Math.max(0.023, 0.050 - i * 0.004)); });
+      chord.forEach(function (freq, i) { pluck(freq, now + i * 0.82, Math.max(0.070, 0.150 - i * 0.012)); });
       chordIndex++;
       loopTimer = setTimeout(scheduleLoop, 11800);
     }
@@ -119,7 +119,7 @@
       if (c.state === 'suspended') c.resume();
       masterGain.gain.cancelScheduledValues(c.currentTime);
       masterGain.gain.setValueAtTime(masterGain.gain.value, c.currentTime);
-      masterGain.gain.linearRampToValueAtTime(1.25, c.currentTime + 1.6);
+      masterGain.gain.linearRampToValueAtTime(3.15, c.currentTime + 0.45);
       updateEngagement();
       if (!loopTimer) scheduleLoop();
     }
@@ -152,11 +152,25 @@
       syncButton();
     }
 
-    function toggle() { setOn(!isOn); }
+    function isWaitingForUnlock() {
+      return isOn && (!ctx || ctx.state === 'suspended' || !loopTimer);
+    }
+    function toggle() {
+      if (isWaitingForUnlock()) {
+        startLoop();
+        syncButton();
+        return;
+      }
+      if (isOn && startedFromGestureAt && Date.now() - startedFromGestureAt < 650) {
+        return;
+      }
+      setOn(!isOn);
+    }
 
     if (wantsOn) {
       isOn = true;
       var startOnFirstGesture = function () {
+        startedFromGestureAt = Date.now();
         startLoop();
         document.removeEventListener('pointerdown', startOnFirstGesture);
         document.removeEventListener('keydown', startOnFirstGesture);
