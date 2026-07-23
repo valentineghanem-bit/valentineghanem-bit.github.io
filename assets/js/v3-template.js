@@ -151,10 +151,9 @@
     tick();
   }
 
-  // ---------- Ambient piano audio -- ported verbatim from v2-toolbar.js's
-  // vgAudioV2 (same synthesized I-V-vi-IV arpeggio, same engagement-
-  // reactive filter cutoff, same mute key) so the preference/mute state
-  // stays consistent whether the visitor is on a v3 or v2 page. ----------
+  // ---------- Soft classical piano ambience -- synthesized locally.
+  // No audio files, no third-party music, and the same mute key as v2 so the
+  // visitor's preference stays consistent across templates. ----------
   var vgAudioV3 = (function () {
     var ctx = null, masterGain = null, delayNode = null, feedbackGain = null;
     var isOn = false, button = null, loopTimer = null, chordIndex = 0;
@@ -164,20 +163,22 @@
     ['scroll', 'mousemove', 'pointerdown', 'keydown', 'touchstart'].forEach(function (evt) {
       window.addEventListener(evt, function () { lastActivity = Date.now(); }, { passive: true });
     });
-    var currentCutoff = 1500;
+    var currentCutoff = 980;
     function updateEngagement() {
       if (!ctx || !isOn) return;
       var idleMs = Date.now() - lastActivity;
       var engagement = Math.max(0, 1 - idleMs / 18000);
-      currentCutoff = 1150 + engagement * 1350;
-      feedbackGain.gain.setTargetAtTime(0.30 - engagement * 0.10, ctx.currentTime, 2.5);
+      currentCutoff = 820 + engagement * 620;
+      feedbackGain.gain.setTargetAtTime(0.30 - engagement * 0.08, ctx.currentTime, 3.8);
     }
     setInterval(updateEngagement, 2500);
     var CHORDS = [
-      [261.63, 329.63, 392.00, 493.88, 587.33],
-      [392.00, 493.88, 587.33, 698.46, 783.99],
-      [220.00, 261.63, 329.63, 392.00, 493.88],
-      [349.23, 440.00, 523.25, 659.25, 698.46]
+      [130.81, 196.00, 261.63, 329.63, 392.00],
+      [98.00, 196.00, 246.94, 293.66, 392.00],
+      [110.00, 164.81, 220.00, 261.63, 329.63],
+      [87.31, 174.61, 220.00, 261.63, 349.23],
+      [146.83, 220.00, 293.66, 349.23, 392.00],
+      [98.00, 146.83, 196.00, 246.94, 293.66]
     ];
     function ensureContext() {
       if (ctx) return ctx;
@@ -186,10 +187,10 @@
       ctx = new AudioCtx();
       masterGain = ctx.createGain();
       masterGain.gain.value = 0;
-      delayNode = ctx.createDelay(1.2);
-      delayNode.delayTime.value = 0.34;
+      delayNode = ctx.createDelay(2.4);
+      delayNode.delayTime.value = 0.62;
       feedbackGain = ctx.createGain();
-      feedbackGain.gain.value = 0.22;
+      feedbackGain.gain.value = 0.20;
       delayNode.connect(feedbackGain);
       feedbackGain.connect(delayNode);
       masterGain.connect(delayNode);
@@ -204,24 +205,28 @@
       var filt = ctx.createBiquadFilter();
       filt.type = 'lowpass';
       filt.frequency.value = currentCutoff;
+      filt.Q.value = 0.42;
       osc.type = 'triangle';
       osc2.type = 'sine';
       osc.frequency.value = freq;
-      osc2.frequency.value = freq * 1.002;
+      osc.detune.setValueAtTime(-4, when);
+      osc2.frequency.value = freq * 1.498;
+      osc2.detune.setValueAtTime(3, when);
       g.gain.setValueAtTime(0, when);
-      g.gain.linearRampToValueAtTime(peak, when + 0.035);
-      g.gain.exponentialRampToValueAtTime(0.0001, when + 3.1);
+      g.gain.linearRampToValueAtTime(peak, when + 0.018);
+      g.gain.exponentialRampToValueAtTime(Math.max(0.0008, peak * 0.32), when + 0.32);
+      g.gain.exponentialRampToValueAtTime(0.0001, when + 5.6);
       osc.connect(g); osc2.connect(g); g.connect(filt); filt.connect(masterGain);
       osc.start(when); osc2.start(when);
-      osc.stop(when + 3.3); osc2.stop(when + 3.3);
+      osc.stop(when + 5.9); osc2.stop(when + 5.9);
     }
     function scheduleLoop() {
       if (!isOn || !ctx) return;
       var chord = CHORDS[chordIndex % CHORDS.length];
       var now = ctx.currentTime + 0.05;
-      chord.forEach(function (freq, i) { pluck(freq, now + i * 0.5, 0.045 - i * 0.004); });
+      chord.forEach(function (freq, i) { pluck(freq, now + i * 0.94, Math.max(0.014, 0.030 - i * 0.003)); });
       chordIndex++;
-      loopTimer = setTimeout(scheduleLoop, 5200);
+      loopTimer = setTimeout(scheduleLoop, 11800);
     }
     function startLoop() {
       var c = ensureContext();
@@ -466,6 +471,10 @@
 
   // ---------- Modals ----------
   window.openCvModal = function () {
+    if (window.VGG_CV_DOWNLOAD_URL) {
+      window.location.href = window.VGG_CV_DOWNLOAD_URL;
+      return;
+    }
     document.getElementById('cvModal').classList.remove('opacity-0', 'pointer-events-none');
   };
   window.closeCvModal = function () {
@@ -643,6 +652,13 @@
   function initMicroscopicInfectionCanvas() {
     var canvas = document.getElementById('bg-canvas');
     if (!canvas) return;
+    var path = window.location.pathname.replace(/\/+$/, '') || '/';
+    var biofieldAllowed = path === '/' || path === '/gallery';
+    if (!biofieldAllowed) {
+      document.documentElement.classList.add('no-biofield');
+      canvas.remove();
+      return;
+    }
     var ctx = canvas.getContext('2d');
 
     function resize() {

@@ -1,16 +1,5 @@
-// Custom cursor -- round 24 total redesign, replacing the field-reticle
-// entirely (direct feedback: "i dislike mouse and cursor style... change
-// this to something unique"). New concept: a small cluster of 4 palette-
-// coloured particles in continuous orbit around the pointer, not a
-// targeting-reticle shape -- "unique" and "multicoloured" are the same
-// requirement here, not two separate asks, so the cursor's own resting
-// state carries colour and motion simultaneously rather than only on
-// interaction. Site-wide, desktop/fine-pointer only, fully inert under
-// prefers-reduced-motion or touch. Same five reactions as before, all
-// re-expressed through the orbit instead of ticks: hover (orbit widens +
-// speeds up), press (orbit collapses inward, then a ripple), drag (orbit
-// flattens into a comet-like trail behind the movement), zoom (orbit
-// pulses out/in with direction), text-entry (collapses to a thin bar).
+// Faceted VGG cursor: brand arrow plus distinct gestures for hover, clicks,
+// double-click, context click, scroll, drag, text entry, and zoom.
 (function () {
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var hasFinePointer = window.matchMedia('(pointer: fine)').matches;
@@ -20,128 +9,299 @@
     var dot = document.createElement('div');
     dot.className = 'v2-cursor-dot';
 
+    var arrow = document.createElement('div');
+    arrow.className = 'v2-cursor-arrow';
+    var mark = document.createElement('span');
+    mark.className = 'v2-cursor-mark';
+    arrow.appendChild(mark);
+
     var cluster = document.createElement('div');
     cluster.className = 'v2-cursor-cluster';
-    var PARTICLE_COLORS = ['--v2-violet', '--v2-crimson', '--v2-cyan', '--v2-mint'];
-    var particles = PARTICLE_COLORS.map(function (colorVar, i) {
+    var PARTICLES = [
+      { color: '#22D3EE', angle: 0 },
+      { color: '#34D399', angle: Math.PI * 0.4 },
+      { color: '#FBBF24', angle: Math.PI * 0.8 },
+      { color: '#EF4444', angle: Math.PI * 1.2 },
+      { color: '#8B5CF6', angle: Math.PI * 1.6 }
+    ].map(function (config) {
       var p = document.createElement('span');
       p.className = 'v2-cursor-particle';
-      p.style.background = 'var(' + colorVar + ')';
+      p.style.background = config.color;
+      p.style.color = config.color;
       cluster.appendChild(p);
-      return { el: p, baseAngle: (Math.PI * 2 * i) / PARTICLE_COLORS.length };
+      return { el: p, baseAngle: config.angle };
     });
+
     var bar = document.createElement('span');
     bar.className = 'v2-cursor-bar';
     cluster.appendChild(bar);
 
     document.body.appendChild(dot);
+    document.body.appendChild(arrow);
     document.body.appendChild(cluster);
     document.documentElement.classList.add('has-custom-cursor');
-
-    function spawnRipple(x, y) {
-      var ripple = document.createElement('div');
-      ripple.className = 'v2-cursor-ripple';
-      ripple.style.transform = 'translate(' + x + 'px,' + y + 'px)';
-      document.body.appendChild(ripple);
-      ripple.addEventListener('animationend', function () { ripple.remove(); });
-      window.setTimeout(function () { if (ripple.parentNode) ripple.remove(); }, 700);
-    }
 
     var mx = 0, my = 0, cx = 0, cy = 0, active = false;
     var pointerIsDown = false, isDragging = false, dragAngle = 0;
     var downX = 0, downY = 0;
-    var DRAG_THRESHOLD = 6;
-
-    // Orbit state: RADIUS/SPEED are targets the render loop eases toward,
-    // not snapped-to instantly, so state changes (hover, press, zoom) read
-    // as a genuine motion response rather than a hard cut.
     var orbitAngle = 0;
-    var radius = 13, radiusTarget = 13;
-    var speed = 0.045, speedTarget = 0.045;
-    var HOVER_RADIUS = 20, PRESS_RADIUS = 4, BASE_RADIUS = 13;
-    var HOVER_SPEED = 0.09, PRESS_SPEED = 0.14, BASE_SPEED = 0.045;
+    var radius = 14, radiusTarget = 14;
+    var speed = 0.048, speedTarget = 0.048;
+    var HOVER_RADIUS = 23, PRESS_RADIUS = 5, BASE_RADIUS = 14;
+    var HOVER_SPEED = 0.095, PRESS_SPEED = 0.16, BASE_SPEED = 0.048;
+    var DRAG_THRESHOLD = 6;
+    var rightClickTimer = null;
+    var scrollTimer = null;
+    var zoomTimer = null;
+    var lastLeftClick = { time: 0, x: 0, y: 0 };
+    var soundHaptics = (function () {
+      var ctx = null, out = null;
+      var last = {};
+      var MUTE_KEY = 'vg-v2-audio-muted';
+      function allowed() {
+        return localStorage.getItem(MUTE_KEY) !== 'true';
+      }
+      function ensure() {
+        if (!allowed()) return null;
+        var AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return null;
+        if (!ctx) {
+          ctx = new AudioCtx();
+          out = ctx.createGain();
+          out.gain.value = 0.055;
+          out.connect(ctx.destination);
+        }
+        if (ctx.state === 'suspended') ctx.resume();
+        return ctx;
+      }
+      function throttled(name, gap) {
+        var now = window.performance.now();
+        if (last[name] && now - last[name] < gap) return true;
+        last[name] = now;
+        return false;
+      }
+      function tone(freq, duration, peak, type, when) {
+        var c = ensure();
+        if (!c) return;
+        var start = c.currentTime + (when || 0);
+        var osc = c.createOscillator();
+        var g = c.createGain();
+        var filt = c.createBiquadFilter();
+        osc.type = type || 'triangle';
+        osc.frequency.setValueAtTime(freq, start);
+        filt.type = 'lowpass';
+        filt.frequency.setValueAtTime(1500, start);
+        filt.Q.value = 0.28;
+        g.gain.setValueAtTime(0.0001, start);
+        g.gain.linearRampToValueAtTime(peak, start + 0.008);
+        g.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+        osc.connect(g);
+        g.connect(filt);
+        filt.connect(out);
+        osc.start(start);
+        osc.stop(start + duration + 0.04);
+      }
+      function play(kind) {
+        if (kind === 'hover') {
+          if (throttled(kind, 180)) return;
+          tone(740, 0.055, 0.010, 'sine');
+        } else if (kind === 'click') {
+          tone(196, 0.085, 0.020, 'triangle');
+          tone(392, 0.060, 0.010, 'sine', 0.012);
+        } else if (kind === 'double') {
+          tone(329.63, 0.075, 0.016, 'triangle');
+          tone(493.88, 0.095, 0.014, 'triangle', 0.075);
+        } else if (kind === 'context') {
+          tone(146.83, 0.120, 0.022, 'triangle');
+        } else if (kind === 'scroll') {
+          if (throttled(kind, 220)) return;
+          tone(246.94, 0.060, 0.010, 'sine');
+        } else if (kind === 'drag') {
+          if (throttled(kind, 320)) return;
+          tone(164.81, 0.100, 0.014, 'triangle');
+        } else if (kind === 'text') {
+          if (throttled(kind, 260)) return;
+          tone(523.25, 0.045, 0.008, 'sine');
+        }
+      }
+      return { play: play };
+    })();
+
+    function activate(x, y) {
+      mx = x;
+      my = y;
+      if (!active) {
+        active = true;
+        dot.classList.add('is-active');
+        arrow.classList.add('is-active');
+        cluster.classList.add('is-active');
+      }
+    }
+
+    function spawnAction(x, y, className) {
+      var action = document.createElement('div');
+      action.className = 'v2-cursor-action ' + className;
+      action.style.left = x + 'px';
+      action.style.top = y + 'px';
+      document.body.appendChild(action);
+      action.addEventListener('animationend', function () { action.remove(); });
+      window.setTimeout(function () { if (action.parentNode) action.remove(); }, 800);
+    }
+
+    function applyTemporaryState(name, duration) {
+      arrow.classList.add(name);
+      cluster.classList.add(name);
+      window.setTimeout(function () {
+        arrow.classList.remove(name);
+        cluster.classList.remove(name);
+      }, duration || 240);
+    }
 
     window.addEventListener('pointermove', function (e) {
-      mx = e.clientX; my = e.clientY;
-      dot.style.transform = 'translate(' + mx + 'px,' + my + 'px)';
-      if (!active) { active = true; dot.classList.add('is-active'); cluster.classList.add('is-active'); }
+      activate(e.clientX, e.clientY);
       if (pointerIsDown) {
         var dx = mx - downX, dy = my - downY;
         if (!isDragging && Math.hypot(dx, dy) > DRAG_THRESHOLD) {
           isDragging = true;
-          cluster.classList.remove('is-pressed');
+          cluster.classList.remove('is-left-click');
           cluster.classList.add('is-dragging');
+          soundHaptics.play('drag');
         }
         if (isDragging) dragAngle = Math.atan2(dy, dx);
       }
     }, { passive: true });
 
     window.addEventListener('pointerdown', function (e) {
-      pointerIsDown = true; downX = e.clientX; downY = e.clientY;
-      cluster.classList.add('is-pressed');
-      radiusTarget = PRESS_RADIUS; speedTarget = PRESS_SPEED;
-      spawnRipple(e.clientX, e.clientY);
-    });
-    function releasePointer() {
-      pointerIsDown = false; isDragging = false;
-      cluster.classList.remove('is-pressed');
-      cluster.classList.remove('is-dragging');
-      radiusTarget = BASE_RADIUS; speedTarget = BASE_SPEED;
-    }
-    window.addEventListener('pointerup', releasePointer);
-    window.addEventListener('pointercancel', releasePointer);
-    document.addEventListener('mouseleave', function () {
-      dot.classList.remove('is-active'); cluster.classList.remove('is-active'); active = false; releasePointer();
+      activate(e.clientX, e.clientY);
+      pointerIsDown = true;
+      downX = e.clientX;
+      downY = e.clientY;
+      if (e.button === 2) {
+        clearTimeout(rightClickTimer);
+        arrow.classList.add('is-right-click');
+        cluster.classList.add('is-right-click');
+        spawnAction(e.clientX, e.clientY, 'v2-cursor-context');
+        soundHaptics.play('context');
+        radiusTarget = HOVER_RADIUS + 4;
+        speedTarget = PRESS_SPEED;
+        rightClickTimer = setTimeout(function () {
+          arrow.classList.remove('is-right-click');
+          cluster.classList.remove('is-right-click');
+          if (!pointerIsDown) {
+            radiusTarget = BASE_RADIUS;
+            speedTarget = BASE_SPEED;
+          }
+        }, 360);
+      } else {
+        var now = window.performance.now();
+        if (now - lastLeftClick.time < 320 && Math.hypot(e.clientX - lastLeftClick.x, e.clientY - lastLeftClick.y) < 28) {
+          spawnAction(e.clientX, e.clientY, 'v2-cursor-burst');
+          soundHaptics.play('double');
+          radiusTarget = HOVER_RADIUS + 8;
+          speedTarget = 0.2;
+        }
+        lastLeftClick = { time: now, x: e.clientX, y: e.clientY };
+        applyTemporaryState('is-left-click', 220);
+        spawnAction(e.clientX, e.clientY, 'v2-cursor-ripple');
+        soundHaptics.play('click');
+        radiusTarget = PRESS_RADIUS;
+        speedTarget = PRESS_SPEED;
+      }
     });
 
-    // Text-input personality: thin vertical bar, distinct from the generic
-    // button/link hover-widen -- checked first since it needs to win over
-    // HOVER_SELECTOR for the same element in edge cases.
+    function releasePointer() {
+      pointerIsDown = false;
+      isDragging = false;
+      cluster.classList.remove('is-dragging');
+      if (!cluster.classList.contains('is-hovering')) {
+        radiusTarget = BASE_RADIUS;
+        speedTarget = BASE_SPEED;
+      }
+    }
+
+    window.addEventListener('pointerup', releasePointer);
+    window.addEventListener('pointercancel', releasePointer);
+    window.addEventListener('dblclick', function (e) {
+      activate(e.clientX, e.clientY);
+      spawnAction(e.clientX, e.clientY, 'v2-cursor-burst');
+      soundHaptics.play('double');
+      radiusTarget = HOVER_RADIUS + 8;
+      speedTarget = 0.2;
+      setTimeout(function () {
+        radiusTarget = cluster.classList.contains('is-hovering') ? HOVER_RADIUS : BASE_RADIUS;
+        speedTarget = cluster.classList.contains('is-hovering') ? HOVER_SPEED : BASE_SPEED;
+      }, 260);
+    });
+
+    document.addEventListener('mouseleave', function () {
+      active = false;
+      dot.classList.remove('is-active');
+      arrow.classList.remove('is-active');
+      cluster.classList.remove('is-active');
+      releasePointer();
+    });
+
     var TEXT_SELECTOR = 'input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]), textarea, [contenteditable="true"], [contenteditable=""]';
-    var HOVER_SELECTOR = 'a, button, [role="button"], select, summary, .toc-card, .fan-carousel__card, .about-v2__pill, .about-v2__record-card';
+    var HOVER_SELECTOR = 'a, button, [role="button"], select, summary, label, .toc-card, .fan-carousel__card, .about-v2__pill, .about-v2__record-card, .card, .event-card, .glass-card';
     document.addEventListener('pointerover', function (e) {
       if (!e.target.closest) return;
       if (e.target.closest(TEXT_SELECTOR)) {
+        arrow.classList.add('is-texting');
         cluster.classList.add('is-texting');
+        soundHaptics.play('text');
         return;
       }
       if (e.target.closest(HOVER_SELECTOR)) {
+        arrow.classList.add('is-hovering');
         cluster.classList.add('is-hovering');
-        if (!pointerIsDown) { radiusTarget = HOVER_RADIUS; speedTarget = HOVER_SPEED; }
+        soundHaptics.play('hover');
+        if (!pointerIsDown) {
+          radiusTarget = HOVER_RADIUS;
+          speedTarget = HOVER_SPEED;
+        }
       }
     });
     document.addEventListener('pointerout', function (e) {
       if (!e.target.closest) return;
-      if (e.target.closest(TEXT_SELECTOR)) cluster.classList.remove('is-texting');
+      if (e.target.closest(TEXT_SELECTOR)) {
+        arrow.classList.remove('is-texting');
+        cluster.classList.remove('is-texting');
+      }
       if (e.target.closest(HOVER_SELECTOR)) {
+        arrow.classList.remove('is-hovering');
         cluster.classList.remove('is-hovering');
-        if (!pointerIsDown) { radiusTarget = BASE_RADIUS; speedTarget = BASE_SPEED; }
+        if (!pointerIsDown) {
+          radiusTarget = BASE_RADIUS;
+          speedTarget = BASE_SPEED;
+        }
       }
     });
 
-    // Zoom personality: ctrl+wheel is how browsers report trackpad pinch-
-    // zoom (and how ctrl/cmd+scroll-to-zoom is actually driven on pages
-    // like the Field Map) -- detected globally. Wheel fires repeatedly
-    // through a gesture, not as a clean start/end pair, so the "zooming"
-    // state is re-armed on every qualifying event and left to expire on
-    // its own shortly after the gesture stops. Orbit radius pulses out for
-    // zoom-in, in for zoom-out -- direction reads from the motion itself,
-    // no glyph needed the way the old reticle used one.
-    var zoomTimer = null;
     window.addEventListener('wheel', function (e) {
-      if (!e.ctrlKey) return;
-      cluster.classList.add('is-zooming');
-      var zoomingIn = e.deltaY < 0;
-      cluster.classList.toggle('is-zooming-in', zoomingIn);
-      cluster.classList.toggle('is-zooming-out', !zoomingIn);
-      radiusTarget = zoomingIn ? HOVER_RADIUS + 6 : PRESS_RADIUS + 2;
-      speedTarget = 0.16;
-      clearTimeout(zoomTimer);
-      zoomTimer = setTimeout(function () {
-        cluster.classList.remove('is-zooming', 'is-zooming-in', 'is-zooming-out');
-        radiusTarget = pointerIsDown ? PRESS_RADIUS : BASE_RADIUS;
-        speedTarget = pointerIsDown ? PRESS_SPEED : BASE_SPEED;
-      }, 350);
+      if (!active) return;
+      if (e.ctrlKey) {
+        cluster.classList.add('is-zooming');
+        radiusTarget = e.deltaY < 0 ? HOVER_RADIUS + 7 : PRESS_RADIUS + 2;
+        speedTarget = 0.18;
+        clearTimeout(zoomTimer);
+        zoomTimer = setTimeout(function () {
+          cluster.classList.remove('is-zooming');
+          radiusTarget = cluster.classList.contains('is-hovering') ? HOVER_RADIUS : BASE_RADIUS;
+          speedTarget = cluster.classList.contains('is-hovering') ? HOVER_SPEED : BASE_SPEED;
+        }, 330);
+        return;
+      }
+      spawnAction(mx, my, 'v2-cursor-scroll');
+      cluster.classList.add('is-scrolling');
+      soundHaptics.play('scroll');
+      radiusTarget = HOVER_RADIUS + 2;
+      speedTarget = 0.12;
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(function () {
+        cluster.classList.remove('is-scrolling');
+        radiusTarget = cluster.classList.contains('is-hovering') ? HOVER_RADIUS : BASE_RADIUS;
+        speedTarget = cluster.classList.contains('is-hovering') ? HOVER_SPEED : BASE_SPEED;
+      }, 220);
     }, { passive: true });
 
     function loop() {
@@ -151,27 +311,31 @@
       speed += (speedTarget - speed) * 0.1;
       orbitAngle += speed;
 
-      particles.forEach(function (particle, i) {
+      dot.style.transform = 'translate(' + mx + 'px,' + my + 'px)';
+      arrow.style.transform = 'translate(' + (mx + 5) + 'px,' + (my + 6) + 'px) rotate(-7deg)';
+
+      PARTICLES.forEach(function (particle) {
         var angle = orbitAngle + particle.baseAngle;
         var rx = radius, ry = radius;
         if (isDragging) {
-          // Flatten the orbit into an ellipse aligned with the drag
-          // direction -- reads as a comet stretching behind the motion
-          // rather than a circle simply moving.
-          rx = radius * 1.9; ry = radius * 0.45;
+          rx = radius * 2;
+          ry = radius * 0.42;
         }
-        var px = Math.cos(angle) * rx, py = Math.sin(angle) * ry;
+        var px = Math.cos(angle) * rx;
+        var py = Math.sin(angle) * ry;
         if (isDragging) {
           var cos = Math.cos(dragAngle), sin = Math.sin(dragAngle);
-          var rpx = px * cos - py * sin, rpy = px * sin + py * cos;
-          px = rpx; py = rpy;
+          var rpx = px * cos - py * sin;
+          var rpy = px * sin + py * cos;
+          px = rpx;
+          py = rpy;
         }
         particle.el.style.transform = 'translate(' + (cx + px) + 'px,' + (cy + py) + 'px)';
       });
       bar.style.transform = 'translate(' + cx + 'px,' + cy + 'px)';
-
       requestAnimationFrame(loop);
     }
+
     loop();
   }
 

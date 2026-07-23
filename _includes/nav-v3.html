@@ -5,11 +5,11 @@
 <nav id="site-nav" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 glass-card px-6 py-3 rounded-full shadow-xl border backdrop-blur-xl max-w-6xl w-[92%] transition-transform duration-300">
   <div class="flex items-center justify-between text-sm">
     <a href="{{ '/' | relative_url }}" class="flex items-center gap-2.5 font-bold font-heading tracking-tight text-slate-900 dark:text-white group">
-      <img src="{{ '/assets/favicon.svg' | relative_url }}" alt="Valentine Golden Ghanem site favicon" class="w-9 h-9 rounded-full shadow-md group-hover:scale-105 transition-transform bg-white/40 p-0.5">
+      <img src="{{ '/assets/img/brand/vgg-master-emblem-theme-transparent.png' | relative_url }}" alt="Valentine Golden Ghanem faceted G site logo" class="w-9 h-9 rounded-full shadow-md group-hover:scale-105 transition-transform bg-white/70 p-0.5">
       <span class="hidden sm:inline-block font-extrabold text-base">
         Valentine Ghanem<span class="text-cyan-500">.</span>
-        <span class="text-[10px] font-mono font-semibold block -mt-1 whitespace-nowrap">
-          <span class="text-cyan-500">MSc</span> &middot; <span class="text-violet-500">MSPH</span> &middot; <span class="text-amber-500">CORU</span> &middot; <span class="text-crimson">FRSPH</span> &middot; <span class="text-emerald-500">VvE</span>
+        <span class="text-[10px] font-mono font-semibold block -mt-1 whitespace-nowrap text-slate-500 dark:text-slate-400">
+          <span>MLS (CORU)</span> <span class="font-black text-cyan-500">&bull;</span> <span>ACSLM</span> <span class="font-black text-amber-500">&bull;</span> <span>AHPC</span> <span class="font-black text-emerald-500">&bull;</span> <span>FRSPH</span> <span class="font-black text-red-500">&bull;</span> <span>VvE</span>
         </span>
       </span>
     </a>
@@ -45,9 +45,9 @@
         <i class="fa-solid fa-moon dark:hidden"></i>
         <i class="fa-solid fa-sun hidden dark:inline"></i>
       </button>
-      <button onclick="openCvModal()" class="hidden lg:flex items-center gap-1.5 px-3.5 py-1.5 border border-slate-300 dark:border-slate-700 rounded-full text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-cyan-500 transition-colors">
+      <a href="{{ site.data.profile.cv_download_url | relative_url }}" download class="hidden lg:flex items-center gap-1.5 px-3.5 py-1.5 border border-slate-300 dark:border-slate-700 rounded-full text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-cyan-500 transition-colors" aria-label="Download Valentine Golden Ghanem CV">
         <i class="fa-solid fa-file-pdf text-red-500"></i> CV
-      </button>
+      </a>
       <button onclick="toggleMobileNav()" class="md:hidden p-2 text-slate-700 dark:text-slate-200 focus:outline-none">
         <i class="fa-solid fa-bars text-lg"></i>
       </button>
@@ -68,7 +68,7 @@
     <div class="pt-2 mt-1 border-t border-slate-200 dark:border-slate-800 flex items-center gap-3">
       <button onclick="toggleAudioV3()" class="p-2 -ml-2 text-slate-500 hover:text-cyan-500" title="Toggle ambient piano"><i class="fa-solid fa-music"></i></button>
       <button onclick="cycleThemeV3()" class="p-2 text-slate-500 hover:text-cyan-500" title="Cycle theme"><i class="fa-solid fa-circle-half-stroke"></i></button>
-      <button onclick="openCvModal(); toggleMobileNav();" class="text-left py-1 text-red-500 font-bold flex items-center gap-2"><i class="fa-solid fa-file-pdf"></i> View CV</button>
+      <a href="{{ site.data.profile.cv_download_url | relative_url }}" download class="text-left py-1 text-red-500 font-bold flex items-center gap-2"><i class="fa-solid fa-file-pdf"></i> Download CV</a>
     </div>
   </div>
 </nav>
