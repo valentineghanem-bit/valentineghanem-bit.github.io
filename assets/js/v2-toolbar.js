@@ -108,7 +108,7 @@
       if (!isOn || !ctx) return;
       var chord = CHORDS[chordIndex % CHORDS.length];
       var now = ctx.currentTime + 0.05;
-      chord.forEach(function (freq, i) { pluck(freq, now + i * 0.94, Math.max(0.014, 0.030 - i * 0.003)); });
+      chord.forEach(function (freq, i) { pluck(freq, now + i * 0.94, Math.max(0.023, 0.050 - i * 0.004)); });
       chordIndex++;
       loopTimer = setTimeout(scheduleLoop, 11800);
     }
@@ -119,7 +119,7 @@
       if (c.state === 'suspended') c.resume();
       masterGain.gain.cancelScheduledValues(c.currentTime);
       masterGain.gain.setValueAtTime(masterGain.gain.value, c.currentTime);
-      masterGain.gain.linearRampToValueAtTime(1, c.currentTime + 1.6);
+      masterGain.gain.linearRampToValueAtTime(1.25, c.currentTime + 1.6);
       updateEngagement();
       if (!loopTimer) scheduleLoop();
     }

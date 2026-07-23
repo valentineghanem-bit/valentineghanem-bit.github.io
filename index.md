@@ -88,15 +88,15 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   <div class="blob w-[500px] h-[500px] bg-violet-500/15 bottom-10 -right-20 pointer-events-none z-10"></div>
 
   <div class="max-w-[1800px] mx-auto w-full grid lg:grid-cols-12 gap-x-8 gap-y-12 items-center relative z-10 px-2 lg:px-4">
-    <div class="lg:col-span-7 reveal text-left">
-      <div class="inline-flex items-center gap-2.5 px-4 py-1.5 border border-slate-300 dark:border-slate-700 rounded-full text-xs font-mono font-semibold tracking-wider mb-6 bg-white/70 dark:bg-slate-900/70 shadow-sm backdrop-blur-md">
+    <div class="lg:col-span-7 reveal text-left min-w-0 w-full">
+      <div class="inline-flex max-w-full flex-wrap items-center gap-2.5 px-4 py-1.5 border border-slate-300 dark:border-slate-700 rounded-full text-xs font-mono font-semibold tracking-wider mb-6 bg-white/70 dark:bg-slate-900/70 shadow-sm backdrop-blur-md">
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
         <span class="text-emerald-600 dark:text-emerald-400 font-bold">OPEN TO RESEARCH COLLABORATION &amp; ADVISORY</span>
         <span class="text-slate-300 dark:text-slate-700">|</span>
         <span class="text-slate-600 dark:text-slate-300">ACCRA, GHANA</span>
       </div>
 
-      <div class="flex flex-wrap items-center gap-3 mb-4 text-xs font-mono font-bold text-slate-500 dark:text-slate-400">
+      <div class="flex flex-wrap items-center gap-3 mb-4 text-xs font-mono font-bold text-slate-300">
         <span class="text-cyan-500 font-extrabold uppercase tracking-widest text-sm">{{ site.data.profile.name | upcase }}</span>
         <span>&bull;</span>
         <span class="px-2.5 py-0.5 rounded bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20">MLS (CORU)</span>
@@ -106,16 +106,16 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <span class="px-2.5 py-0.5 rounded bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20">VvE</span>
       </div>
 
-      <p class="text-sm sm:text-base font-mono font-semibold text-cyan-500 dark:text-cyan-400 mb-4 uppercase tracking-wide" aria-hidden="true">
+      <p class="text-sm sm:text-base font-mono font-semibold text-cyan-400 mb-4 uppercase tracking-wide break-words" aria-hidden="true">
         <span data-typed-text data-words="{{ site.data.profile.job_titles | jsonify | escape }}"></span><span class="typed-cursor"></span>
       </p>
 
-      <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black font-heading tracking-tight leading-[1.05] mb-6 text-slate-900 dark:text-white">
+      <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black font-heading tracking-tight leading-[1.05] mb-6 text-white max-w-full">
         I turn scattered field data into <br class="hidden sm:inline">
         <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-violet-400">the pattern that stops an outbreak</span>
       </h1>
 
-      <p class="text-lg sm:text-xl font-light text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mb-8">
+      <p class="text-lg sm:text-xl font-light text-slate-300 max-w-2xl leading-relaxed mb-8">
         {{ site.data.profile.description | strip_newlines }}
       </p>
 
@@ -128,8 +128,8 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         </a>
       </div>
 
-      <div class="pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center gap-3 text-xs font-mono">
-        <span class="text-slate-400 font-semibold uppercase text-[11px] tracking-wider">Indexed In:</span>
+      <div class="pt-6 border-t border-white/15 flex flex-wrap items-center gap-3 text-xs font-mono">
+        <span class="text-slate-400 font-semibold uppercase text-[11px] tracking-wider">Research Profiles</span>
         <a href="{{ site.data.profile.identifiers[1].url }}" target="_blank" rel="noopener" class="px-3 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 rounded-full hover:bg-emerald-500/20 transition-colors flex items-center gap-1.5">
           <i class="fa-brands fa-orcid"></i> ORCID
         </a>
@@ -142,10 +142,10 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       </div>
     </div>
 
-    <div class="lg:col-span-5 reveal relative flex justify-center lg:justify-end lg:self-end h-[440px] sm:h-[560px] lg:h-[78vh] lg:min-h-[560px] lg:max-h-[820px]">
+    <div class="lg:col-span-5 reveal relative flex justify-center lg:justify-end lg:self-end h-[380px] sm:h-[560px] lg:h-[78vh] lg:min-h-[560px] lg:max-h-[820px] w-full min-w-0">
       <img src="{{ '/assets/img/gallery/portraits/hero-green-shirt-cutout.png' | relative_url }}"
            alt="{{ site.data.profile.name }}"
-           class="h-full w-auto max-w-none object-contain object-bottom drop-shadow-[0_30px_60px_rgba(6,182,212,0.25)]">
+           class="h-full w-auto max-w-full lg:max-w-none object-contain object-bottom drop-shadow-[0_30px_60px_rgba(6,182,212,0.25)]">
       <div class="absolute bottom-4 left-1/2 -translate-x-1/2 lg:left-auto lg:right-4 lg:translate-x-0 flex items-center gap-2.5 px-4 py-2 glass-card rounded-full border border-cyan-500/30 text-xs font-mono backdrop-blur-xl shadow-2xl whitespace-nowrap">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
         <span class="text-slate-700 dark:text-slate-200 font-semibold">{{ site.data.organization.cocoa_clinic.name }}, {{ site.data.organization.cocoa_clinic.parent_organization.name }}</span>
@@ -153,8 +153,8 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
     </div>
   </div>
 
-  <div class="w-full max-w-5xl mx-auto mt-20 pt-8 border-t border-slate-200 dark:border-slate-800 reveal relative z-10">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+  <div class="w-full max-w-6xl mx-auto mt-20 pt-8 border-t border-slate-200 dark:border-slate-800 reveal relative z-10">
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
       <div class="p-4 glass-card rounded-2xl text-center">
         <div class="text-3xl lg:text-4xl font-black font-heading text-cyan-500" data-target="11" data-suffix="+">0</div>
         <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">Years in Clinical &amp; Public Health Practice</div>
@@ -168,8 +168,12 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">Ghana Districts in Spatial Models</div>
       </div>
       <div class="p-4 glass-card rounded-2xl text-center">
-        <div class="text-3xl lg:text-4xl font-black font-heading text-violet-500" data-target="5" data-suffix="">0</div>
+        <div class="text-3xl lg:text-4xl font-black font-heading text-violet-500" data-target="3" data-suffix="">0</div>
         <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">Peer-Reviewed Publications</div>
+      </div>
+      <div class="p-4 glass-card rounded-2xl text-center">
+        <div class="text-3xl lg:text-4xl font-black font-heading text-red-500" data-target="2" data-suffix="">0</div>
+        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">Preprints</div>
       </div>
     </div>
   </div>

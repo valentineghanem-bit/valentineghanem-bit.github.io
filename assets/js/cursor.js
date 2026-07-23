@@ -68,7 +68,7 @@
         if (!ctx) {
           ctx = new AudioCtx();
           out = ctx.createGain();
-          out.gain.value = 0.055;
+          out.gain.value = 0.16;
           out.connect(ctx.destination);
         }
         if (ctx.state === 'suspended') ctx.resume();
@@ -104,24 +104,24 @@
       function play(kind) {
         if (kind === 'hover') {
           if (throttled(kind, 180)) return;
-          tone(740, 0.055, 0.010, 'sine');
+          tone(740, 0.055, 0.024, 'sine');
         } else if (kind === 'click') {
-          tone(196, 0.085, 0.020, 'triangle');
-          tone(392, 0.060, 0.010, 'sine', 0.012);
+          tone(196, 0.085, 0.050, 'triangle');
+          tone(392, 0.060, 0.026, 'sine', 0.012);
         } else if (kind === 'double') {
-          tone(329.63, 0.075, 0.016, 'triangle');
-          tone(493.88, 0.095, 0.014, 'triangle', 0.075);
+          tone(329.63, 0.075, 0.040, 'triangle');
+          tone(493.88, 0.095, 0.034, 'triangle', 0.075);
         } else if (kind === 'context') {
-          tone(146.83, 0.120, 0.022, 'triangle');
+          tone(146.83, 0.120, 0.055, 'triangle');
         } else if (kind === 'scroll') {
           if (throttled(kind, 220)) return;
-          tone(246.94, 0.060, 0.010, 'sine');
+          tone(246.94, 0.060, 0.026, 'sine');
         } else if (kind === 'drag') {
           if (throttled(kind, 320)) return;
-          tone(164.81, 0.100, 0.014, 'triangle');
+          tone(164.81, 0.100, 0.034, 'triangle');
         } else if (kind === 'text') {
           if (throttled(kind, 260)) return;
-          tone(523.25, 0.045, 0.008, 'sine');
+          tone(523.25, 0.045, 0.020, 'sine');
         }
       }
       return { play: play };
