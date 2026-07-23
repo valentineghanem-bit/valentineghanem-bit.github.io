@@ -15,7 +15,10 @@
       "isPartOf": { "@id": "{{ site.url }}/#website" },
       "about": { "@id": "{{ site.url }}/#person" },
       "inLanguage": "en"
-    }{% if video_events.size > 0 %},
+    },
+    {% include jsonld/person-node.html %},
+    {% include jsonld/organization-node.html %}
+    {%- if video_events.size > 0 -%},
     {% for v in video_events %}
     {
       "@type": "VideoObject",

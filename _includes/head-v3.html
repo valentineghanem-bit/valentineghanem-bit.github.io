@@ -34,10 +34,18 @@
     theme: {
       extend: {
         colors: {
+          // NOTE: cyan/violet/amber are deliberately NOT overridden here.
+          // An earlier version of this config set them to flat hex strings
+          // (sampled from Tailwind's own default cyan-400/violet-500/amber-400),
+          // which silently replaced Tailwind's built-in shade-scale OBJECTS
+          // for those same names -- every `text-cyan-500`, `border-violet-400`,
+          // `bg-amber-500` etc. across the whole site (nav, footer, hero,
+          // About, Skills -- 100+ call sites) then resolved to nothing and
+          // fell back to inherited/default colour. Leaving these three names
+          // alone restores Tailwind's real built-in scales, which already
+          // match the intended hues almost exactly. Only genuinely new
+          // brand names go here.
           mint: '#34D399',
-          cyan: '#22D3EE',
-          amber: '#FBBF24',
-          violet: '#8B5CF6',
           crimson: '#EF4444',
           brandDark: '#0B1120',
           cardDark: '#1E293B',
@@ -102,7 +110,9 @@
       "isPartOf": { "@id": "{{ site.url }}/#website" },
       "about": { "@id": "{{ site.url }}/#person" },
       "inLanguage": "en"
-    }
+    },
+    {% include jsonld/person-node.html %},
+    {% include jsonld/organization-node.html %}
   ]
 }
 </script>

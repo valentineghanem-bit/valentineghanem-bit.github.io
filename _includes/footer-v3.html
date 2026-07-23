@@ -26,15 +26,20 @@
         <p class="text-xs font-mono font-bold text-slate-400 uppercase mb-2">Location</p>
         <p class="text-lg font-bold">Accra, Ghana (GMT)</p>
       </div>
-      <div class="grid grid-cols-2 gap-4">
-        {%- for icon in site.data.social.icons limit:2 -%}
-        <a href="{{ icon.url }}" target="_blank" rel="noopener" class="p-4 glass-card bg-slate-800/50 rounded-xl border border-slate-800 hover:border-cyan-400 transition-colors block">
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
+        {%- assign icon_colors = "cyan,violet,amber,emerald,cyan,violet,amber" | split: "," -%}
+        {%- for icon in site.data.social.icons -%}
+        {%- assign icon_color = icon_colors[forloop.index0] -%}
+        <a href="{{ icon.url }}" target="_blank" rel="noopener" class="p-4 glass-card bg-slate-800/50 rounded-xl border border-slate-800 hover:border-{{ icon_color }}-400 transition-colors block">
           <p class="text-[10px] font-mono text-slate-400 uppercase">{{ icon.label }}</p>
-          <p class="font-bold text-sm text-cyan-400 mt-1">{{ icon.url | remove_first: "https://" }} <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1"></i></p>
+          <p class="font-bold text-sm text-{{ icon_color }}-400 mt-1 truncate">{{ icon.url | remove_first: "https://" | remove_first: "mailto:" | remove_first: "tel:" }} <i class="fa-solid fa-arrow-up-right-from-square text-xs ml-1"></i></p>
         </a>
         {%- endfor -%}
       </div>
-      <p class="text-xs font-mono text-slate-500 pt-8">&copy; {{ 'now' | date: "%Y" }} {{ site.data.profile.name }}, MSc, MSPH, FRSPH. All rights reserved.</p>
+      <div class="flex items-center gap-3 pt-4">
+        <img src="{{ '/assets/favicon.svg' | relative_url }}" alt="Valentine Golden Ghanem site favicon" class="w-9 h-9 rounded-full bg-white/10 p-0.5">
+        <p class="text-xs font-mono text-slate-500">&copy; {{ 'now' | date: "%Y" }} {{ site.data.profile.name }}, MSc, MSPH, MLS (CORU), FRSPH, VvE. All rights reserved.</p>
+      </div>
     </div>
   </div>
 </footer>

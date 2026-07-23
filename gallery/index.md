@@ -1,11 +1,12 @@
 ---
-layout: default
+layout: v3
 permalink: /gallery/
 title: "Gallery"
 description: "Photography of Valentine Golden Ghanem, Ghanaian medical scientist and epidemiologist, in the laboratory and in the field."
 jsonld: gallery
+extra_js: ["gallery-morph.js", "fan-carousel.js"]
 ---
-
+{% include nav-v3.html %}
 {%- assign morph_pairs = "" | split: "," -%}
 {%- for item in site.data.gallery_portraits -%}
   {%- assign parts = item.url | split: "/" -%}
@@ -14,7 +15,7 @@ jsonld: gallery
   {%- assign morph_pairs = morph_pairs | push: pair -%}
 {%- endfor -%}
 
-<section class="gallery-morph v2-scope" aria-label="Photographic introduction">
+<section class="gallery-morph" aria-label="Photographic introduction">
   <div class="gallery-morph__scroller">
     <div class="gallery-morph__stage">
       <div class="gallery-morph__intro">
@@ -35,51 +36,61 @@ jsonld: gallery
     });
   })();
 </script>
-<script src="{{ '/assets/js/gallery-morph.js' | relative_url }}" defer></script>
 
-<section class="gallery-v2 v2-scope wrap wrap--wide">
-  <p class="breadcrumb"><a href="{{ '/' | relative_url }}">Home</a> / Gallery</p>
-  <h1 class="page-title">Gallery</h1>
-  <p class="section__intro v2-corner-frame">A visual record spanning the laboratory, the field and professional life.</p>
+<section class="gallery-v2 pt-24 pb-24 px-6">
+  <div class="max-w-[1800px] mx-auto">
+    <p class="font-mono text-xs text-slate-400 mb-6"><a href="{{ '/' | relative_url }}" class="hover:text-cyan-500">Home</a> / Gallery</p>
+    <h1 class="text-4xl sm:text-5xl md:text-6xl font-black font-heading tracking-tight text-slate-900 dark:text-white mb-5">Gallery</h1>
+    <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mb-16">
+      A visual record spanning the laboratory, the field and professional life.
+    </p>
 
-  <h2 class="section__title section__title--sub">Portraits &amp; professional photography</h2>
-  <div class="fan-carousel" data-autoplay="5500">
-    <div class="fan-carousel__deck">
-      {% for p in site.data.gallery_portraits %}
-      <div class="fan-carousel__card" data-caption="{{ p.caption | escape }}" role="button" tabindex="0" aria-label="{{ p.caption | escape }} — view full size">
-        <img src="{{ p.url | relative_url }}" alt="{{ p.caption }}" loading="lazy">
-      </div>
-      {% endfor %}
+    <div class="section__ghost-wrap">
+      <span class="section__ghost-num">01</span>
+      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-2">01</h2>
+      <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">Portraits &amp; professional photography</h3>
     </div>
-    <button type="button" class="fan-carousel__arrow fan-carousel__arrow--prev" aria-label="Previous photo">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <button type="button" class="fan-carousel__arrow fan-carousel__arrow--next" aria-label="Next photo">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="fan-carousel__dots"></div>
-    <p class="fan-carousel__caption"></p>
-  </div>
-
-  <h2 class="section__title section__title--sub">Community &amp; field work</h2>
-  <div class="fan-carousel" data-autoplay="6000">
-    <div class="fan-carousel__deck">
-      {% for p in site.data.gallery_photos %}
-      <div class="fan-carousel__card" data-caption="{{ p.caption | escape }}" role="button" tabindex="0" aria-label="{{ p.caption | escape }} — view full size">
-        <img src="{{ p.url }}" alt="{{ p.caption }}" loading="lazy">
+    <div class="fan-carousel" data-autoplay="5500">
+      <div class="fan-carousel__deck">
+        {% for p in site.data.gallery_portraits %}
+        <div class="fan-carousel__card" data-caption="{{ p.caption | escape }}" role="button" tabindex="0" aria-label="{{ p.caption | escape }} — view full size">
+          <img src="{{ p.url | relative_url }}" alt="{{ p.caption }}, Valentine Golden Ghanem" loading="lazy">
+        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
+      <button type="button" class="fan-carousel__arrow fan-carousel__arrow--prev" aria-label="Previous photo">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button type="button" class="fan-carousel__arrow fan-carousel__arrow--next" aria-label="Next photo">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="fan-carousel__dots"></div>
+      <p class="fan-carousel__caption"></p>
     </div>
-    <button type="button" class="fan-carousel__arrow fan-carousel__arrow--prev" aria-label="Previous photo">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <button type="button" class="fan-carousel__arrow fan-carousel__arrow--next" aria-label="Next photo">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="fan-carousel__dots"></div>
-    <p class="fan-carousel__caption"></p>
+
+    <div class="section__ghost-wrap mt-10">
+      <span class="section__ghost-num">02</span>
+      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-2">02</h2>
+      <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">Community &amp; field work</h3>
+    </div>
+    <div class="fan-carousel" data-autoplay="6000">
+      <div class="fan-carousel__deck">
+        {% for p in site.data.gallery_photos %}
+        <div class="fan-carousel__card" data-caption="{{ p.caption | escape }}" role="button" tabindex="0" aria-label="{{ p.caption | escape }} — view full size">
+          <img src="{{ p.url | relative_url }}" alt="{{ p.caption }}, Valentine Golden Ghanem" loading="lazy">
+        </div>
+        {% endfor %}
+      </div>
+      <button type="button" class="fan-carousel__arrow fan-carousel__arrow--prev" aria-label="Previous photo">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button type="button" class="fan-carousel__arrow fan-carousel__arrow--next" aria-label="Next photo">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="fan-carousel__dots"></div>
+      <p class="fan-carousel__caption"></p>
+    </div>
   </div>
 </section>
 
-<script src="{{ '/assets/js/gallery-fx.js' | relative_url }}" defer></script>
-<script src="{{ '/assets/js/fan-carousel.js' | relative_url }}" defer></script>
+{% include footer-v3.html %}

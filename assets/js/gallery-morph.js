@@ -15,7 +15,7 @@
   var cards = items.map(function (item) {
     var card = document.createElement('div');
     card.className = 'gallery-morph__card';
-    card.innerHTML = '<img src="' + item.src + '" alt="' + item.caption.replace(/"/g, '&quot;') + '" loading="lazy">';
+    card.innerHTML = '<img src="' + item.src + '" alt="' + item.caption.replace(/"/g, '&quot;') + ', Valentine Golden Ghanem" loading="lazy">';
     card.title = item.caption;
     stage.appendChild(card);
     return card;

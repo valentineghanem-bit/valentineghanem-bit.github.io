@@ -308,6 +308,42 @@
     showToast(next.charAt(0).toUpperCase() + next.slice(1) + ' theme');
   };
 
+  // ---------- Scroll-to-top + auto-hide/reveal nav ----------
+  // One scroll listener drives both: the nav slides out of view on scroll
+  // DOWN past a small threshold (so it doesn't flicker on tiny scrolls) and
+  // slides back in on any scroll UP, regardless of position -- the common
+  // "get out of the way while reading, come back the moment you want it"
+  // pattern. The scroll-to-top button in the nav only appears once there's
+  // somewhere to scroll back to.
+  window.scrollToTopV3 = function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  (function initNavScrollBehavior() {
+    var nav = document.getElementById('site-nav');
+    var topBtn = document.getElementById('scrollTopBtn');
+    if (!nav) return;
+    var lastY = window.scrollY;
+    var ticking = false;
+    var REVEAL_THRESHOLD = 80;
+    function onScroll() {
+      var y = window.scrollY;
+      if (topBtn) topBtn.classList.toggle('hidden', y < 400);
+      if (topBtn) topBtn.classList.toggle('flex', y >= 400);
+      if (y <= REVEAL_THRESHOLD) {
+        nav.style.transform = '';
+      } else if (y > lastY) {
+        nav.style.transform = 'translateX(-50%) translateY(-140%)';
+      } else if (y < lastY) {
+        nav.style.transform = 'translateX(-50%) translateY(0)';
+      }
+      lastY = y;
+      ticking = false;
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { requestAnimationFrame(onScroll); ticking = true; }
+    }, { passive: true });
+  })();
+
   function showToast(message) {
     var container = document.getElementById('toast-container');
     if (!container) return;
@@ -415,7 +451,9 @@
     document.getElementById('cvModal').classList.add('opacity-0', 'pointer-events-none');
   };
   window.openLightbox = function (img, title, desc) {
-    document.getElementById('lightboxImg').src = img;
+    var imgEl = document.getElementById('lightboxImg');
+    imgEl.src = img;
+    imgEl.alt = (desc || title || 'Photo') + ', Valentine Golden Ghanem';
     document.getElementById('lightboxTitle').textContent = title;
     document.getElementById('lightboxDesc').textContent = desc;
     document.getElementById('lightboxModal').classList.remove('opacity-0', 'pointer-events-none');
@@ -763,6 +801,300 @@
     animateInfection();
   }
 
+  // ---------- Tilt-physics (mass-spring-damper tilt/press on hover) ----------
+  // Ported from site.js's shared card-tilt engine -- reusable for any card
+  // grid, not just Community's .event-card (kept as a named function so a
+  // future page can call attachTiltPhysics('.card') the same way).
+  function attachTiltPhysics(selector) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var STIFFNESS = 300, DAMPING = 20;
+    var springs = [];
+    function makeAxis() { return { value: 0, velocity: 0, target: 0 }; }
+    function stepAxis(axis, dt) {
+      var accel = -STIFFNESS * (axis.value - axis.target) - DAMPING * axis.velocity;
+      axis.velocity += accel * dt;
+      axis.value += axis.velocity * dt;
+    }
+    function atRest(axis) { return Math.abs(axis.value - axis.target) < 0.001 && Math.abs(axis.velocity) < 0.001; }
+    var loopRunning = false, lastTs = null;
+    function loop(ts) {
+      if (!lastTs) lastTs = ts;
+      var dt = Math.min((ts - lastTs) / 1000, 0.032);
+      lastTs = ts;
+      var anyActive = false;
+      springs.forEach(function (s) {
+        stepAxis(s.tiltX, dt); stepAxis(s.tiltY, dt); stepAxis(s.scale, dt);
+        if (!(atRest(s.tiltX) && atRest(s.tiltY) && atRest(s.scale))) anyActive = true;
+        s.el.style.setProperty('--tilt-x', s.tiltX.value.toFixed(3) + 'deg');
+        s.el.style.setProperty('--tilt-y', s.tiltY.value.toFixed(3) + 'deg');
+        s.el.style.setProperty('--press-scale', (1 + s.scale.value).toFixed(4));
+      });
+      if (anyActive) requestAnimationFrame(loop);
+      else { loopRunning = false; lastTs = null; }
+    }
+    function ensureLoop() { if (!loopRunning) { loopRunning = true; requestAnimationFrame(loop); } }
+    document.querySelectorAll(selector).forEach(function (el) {
+      var s = { el: el, tiltX: makeAxis(), tiltY: makeAxis(), scale: makeAxis() };
+      springs.push(s);
+      el.addEventListener('pointermove', function (e) {
+        if (e.pointerType === 'touch') return;
+        var r = el.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        s.tiltY.target = px * 6; s.tiltX.target = py * -6;
+        ensureLoop();
+      });
+      el.addEventListener('pointerenter', function (e) { if (e.pointerType === 'touch') return; s.scale.target = 0.018; ensureLoop(); });
+      el.addEventListener('pointerleave', function () { s.tiltX.target = 0; s.tiltY.target = 0; s.scale.target = 0; ensureLoop(); });
+      el.addEventListener('pointerdown', function (e) { if (e.pointerType === 'touch') return; s.scale.target = -0.02; ensureLoop(); });
+      el.addEventListener('pointerup', function (e) { if (e.pointerType === 'touch') return; s.scale.target = 0.018; ensureLoop(); });
+    });
+  }
+
+  // ---------- Full-scale photo lightbox ----------
+  // Page-agnostic: any .event-media__item img or .carousel__slide img
+  // (Gallery, later) opens here, grouped with prev/next within its own
+  // .event-card/.carousel ancestor.
+  function initLightbox() {
+    var selector = '.event-media__item img, .carousel__slide img';
+    var imgs = Array.prototype.slice.call(document.querySelectorAll(selector));
+    if (!imgs.length) return;
+    var overlay = document.createElement('div');
+    overlay.className = 'lightbox';
+    overlay.innerHTML =
+      '<button type="button" class="lightbox__close" aria-label="Close">&times;</button>' +
+      '<button type="button" class="lightbox__arrow lightbox__arrow--prev" aria-label="Previous photo">&#8249;</button>' +
+      '<button type="button" class="lightbox__arrow lightbox__arrow--next" aria-label="Next photo">&#8250;</button>' +
+      '<figure class="lightbox__figure"><img class="lightbox__img" alt=""><figcaption class="lightbox__caption"></figcaption></figure>';
+    document.body.appendChild(overlay);
+    var imgEl = overlay.querySelector('.lightbox__img');
+    var captionEl = overlay.querySelector('.lightbox__caption');
+    var closeBtn = overlay.querySelector('.lightbox__close');
+    var prevBtn = overlay.querySelector('.lightbox__arrow--prev');
+    var nextBtn = overlay.querySelector('.lightbox__arrow--next');
+    var group = [], index = 0, lastFocused = null;
+    function groupFor(img) {
+      var scope = img.closest('.event-card') || img.closest('.carousel');
+      if (!scope) return [img];
+      return Array.prototype.slice.call(scope.querySelectorAll(selector));
+    }
+    function render() {
+      var img = group[index];
+      imgEl.src = img.currentSrc || img.src;
+      imgEl.alt = img.alt || '';
+      var figure = img.closest('figure');
+      var capEl = figure ? figure.querySelector('figcaption') : null;
+      captionEl.textContent = capEl ? capEl.textContent : (img.alt || '');
+      var multi = group.length > 1;
+      prevBtn.hidden = !multi;
+      nextBtn.hidden = !multi;
+    }
+    function open(img) {
+      group = groupFor(img);
+      index = Math.max(0, group.indexOf(img));
+      render();
+      lastFocused = document.activeElement;
+      overlay.classList.add('is-open');
+      document.body.classList.add('lightbox-open');
+      closeBtn.focus();
+    }
+    function close() {
+      overlay.classList.remove('is-open');
+      document.body.classList.remove('lightbox-open');
+      if (lastFocused && lastFocused.focus) lastFocused.focus();
+    }
+    function next() { index = (index + 1) % group.length; render(); }
+    function prev() { index = (index - 1 + group.length) % group.length; render(); }
+    imgs.forEach(function (img) { img.addEventListener('click', function () { open(img); }); });
+    closeBtn.addEventListener('click', close);
+    nextBtn.addEventListener('click', next);
+    prevBtn.addEventListener('click', prev);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+    document.addEventListener('keydown', function (e) {
+      if (!overlay.classList.contains('is-open')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    });
+  }
+
+  // ---------- Video play-to-fullscreen (CSS-only) ----------
+  // Deliberately not the native Fullscreen API -- across several rounds it
+  // kept flashing on then immediately exiting on desktop Firefox no matter
+  // how gesture/promise timing was handled. A CSS overlay filling the
+  // viewport sidesteps that permission model entirely, so it can't be
+  // silently revoked.
+  function initVideoFullscreen() {
+    document.querySelectorAll('.event-media__video').forEach(function (wrap) {
+      var video = wrap.querySelector('video');
+      if (!video) return;
+      var playBtn = document.createElement('button');
+      playBtn.type = 'button';
+      playBtn.className = 'event-media__video__play';
+      playBtn.setAttribute('aria-label', 'Play video full screen');
+      playBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+      wrap.appendChild(playBtn);
+      var closeBtn = document.createElement('button');
+      closeBtn.type = 'button';
+      closeBtn.className = 'event-media__video__close';
+      closeBtn.setAttribute('aria-label', 'Exit full screen');
+      closeBtn.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+      wrap.appendChild(closeBtn);
+      var placeholder = document.createComment('video-fullscreen-anchor');
+      function open() {
+        // position:fixed only escapes to the real viewport if no ancestor has
+        // a transform/filter/perspective -- .event-card does (tilt-physics),
+        // which would trap a fixed child inside the card's own box. Move wrap
+        // to a direct child of <body> while open, restore its exact spot on close.
+        wrap.parentNode.insertBefore(placeholder, wrap);
+        document.body.appendChild(wrap);
+        wrap.classList.add('is-pseudo-fullscreen');
+        document.documentElement.classList.add('has-pseudo-fullscreen');
+        var playPromise = video.play();
+        if (playPromise && playPromise.catch) playPromise.catch(function () {});
+        playBtn.hidden = true;
+        document.addEventListener('keydown', onKeydown);
+      }
+      function close() {
+        wrap.classList.remove('is-pseudo-fullscreen');
+        document.documentElement.classList.remove('has-pseudo-fullscreen');
+        placeholder.parentNode.insertBefore(wrap, placeholder);
+        placeholder.remove();
+        playBtn.hidden = !video.paused;
+        document.removeEventListener('keydown', onKeydown);
+      }
+      function onKeydown(e) { if (e.key === 'Escape') close(); }
+      playBtn.addEventListener('click', open);
+      closeBtn.addEventListener('click', close);
+      video.addEventListener('play', function () { playBtn.hidden = true; });
+      video.addEventListener('pause', function () { playBtn.hidden = false; });
+    });
+  }
+
+  // ---------- Masonry packing for .event-grid ----------
+  // True masonry: measure each card's real rendered height and greedily
+  // place it into whichever column currently totals the least height, so
+  // cards pack tight and an odd card never leaves a gap. Largest-first
+  // ordering balances columns better than DOM-order greedy placement does.
+  var EVENT_MIN_COL_WIDTH = 260;
+  function binPack(heights, numCols) {
+    var order = heights.map(function (_, i) { return i; });
+    order.sort(function (a, b) { return heights[b] - heights[a]; });
+    var cols = [], colSums = [];
+    for (var i = 0; i < numCols; i++) { cols.push([]); colSums.push(0); }
+    order.forEach(function (i) {
+      var shortest = 0;
+      for (var j = 1; j < numCols; j++) { if (colSums[j] < colSums[shortest]) shortest = j; }
+      cols[shortest].push(i);
+      colSums[shortest] += heights[i] + 22;
+    });
+    return { cols: cols, imbalance: Math.max.apply(null, colSums) - Math.min.apply(null, colSums) };
+  }
+  function packEventGrids() {
+    document.querySelectorAll('.event-grid').forEach(function (grid) {
+      var cards = Array.prototype.slice.call(grid.querySelectorAll('.event-card'));
+      if (!cards.length) return;
+      var gridWidth = grid.getBoundingClientRect().width;
+      var byWidth = Math.max(1, Math.min(3, Math.round(gridWidth / 460)));
+      var heights = cards.map(function (c) { return c.getBoundingClientRect().height; });
+      grid.querySelectorAll('.event-grid__col').forEach(function (col) { col.remove(); });
+      if (byWidth === 1) { cards.forEach(function (c) { grid.appendChild(c); }); return; }
+      var candidates = [byWidth];
+      var extra = byWidth + 1;
+      if (extra <= cards.length && gridWidth / extra >= EVENT_MIN_COL_WIDTH) candidates.push(extra);
+      var best = null;
+      candidates.forEach(function (n) {
+        var result = binPack(heights, n);
+        if (!best || result.imbalance < best.imbalance) best = { numCols: n, cols: result.cols };
+      });
+      var colEls = [];
+      for (var i = 0; i < best.numCols; i++) { var col = document.createElement('div'); col.className = 'event-grid__col'; colEls.push(col); grid.appendChild(col); }
+      best.cols.forEach(function (indices, colIndex) { indices.forEach(function (cardIndex) { colEls[colIndex].appendChild(cards[cardIndex]); }); });
+    });
+  }
+
+  // ---------- Publications filter (year select + live search + sort) ----------
+  // Copy-citation reuses the sitewide copyToClipboard/showToast (see footer's
+  // copy-email button) rather than a bespoke handler -- same convention, one
+  // less thing to maintain. Ported from site.js's [data-pubs-root] block.
+  function initPublicationsFilter() {
+    var root = document.querySelector('[data-pubs-root]');
+    if (!root) return;
+    var yearSelect = root.querySelector('#pubs-year');
+    var searchInput = root.querySelector('#pubs-search');
+    var resetBtn = root.querySelector('.filter-toolbar__reset');
+    var emptyMsg = root.querySelector('.filter-empty');
+    var items = Array.prototype.slice.call(root.querySelectorAll('.feed-item[data-year]'));
+    function applyFilters() {
+      var yr = yearSelect ? yearSelect.value : 'all';
+      var q = searchInput ? searchInput.value.trim().toLowerCase() : '';
+      var anyVisible = false;
+      items.forEach(function (item) {
+        var yrMatch = (yr === 'all' || item.getAttribute('data-year') === yr);
+        var qMatch = !q || item.textContent.toLowerCase().indexOf(q) !== -1;
+        var visible = yrMatch && qMatch;
+        item.hidden = !visible;
+        if (visible) anyVisible = true;
+      });
+      if (emptyMsg) emptyMsg.classList.toggle('hidden', anyVisible);
+    }
+    if (yearSelect) yearSelect.addEventListener('change', applyFilters);
+    if (searchInput) searchInput.addEventListener('input', applyFilters);
+    if (resetBtn) resetBtn.addEventListener('click', function () {
+      if (yearSelect) yearSelect.value = 'all';
+      if (searchInput) searchInput.value = '';
+      applyFilters();
+    });
+    var sortSelect = root.querySelector('#pubs-sort');
+    var list = root.querySelector('[data-pub-list]');
+    if (sortSelect && list) {
+      sortSelect.addEventListener('change', function () {
+        var mode = sortSelect.value;
+        var sorted = Array.prototype.slice.call(list.querySelectorAll('.feed-item[data-year]'));
+        sorted.sort(function (a, b) {
+          if (mode === 'title') return a.getAttribute('data-title').localeCompare(b.getAttribute('data-title'));
+          var ya = parseInt(a.getAttribute('data-year'), 10), yb = parseInt(b.getAttribute('data-year'), 10);
+          return mode === 'oldest' ? ya - yb : yb - ya;
+        });
+        sorted.forEach(function (it) { list.appendChild(it); });
+      });
+    }
+  }
+
+  // ---------- Portfolio page category filter chips ----------
+  // Distinct from window.filterPortfolio (Home's teaser grid, #portfolio-grid
+  // + .filter-btn) -- this is the real Portfolio page's own filter, ported
+  // from site.js's [data-portfolio-root] block unchanged.
+  function initPortfolioCategoryFilter() {
+    var root = document.querySelector('[data-portfolio-root]');
+    if (!root) return;
+    var chips = Array.prototype.slice.call(root.querySelectorAll('.filter-chip'));
+    var sections = Array.prototype.slice.call(root.querySelectorAll('[data-portfolio-section]'));
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        chips.forEach(function (c) { c.classList.remove('is-active'); });
+        chip.classList.add('is-active');
+        var cat = chip.getAttribute('data-filter');
+        sections.forEach(function (sec) {
+          sec.hidden = !(cat === 'all' || sec.getAttribute('data-portfolio-section') === cat);
+        });
+      });
+    });
+  }
+
+  // ---------- CPD log filter (year select) ----------
+  function initCpdFilter() {
+    var root = document.querySelector('[data-cpd-root]');
+    if (!root) return;
+    var yearSelect = root.querySelector('#cpd-year');
+    var groups = Array.prototype.slice.call(root.querySelectorAll('.cpd-year-group'));
+    if (!yearSelect) return;
+    yearSelect.addEventListener('change', function () {
+      var yr = yearSelect.value;
+      groups.forEach(function (g) { g.hidden = (yr !== 'all' && g.getAttribute('data-year') !== yr); });
+    });
+  }
+
   window.addEventListener('load', function () {
     window.switchJourneyTab('education');
     renderPublications(DATA.publications || []);
@@ -774,5 +1106,23 @@
     startTypewriter();
     if (window.v2Motion) window.v2Motion.attachMagnetic('.magnetic-btn');
     document.querySelectorAll('.v3-scope .reveal').forEach(function (el) { observer.observe(el); });
+
+    // .card/.event-card both get tilt-physics sitewide, matching site.js's
+    // original unconditional `.card, .toc-card, .event-card` selector --
+    // not a Community-only or Portfolio-only effect.
+    if (document.querySelector('.card, .event-card')) attachTiltPhysics('.card, .event-card');
+    initLightbox();
+    initVideoFullscreen();
+    if (document.querySelector('.event-grid')) {
+      packEventGrids();
+      var packResizeTimer = null;
+      window.addEventListener('resize', function () {
+        clearTimeout(packResizeTimer);
+        packResizeTimer = setTimeout(packEventGrids, 150);
+      }, { passive: true });
+    }
+    initPublicationsFilter();
+    initPortfolioCategoryFilter();
+    initCpdFilter();
   });
 })();

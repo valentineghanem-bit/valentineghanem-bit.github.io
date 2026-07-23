@@ -40,8 +40,11 @@ extra_js: ["canvas-field.js", "about-fx.js"]
 
 <section class="py-24 px-6 border-t border-slate-200 dark:border-slate-800">
   <div class="max-w-[1800px] mx-auto">
-    <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-4">01 &mdash; Identity</h2>
-    <h3 class="text-3xl sm:text-4xl font-black font-heading text-slate-900 dark:text-white mb-10">Biodata &amp; languages</h3>
+    <div class="section__ghost-wrap">
+      <span class="section__ghost-num">01</span>
+      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-4">01 &mdash; Identity</h2>
+      <h3 class="text-3xl sm:text-4xl font-black font-heading text-slate-900 dark:text-white mb-10">Biodata &amp; languages</h3>
+    </div>
     <div class="grid md:grid-cols-2 gap-6">
       <div class="specimen relative overflow-hidden glass-card rounded-2xl p-7 border">
         <div class="specimen-scan" aria-hidden="true"></div>
@@ -64,8 +67,11 @@ extra_js: ["canvas-field.js", "about-fx.js"]
 
 <section class="py-24 px-6 bg-slate-50/50 dark:bg-slate-900/40 border-t border-slate-200 dark:border-slate-800">
   <div class="max-w-[1800px] mx-auto">
-    <h2 class="text-xs font-black uppercase tracking-[0.4em] text-emerald-500 mb-4">02 &mdash; Purpose</h2>
-    <h3 class="text-3xl sm:text-4xl font-black font-heading text-slate-900 dark:text-white mb-10">Vision &amp; objectives</h3>
+    <div class="section__ghost-wrap">
+      <span class="section__ghost-num">02</span>
+      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-emerald-500 mb-4">02 &mdash; Purpose</h2>
+      <h3 class="text-3xl sm:text-4xl font-black font-heading text-slate-900 dark:text-white mb-10">Vision &amp; objectives</h3>
+    </div>
     <div class="relative pl-6 mb-10" data-manifesto>
       <div class="absolute left-0 top-1 bottom-1 w-0.5 bg-slate-200 dark:bg-slate-700"></div>
       <div class="manifesto-rail-fill absolute left-0 top-1 w-0.5"></div>
@@ -89,8 +95,11 @@ extra_js: ["canvas-field.js", "about-fx.js"]
 
 <section class="py-24 px-6 border-t border-slate-200 dark:border-slate-800">
   <div class="max-w-[1800px] mx-auto">
-    <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-4">03 &mdash; Expertise</h2>
-    <h3 class="text-3xl sm:text-4xl font-black font-heading text-slate-900 dark:text-white mb-10">Areas of expertise</h3>
+    <div class="section__ghost-wrap">
+      <span class="section__ghost-num">03</span>
+      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-4">03 &mdash; Expertise</h2>
+      <h3 class="text-3xl sm:text-4xl font-black font-heading text-slate-900 dark:text-white mb-10">Areas of expertise</h3>
+    </div>
     <div class="flex flex-wrap gap-2.5" data-pills>
       {% for topic in site.data.profile.knows_about %}
       <span class="reveal-pill px-4 py-2 glass-card rounded-full text-sm font-mono text-slate-600 dark:text-slate-300 hover:border-cyan-500 hover:text-slate-900 dark:hover:text-white transition-colors">{{ topic }}</span>
@@ -101,8 +110,11 @@ extra_js: ["canvas-field.js", "about-fx.js"]
 
 <section class="py-24 px-6 bg-slate-50/50 dark:bg-slate-900/40 border-t border-slate-200 dark:border-slate-800">
   <div class="max-w-[1800px] mx-auto">
-    <h2 class="text-xs font-black uppercase tracking-[0.4em] text-amber-500 mb-4">04 &mdash; Verification</h2>
-    <h3 class="text-3xl sm:text-4xl font-black font-heading text-slate-900 dark:text-white mb-10">Identifiers</h3>
+    <div class="section__ghost-wrap">
+      <span class="section__ghost-num">04</span>
+      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-amber-500 mb-4">04 &mdash; Verification</h2>
+      <h3 class="text-3xl sm:text-4xl font-black font-heading text-slate-900 dark:text-white mb-10">Identifiers</h3>
+    </div>
     <div class="grid sm:grid-cols-2 gap-x-10" data-idents>
       {% for ident in site.data.profile.identifiers %}
       <div class="reveal-ident flex justify-between items-center border-b border-dashed border-slate-200 dark:border-slate-700 py-3 font-mono text-sm">
@@ -117,8 +129,11 @@ extra_js: ["canvas-field.js", "about-fx.js"]
 <section class="py-24 px-6 relative overflow-hidden border-t border-slate-200 dark:border-slate-800">
   <div class="canvas-field absolute inset-0 z-0 opacity-30" data-canvas-field data-palette="v2" data-intensity="0.35" aria-hidden="true"></div>
   <div class="max-w-[1800px] mx-auto relative z-10">
-    <h2 class="text-xs font-black uppercase tracking-[0.4em] text-crimson mb-4">05 &mdash; Credentials</h2>
-    <h3 class="text-3xl sm:text-4xl font-black font-heading text-slate-900 dark:text-white mb-10">Fellowships &amp; registrations</h3>
+    <div class="section__ghost-wrap">
+      <span class="section__ghost-num">05</span>
+      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-crimson mb-4">05 &mdash; Credentials</h2>
+      <h3 class="text-3xl sm:text-4xl font-black font-heading text-slate-900 dark:text-white mb-10">Fellowships &amp; registrations</h3>
+    </div>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
       {% for c in site.data.profile.credentials %}
       <div class="spotlight-glow glass-card rounded-2xl p-5 border {% if c.status == 'in progress' %}border-l-4 border-l-violet-500{% else %}border-l-4 border-l-amber-500{% endif %}">
@@ -133,8 +148,9 @@ extra_js: ["canvas-field.js", "about-fx.js"]
 <section class="py-24 px-6 bg-slate-50/50 dark:bg-slate-900/40 border-t border-slate-200 dark:border-slate-800">
   <div class="max-w-[1800px] mx-auto">
     <div class="flex items-baseline justify-between flex-wrap gap-4 mb-2">
-      <div>
-        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-emerald-500 mb-4">06 &mdash; Journey</h2>
+      <div class="section__ghost-wrap">
+        <span class="section__ghost-num">06</span>
+        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-mint mb-4">06 &mdash; Journey</h2>
         <h3 class="text-3xl sm:text-4xl font-black font-heading text-slate-900 dark:text-white">Academic &amp; professional timeline</h3>
       </div>
     </div>

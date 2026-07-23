@@ -49,19 +49,26 @@
     return v ? v.trim() : '';
   }
 
+  // NOTE: these read the real --v2-* tokens (v2-tokens.css, sitewide) --
+  // an earlier version of this function read a `--mv2-*` prefix that was
+  // never actually defined anywhere, so cssVar() always returned '' and
+  // every call silently fell through to the hardcoded fallback string
+  // below, on every theme, always -- the "redraw on theme toggle" comment
+  // a few lines down was correct in intent but had never actually taken
+  // effect on the live site. Fixed to the prefix that's really there.
   function palette() {
     return {
-      fill: cssVar('--mv2-void-raised') || '#131218',
-      stroke: cssVar('--mv2-glass-border') || 'rgba(244,241,234,0.25)',
+      fill: cssVar('--v2-void-raised') || '#131218',
+      stroke: cssVar('--v2-glass-border') || 'rgba(244,241,234,0.25)',
       hoverFill: 'rgba(232,163,61,0.14)',
-      ink: cssVar('--mv2-ink') || '#f4f1ea',
-      inkSoft: cssVar('--mv2-ink-soft') || '#9b968c',
-      paperRaised: cssVar('--mv2-void-raised') || '#131218',
-      line: cssVar('--mv2-glass-border') || 'rgba(244,241,234,0.25)',
+      ink: cssVar('--v2-ink') || '#f4f1ea',
+      inkSoft: cssVar('--v2-ink-soft') || '#9b968c',
+      paperRaised: cssVar('--v2-void-raised') || '#131218',
+      line: cssVar('--v2-glass-border') || 'rgba(244,241,234,0.25)',
       shadow: '0 20px 44px -18px rgba(0,0,0,0.6)',
-      screening: cssVar('--mv2-gold') || '#e8a33d',
+      screening: cssVar('--v2-gold') || '#e8a33d',
       conference: cssVar('--v2-wine-bright') || cssVar('--v2-wine') || '#8b4a42',
-      outreach: cssVar('--mv2-clay') || '#d9784f'
+      outreach: cssVar('--v2-clay') || '#d9784f'
     };
   }
 
@@ -97,7 +104,8 @@
         formatter: function (params) {
           if (!params.data || !params.data.event) return params.name || '';
           var e = params.data.event;
-          var img = e.photo ? '<img src="' + e.photo + '" alt="" style="width:200px;height:112px;object-fit:cover;border-radius:6px;display:block;margin-bottom:8px;">' : '';
+          var imgAlt = (e.title || 'Field record') + ', Valentine Golden Ghanem';
+          var img = e.photo ? '<img src="' + e.photo + '" alt="' + imgAlt.replace(/"/g, '&quot;') + '" style="width:200px;height:112px;object-fit:cover;border-radius:6px;display:block;margin-bottom:8px;">' : '';
           return '<div style="max-width:220px;">' + img +
             '<strong style="display:block;margin-bottom:3px;font-size:0.92em;">' + e.title + '</strong>' +
             '<span style="opacity:0.72;font-size:0.78em;">' + e.meta + '</span>' +
@@ -162,8 +170,12 @@
       window.addEventListener('resize', function () { if (chart) chart.resize(); }, { passive: true });
 
       // Redraw on theme toggle so district/pin colours follow light/dark.
+      // Watches data-v2-theme -- the attribute the site's real theme
+      // cycle (cycleThemeV3()) actually sets; an earlier version watched
+      // a plain data-theme that nothing on this site ever sets, so this
+      // never fired on the live site either (see the palette() fix above).
       var themeObserver = new MutationObserver(function (muts) {
-        muts.forEach(function (m) { if (m.attributeName === 'data-theme') themeAndRedraw(); });
+        muts.forEach(function (m) { if (m.attributeName === 'data-v2-theme') themeAndRedraw(); });
       });
       themeObserver.observe(document.documentElement, { attributes: true });
 

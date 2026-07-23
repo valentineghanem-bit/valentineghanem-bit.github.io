@@ -33,7 +33,19 @@
   "hasCredential": [
     {%- for c in p.credentials -%}
     {%- capture cred_name -%}{{ c.name }}{% if c.status == "in progress" %} — studies in progress{% endif %}{%- endcapture -%}
-    { "@type": "EducationalOccupationalCredential", "name": {{ cred_name | jsonify }}, "credentialCategory": {{ c.category | jsonify }}{% if c.level %}, "educationalLevel": {{ c.level | jsonify }}{% endif %}, "recognizedBy": { "@type": "CollegeOrUniversity", "name": {{ c.institution | jsonify }} }{% if c.status == "in progress" %}, "description": {{ c.note | jsonify }}{% endif %} }{% unless forloop.last %},{% endunless %}
+    { "@type": "EducationalOccupationalCredential", "name": {{ cred_name | jsonify }}, "credentialCategory": {{ c.category | jsonify }}{% if c.level %}, "educationalLevel": {{ c.level | jsonify }}{% endif %}, "recognizedBy": { "@type": "CollegeOrUniversity", "name": {{ c.institution | jsonify }} }{% if c.status == "in progress" %}, "description": {{ c.note | jsonify }}{% endif %} },
+    {%- endfor -%}
+    {%- for m in p.memberships -%}
+    {%- capture mem_name -%}{{ m.name }}{% if m.role %} ({{ m.role }}){% endif %}{%- endcapture -%}
+    { "@type": "EducationalOccupationalCredential", "name": {{ mem_name | jsonify }}, "credentialCategory": "membership", "recognizedBy": { "@type": "Organization", "name": {{ m.name | jsonify }}, "alternateName": {{ m.abbreviation | jsonify }} }{% if m.reg_no %}, "identifier": {{ m.reg_no | jsonify }}{% endif %} },
+    {%- endfor -%}
+    {%- for l in p.licensure -%}
+    { "@type": "EducationalOccupationalCredential", "name": {{ l.credential | jsonify }}, "credentialCategory": "license", "recognizedBy": { "@type": "Organization", "name": {{ l.body | jsonify }}, "alternateName": {{ l.abbreviation | jsonify }} }{% if l.reg_no %}, "identifier": {{ l.reg_no | jsonify }}{% endif %}, "spatialCoverage": { "@type": "Country", "name": {{ l.jurisdiction | jsonify }} } }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+    {%- if p.certifications_in_progress and p.certifications_in_progress.size > 0 -%},{%- endif -%}
+    {%- for c in p.certifications_in_progress -%}
+    {%- capture prog_name -%}{{ c.name }} — in progress{%- endcapture -%}
+    { "@type": "EducationalOccupationalCredential", "name": {{ prog_name | jsonify }}, "credentialCategory": "certification", "description": {{ c.note | jsonify }} }{% unless forloop.last %},{% endunless %}
     {%- endfor -%}
   ],
   "subjectOf": [

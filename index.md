@@ -76,14 +76,10 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   };
 </script>
 
-<canvas id="bg-canvas" aria-hidden="true"></canvas>
 {% include nav-v3.html %}
 
 <section id="hero" class="min-h-screen pt-36 pb-20 flex flex-col justify-center items-center px-6 relative overflow-hidden">
   <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-    <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?q=80&w=1920&auto=format&fit=crop"
-         alt="Fluorescence microscopy of bacterial rods and cocci chains"
-         class="w-full h-full object-cover object-center opacity-30 dark:opacity-40 filter contrast-125 saturate-150 scale-105 transition-all duration-700 mix-blend-screen dark:mix-blend-lighten">
     <div class="absolute inset-0 graded-hero-overlay"></div>
     <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/70 to-slate-950/90 dark:from-slate-950/95 dark:via-slate-950/75 dark:to-slate-950/95"></div>
   </div>
@@ -249,8 +245,11 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
 <section id="about" class="py-32 px-6 relative">
   <div class="max-w-7xl mx-auto">
     <div class="reveal text-center max-w-3xl mx-auto mb-16">
-      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-4">01 &mdash; Identity &amp; Evolution</h2>
-      <h3 class="text-4xl sm:text-5xl font-black font-heading">Dual Precision: Clinical Lab + Data Science</h3>
+      <div class="section__ghost-wrap">
+        <span class="section__ghost-num">01</span>
+        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-4">01 &mdash; Identity &amp; Evolution</h2>
+        <h3 class="text-4xl sm:text-5xl font-black font-heading">Dual Precision: Clinical Lab + Data Science</h3>
+      </div>
       <p class="text-slate-600 dark:text-slate-400 mt-4 text-base">Combining rigorous wet-lab diagnostic accuracy with spatial epidemiology and machine learning to strengthen disease surveillance. Full detail on the <a href="{{ '/about/' | relative_url }}" class="text-cyan-500 hover:underline">About page</a>.</p>
     </div>
     <div class="reveal glass-card rounded-3xl p-6 sm:p-10 border">
@@ -274,8 +273,11 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   <div class="blob w-[500px] h-[500px] bg-amber-500/10 top-0 right-0 pointer-events-none"></div>
   <div class="max-w-7xl mx-auto px-6">
     <div class="text-center mb-20 reveal">
-      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-amber-400 mb-4">02 &mdash; Expertise</h2>
-      <h3 class="text-4xl sm:text-5xl font-black font-heading">Multi-Disciplinary Technical Matrix</h3>
+      <div class="section__ghost-wrap">
+        <span class="section__ghost-num">02</span>
+        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-amber-400 mb-4">02 &mdash; Expertise</h2>
+        <h3 class="text-4xl sm:text-5xl font-black font-heading">Multi-Disciplinary Technical Matrix</h3>
+      </div>
       <p class="text-slate-400 mt-3 text-sm">Relative emphasis across current work, not a measured proficiency score.</p>
     </div>
     <div class="grid lg:grid-cols-12 gap-12 items-center">
@@ -314,8 +316,11 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
 <section id="simulator" class="py-32 px-6 bg-slate-50/50 dark:bg-slate-900/60 border-y border-slate-200 dark:border-slate-800">
   <div class="max-w-7xl mx-auto">
     <div class="reveal text-center max-w-3xl mx-auto mb-16">
-      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-red-500 mb-4">03 &mdash; Interactive Demo</h2>
-      <h3 class="text-4xl sm:text-5xl font-black font-heading">Spatial Autocorrelation Risk Simulator</h3>
+      <div class="section__ghost-wrap">
+        <span class="section__ghost-num">03</span>
+        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-crimson mb-4">03 &mdash; Interactive Demo</h2>
+        <h3 class="text-4xl sm:text-5xl font-black font-heading">Spatial Autocorrelation Risk Simulator</h3>
+      </div>
       <p class="text-slate-600 dark:text-slate-400 mt-4">An illustrative demo of the spatial-autocorrelation concept (Moran's I) behind Valentine's real published work &mdash; not a validated predictive model. Adjust the sliders to see how the computed index responds.</p>
     </div>
     <div class="grid lg:grid-cols-12 gap-8 reveal">
@@ -371,8 +376,11 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
 <section id="fieldmap" class="py-32 px-6 relative">
   <div class="max-w-7xl mx-auto">
     <div class="reveal text-center max-w-3xl mx-auto mb-16">
-      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-4">04 &mdash; Spatial Intelligence</h2>
-      <h3 class="text-4xl sm:text-5xl font-black font-heading">Ghana District Sample</h3>
+      <div class="section__ghost-wrap">
+        <span class="section__ghost-num">04</span>
+        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-4">04 &mdash; Spatial Intelligence</h2>
+        <h3 class="text-4xl sm:text-5xl font-black font-heading">Ghana District Sample</h3>
+      </div>
       <p class="text-slate-600 dark:text-slate-400 mt-4">A 10-city sample for this page &mdash; the <a href="{{ '/map/' | relative_url }}" class="text-violet-500 hover:underline">full Field Map</a> plots every real screening, conference and outreach activity across all 261 districts by true coordinates.</p>
     </div>
     <div class="grid lg:grid-cols-12 gap-8 reveal">
@@ -398,8 +406,11 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   <div class="max-w-7xl mx-auto">
     <div class="reveal flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
       <div>
-        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-4">05 &mdash; Academic Repository</h2>
-        <h3 class="text-4xl sm:text-5xl font-black font-heading">Publications &amp; Preprints</h3>
+        <div class="section__ghost-wrap">
+          <span class="section__ghost-num">05</span>
+          <h2 class="text-xs font-black uppercase tracking-[0.4em] text-emerald-500 mb-4">05 &mdash; Academic Repository</h2>
+          <h3 class="text-4xl sm:text-5xl font-black font-heading">Publications &amp; Preprints</h3>
+        </div>
       </div>
       <div class="w-full md:w-auto flex flex-col sm:flex-row gap-3">
         <div class="relative">
@@ -422,8 +433,11 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   <div class="max-w-7xl mx-auto">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8 reveal">
       <div>
-        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-emerald-500 mb-4">06 &mdash; Portfolio</h2>
-        <h3 class="text-4xl sm:text-5xl font-black font-heading">Selected Projects &amp; Models</h3>
+        <div class="section__ghost-wrap">
+          <span class="section__ghost-num">06</span>
+          <h2 class="text-xs font-black uppercase tracking-[0.4em] text-mint mb-4">06 &mdash; Portfolio</h2>
+          <h3 class="text-4xl sm:text-5xl font-black font-heading">Selected Projects &amp; Models</h3>
+        </div>
       </div>
       <div class="flex flex-wrap gap-2">
         <button onclick="filterPortfolio('all')" data-cat="all" class="filter-btn px-5 py-2 rounded-full text-xs font-bold bg-slate-900 dark:bg-white text-white dark:text-slate-900 transition-all">All Projects</button>
@@ -443,8 +457,11 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   <div class="max-w-7xl mx-auto px-6">
     <div class="reveal mb-12 flex items-end justify-between flex-wrap gap-4">
       <div>
-        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-4">07 &mdash; Field &amp; Diagnostic Operations</h2>
-        <h3 class="text-4xl font-black font-heading">A Look Behind the Work</h3>
+        <div class="section__ghost-wrap">
+          <span class="section__ghost-num">07</span>
+          <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-4">07 &mdash; Field &amp; Diagnostic Operations</h2>
+          <h3 class="text-4xl font-black font-heading">A Look Behind the Work</h3>
+        </div>
       </div>
       <a href="{{ '/gallery/' | relative_url }}" class="text-xs font-bold text-violet-500 hover:underline">Full Gallery (26 photos) &rarr;</a>
     </div>
@@ -452,7 +469,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       {%- for item in site.data.gallery_portraits limit:4 -%}
       <div onclick="openLightbox('{{ item.url | relative_url }}', 'Field &amp; Diagnostic Operations', '{{ item.caption }}')"
            class="h-64 bg-slate-800 rounded-3xl overflow-hidden relative group cursor-pointer p-6 flex items-end {% if forloop.index == 2 %}sm:col-span-2{% endif %}">
-        <img src="{{ item.url | relative_url }}" alt="{{ item.caption }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+        <img src="{{ item.url | relative_url }}" alt="{{ item.caption }}, Valentine Golden Ghanem" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/10 to-transparent"></div>
         <div class="relative z-10 text-xs font-black uppercase text-white tracking-widest bg-slate-900/80 px-3 py-1.5 rounded-lg">View in Gallery &rarr;</div>
       </div>

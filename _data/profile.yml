@@ -102,9 +102,10 @@ memberships:
   - name: "Ghana Association of Medical Laboratory Scientists"
     abbreviation: "GAMLS"
     reg_no: "AS 1206"
-  - name: "Dutch Epidemiology Society"
+  - name: "Vereniging voor Epidemiologie"
     abbreviation: "VvE"
     reg_no: "1637"
+    note: "Netherlands Epidemiological Society"
 licensure:
   - credential: "Medical Scientist"
     jurisdiction: "Ghana"

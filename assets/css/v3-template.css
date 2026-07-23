@@ -261,3 +261,414 @@ html[data-v2-theme="dark"] .record-lightbox-close, html[data-v2-theme="dim"] .re
   .record-lightbox-flyer { transition: opacity 0.25s ease; }
   .record-lightbox-backdrop, .record-lightbox-close, .record-lightbox-desc { transition: opacity 0.25s ease; }
 }
+
+/* ============================================================
+   Community: tilt-physics cards, photo accordion w/ rotated
+   captions, video play-to-fullscreen, full-scale lightbox,
+   masonry event-grid columns. Ported from site.js/style.css/
+   community-v2.css -- same mechanics, v3-consistent colours.
+   Selectors are page-agnostic (.event-card/.event-media/
+   .lightbox aren't Community-only) so this also lights up for
+   any future page reusing the same markup (Gallery carousels
+   share the .lightbox, via the same img selector). ---------- */
+
+.v3-scope .event-grid { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 20px; perspective: 900px; }
+.v3-scope .event-grid__col { display: flex; flex-direction: column; flex: 1 1 0; min-width: 0; }
+/* Tilt-physics base -- shared by any page's .card grid (Skills, Portfolio)
+   as well as Community's .event-card, matching site.js's original
+   unconditional `.card, .toc-card, .event-card` selector (see
+   attachTiltPhysics in v3-template.js). */
+.v3-scope .card, .v3-scope .event-card, .v3-scope .toc-card {
+  --tilt-x: 0deg; --tilt-y: 0deg; --lift: 0px; --press-scale: 1;
+  transform: translateY(var(--lift)) scale(var(--press-scale)) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  will-change: transform;
+}
+.v3-scope .card:hover, .v3-scope .event-card:hover, .v3-scope .toc-card:hover { --lift: -3px; }
+.v3-scope .event-card { margin-bottom: 22px; scroll-margin-top: 104px; }
+/* Reveal-on-scroll for any v2Motion.revealEach('...card') consumer (Skills'
+   domain cards, Portfolio's project cards) -- was previously toggled by JS
+   with no CSS behind it, so it was a harmless no-op (cards just always
+   showed at full opacity); this makes the fade-in real everywhere .card is
+   used. Opacity-only (no translateY): .card's `transform` property is
+   already owned by the tilt-physics rule above (one shared `transform:
+   translateY(var(--lift)) scale(...) rotateX(...) rotateY(...)` per
+   element) -- a second rule setting `transform: translateY(16px)` here
+   would win by source order and silently kill the tilt/press/lift
+   composition instead of adding to it. */
+.v3-scope .card { opacity: 0; transition: opacity 0.5s ease; }
+.v3-scope .card.is-visible { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .v3-scope .card { transition: none; opacity: 1 !important; }
+}
+.v3-scope .event-card:target { animation: v3-target-flash 1.8s ease; }
+@keyframes v3-target-flash { 0% { box-shadow: 0 0 0 3px var(--v2-gold, #22D3EE); } 100% { box-shadow: none; } }
+
+.v3-scope .event-media { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 16px; }
+.v3-scope .event-media__item { position: relative; margin: 0; overflow: hidden; border-radius: 10px; border: 1px solid rgba(148,163,184,0.25); aspect-ratio: 4 / 3; background: rgba(148,163,184,0.15); }
+.v3-scope .event-media__item img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; transition: transform 0.3s ease; cursor: zoom-in; }
+.v3-scope .event-media__item--contain { position: relative; background-size: cover; background-position: center; }
+.v3-scope .event-media__item--contain::before { content: ''; position: absolute; inset: -15%; z-index: 0; background: inherit; filter: blur(18px) brightness(0.82); background-size: cover; background-position: center; }
+.v3-scope .event-media__item--contain img { object-fit: contain; position: relative; z-index: 1; }
+.v3-scope .event-media__item:hover img { transform: scale(1.04); }
+.v3-scope .event-media__caption {
+  position: absolute; left: 0; right: 0; bottom: 0; margin: 0; padding: 16px 8px 6px;
+  font-family: 'Fira Code', monospace; font-size: 0.7rem; color: #f5f0e8; line-height: 1.3;
+  background: linear-gradient(to top, rgba(10,8,6,0.82), transparent);
+  pointer-events: none; z-index: 2;
+}
+.v3-scope .event-media__more summary {
+  list-style: none; cursor: pointer; font-family: 'Fira Code', monospace; font-size: 0.74rem; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--v2-gold, #22D3EE); padding: 10px; border: 1px dashed rgba(148,163,184,0.35); margin-top: 4px; text-align: center; border-radius: 10px;
+}
+.v3-scope .event-media__more summary::-webkit-details-marker { display: none; }
+
+/* Accordion fan-out (first 6 photos): narrow strips at rest, each with a
+   rotated (sideways) caption label since there's no horizontal room for
+   one -- hovering a strip grows it AND un-rotates its own caption flat. */
+.v3-scope .event-media--accordion { display: flex; gap: 8px; height: 190px; overflow: hidden; margin-top: 16px; }
+.v3-scope .event-media--accordion .event-media__item { flex: 1 1 0%; min-width: 44px; aspect-ratio: auto; height: 100%; transition: flex-grow 0.5s cubic-bezier(0.22,1,0.36,1); }
+.v3-scope .event-media--accordion .event-media__item img { object-position: center; }
+.v3-scope .event-media--accordion:hover .event-media__item { flex-grow: 1; }
+.v3-scope .event-media--accordion:hover .event-media__item:hover { flex-grow: 6; }
+.v3-scope .event-media--accordion .event-media__caption {
+  left: 50%; right: auto; bottom: 34px; width: max-content; max-width: 140px;
+  padding: 4px 2px; background: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.9), 0 0 6px rgba(0,0,0,0.6);
+  transform: translateX(-50%) rotate(-90deg); transform-origin: center;
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), bottom 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+.v3-scope .event-media--accordion .event-media__item:hover .event-media__caption { bottom: 8px; max-width: calc(100% - 16px); transform: translateX(-50%) rotate(0deg); }
+@media (max-width: 640px) {
+  .v3-scope .event-media--accordion { height: 140px; }
+  .v3-scope .event-media--accordion .event-media__item { flex: 1 1 88px; }
+  .v3-scope .event-media--accordion .event-media__caption { bottom: 6px; transform: translateX(-50%) rotate(0deg); max-width: 90%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .v3-scope .event-media--accordion .event-media__item, .v3-scope .event-media--accordion .event-media__caption { transition: none; }
+}
+
+/* Video play-to-fullscreen (CSS-only -- native Fullscreen API kept
+   flashing on then immediately exiting on desktop Firefox; see
+   community-fx.js for the full rationale). */
+.v3-scope .event-media__video { position: relative; margin: 16px 0 0; display: inline-block; max-width: 100%; }
+.v3-scope .event-media__video video { height: 260px; max-width: 100%; width: auto; border-radius: 10px; border: 1px solid rgba(148,163,184,0.25); display: block; box-shadow: 0 10px 30px -5px rgba(0,0,0,0.15); }
+.v3-scope .event-media__video--landscape video { width: 462px; height: 260px; object-fit: cover; object-position: 50% 30%; }
+.v3-scope .event-media__video__play {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 58px; height: 58px; border-radius: 50%; border: none; background: rgba(0,0,0,0.55); color: #fff;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.16,1,0.3,1), background 0.2s ease;
+}
+.v3-scope .event-media__video__play svg { margin-left: 3px; }
+.v3-scope .event-media__video__play:hover { transform: translate(-50%, -50%) scale(1.1); background: #22D3EE; }
+.v3-scope .event-media__video__play[hidden] { display: none; }
+.v3-scope .event-media__video__close { display: none; }
+.v3-scope .event-media__video.is-pseudo-fullscreen { position: fixed; inset: 0; z-index: 500; margin: 0; max-width: none; display: flex; align-items: center; justify-content: center; background: #000; }
+.v3-scope .event-media__video.is-pseudo-fullscreen video { width: 100%; height: 100%; max-width: 100vw; max-height: 100vh; object-fit: contain; border: none; border-radius: 0; box-shadow: none; }
+.v3-scope .event-media__video.is-pseudo-fullscreen .event-media__video__play { display: none; }
+.v3-scope .event-media__video.is-pseudo-fullscreen .event-media__video__close {
+  display: flex; position: fixed; top: 20px; right: 20px; z-index: 501; width: 44px; height: 44px; border-radius: 50%; border: none;
+  background: rgba(0,0,0,0.55); color: #fff; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s ease;
+}
+.v3-scope .event-media__video.is-pseudo-fullscreen .event-media__video__close:hover { background: #22D3EE; }
+html.has-pseudo-fullscreen { overflow: hidden; }
+
+/* Full-scale photo lightbox (page-agnostic: any .event-media__item img or
+   future .carousel__slide img opens here) -- lives outside .v3-scope
+   since it's appended straight to <body>, not inside the page markup. */
+.lightbox {
+  position: fixed; inset: 0; z-index: 500; display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.88); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 40px;
+}
+.lightbox.is-open { opacity: 1; pointer-events: auto; }
+.lightbox__figure { margin: 0; max-width: min(92vw, 1200px); max-height: 88vh; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.lightbox__img { max-width: 100%; max-height: 78vh; object-fit: contain; border-radius: 8px; box-shadow: 0 20px 60px -12px rgba(0,0,0,0.5); transform: scale(0.96); transition: transform 0.3s cubic-bezier(0.16,1,0.3,1); }
+.lightbox.is-open .lightbox__img { transform: scale(1); }
+.lightbox__caption { color: rgba(241,245,249,0.92); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.9rem; text-align: center; max-width: 62ch; margin: 0; }
+.lightbox__close, .lightbox__arrow {
+  position: absolute; border-radius: 50%; border: 1px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.08); color: #fff;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.18s ease, transform 0.18s ease;
+}
+.lightbox__close { top: 22px; right: 24px; width: 44px; height: 44px; font-size: 1.6rem; line-height: 1; }
+.lightbox__close:hover { background: rgba(255,255,255,0.18); transform: rotate(90deg); }
+.lightbox__arrow { top: 50%; transform: translateY(-50%); width: 52px; height: 52px; font-size: 1.8rem; line-height: 1; }
+.lightbox__arrow:hover { background: rgba(255,255,255,0.18); }
+.lightbox__arrow--prev { left: 20px; }
+.lightbox__arrow--next { right: 20px; }
+.lightbox__arrow[hidden] { display: none; }
+body.lightbox-open { overflow: hidden; }
+@media (max-width: 640px) {
+  .lightbox { padding: 16px; }
+  .lightbox__arrow { width: 40px; height: 40px; font-size: 1.4rem; }
+  .lightbox__close { width: 38px; height: 38px; top: 12px; right: 12px; }
+}
+
+/* Community sidebar nav -- scrollspy active state (community-fx.js) */
+.v3-scope .community-nav a.is-active { color: var(--v2-gold, #22D3EE); border-color: var(--v2-gold, #22D3EE); background: var(--v2-gold-soft, rgba(34,211,238,0.1)); }
+
+/* Portfolio category filter chips -- active state (site.js-ported logic) */
+.v3-scope .filter-chip.is-active { background: #0F172A; color: #fff; border-color: #0F172A; }
+html[data-v2-theme="dark"] .filter-chip.is-active, html[data-v2-theme="dim"] .filter-chip.is-active { background: #fff; color: #0F172A; border-color: #fff; }
+
+/* Bento-tint, keyed off .v3-scope (present on every v3 <body> unconditionally)
+   instead of the legacy .v2-scope. v2-tokens.css's original .v2-scope
+   .v2-bento-tint[data-tint-cycle] rules (still used by old, non-v3 pages)
+   require the WHOLE .v2-scope cascade as an ancestor -- which also sets
+   .v2-scope's own font-family/background/color, plus a dozen more component
+   rules (a{color}, a:hover{color}, .filter-chip/.btn base+hover, .card,
+   .tag, .section__title, .breadcrumb...) that directly fight this page's
+   own Tailwind-authored markup (e.g. a{color:var(--v2-wine-bright)} beats a
+   bare Tailwind text-color utility on specificity, silently recolouring
+   every link). A v3 page that wants bento-tint striping should never need
+   to opt into that entire legacy skin just for one background effect --
+   these companion rules give the exact same 6-way cycle without it. */
+.v3-scope .v2-bento-tint[data-tint-cycle="0"] { background: color-mix(in oklch, var(--v2-violet) 16%, var(--v2-glass)); }
+.v3-scope .v2-bento-tint[data-tint-cycle="1"] { background: color-mix(in oklch, var(--v2-crimson) 16%, var(--v2-glass)); }
+.v3-scope .v2-bento-tint[data-tint-cycle="2"] { background: color-mix(in oklch, var(--v2-cyan) 16%, var(--v2-glass)); }
+.v3-scope .v2-bento-tint[data-tint-cycle="3"] { background: color-mix(in oklch, var(--v2-yellow) 18%, var(--v2-glass)); }
+.v3-scope .v2-bento-tint[data-tint-cycle="4"] { background: color-mix(in oklch, var(--v2-mint) 18%, var(--v2-glass)); }
+.v3-scope .v2-bento-tint[data-tint-cycle="5"] { background: color-mix(in oklch, var(--v2-ink) 10%, var(--v2-glass)); }
+
+@media (prefers-reduced-motion: reduce) {
+  .v3-scope .event-card { transition: box-shadow 0.18s ease; }
+  .lightbox, .lightbox__img { transition: opacity 0.2s ease; }
+}
+
+/* Publications: feed-item reveal + PUB-## record-ID badge -- reads like a
+   specimen/accession number (same lab-record framing used elsewhere on the
+   site), popping in slightly after its card so it reads as an annotation
+   on the card rather than competing with the title for first attention. */
+.v3-scope .feed-item { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.v3-scope .feed-item.is-visible { opacity: 1; transform: none; }
+.v3-scope .feed-item__record-id {
+  opacity: 0; transform: scale(0.6);
+  transition: opacity 0.4s ease 0.15s, transform 0.4s cubic-bezier(0.22,1,0.36,1) 0.15s;
+}
+.v3-scope .feed-item.is-visible .feed-item__record-id { opacity: 1; transform: scale(1); }
+@media (prefers-reduced-motion: reduce) {
+  .v3-scope .feed-item, .v3-scope .feed-item__record-id { transition: none; opacity: 1 !important; transform: none !important; }
+}
+
+/* Certificates: .tag reveal + left-accent border (credential/licence/
+   membership chips). --v2-gold-driven for the normal case (page's own
+   assigned hue), a fixed crimson for --pending (mirrors the old
+   .tag--pending rule) regardless of page accent -- "still in progress"
+   reads as a distinct, consistent signal rather than blending in. */
+.v3-scope .tag { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; border-left: 2px solid var(--v2-gold, #22D3EE); }
+.v3-scope .tag.is-visible { opacity: 1; transform: none; }
+.v3-scope .tag--pending { border-left-color: #EF4444; }
+@media (prefers-reduced-motion: reduce) {
+  .v3-scope .tag { transition: none; opacity: 1 !important; transform: none !important; }
+}
+
+/* Oversized ghost numeral behind each numbered section heading -- restored
+   from the old home-v2.css/about-v2.css editorial motif (a graphic anchor
+   rather than a plain small text label). Sits behind the real heading
+   (z-index 0 vs 1) inside a `relative`-positioned wrapper; the small
+   visible "01"/"02" label + heading text stay exactly as already built,
+   this is a purely additive background layer. */
+.v3-scope .section__ghost-num {
+  position: absolute; top: -0.3em; left: -0.02em; z-index: 0; pointer-events: none;
+  font-family: 'Space Grotesk', sans-serif; font-weight: 800; line-height: 0.8;
+  font-size: clamp(5rem, 13vw, 11rem); color: #0F172A; opacity: 0.05;
+  user-select: none; white-space: nowrap;
+}
+html[data-v2-theme="dark"] .v3-scope .section__ghost-num, html[data-v2-theme="dim"] .v3-scope .section__ghost-num { color: #F1F5F9; opacity: 0.06; }
+.v3-scope .section__ghost-wrap { position: relative; }
+.v3-scope .section__ghost-wrap > *:not(.section__ghost-num) { position: relative; z-index: 1; }
+
+/* ============================================================
+   Field Map: ECharts chrome overlays (compass/scale/zoom/hint sit
+   absolutely positioned on the chart canvas itself), legend filter
+   pills, JS-created timeline scrubber (field-map.js builds these
+   elements with document.createElement -- no Tailwind classes ever
+   land on them, so they need real CSS here or they render unstyled),
+   scrollytelling card list. Ported from style.css/map-v2.css. ------ */
+.v3-scope .geo-map-frame { --sx: 50%; --sy: 50%; position: relative; overflow: hidden; }
+.v3-scope .geo-map-frame::after {
+  content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; transition: opacity 0.4s ease;
+  background: radial-gradient(420px circle at var(--sx) var(--sy), rgba(139,92,246,0.12), transparent 70%);
+}
+.v3-scope .geo-map-frame:hover::after { opacity: 1; }
+.v3-scope .geo-map-echarts { width: 100%; height: 620px; max-height: 78vh; }
+@media (max-width: 720px) { .v3-scope .geo-map-echarts { height: 440px; } }
+
+.v3-scope .geo-map-hint {
+  position: absolute; top: 14px; left: 14px; z-index: 2;
+  font-family: 'Fira Code', monospace; font-size: 0.62rem; color: #64748B;
+  background: rgba(248,250,252,0.85); padding: 4px 9px; border-radius: 20px; border: 1px solid rgba(148,163,184,0.3);
+  opacity: 0; transition: opacity 0.25s ease; pointer-events: none;
+}
+.v3-scope .geo-map-hint.is-visible { opacity: 1; }
+.v3-scope .geo-compass { position: absolute; top: 14px; right: 14px; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 2px; font-family: 'Fira Code', monospace; font-size: 0.62rem; color: #64748B; pointer-events: none; }
+@media (max-width: 720px) { .v3-scope .geo-compass, .v3-scope .geo-map-hint { display: none; } }
+
+.v3-scope .geo-scale { position: absolute; left: 14px; bottom: 14px; z-index: 2; display: flex; flex-direction: column; align-items: flex-start; gap: 3px; pointer-events: none; }
+.v3-scope .geo-scale__bar { height: 3px; background: #64748B; position: relative; }
+.v3-scope .geo-scale__bar::before, .v3-scope .geo-scale__bar::after { content: ''; position: absolute; top: -3px; width: 1px; height: 9px; background: #64748B; }
+.v3-scope .geo-scale__bar::before { left: 0; }
+.v3-scope .geo-scale__bar::after { right: 0; }
+.v3-scope .geo-scale__label { font-family: 'Fira Code', monospace; font-size: 0.62rem; color: #64748B; }
+
+.v3-scope .geo-zoom { position: absolute; bottom: 14px; right: 14px; z-index: 2; display: flex; flex-direction: column; gap: 6px; }
+.v3-scope .geo-zoom__btn {
+  width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(148,163,184,0.35);
+  background: rgba(255,255,255,0.9); color: #0F172A; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-family: 'Fira Code', monospace; font-size: 1rem; line-height: 1;
+  box-shadow: 0 4px 14px -4px rgba(0,0,0,0.2); transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+.v3-scope .geo-zoom__btn:hover { background: #22D3EE; color: #fff; transform: scale(1.06); }
+.v3-scope .geo-zoom__btn--reset { font-size: 0.65rem; }
+
+.v3-scope .geo-legend__item { display: inline-flex; align-items: center; gap: 6px; background: none; border: none; padding: 0; font: inherit; cursor: pointer; opacity: 1; transition: opacity 0.2s ease; }
+.v3-scope .geo-legend__item.is-dimmed { opacity: 0.35; }
+.v3-scope .geo-legend__swatch { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.v3-scope .geo-legend__item--screening .geo-legend__swatch { background: var(--v2-gold, #FBBF24); }
+.v3-scope .geo-legend__item--conference .geo-legend__swatch { background: var(--v2-wine-bright, var(--v2-wine, #8B5CF6)); }
+.v3-scope .geo-legend__item--outreach .geo-legend__swatch { background: var(--v2-clay, #F97316); }
+.v3-scope .geo-legend__swatch--district { border-radius: 2px; background: none; border: 1.5px solid #CBD5E1; }
+
+.v3-scope .geo-timeline__track { position: relative; display: flex; justify-content: space-between; align-items: center; height: 2px; background: rgba(148,163,184,0.3); margin: 0 6px; }
+.v3-scope .geo-timeline__year {
+  position: relative; background: none; border: none; cursor: pointer; padding: 14px 4px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  font-family: 'Fira Code', monospace; font-size: 0.76rem; color: #64748B; transition: color 0.2s ease;
+}
+.v3-scope .geo-timeline__year::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%; background: #fff;
+  border: 1.5px solid #94A3B8; transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.v3-scope .geo-timeline__year:hover { color: #0F172A; }
+.v3-scope .geo-timeline__year:hover::before { border-color: #22D3EE; transform: scale(1.15); }
+.v3-scope .geo-timeline__year.is-active { color: #22D3EE; }
+.v3-scope .geo-timeline__year.is-active::before { background: #22D3EE; border-color: #22D3EE; box-shadow: 0 0 10px 2px rgba(34,211,238,0.35); }
+.v3-scope .geo-timeline__reset {
+  font-family: 'Fira Code', monospace; font-size: 0.7rem; color: #64748B; background: none;
+  border: 1px solid rgba(148,163,184,0.3); border-radius: 999px; padding: 6px 14px; cursor: pointer; margin-top: 10px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.v3-scope .geo-timeline__reset:hover { color: #22D3EE; border-color: #22D3EE; }
+
+.v3-scope .geo-card { border-left: 2px solid rgba(148,163,184,0.3); padding: 2px 0 2px 20px; transition: border-left-color 0.3s ease, opacity 0.3s ease; }
+.v3-scope .geo-card.is-active { border-left-color: #22D3EE; }
+.v3-scope .geo-card.is-dimmed { opacity: 0.35; }
+
+html[data-v2-theme="dark"] .v3-scope .geo-map-hint, html[data-v2-theme="dim"] .v3-scope .geo-map-hint { background: rgba(15,23,42,0.85); color: #94A3B8; border-color: rgba(51,65,85,0.5); }
+html[data-v2-theme="dark"] .v3-scope .geo-zoom__btn, html[data-v2-theme="dim"] .v3-scope .geo-zoom__btn { background: rgba(30,41,59,0.9); color: #F1F5F9; border-color: rgba(71,85,105,0.5); }
+html[data-v2-theme="dark"] .v3-scope .geo-compass, html[data-v2-theme="dim"] .v3-scope .geo-compass,
+html[data-v2-theme="dark"] .v3-scope .geo-scale__bar, html[data-v2-theme="dim"] .v3-scope .geo-scale__bar,
+html[data-v2-theme="dark"] .v3-scope .geo-scale__bar::before, html[data-v2-theme="dim"] .v3-scope .geo-scale__bar::before,
+html[data-v2-theme="dark"] .v3-scope .geo-scale__bar::after, html[data-v2-theme="dim"] .v3-scope .geo-scale__bar::after,
+html[data-v2-theme="dark"] .v3-scope .geo-scale__label, html[data-v2-theme="dim"] .v3-scope .geo-scale__label,
+html[data-v2-theme="dark"] .v3-scope .geo-timeline__year, html[data-v2-theme="dim"] .v3-scope .geo-timeline__year,
+html[data-v2-theme="dark"] .v3-scope .geo-timeline__reset, html[data-v2-theme="dim"] .v3-scope .geo-timeline__reset { color: #94A3B8; }
+html[data-v2-theme="dark"] .v3-scope .geo-timeline__year:hover, html[data-v2-theme="dim"] .v3-scope .geo-timeline__year:hover { color: #F1F5F9; }
+html[data-v2-theme="dark"] .v3-scope .geo-timeline__year::before, html[data-v2-theme="dim"] .v3-scope .geo-timeline__year::before { background: #1E293B; }
+
+@media (prefers-reduced-motion: reduce) {
+  .v3-scope .geo-timeline__year, .v3-scope .geo-timeline__year::before, .v3-scope .geo-card, .v3-scope .geo-legend__item, .v3-scope .geo-zoom__btn, .v3-scope .geo-map-frame::after { transition: none; }
+}
+
+/* ============================================================
+   Gallery: scroll-pinned scatter->line->circle->arc morph intro
+   (gallery-morph.js creates .gallery-morph__card elements at runtime --
+   no Tailwind classes ever land on them) + fan-carousel deck/lightbox
+   (fan-carousel.js, same "JS-created, needs real CSS" situation for the
+   lightbox). Ported from gallery-morph.css/fan-carousel.css, v3 colours. */
+.v3-scope .gallery-morph { position: relative; background: var(--bg-canvas); }
+.v3-scope .gallery-morph__scroller { position: relative; height: 260vh; }
+.v3-scope .gallery-morph__stage { position: sticky; top: 0; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; text-align: center; }
+.v3-scope .gallery-morph__intro { position: absolute; top: 46%; left: 50%; transform: translate(-50%, -50%); z-index: 1; pointer-events: none; padding: 0 24px; max-width: 640px; }
+.v3-scope .gallery-morph__eyebrow { font-family: 'Fira Code', monospace; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: #22D3EE; margin: 0 0 14px; }
+.v3-scope .gallery-morph__title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(1.6rem, 3.4vw, 2.6rem); color: var(--text-main); margin: 0; }
+.v3-scope .gallery-morph__hint { font-family: 'Fira Code', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: #64748B; margin: 16px 0 0; }
+.v3-scope .gallery-morph__card {
+  position: absolute; top: 50%; left: 50%; width: 78px; height: 108px; margin: -54px 0 0 -39px;
+  border-radius: 12px; overflow: hidden; box-shadow: 0 20px 44px -18px rgba(0,0,0,0.35);
+  cursor: pointer; will-change: transform, opacity; opacity: 0;
+}
+.v3-scope .gallery-morph__card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+@media (max-width: 720px) {
+  .v3-scope .gallery-morph__card { width: 56px; height: 78px; margin: -39px 0 0 -28px; }
+  .v3-scope .gallery-morph__hint { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .v3-scope .gallery-morph__scroller { height: auto; }
+  .v3-scope .gallery-morph__stage { position: static; height: auto; padding: 60px 24px; flex-wrap: wrap; gap: 10px; }
+  .v3-scope .gallery-morph__card { position: static; margin: 0; opacity: 1 !important; transform: none !important; }
+  .v3-scope .gallery-morph__intro { display: none; }
+}
+
+.v3-scope .fan-carousel { position: relative; max-width: 980px; margin: 0 auto 40px; padding: 40px 0 96px; }
+.v3-scope .fan-carousel__deck { position: relative; height: 420px; display: flex; align-items: center; justify-content: center; perspective: 1200px; }
+.v3-scope .fan-carousel__card {
+  position: absolute; width: 190px; height: 270px; border-radius: 14px; overflow: hidden;
+  box-shadow: 0 20px 44px -18px rgba(0,0,0,0.35); border: 1px solid rgba(148,163,184,0.25);
+  transition: transform 0.55s cubic-bezier(0.22,1,0.36,1), opacity 0.55s ease, z-index 0s 0.1s;
+  cursor: pointer; background: rgba(148,163,184,0.1);
+}
+.v3-scope .fan-carousel__card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.v3-scope .fan-carousel__card::after { content: ''; position: absolute; inset: 0; background: rgba(15,23,42,0.4); opacity: 1; transition: opacity 0.4s ease; }
+.v3-scope .fan-carousel__card.is-active::after { opacity: 0; }
+.v3-scope .fan-carousel__card:not(.is-active):hover::after { opacity: 0.12; }
+.v3-scope .fan-carousel__caption {
+  position: absolute; left: 6vw; right: 6vw; bottom: 0; z-index: 5; text-align: center;
+  font-family: 'Fira Code', monospace; font-size: 0.82rem; color: #64748B; opacity: 0; transition: opacity 0.4s ease; pointer-events: none;
+}
+.v3-scope .fan-carousel__caption.is-visible { opacity: 1; }
+.v3-scope .fan-carousel__arrow {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid rgba(148,163,184,0.3); background: var(--card-bg); color: var(--text-main);
+  display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 10px 24px -8px rgba(0,0,0,0.2);
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+.v3-scope .fan-carousel__arrow:hover { border-color: #22D3EE; color: #22D3EE; }
+.v3-scope .fan-carousel__arrow--prev { left: 0; }
+.v3-scope .fan-carousel__arrow--next { right: 0; }
+.v3-scope .fan-carousel__dots { position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; max-width: 70%; }
+.v3-scope .fan-carousel__dot { width: 6px; height: 6px; border-radius: 50%; border: none; background: rgba(148,163,184,0.4); cursor: pointer; padding: 0; transition: background 0.25s ease, transform 0.25s ease; }
+.v3-scope .fan-carousel__dot.is-active { background: #22D3EE; transform: scale(1.4); }
+@media (max-width: 640px) {
+  .v3-scope .fan-carousel__deck { height: 320px; }
+  .v3-scope .fan-carousel__card { width: 140px; height: 200px; }
+  .v3-scope .fan-carousel__arrow { width: 38px; height: 38px; }
+}
+@media (prefers-reduced-motion: reduce) { .v3-scope .fan-carousel__card { transition: opacity 0.3s ease; } }
+
+/* Fan-carousel lightbox: JS-created (fan-carousel.js), appended straight to
+   <body> -- lives outside .v3-scope, same as the Community/Publications
+   lightbox, so styled unscoped like that one. */
+.fan-lightbox-backdrop {
+  position: fixed; inset: 0; z-index: 500; background: rgba(15,23,42,0.9);
+  backdrop-filter: blur(14px) saturate(1.1); -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  opacity: 0; pointer-events: none; transition: opacity 0.35s ease;
+}
+.fan-lightbox-backdrop.is-open { opacity: 1; pointer-events: auto; }
+.fan-lightbox-flyer {
+  position: fixed; z-index: 501; overflow: hidden; box-shadow: 0 20px 60px -12px rgba(0,0,0,0.5);
+  border: 1px solid rgba(148,163,184,0.25); background: #1E293B;
+  transition: left 0.55s cubic-bezier(0.22,1,0.36,1), top 0.55s cubic-bezier(0.22,1,0.36,1),
+              width 0.55s cubic-bezier(0.22,1,0.36,1), height 0.55s cubic-bezier(0.22,1,0.36,1),
+              border-radius 0.55s cubic-bezier(0.22,1,0.36,1);
+}
+.fan-lightbox-flyer img { width: 100%; height: 100%; display: block; }
+.fan-lightbox-caption {
+  position: fixed; z-index: 501; font-family: 'Fira Code', monospace; font-size: 0.84rem; color: #CBD5E1;
+  text-align: center; max-width: min(90vw, 60ch); opacity: 0; transition: opacity 0.3s ease 0.2s; pointer-events: none;
+  left: 50%; transform: translateX(-50%);
+}
+.fan-lightbox-caption.is-open { opacity: 1; }
+.fan-lightbox-close {
+  position: fixed; z-index: 502; width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid rgba(148,163,184,0.3); background: #1E293B; color: #F1F5F9;
+  display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 24px -8px rgba(0,0,0,0.4);
+  opacity: 0; pointer-events: none; transition: opacity 0.25s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.fan-lightbox-close.is-open { opacity: 1; pointer-events: auto; }
+.fan-lightbox-close:hover { border-color: #22D3EE; color: #22D3EE; transform: rotate(90deg); }
+@media (prefers-reduced-motion: reduce) {
+  .fan-lightbox-flyer { transition: opacity 0.25s ease; }
+  .fan-lightbox-backdrop, .fan-lightbox-caption, .fan-lightbox-close { transition: opacity 0.25s ease; }
+}

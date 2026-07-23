@@ -6,7 +6,7 @@ description: "Technical, analytical and leadership skills of Valentine Golden Gh
 extra_js: ["skills-network.js"]
 ---
 {% include nav-v3.html %}
-<section class="v2-scope pt-40 pb-24 px-6" data-skills-root>
+<section class="pt-40 pb-24 px-6" data-skills-root>
   <div class="max-w-[1800px] mx-auto">
     <p class="font-mono text-xs text-slate-400 mb-6"><a href="{{ '/' | relative_url }}" class="hover:text-cyan-500">Home</a> / Skills</p>
     <h1 class="text-4xl sm:text-5xl md:text-6xl font-black font-heading tracking-tight text-slate-900 dark:text-white mb-5">Skills &amp; toolkit</h1>
@@ -69,10 +69,15 @@ extra_js: ["skills-network.js"]
 
     <p class="filter-empty hidden text-center py-10 text-slate-400 font-mono text-sm">No skills match that combination &mdash; try Reset.</p>
 
+    {%- assign skills_section_colors = "cyan,amber,crimson,mint" | split: "," -%}
     {% for section in site.data.skills %}
+    {%- assign sec_color = skills_section_colors[forloop.index0] -%}
     <div class="skills-section mt-14" data-category="{{ section.category }}">
-      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-emerald-500 mb-2">0{{ forloop.index }}</h2>
-      <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">{{ section.category }}</h3>
+      <div class="section__ghost-wrap">
+        <span class="section__ghost-num">0{{ forloop.index }}</span>
+        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-{{ sec_color }}{% if sec_color != 'mint' and sec_color != 'crimson' %}-500{% endif %} mb-2">0{{ forloop.index }}</h2>
+        <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">{{ section.category }}</h3>
+      </div>
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
         {% for g in section.groups %}
         <div class="card v2-bento-tint relative overflow-hidden glass-card rounded-2xl border p-6" data-domain="{{ g.name }}">
@@ -86,8 +91,11 @@ extra_js: ["skills-network.js"]
     </div>
     {% endfor %}
 
-    <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mt-16 mb-2">04</h2>
-    <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">R&eacute;sum&eacute;</h3>
+    <div class="section__ghost-wrap mt-16">
+      <span class="section__ghost-num">04</span>
+      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-2">04</h2>
+      <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">R&eacute;sum&eacute;</h3>
+    </div>
     <details class="glass-card rounded-2xl border p-6">
       <summary class="cursor-pointer font-semibold text-slate-700 dark:text-slate-200">View embedded r&eacute;sum&eacute; (PDF)</summary>
       <iframe src="{{ '/assets/files/valentine-golden-ghanem-resume.pdf' | relative_url }}" title="Valentine Golden Ghanem &mdash; R&eacute;sum&eacute;" loading="lazy" class="w-full h-[600px] mt-4 rounded-xl border border-slate-200 dark:border-slate-700"></iframe>
