@@ -344,6 +344,27 @@
     }, { passive: true });
   })();
 
+  // ---------- Footer icon tray: bounce, then open ----------
+  // Delegated on document rather than a per-icon listener -- the tray is
+  // fixed-content (server-rendered, not JS-created), but delegation means
+  // this keeps working with zero extra wiring if the icon list ever grows.
+  // preventDefault + a manual delayed window.open is what actually lets the
+  // bounce play before the browser navigates away; letting the native click
+  // through would leave the page (and cut the animation short) immediately.
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest ? e.target.closest('.site-footer__icons a') : null;
+    if (!link) return;
+    e.preventDefault();
+    if (link.classList.contains('is-bouncing')) return;
+    link.classList.add('is-bouncing');
+    var url = link.getAttribute('href');
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setTimeout(function () {
+      link.classList.remove('is-bouncing');
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }, reduced ? 0 : 420);
+  });
+
   function showToast(message) {
     var container = document.getElementById('toast-container');
     if (!container) return;
