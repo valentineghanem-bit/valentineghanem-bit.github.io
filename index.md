@@ -99,10 +99,10 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       <div class="flex flex-wrap items-center gap-3 mb-4 text-xs font-mono font-bold text-slate-500 dark:text-slate-400">
         <span class="text-cyan-500 font-extrabold uppercase tracking-widest text-sm">{{ site.data.profile.name | upcase }}</span>
         <span>&bull;</span>
-        <span class="px-2.5 py-0.5 rounded bg-slate-200/80 dark:bg-slate-800 text-slate-700 dark:text-slate-300">MSc</span>
-        <span class="px-2.5 py-0.5 rounded bg-slate-200/80 dark:bg-slate-800 text-slate-700 dark:text-slate-300">MSPH</span>
-        <span class="px-2.5 py-0.5 rounded bg-slate-200/80 dark:bg-slate-800 text-slate-700 dark:text-slate-300">MLS (CORU, ACSLM)</span>
-        <span class="px-2.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">FRSPH</span>
+        <span class="px-2.5 py-0.5 rounded bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20">MLS (CORU)</span>
+        <span class="px-2.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">ACSLM</span>
+        <span class="px-2.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">AHPC</span>
+        <span class="px-2.5 py-0.5 rounded bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20">FRSPH</span>
         <span class="px-2.5 py-0.5 rounded bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20">VvE</span>
       </div>
 
@@ -219,9 +219,9 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <a href="{{ '/publications/' | relative_url }}" class="px-6 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-black uppercase tracking-wider rounded-xl hover:opacity-90 transition-all flex items-center gap-2">
           <i class="fa-solid fa-book-open"></i> Publications Index
         </a>
-        <button onclick="openCvModal()" class="px-6 py-3 glass-card text-slate-800 dark:text-slate-200 text-xs font-black uppercase tracking-wider rounded-xl hover:border-cyan-500 transition-all flex items-center gap-2">
+        <a href="{{ site.data.profile.cv_download_url | relative_url }}" download class="px-6 py-3 glass-card text-slate-800 dark:text-slate-200 text-xs font-black uppercase tracking-wider rounded-xl hover:border-cyan-500 transition-all flex items-center gap-2" aria-label="Download Valentine Golden Ghanem CV">
           <i class="fa-solid fa-download text-red-500"></i> CV Summary
-        </button>
+        </a>
       </div>
     </div>
     <div class="lg:col-span-5 relative flex justify-center lg:justify-end reveal">
@@ -235,7 +235,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
              class="w-full h-auto object-cover rounded-[24px] shadow-inner group-hover:scale-105 transition-transform duration-500">
         <div class="p-4 mt-2 text-center">
           <p class="font-bold text-sm text-slate-900 dark:text-white">{{ site.data.profile.name }}</p>
-          <p class="text-xs text-slate-500 dark:text-slate-400">MSc Data Science &middot; MSc Public Health</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">MLS (CORU) &middot; ACSLM &middot; AHPC &middot; FRSPH &middot; VvE</p>
         </div>
       </div>
     </div>

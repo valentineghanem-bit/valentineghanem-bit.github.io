@@ -63,6 +63,7 @@ html[data-v2-theme="bright"] {
   pointer-events: none;
   opacity: 0.45;
 }
+html.no-biofield #bg-canvas { display: none; }
 
 .v3-scope .reveal {
   opacity: 0;
@@ -143,7 +144,7 @@ html:not([data-v2-theme="dark"]):not([data-v2-theme="dim"]) .v3-scope .graded-he
 .v3-scope::-webkit-scrollbar-thumb { background: #94A3B8; border-radius: 4px; }
 .v3-scope::-webkit-scrollbar-thumb:hover { background: #64748B; }
 
-/* Ticker/marquee -- same colour-cycled-label + coloured "+" separator
+/* Ticker/marquee -- same colour-cycled-label + coloured dot separator
    redesign as the v2 marquees (site-chrome-v2.css/home-v2.css), re-scoped
    for the v3 glass aesthetic. Two instances: knows_about topics on Home,
    job-titles + location in the footer. */
@@ -160,7 +161,15 @@ html:not([data-v2-theme="dark"]):not([data-v2-theme="dim"]) .v3-scope .graded-he
   text-transform: uppercase; letter-spacing: 0.06em; transition: color 0.2s ease, transform 0.2s ease;
 }
 .v3-scope .marquee__item:hover { transform: translateY(-1px) scale(1.05); }
-.v3-scope .marquee__item::after { content: '+'; display: inline-block; margin: 0 22px; font-weight: 700; }
+.v3-scope .marquee__item::after {
+  content: '\2022';
+  display: inline-block;
+  margin: 0 22px;
+  font-size: 1.08em;
+  font-weight: 900;
+  line-height: 1;
+  transform: translateY(-0.03em);
+}
 .v3-scope .marquee__item:nth-child(6n+1) { color: var(--v2-violet); }
 .v3-scope .marquee__item:nth-child(6n+2) { color: var(--v2-crimson); }
 .v3-scope .marquee__item:nth-child(6n+3) { color: var(--v2-cyan); }
@@ -175,6 +184,9 @@ html:not([data-v2-theme="dark"]):not([data-v2-theme="dim"]) .v3-scope .graded-he
 .v3-scope .marquee__item:nth-child(6n+6)::after { color: var(--v2-crimson); }
 .v3-scope .marquee--footer .marquee__item { font-size: 0.72rem; }
 .v3-scope .marquee--footer { border-top: 1px solid rgba(148,163,184,0.2); }
+.v3-scope .marquee--footer .marquee__track { animation: v3-marquee-footer 156s linear infinite; }
+.v3-scope .marquee--footer .marquee__track:hover { animation-play-state: running; }
+@keyframes v3-marquee-footer { from { transform: translateX(0); } to { transform: translateX(-25%); } }
 /* The base 6-colour cycle above is theme-reactive -- 3 of its 6 slots are
    the "-ink"/plain-ink tokens, deliberately DARK so they read as body text
    on a light page background. The footer's own background is always dark
@@ -713,12 +725,14 @@ html[data-v2-theme="dark"] .v3-scope .geo-timeline__year::before, html[data-v2-t
 }
 .v3-scope .site-footer__icons:hover a { --lift: -8px; --scale: 1.08; }
 .v3-scope .site-footer__icons:hover li:nth-child(1) a { --fan: -58deg; transition-delay: 0s; }
-.v3-scope .site-footer__icons:hover li:nth-child(2) a { --fan: -40deg; transition-delay: 0.02s; }
-.v3-scope .site-footer__icons:hover li:nth-child(3) a { --fan: -22deg; transition-delay: 0.04s; }
-.v3-scope .site-footer__icons:hover li:nth-child(4) a { --fan: 0deg; transition-delay: 0.06s; }
-.v3-scope .site-footer__icons:hover li:nth-child(5) a { --fan: 22deg; transition-delay: 0.04s; }
-.v3-scope .site-footer__icons:hover li:nth-child(6) a { --fan: 40deg; transition-delay: 0.02s; }
-.v3-scope .site-footer__icons:hover li:nth-child(7) a { --fan: 58deg; transition-delay: 0s; }
+.v3-scope .site-footer__icons:hover li:nth-child(2) a { --fan: -44deg; transition-delay: 0.015s; }
+.v3-scope .site-footer__icons:hover li:nth-child(3) a { --fan: -30deg; transition-delay: 0.03s; }
+.v3-scope .site-footer__icons:hover li:nth-child(4) a { --fan: -15deg; transition-delay: 0.045s; }
+.v3-scope .site-footer__icons:hover li:nth-child(5) a { --fan: 0deg; transition-delay: 0.06s; }
+.v3-scope .site-footer__icons:hover li:nth-child(6) a { --fan: 15deg; transition-delay: 0.045s; }
+.v3-scope .site-footer__icons:hover li:nth-child(7) a { --fan: 30deg; transition-delay: 0.03s; }
+.v3-scope .site-footer__icons:hover li:nth-child(8) a { --fan: 44deg; transition-delay: 0.015s; }
+.v3-scope .site-footer__icons:hover li:nth-child(9) a { --fan: 58deg; transition-delay: 0s; }
 .v3-scope .site-footer__icons a:hover {
   --lift: -28px; --scale: 1.22; z-index: 1; border-color: currentColor; background: rgba(255,255,255,0.16);
   box-shadow: 0 18px 34px -8px rgba(0,0,0,0.55), 0 0 0 1px currentColor inset;

@@ -1,6 +1,6 @@
 // Floating toolbar: four-way theme cycle (dark/dim/light/bright),
-// classical piano ambient audio with mute, and scroll-to-top. Replaces the
-// old dark/light-only toggle + jazz-chord ambient audio in the pre-v2 site.js.
+// soft classical piano ambient audio with mute, and scroll-to-top. Replaces
+// the old dark/light-only toggle + jazz-chord ambient audio in the pre-v2 site.js.
 (function () {
   // "light" is the default/no-attribute theme (bright, vibrant seasonal
   // palette on a cream background) -- dark/dim/bright are all explicit
@@ -14,13 +14,12 @@
   if (currentTheme !== DEFAULT_THEME) document.documentElement.setAttribute('data-v2-theme', currentTheme);
 
   // ---------------------------------------------------------------
-  // Classical piano ambient audio -- synthesized (no audio file to fetch
-  // or license), a I-V-vi-IV progression in C major (the classic
-  // "inspirational" cadence) played as slow arpeggiated plucks through a
-  // short feedback delay for a soft hall-like tail. Browsers block real
-  // autoplay before a gesture regardless of what a site wants, so
-  // playback begins on this page's first click/keydown/touch --
-  // as close to "plays automatically" as the platform allows.
+  // Soft classical piano ambient audio -- synthesized (no audio file to
+  // fetch or license), with lower-register voicings played as slow
+  // arpeggiated piano taps through a soft feedback delay. Browsers block real
+  // autoplay before a gesture regardless of what a site wants, so playback
+  // begins on this page's first click/keydown/touch -- as close to "plays
+  // automatically" as the platform allows.
   // ---------------------------------------------------------------
   var vgAudioV2 = (function () {
     var ctx = null, masterGain = null, delayNode = null, feedbackGain = null;
@@ -41,23 +40,26 @@
     ['scroll', 'mousemove', 'pointerdown', 'keydown', 'touchstart'].forEach(function (evt) {
       window.addEventListener(evt, function () { lastActivity = Date.now(); }, { passive: true });
     });
-    var currentCutoff = 1500;
+    var currentCutoff = 980;
     function updateEngagement() {
       if (!ctx || !isOn) return;
       var idleMs = Date.now() - lastActivity;
       var engagement = Math.max(0, 1 - idleMs / 18000); // 1 = just active, 0 = idle 18s+
-      currentCutoff = 1150 + engagement * 1350;          // 1150Hz idle .. 2500Hz active
-      feedbackGain.gain.setTargetAtTime(0.30 - engagement * 0.10, ctx.currentTime, 2.5);
+      currentCutoff = 820 + engagement * 620;            // 820Hz idle .. 1440Hz active
+      feedbackGain.gain.setTargetAtTime(0.30 - engagement * 0.08, ctx.currentTime, 3.8);
     }
     setInterval(updateEngagement, 2500);
 
-    // I (Cmaj9) - V (G9) - vi (Am9) - IV (Fmaj9), each voiced as a rising
-    // arpeggio rather than a struck block chord, for a slow piano feel.
+    // Slow classical voicings, each voiced as a rising arpeggio
+    // rather than a struck block chord: enough movement to feel intentional,
+    // enough repetition to stay quiet behind reading.
     var CHORDS = [
-      [261.63, 329.63, 392.00, 493.88, 587.33],
-      [392.00, 493.88, 587.33, 698.46, 783.99],
-      [220.00, 261.63, 329.63, 392.00, 493.88],
-      [349.23, 440.00, 523.25, 659.25, 698.46]
+      [130.81, 196.00, 261.63, 329.63, 392.00],
+      [98.00, 196.00, 246.94, 293.66, 392.00],
+      [110.00, 164.81, 220.00, 261.63, 329.63],
+      [87.31, 174.61, 220.00, 261.63, 349.23],
+      [146.83, 220.00, 293.66, 349.23, 392.00],
+      [98.00, 146.83, 196.00, 246.94, 293.66]
     ];
 
     function ensureContext() {
@@ -67,10 +69,10 @@
       ctx = new AudioCtx();
       masterGain = ctx.createGain();
       masterGain.gain.value = 0;
-      delayNode = ctx.createDelay(1.2);
-      delayNode.delayTime.value = 0.34;
+      delayNode = ctx.createDelay(2.4);
+      delayNode.delayTime.value = 0.62;
       feedbackGain = ctx.createGain();
-      feedbackGain.gain.value = 0.22;
+      feedbackGain.gain.value = 0.20;
       delayNode.connect(feedbackGain);
       feedbackGain.connect(delayNode);
       masterGain.connect(delayNode);
@@ -86,25 +88,29 @@
       var filt = ctx.createBiquadFilter();
       filt.type = 'lowpass';
       filt.frequency.value = currentCutoff;
+      filt.Q.value = 0.42;
       osc.type = 'triangle';
       osc2.type = 'sine';
       osc.frequency.value = freq;
-      osc2.frequency.value = freq * 1.002;
+      osc.detune.setValueAtTime(-4, when);
+      osc2.frequency.value = freq * 1.498;
+      osc2.detune.setValueAtTime(3, when);
       g.gain.setValueAtTime(0, when);
-      g.gain.linearRampToValueAtTime(peak, when + 0.035);
-      g.gain.exponentialRampToValueAtTime(0.0001, when + 3.1);
+      g.gain.linearRampToValueAtTime(peak, when + 0.018);
+      g.gain.exponentialRampToValueAtTime(Math.max(0.0008, peak * 0.32), when + 0.32);
+      g.gain.exponentialRampToValueAtTime(0.0001, when + 5.6);
       osc.connect(g); osc2.connect(g); g.connect(filt); filt.connect(masterGain);
       osc.start(when); osc2.start(when);
-      osc.stop(when + 3.3); osc2.stop(when + 3.3);
+      osc.stop(when + 5.9); osc2.stop(when + 5.9);
     }
 
     function scheduleLoop() {
       if (!isOn || !ctx) return;
       var chord = CHORDS[chordIndex % CHORDS.length];
       var now = ctx.currentTime + 0.05;
-      chord.forEach(function (freq, i) { pluck(freq, now + i * 0.5, 0.045 - i * 0.004); });
+      chord.forEach(function (freq, i) { pluck(freq, now + i * 0.94, Math.max(0.014, 0.030 - i * 0.003)); });
       chordIndex++;
-      loopTimer = setTimeout(scheduleLoop, 5200);
+      loopTimer = setTimeout(scheduleLoop, 11800);
     }
 
     function startLoop() {

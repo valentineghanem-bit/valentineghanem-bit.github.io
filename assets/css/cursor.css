@@ -1,80 +1,220 @@
-/* Custom cursor (assets/js/cursor.js) -- round 24 total redesign,
-   replacing the field-reticle entirely per direct feedback ("i dislike
-   mouse and cursor style... change this to something unique... you may
-   use a multicolored approach"). New shape: a small precise dot tracking
-   the exact pointer position, plus 4 palette-coloured particles in
-   continuous orbit around it -- the cursor's resting state is already
-   colourful and in motion, not a targeting-reticle that only reacts on
-   interaction. Only ever active on fine-pointer, motion-OK devices; the
-   JS never runs otherwise, so this CSS has no effect elsewhere. */
-html.has-custom-cursor, html.has-custom-cursor * { cursor: none !important; }
+/* Faceted VGG cursor: one solid brand-gradient arrow plus kinetic action states. */
+html.has-custom-cursor,
+html.has-custom-cursor * { cursor: none !important; }
 
-.v2-cursor-dot, .v2-cursor-cluster {
-  position: fixed; top: 0; left: 0; z-index: 9999; pointer-events: none;
-  opacity: 0; transition: opacity 0.2s ease;
+.v2-cursor-dot,
+.v2-cursor-cluster,
+.v2-cursor-arrow,
+.v2-cursor-action {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
-.v2-cursor-dot.is-active, .v2-cursor-cluster.is-active { opacity: 1; }
+
+.v2-cursor-dot.is-active,
+.v2-cursor-cluster.is-active,
+.v2-cursor-arrow.is-active { opacity: 1; }
 
 .v2-cursor-dot {
-  width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; border-radius: 50%;
-  background: var(--v2-ink, #1a1a1a); opacity: 1;
+  width: 4px;
+  height: 4px;
+  margin: -2px 0 0 -2px;
+  border-radius: 50%;
+  background: var(--v2-ink, #0f172a);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.65);
 }
 
-/* Each particle is positioned independently every frame by JS (orbit
-   maths), so the cluster container itself carries no transform of its
-   own -- only the fade-in/out opacity above. */
+.v2-cursor-arrow {
+  width: 32px;
+  height: 40px;
+  transform-origin: 2px 2px;
+  filter:
+    drop-shadow(0 10px 13px rgba(15,23,42,0.24))
+    drop-shadow(0 1px 0 rgba(255,255,255,0.55));
+}
+
+.v2-cursor-mark {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px 9px 12px 4px;
+  opacity: 0.98;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 14% 12%, rgba(255,255,255,0.82) 0 6%, transparent 7%),
+    linear-gradient(134deg, rgba(255,255,255,0.38) 0 18%, transparent 42%),
+    conic-gradient(from 306deg at 39% 45%, #22D3EE 0 17%, #34D399 17% 35%, #FBBF24 35% 52%, #EF4444 52% 74%, #8B5CF6 74% 100%);
+  clip-path: polygon(0 0, 96% 20%, 51% 34%, 88% 92%, 65% 100%, 30% 46%, 10% 83%);
+  transform-origin: 29% 29%;
+  transition: transform 0.18s ease, opacity 0.18s ease, filter 0.18s ease, clip-path 0.18s ease;
+}
+
+.v2-cursor-mark::before,
+.v2-cursor-mark::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.v2-cursor-mark::before {
+  background:
+    linear-gradient(118deg, transparent 0 33%, rgba(255,255,255,0.58) 35%, rgba(255,255,255,0.1) 42%, transparent 54%),
+    radial-gradient(circle at 64% 31%, rgba(255,255,255,0.42) 0 8%, transparent 10%);
+  mix-blend-mode: screen;
+  opacity: 0.78;
+}
+
+.v2-cursor-mark::after {
+  inset: 1px;
+  border: 1px solid rgba(255,255,255,0.34);
+  border-radius: inherit;
+  box-shadow:
+    inset -3px -4px 9px rgba(15,23,42,0.20),
+    inset 2px 2px 5px rgba(255,255,255,0.34);
+}
+
 .v2-cursor-particle {
-  position: fixed; top: 0; left: 0; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px;
-  border-radius: 50%; opacity: 0.85;
-  transition: width 0.2s ease, height 0.2s ease, margin 0.2s ease, opacity 0.2s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  opacity: 0.82;
+  transition: width 0.18s ease, height 0.18s ease, margin 0.18s ease, opacity 0.18s ease;
 }
 
-/* Hover: particles grow slightly and sit fully opaque -- "this is
-   interactive" without needing a colour change, since colour is already
-   the cursor's baseline identity. */
-.v2-cursor-cluster.is-hovering .v2-cursor-particle { width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; opacity: 1; }
+.v2-cursor-cluster.is-hovering .v2-cursor-particle {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  opacity: 1;
+}
 
-/* Press: particles shrink (the orbit itself collapses inward via JS
-   radius target; this just shrinks the dots to match the tighter space). */
-.v2-cursor-cluster.is-pressed .v2-cursor-particle { width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; }
+.v2-cursor-arrow.is-hovering .v2-cursor-mark {
+  transform: scale(1.06) rotate(-5deg) skewX(-1deg);
+  filter: saturate(1.25) brightness(1.08) contrast(1.04);
+}
 
-/* Drag: JS flattens the orbit into an ellipse and rotates it to the drag
-   angle directly via transform, so no extra CSS state is needed here
-   beyond a slightly longer/thinner particle to read as "streaking". */
-.v2-cursor-cluster.is-dragging .v2-cursor-particle { width: 8px; height: 5px; margin: -2.5px 0 0 -4px; opacity: 0.95; }
+.v2-cursor-arrow.is-left-click .v2-cursor-mark {
+  transform: scale(0.84) rotate(3deg) skewX(2deg);
+  filter: saturate(1.45) brightness(0.98);
+}
+.v2-cursor-cluster.is-left-click .v2-cursor-particle { transform: scale(0.78); filter: saturate(1.4); }
 
-/* Zoom: particles pulse brighter (fully opaque, slightly larger) while
-   the JS radius target does the actual in/out motion -- direction reads
-   from the motion itself, no glyph needed. */
-.v2-cursor-cluster.is-zooming .v2-cursor-particle { opacity: 1; width: 8px; height: 8px; margin: -4px 0 0 -4px; }
+.v2-cursor-arrow.is-right-click .v2-cursor-mark {
+  transform: rotate(16deg) scale(1.07);
+  filter: hue-rotate(34deg) brightness(1.16) contrast(1.06);
+}
+.v2-cursor-cluster.is-right-click .v2-cursor-particle {
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  opacity: 1;
+}
 
-/* Text-entry: collapses to a thin vertical bar (an "I-beam companion")
-   instead of the orbit -- a big cluster over a text field would obscure
-   what's being read/typed. Particles fade out, the bar fades in. */
-.v2-cursor-cluster.is-texting .v2-cursor-particle { opacity: 0; }
+.v2-cursor-cluster.is-dragging .v2-cursor-particle {
+  width: 9px;
+  height: 5px;
+  margin: -2.5px 0 0 -4.5px;
+  opacity: 0.95;
+}
+
+.v2-cursor-cluster.is-scrolling .v2-cursor-particle {
+  opacity: 1;
+  box-shadow: 0 0 14px currentColor;
+}
+
+.v2-cursor-cluster.is-texting .v2-cursor-particle,
+.v2-cursor-arrow.is-texting { opacity: 0; }
+
 .v2-cursor-bar {
-  position: fixed; top: 0; left: 0; width: 2px; height: 20px; margin: -10px 0 0 8px; border-radius: 1px;
-  background: var(--v2-ink, #1a1a1a); opacity: 0; transition: opacity 0.2s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 22px;
+  margin: -11px 0 0 8px;
+  border-radius: 1px;
+  background: var(--v2-ink, #0f172a);
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
+
 .v2-cursor-cluster.is-texting .v2-cursor-bar { opacity: 1; }
 
-/* Click ripple: a short-lived, independent element spawned at the click
-   point -- an expanding, fading ring, the "something just happened here"
-   cue a plain shrink-on-press doesn't give on its own. Unchanged concept
-   from the previous cursor, since it was never the part called out as
-   disliked. */
-.v2-cursor-ripple {
-  position: fixed; top: 0; left: 0; z-index: 9998; pointer-events: none;
-  width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%;
-  border: 1.5px solid var(--v2-violet, #b57cff);
-  opacity: 0.8; transform: scale(1);
-  animation: v2-cursor-ripple 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
+.v2-cursor-action {
+  z-index: 9998;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
 }
+
+.v2-cursor-ripple {
+  border-radius: 50%;
+  border: 1.5px solid #8B5CF6;
+  opacity: 1;
+  animation: v2-cursor-ripple 0.48s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+
+.v2-cursor-context {
+  border-radius: 12px;
+  border: 2px dashed #FBBF24;
+  opacity: 1;
+  animation: v2-cursor-context 0.58s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+
+.v2-cursor-burst {
+  width: 36px;
+  height: 36px;
+  margin: -18px 0 0 -18px;
+  background:
+    radial-gradient(circle at 50% 0, #22D3EE 0 3px, transparent 4px),
+    radial-gradient(circle at 100% 42%, #34D399 0 3px, transparent 4px),
+    radial-gradient(circle at 74% 100%, #FBBF24 0 3px, transparent 4px),
+    radial-gradient(circle at 20% 92%, #EF4444 0 3px, transparent 4px),
+    radial-gradient(circle at 0 38%, #8B5CF6 0 3px, transparent 4px);
+  opacity: 1;
+  animation: v2-cursor-burst 0.52s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+
+.v2-cursor-scroll {
+  width: 4px;
+  height: 28px;
+  margin: -14px 0 0 16px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #22D3EE, #FBBF24);
+  opacity: 1;
+  animation: v2-cursor-scroll 0.7s ease-out forwards;
+}
+
 @keyframes v2-cursor-ripple {
   to { transform: scale(5.5); opacity: 0; }
 }
 
+@keyframes v2-cursor-context {
+  from { transform: rotate(0deg) scale(0.7); opacity: 0.95; }
+  to { transform: rotate(90deg) scale(4.2); opacity: 0; }
+}
+
+@keyframes v2-cursor-burst {
+  from { transform: scale(0.35) rotate(0deg); opacity: 1; }
+  to { transform: scale(1.7) rotate(42deg); opacity: 0; }
+}
+
+@keyframes v2-cursor-scroll {
+  from { transform: translateY(-8px) scaleY(0.5); opacity: 1; }
+  to { transform: translateY(16px) scaleY(1.15); opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .v2-cursor-ripple { animation: none; display: none; }
-  .v2-cursor-particle { transition: opacity 0.15s ease; }
+  .v2-cursor-action { animation: none; display: none; }
+  .v2-cursor-particle,
+  .v2-cursor-mark { transition: opacity 0.15s ease; }
+  .v2-cursor-mark::before { opacity: 0.45; }
 }
