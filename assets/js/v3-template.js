@@ -172,7 +172,7 @@
       feedbackGain.gain.setTargetAtTime(0.38 - engagement * 0.08, ctx.currentTime, 3.8);
     }
     setInterval(updateEngagement, 2500);
-    var PIANO_PHRASES = [
+    var NOCTURNE_MELODY = [
       [
         { t: 0.00, f: 130.81, v: 0.135, d: 7.2, k: 'bass' },
         { t: 0.48, f: 261.63, v: 0.064, d: 6.6, k: 'harmony' },
@@ -268,7 +268,7 @@
     }
     function scheduleLoop() {
       if (!isOn || !ctx) return;
-      var phrase = PIANO_PHRASES[chordIndex % PIANO_PHRASES.length];
+      var phrase = NOCTURNE_MELODY[chordIndex % NOCTURNE_MELODY.length];
       var now = ctx.currentTime + 0.08;
       phrase.forEach(function (note) { pluck(note.f, now + note.t, note.v, note.d, note.k); });
       chordIndex++;

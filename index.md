@@ -2,7 +2,8 @@
 layout: v3
 permalink: /
 jsonld: home
-title: "Medical Scientist and Epidemiologist"
+title: "Valentine Ghanem"
+browser_title: "Valentine Ghanem"
 description: "Official website of Valentine Golden Ghanem, a Ghanaian medical scientist, epidemiologist and public health researcher."
 ---
 {%- assign msph = site.data.profile.credentials | where_exp: "c", "c.name contains 'Public Health'" | first -%}

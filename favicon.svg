@@ -11,8 +11,7 @@
     <linearGradient id="violet" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#9766E1"/><stop offset="1" stop-color="#5B21B6"/></linearGradient>
     <linearGradient id="cyan" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#63D2FF"/><stop offset="1" stop-color="#0891B2"/></linearGradient>
   </defs>
-  <rect x="8" y="8" width="496" height="496" rx="112" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="10"/>
-  <g filter="url(#shadow)" stroke="#0B1120" stroke-width="13" stroke-linejoin="round" transform="translate(256 256) scale(1.18) translate(-256 -256)">
+  <g filter="url(#shadow)" stroke="#0B1120" stroke-width="13" stroke-linejoin="round" transform="translate(256 256) scale(1.28) translate(-256 -256)">
     <path d="M177 118c-46 28-76 80-77 137 0 55 27 106 72 136l53-69c-21-16-33-40-33-67 0-29 15-56 39-72z" fill="url(#mint)"/>
     <path d="M218 82c75-21 154 0 204 56l-60 63c-30-27-75-38-116-27z" fill="url(#yellow)"/>
     <path d="M169 388c66 52 160 54 229 6l-45-75c-37 24-87 22-123-5z" fill="url(#crimson)"/>

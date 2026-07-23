@@ -58,7 +58,7 @@
     var soundHaptics = (function () {
       var ctx = null, out = null;
       var last = {};
-      var MUTE_KEY = 'vg-v2-audio-muted';
+      var MUTE_KEY = 'vg-v2-cursor-haptics-muted';
       function allowed() {
         return localStorage.getItem(MUTE_KEY) !== 'true';
       }
@@ -69,7 +69,7 @@
         if (!ctx) {
           ctx = new AudioCtx();
           out = ctx.createGain();
-          out.gain.value = 0.74;
+          out.gain.value = 1.05;
           out.connect(ctx.destination);
         }
         if (ctx.state === 'suspended') ctx.resume();
@@ -115,24 +115,24 @@
         }
         if (kind === 'hover') {
           if (throttled(kind, 180)) return;
-          tone(740, 0.065, 0.088, 'sine');
+          tone(680, 0.070, 0.130, 'sine');
         } else if (kind === 'click') {
-          tone(196, 0.100, 0.180, 'triangle');
-          tone(392, 0.078, 0.104, 'sine', 0.012);
+          tone(180, 0.115, 0.250, 'triangle');
+          tone(360, 0.090, 0.160, 'sine', 0.012);
         } else if (kind === 'double') {
-          tone(329.63, 0.092, 0.142, 'triangle');
-          tone(493.88, 0.112, 0.126, 'triangle', 0.075);
+          tone(293.66, 0.100, 0.210, 'triangle');
+          tone(440.00, 0.128, 0.185, 'triangle', 0.080);
         } else if (kind === 'context') {
-          tone(146.83, 0.140, 0.188, 'triangle');
+          tone(130.81, 0.155, 0.270, 'triangle');
         } else if (kind === 'scroll') {
           if (throttled(kind, 220)) return;
-          tone(246.94, 0.078, 0.112, 'sine');
+          tone(220.00, 0.086, 0.170, 'sine');
         } else if (kind === 'drag') {
           if (throttled(kind, 320)) return;
-          tone(164.81, 0.120, 0.142, 'triangle');
+          tone(146.83, 0.135, 0.220, 'triangle');
         } else if (kind === 'text') {
           if (throttled(kind, 260)) return;
-          tone(523.25, 0.058, 0.086, 'sine');
+          tone(493.88, 0.065, 0.125, 'sine');
         }
       }
       return { play: play };
