@@ -76,20 +76,18 @@
 </script>
 
 <!-- v2-tokens.css: only its :root/[data-v2-theme] custom-property blocks
-     matter here (the 6-colour OKLCH palette cursor.js's particles and the
-     new marquee below both read via var(--v2-violet) etc.) -- its
+     matter here (the 6-colour OKLCH palette and the marquee below both
+     read via var(--v2-violet) etc.) -- its
      .v2-scope-prefixed component rules simply don't match anything in this
      page's markup (v3 pages use .v3-scope), so including the whole file
      costs nothing beyond a few harmless unused rules. -->
 <link rel="stylesheet" href="{{ '/assets/css/v2-tokens.css' | relative_url }}">
-<link rel="stylesheet" href="{{ '/assets/css/v3-template.css?v=20260723-g9' | relative_url }}">
-<link rel="stylesheet" href="{{ '/assets/css/cursor.css?v=20260723-g9' | relative_url }}">
+<link rel="stylesheet" href="{{ '/assets/css/v3-template.css?v=20260724-g10' | relative_url }}">
 
 <script src="{{ '/assets/js/vendor/gsap.min.js' | relative_url }}" defer></script>
 <script src="{{ '/assets/js/vendor/ScrollTrigger.min.js' | relative_url }}" defer></script>
 <script src="{{ '/assets/js/v2-motion.js' | relative_url }}" defer></script>
-<script src="{{ '/assets/js/cursor.js?v=20260723-g9' | relative_url }}" defer></script>
-<script src="{{ '/assets/js/v3-template.js?v=20260723-g9' | relative_url }}" defer></script>
+<script src="{{ '/assets/js/v3-template.js?v=20260724-g10' | relative_url }}" defer></script>
 
 <!-- Per-page bespoke CSS/JS -- each v3 page keeps its own already-polished
      specialised component (About's record-lightbox, Skills' network canvas,

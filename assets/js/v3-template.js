@@ -629,39 +629,83 @@
     if (!ctx || typeof Chart === 'undefined') return;
     var radar = DATA.radar || { labels: [], values: [] };
     var radarPointColors = ['#22D3EE', '#34D399', '#FBBF24', '#8B5CF6', '#EF4444', '#14B8A6', '#A78BFA'];
-    new Chart(ctx, {
+    var components = radar.components || radar.labels.map(function (label, index) {
+      return { label: label, score: radar.values[index], domain: 'Expertise component', engine: 'HI-EI Component ' + String(index + 1).padStart(2, '0'), interpretation: label + ' emphasis within the professional matrix.', evidence: 'Evidence available in the portfolio record.', output: 'Applied output shown across the site.' };
+    });
+    var activeIndex = 0;
+    var inspector = {
+      root: document.getElementById('radarInspector'),
+      engine: document.getElementById('radarInspectorEngine'),
+      title: document.getElementById('radarInspectorTitle'),
+      body: document.getElementById('radarInspectorBody'),
+      score: document.getElementById('radarInspectorScore'),
+      domain: document.getElementById('radarInspectorDomain'),
+      evidence: document.getElementById('radarInspectorEvidence'),
+      output: document.getElementById('radarInspectorOutput')
+    };
+    function rgba(hex, alpha) {
+      var h = hex.replace('#', '');
+      var r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);
+      return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+    }
+    function pointSizes(index, activeSize, inactiveSize) {
+      return radar.labels.map(function (_, i) { return i === index ? activeSize : inactiveSize; });
+    }
+    var chart = new Chart(ctx, {
       type: 'radar',
       data: {
         labels: radar.labels,
         datasets: [{
-          label: 'Focus area',
+          label: 'Relative expertise emphasis',
           data: radar.values,
-          backgroundColor: 'rgba(34, 211, 238, 0.14)',
-          borderColor: '#22D3EE',
+          backgroundColor: rgba(radarPointColors[0], 0.16),
+          borderColor: radarPointColors[0],
           pointBackgroundColor: radarPointColors,
           pointBorderColor: '#FFFFFF',
           pointHoverBackgroundColor: '#FFFFFF',
           pointHoverBorderColor: radarPointColors,
-          pointRadius: 4,
-          pointHoverRadius: 7,
+          pointRadius: pointSizes(0, 7, 4),
+          pointHoverRadius: 8,
+          pointBorderWidth: pointSizes(0, 3, 2),
           borderWidth: 2
         }]
       },
       options: {
         maintainAspectRatio: false,
         animation: { duration: 1100, easing: 'easeOutQuart' },
+        onClick: function (event) {
+          var hits = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
+          if (hits.length) setActiveComponent(hits[0].index);
+        },
+        onHover: function (event, hits) {
+          event.native.target.style.cursor = hits.length ? 'pointer' : 'default';
+        },
+        layout: { padding: 12 },
         scales: {
           r: {
             grid: { color: 'rgba(148,163,184,0.25)' },
             angleLines: { color: 'rgba(148,163,184,0.25)' },
-            ticks: { display: false },
-            pointLabels: { color: '#CBD5E1', font: { size: 10, weight: 'bold', family: 'Plus Jakarta Sans' } },
+            ticks: { display: false, backdropColor: 'transparent' },
+            pointLabels: { color: '#F8FAFC', padding: 18, font: { size: 12, weight: 'bold', family: 'Plus Jakarta Sans' } },
             suggestedMin: 0,
             suggestedMax: 100
           }
         },
         plugins: {
-          legend: { display: false },
+          legend: {
+            display: true,
+            position: 'bottom',
+            onClick: function () {
+              setActiveComponent(activeIndex);
+            },
+            labels: {
+              color: '#CBD5E1',
+              boxWidth: 12,
+              boxHeight: 12,
+              padding: 16,
+              font: { size: 11, weight: 'bold', family: 'Plus Jakarta Sans' }
+            }
+          },
           tooltip: {
             callbacks: {
               label: function (context) {
@@ -672,6 +716,47 @@
         }
       }
     });
+
+    function setActiveComponent(index) {
+      if (index < 0 || index >= components.length) return;
+      activeIndex = index;
+      var component = components[index];
+      var color = radarPointColors[index % radarPointColors.length];
+      if (inspector.root) inspector.root.style.setProperty('--active-radar-color', color);
+      document.querySelectorAll('[data-radar-index]').forEach(function (el) {
+        var isActive = parseInt(el.getAttribute('data-radar-index'), 10) === index;
+        el.classList.toggle('is-active', isActive);
+        el.style.setProperty('--active-radar-color', color);
+        if (el.matches('.home-radar-legend__item')) el.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+      if (inspector.engine) inspector.engine.textContent = component.engine || ('HI-EI Component ' + String(index + 1).padStart(2, '0'));
+      if (inspector.title) inspector.title.textContent = component.label;
+      if (inspector.body) inspector.body.textContent = component.interpretation || '';
+      if (inspector.score) inspector.score.textContent = component.score || radar.values[index];
+      if (inspector.domain) inspector.domain.textContent = component.domain || 'Expertise component';
+      if (inspector.evidence) inspector.evidence.textContent = component.evidence || '';
+      if (inspector.output) inspector.output.textContent = component.output || '';
+      chart.data.datasets[0].borderColor = color;
+      chart.data.datasets[0].backgroundColor = rgba(color, 0.17);
+      chart.data.datasets[0].pointRadius = pointSizes(index, 7, 4);
+      chart.data.datasets[0].pointBorderWidth = pointSizes(index, 3, 2);
+      chart.setActiveElements([{ datasetIndex: 0, index: index }]);
+      chart.update();
+    }
+
+    document.querySelectorAll('[data-radar-index]').forEach(function (el) {
+      var select = function () { setActiveComponent(parseInt(el.getAttribute('data-radar-index'), 10)); };
+      el.addEventListener('click', select);
+      el.addEventListener('pointerenter', select);
+      el.addEventListener('focus', select);
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          select();
+        }
+      });
+    });
+    setActiveComponent(0);
   }
 
   // ---------- Ghana district map (real district list, real coordinates

@@ -59,8 +59,73 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       {% endfor %}
     ],
     radar: {
-      labels: ["Clinical Lab Science", "Public Health Epidemiology", "Disease Surveillance", "Spatial GIS", "Predictive Modelling", "Quality Systems", "Clinical Data Science"],
-      values: [92, 90, 88, 88, 86, 89, 84]
+      labels: ["Lab Quality", "Public Health", "Surveillance", "Spatial GIS", "Predictive ML", "Quality Systems", "Clinical Data"],
+      values: [92, 90, 88, 88, 86, 89, 84],
+      components: [
+        {
+          label: "Lab Quality",
+          score: 92,
+          domain: "Clinical laboratory operations",
+          engine: "HI-EI Component 01",
+          interpretation: "Diagnostic accuracy, workflow discipline, quality control and audit-ready laboratory practice anchor the clinical side of the portfolio.",
+          evidence: "Clinical chemistry, haematology, microbiology-aware diagnostics, GeneXpert and real-time PCR workflows.",
+          output: "Reliable laboratory evidence that can move into surveillance, programme decisions and quality-improvement cycles."
+        },
+        {
+          label: "Public Health",
+          score: 90,
+          domain: "Population health practice",
+          engine: "HI-EI Component 02",
+          interpretation: "Public-health reasoning connects disease prevention, health-systems strengthening, service access and community-level implementation.",
+          evidence: "Communicable-disease epidemiology, vaccination context, WASH exposure, outreach screening and health advisory work.",
+          output: "Actionable programme intelligence for targeted outreach, prevention priorities and equity-aware service planning."
+        },
+        {
+          label: "Surveillance",
+          score: 88,
+          domain: "Outbreak and signal intelligence",
+          engine: "HI-EI Component 03",
+          interpretation: "Surveillance work is treated as an early-warning discipline: signals are checked, contextualised and translated before action.",
+          evidence: "Screening records, district patterns, clinical indicators, exposure signals and response-priority logic.",
+          output: "Clear escalation cues for sampling, field verification, neighbouring-district review and public-health response."
+        },
+        {
+          label: "Spatial GIS",
+          score: 88,
+          domain: "Ghana district intelligence",
+          engine: "HI-EI Component 04",
+          interpretation: "Spatial analysis treats place as evidence, especially when district patterns expose clustering, service gaps or inequity.",
+          evidence: "Moran's I, bivariate LISA, choropleth mapping, district centroids, GeoJSON and Ghana's 261-district geography.",
+          output: "District-level maps and spatial summaries that show where population risk, access and service signals concentrate."
+        },
+        {
+          label: "Predictive ML",
+          score: 86,
+          domain: "Applied modelling",
+          engine: "HI-EI Component 05",
+          interpretation: "Machine learning is used as a structured modelling layer, not as a black-box claim, with interpretability kept visible.",
+          evidence: "Random Forest, Ridge Regression, XGBoost, SVR, SHAP explainability and reproducible Python/R workflows.",
+          output: "Forecasting and risk-stratification artifacts that can be inspected, explained and compared against public-health context."
+        },
+        {
+          label: "Quality Systems",
+          score: 89,
+          domain: "Governance and reliability",
+          engine: "HI-EI Component 06",
+          interpretation: "Quality systems hold the work together: methods, documentation, reproducibility and laboratory governance must agree.",
+          evidence: "ISO 15189 thinking, quality control, external quality assurance, biosafety awareness and data-quality checks.",
+          output: "Auditable workflows that preserve trust from specimen handling through analysis, reporting and dashboard publication."
+        },
+        {
+          label: "Clinical Data",
+          score: 84,
+          domain: "Clinical data science",
+          engine: "HI-EI Component 07",
+          interpretation: "Clinical data are used as a bridge between laboratory records, epidemiological meaning and decision-support tools.",
+          evidence: "Clinical datasets, HIV/AIDS incidence forecasting, model files, Streamlit dashboards and reproducible scripts.",
+          output: "Interfaces and summaries that help clinicians, public-health teams and researchers inspect the same evidence."
+        }
+      ]
     },
     districtSample: [
       { name: "Accra Metropolitan", region: "Greater Accra", lat: 5.6037, lon: -0.1870, risk: 62 },
@@ -294,41 +359,86 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       </div>
       <p class="text-slate-400 mt-3 text-sm">Relative emphasis across clinical practice, public-health work, spatial analytics and applied modelling. Not a measured proficiency score.</p>
     </div>
-    <div class="grid lg:grid-cols-12 gap-12 items-center">
+    <div class="grid lg:grid-cols-12 gap-12 items-start">
       <div class="lg:col-span-6 reveal">
-        <div class="glass-card bg-slate-800/60 p-6 rounded-3xl border border-slate-700 h-[440px] relative">
-          <canvas id="radarChart"></canvas>
+        <div class="home-radar-card glass-card bg-slate-800/60 p-6 rounded-3xl border border-slate-700 relative">
+          <div class="home-radar-plot">
+            <canvas id="radarChart" aria-label="Radar chart showing Valentine Golden Ghanem's relative emphasis across laboratory quality, public health, surveillance, spatial GIS, predictive modelling, quality systems and clinical data"></canvas>
+          </div>
+          <div id="radarLegend" class="home-radar-legend" aria-label="Interactive radar component legend">
+            <button type="button" class="home-radar-legend__item is-active" data-radar-index="0" style="--legend-color:#22D3EE" aria-pressed="true"><i></i><b>01 Lab Quality</b><em>92</em></button>
+            <button type="button" class="home-radar-legend__item" data-radar-index="1" style="--legend-color:#34D399" aria-pressed="false"><i></i><b>02 Public Health</b><em>90</em></button>
+            <button type="button" class="home-radar-legend__item" data-radar-index="2" style="--legend-color:#FBBF24" aria-pressed="false"><i></i><b>03 Surveillance</b><em>88</em></button>
+            <button type="button" class="home-radar-legend__item" data-radar-index="3" style="--legend-color:#8B5CF6" aria-pressed="false"><i></i><b>04 Spatial GIS</b><em>88</em></button>
+            <button type="button" class="home-radar-legend__item" data-radar-index="4" style="--legend-color:#EF4444" aria-pressed="false"><i></i><b>05 Predictive ML</b><em>86</em></button>
+            <button type="button" class="home-radar-legend__item" data-radar-index="5" style="--legend-color:#14B8A6" aria-pressed="false"><i></i><b>06 Quality Systems</b><em>89</em></button>
+            <button type="button" class="home-radar-legend__item" data-radar-index="6" style="--legend-color:#A78BFA" aria-pressed="false"><i></i><b>07 Clinical Data</b><em>84</em></button>
+          </div>
+          <div class="home-radar-inspector" id="radarInspector" aria-live="polite">
+            <div>
+              <span class="home-radar-inspector__kicker" id="radarInspectorEngine">HI-EI Component 01</span>
+              <h4 id="radarInspectorTitle">Lab Quality</h4>
+              <p id="radarInspectorBody">Diagnostic accuracy, workflow discipline, quality control and audit-ready laboratory practice anchor the clinical side of the portfolio.</p>
+            </div>
+            <div class="home-radar-inspector__grid">
+              <span><b id="radarInspectorScore">92</b><em>Relative emphasis</em></span>
+              <span><b id="radarInspectorDomain">Clinical laboratory operations</b><em>Domain</em></span>
+            </div>
+            <p class="home-radar-inspector__note"><b>Evidence base:</b> <span id="radarInspectorEvidence">Clinical chemistry, haematology, microbiology-aware diagnostics, GeneXpert and real-time PCR workflows.</span></p>
+            <p class="home-radar-inspector__note"><b>Output:</b> <span id="radarInspectorOutput">Reliable laboratory evidence that can move into surveillance, programme decisions and quality-improvement cycles.</span></p>
+          </div>
+          <p class="mt-4 text-[11px] leading-relaxed text-slate-400 font-mono">Relative emphasis only. The radar visualises the shape of Valentine Golden Ghanem's current portfolio; it is not a scored proficiency test.</p>
         </div>
       </div>
       <div class="lg:col-span-6 reveal grid sm:grid-cols-2 gap-5">
-        <div class="p-6 glass-card bg-slate-800/40 rounded-2xl border border-slate-700 hover:border-cyan-400 transition-all">
+        <article class="home-expertise-card is-active p-6 glass-card bg-slate-800/40 rounded-2xl border border-slate-700 hover:border-cyan-400 transition-all" data-radar-index="0" tabindex="0" role="button" aria-label="Inspect Clinical Laboratory and Quality Leadership in the radar">
           <div class="flex items-center gap-4 mb-3">
             <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-lg">01</div>
             <h4 class="text-xl font-bold font-heading">Clinical Laboratory &amp; Quality Leadership</h4>
           </div>
-          <p class="text-sm text-slate-300 sm:pl-14">Medical laboratory science across clinical chemistry, haematology, microbiology-informed diagnostics, GeneXpert and real-time PCR workflows, ISO 15189 quality systems, and high-throughput laboratory operations.</p>
-        </div>
-        <div class="p-6 glass-card bg-slate-800/40 rounded-2xl border border-slate-700 hover:border-emerald-400 transition-all">
+          <p class="text-sm leading-relaxed text-slate-200 sm:pl-14">Clinical laboratory practice grounded in diagnostic accuracy, workflow discipline, and quality-managed service delivery.</p>
+          <div class="home-expertise-card__body sm:pl-14">
+            <span><b>Practice base</b> Clinical chemistry, haematology, microbiology-aware diagnostics, GeneXpert and real-time PCR workflows.</span>
+            <span><b>Quality frame</b> ISO 15189 thinking, internal quality control, external quality assurance and audit-ready documentation.</span>
+            <span><b>Operational output</b> High-throughput laboratory coordination, result integrity, biosafety awareness and service-improvement decisions.</span>
+          </div>
+        </article>
+        <article class="home-expertise-card p-6 glass-card bg-slate-800/40 rounded-2xl border border-slate-700 hover:border-emerald-400 transition-all" data-radar-index="1" tabindex="0" role="button" aria-label="Inspect Public Health Epidemiology and Surveillance in the radar">
           <div class="flex items-center gap-4 mb-3">
             <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg">02</div>
             <h4 class="text-xl font-bold font-heading">Public Health Epidemiology &amp; Surveillance</h4>
           </div>
-          <p class="text-sm text-slate-300 sm:pl-14">Communicable-disease epidemiology, outbreak intelligence, screening outreach, health-systems strengthening, vaccination and WASH context, and surveillance thinking built for practical public-health decisions.</p>
-        </div>
-        <div class="p-6 glass-card bg-slate-800/40 rounded-2xl border border-slate-700 hover:border-violet-400 transition-all">
+          <p class="text-sm leading-relaxed text-slate-200 sm:pl-14">Public-health work framed around disease prevention, early signal recognition, community reach and practical response planning.</p>
+          <div class="home-expertise-card__body sm:pl-14">
+            <span><b>Core domains</b> Communicable-disease epidemiology, screening outreach, outbreak intelligence and health-systems strengthening.</span>
+            <span><b>Programme lens</b> Vaccination coverage, WASH context, service access, field realities and vulnerable-population considerations.</span>
+            <span><b>Decision output</b> Surveillance summaries that help teams move from observation to targeted sampling, escalation or outreach.</span>
+          </div>
+        </article>
+        <article class="home-expertise-card p-6 glass-card bg-slate-800/40 rounded-2xl border border-slate-700 hover:border-violet-400 transition-all" data-radar-index="3" tabindex="0" role="button" aria-label="Inspect Spatial Epidemiology and Ghana District Analytics in the radar">
           <div class="flex items-center gap-4 mb-3">
             <div class="w-10 h-10 rounded-xl bg-violet-500/20 text-violet-400 flex items-center justify-center font-bold text-lg">03</div>
             <h4 class="text-xl font-bold font-heading">Spatial Epidemiology &amp; Ghana District Analytics</h4>
           </div>
-          <p class="text-sm text-slate-300 sm:pl-14">Moran's I, bivariate LISA, disease and health-access mapping, Ghana's 261-district geography, ArcGIS, Folium and choropleth workflows for district-level public-health intelligence.</p>
-        </div>
-        <div class="p-6 glass-card bg-slate-800/40 rounded-2xl border border-slate-700 hover:border-amber-400 transition-all">
+          <p class="text-sm leading-relaxed text-slate-200 sm:pl-14">Spatial intelligence that treats place as evidence, especially where district patterns reveal inequity, clustering or service gaps.</p>
+          <div class="home-expertise-card__body sm:pl-14">
+            <span><b>Methods</b> Moran's I, bivariate LISA, choropleth mapping, district centroids and field-activity geocoding.</span>
+            <span><b>Geography</b> Ghana's 261-district administrative structure, regional comparisons and district-level public-health interpretation.</span>
+            <span><b>Tools</b> ArcGIS, Folium, GeoJSON, Python mapping workflows and interactive map interfaces.</span>
+          </div>
+        </article>
+        <article class="home-expertise-card p-6 glass-card bg-slate-800/40 rounded-2xl border border-slate-700 hover:border-amber-400 transition-all" data-radar-index="4" tabindex="0" role="button" aria-label="Inspect Data Science, Modelling and Decision Dashboards in the radar">
           <div class="flex items-center gap-4 mb-3">
             <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-lg">04</div>
             <h4 class="text-xl font-bold font-heading">Data Science, Modelling &amp; Decision Dashboards</h4>
           </div>
-          <p class="text-sm text-slate-300 sm:pl-14">Python, R, Streamlit, XGBoost, Random Forest, Ridge Regression and SHAP explainability applied to HIV/AIDS incidence forecasting, clinical data science and reproducible health dashboards.</p>
-        </div>
+          <p class="text-sm leading-relaxed text-slate-200 sm:pl-14">Applied modelling and dashboard design used to turn datasets into understandable, reproducible and inspectable health intelligence.</p>
+          <div class="home-expertise-card__body sm:pl-14">
+            <span><b>Modelling stack</b> Python, R, Random Forest, Ridge Regression, XGBoost, SVR and SHAP explainability.</span>
+            <span><b>Research signal</b> HIV/AIDS incidence forecasting, spatial risk interpretation and clinical/public-health data synthesis.</span>
+            <span><b>Interface output</b> Streamlit dashboards, model files, reproducible scripts and interactive decision-support artifacts.</span>
+          </div>
+        </article>
       </div>
     </div>
   </div>
