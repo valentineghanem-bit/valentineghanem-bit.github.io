@@ -188,6 +188,13 @@ html[data-v2-theme="dim"] .v3-scope .home-identity-chip {
 .v3-scope .home-identity-chip[data-accent="emerald"] i { color: #10B981; background: rgba(52,211,153,0.14); }
 .v3-scope .home-identity-chip[data-accent="violet"] i { color: #8B5CF6; background: rgba(139,92,246,0.14); }
 
+.v3-scope .home-gallery-caption {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .v3-scope .home-journey-card {
   position: relative;
   overflow: hidden;

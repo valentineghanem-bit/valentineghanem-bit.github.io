@@ -105,7 +105,7 @@
         osc.stop(start + duration + 0.04);
       }
       function play(kind) {
-        if (navigator.vibrate && kind !== 'hover' && kind !== 'text') {
+        if (navigator.vibrate) {
           var patterns = {
             click: 18,
             double: [14, 30, 18],
@@ -115,10 +115,7 @@
           };
           if (patterns[kind]) navigator.vibrate(patterns[kind]);
         }
-        if (kind === 'hover') {
-          if (throttled(kind, 180)) return;
-          tone(680, 0.070, 0.130, 'sine');
-        } else if (kind === 'click') {
+        if (kind === 'click') {
           tone(180, 0.115, 0.250, 'triangle');
           tone(360, 0.090, 0.160, 'sine', 0.012);
         } else if (kind === 'double') {
@@ -132,9 +129,6 @@
         } else if (kind === 'drag') {
           if (throttled(kind, 320)) return;
           tone(146.83, 0.135, 0.220, 'triangle');
-        } else if (kind === 'text') {
-          if (throttled(kind, 260)) return;
-          tone(493.88, 0.065, 0.125, 'sine');
         }
       }
       return { play: play };
@@ -184,6 +178,7 @@
 
     function clearIdleState() {
       window.clearTimeout(idleTimer);
+      arrow.classList.remove('is-idle');
       cluster.classList.remove('is-idle');
     }
 
@@ -224,12 +219,15 @@
       }
       setNativeEdge(false);
       activate(e.clientX, e.clientY);
+      arrow.classList.add('is-moving');
       cluster.classList.add('is-moving');
       window.clearTimeout(movingTimer);
       movingTimer = window.setTimeout(function () {
+        arrow.classList.remove('is-moving');
         cluster.classList.remove('is-moving');
         if (active && !nativeEdge && !pointerIsDown && !cluster.classList.contains('is-texting')) {
           cluster.classList.add('is-idle');
+          arrow.classList.add('is-idle');
         }
       }, 240);
       clearIdleState();
@@ -334,14 +332,12 @@
       if (e.target.closest(TEXT_SELECTOR)) {
         arrow.classList.add('is-texting');
         cluster.classList.add('is-texting');
-        soundHaptics.play('text');
         return;
       }
       if (e.target.closest(HOVER_SELECTOR)) {
         arrow.classList.add('is-hovering');
         cluster.classList.add('is-hovering');
         cluster.classList.add('is-idle');
-        soundHaptics.play('hover');
         if (!pointerIsDown) {
           radiusTarget = HOVER_RADIUS;
           speedTarget = HOVER_SPEED;
@@ -356,11 +352,12 @@
         cluster.classList.remove('is-texting');
       }
       if (e.target.closest(HOVER_SELECTOR)) {
-        arrow.classList.remove('is-hovering');
-        cluster.classList.remove('is-hovering');
-        cluster.classList.remove('is-idle');
-        if (!pointerIsDown) {
-          radiusTarget = BASE_RADIUS;
+          arrow.classList.remove('is-hovering');
+          cluster.classList.remove('is-hovering');
+          arrow.classList.remove('is-idle');
+          cluster.classList.remove('is-idle');
+          if (!pointerIsDown) {
+            radiusTarget = BASE_RADIUS;
           speedTarget = BASE_SPEED;
         }
       }

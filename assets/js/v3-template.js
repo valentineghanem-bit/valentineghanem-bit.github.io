@@ -172,58 +172,58 @@
       feedbackGain.gain.setTargetAtTime(0.38 - engagement * 0.08, ctx.currentTime, 3.8);
     }
     setInterval(updateEngagement, 2500);
-    // Original 32-second miniature: A minor -> Fmaj7 -> C/G -> Gsus -> Dm9
-    // -> Am/E -> Fmaj7 -> Gsus/C cadence. It is through-composed enough to
-    // feel like a small piano piece, not a ringtone loop.
+    // Original 40-second miniature: Cadd9 -> G/B -> Am7 -> Fmaj7 -> Dm9
+    // -> Em7 -> Fmaj7 -> Gsus -> C. Slower phrase, fuller harmony, and a
+    // singable top line so it reads as piano ambience rather than alerts.
     var PIANO_MINIATURE = [
-      { t: 0.00, f: 110.00, v: 0.116, d: 2.9, k: 'bass' },
-      { t: 0.54, f: 164.81, v: 0.055, d: 2.3, k: 'harmony' },
-      { t: 1.08, f: 220.00, v: 0.052, d: 2.2, k: 'harmony' },
-      { t: 1.72, f: 261.63, v: 0.074, d: 2.6, k: 'melody' },
-      { t: 2.46, f: 329.63, v: 0.079, d: 2.2, k: 'melody' },
-      { t: 3.20, f: 392.00, v: 0.071, d: 2.4, k: 'melody' },
-      { t: 4.00, f: 87.31, v: 0.104, d: 3.0, k: 'bass' },
-      { t: 4.58, f: 174.61, v: 0.052, d: 2.4, k: 'harmony' },
-      { t: 5.16, f: 220.00, v: 0.048, d: 2.3, k: 'harmony' },
-      { t: 5.84, f: 349.23, v: 0.073, d: 2.5, k: 'melody' },
-      { t: 6.62, f: 329.63, v: 0.064, d: 2.2, k: 'melody' },
-      { t: 7.34, f: 293.66, v: 0.067, d: 2.6, k: 'melody' },
-      { t: 8.00, f: 98.00, v: 0.110, d: 3.0, k: 'bass' },
-      { t: 8.50, f: 196.00, v: 0.050, d: 2.2, k: 'harmony' },
-      { t: 9.06, f: 261.63, v: 0.048, d: 2.3, k: 'harmony' },
-      { t: 9.78, f: 392.00, v: 0.074, d: 2.5, k: 'melody' },
-      { t: 10.58, f: 440.00, v: 0.080, d: 2.1, k: 'melody' },
-      { t: 11.30, f: 392.00, v: 0.067, d: 2.4, k: 'melody' },
-      { t: 12.00, f: 98.00, v: 0.106, d: 2.9, k: 'bass' },
-      { t: 12.52, f: 196.00, v: 0.049, d: 2.2, k: 'harmony' },
-      { t: 13.08, f: 246.94, v: 0.048, d: 2.3, k: 'harmony' },
-      { t: 13.78, f: 349.23, v: 0.072, d: 2.4, k: 'melody' },
-      { t: 14.55, f: 329.63, v: 0.066, d: 2.4, k: 'melody' },
-      { t: 15.34, f: 293.66, v: 0.064, d: 2.7, k: 'melody' },
-      { t: 16.00, f: 73.42, v: 0.106, d: 3.2, k: 'bass' },
-      { t: 16.62, f: 146.83, v: 0.049, d: 2.5, k: 'harmony' },
-      { t: 17.20, f: 220.00, v: 0.048, d: 2.5, k: 'harmony' },
-      { t: 18.02, f: 261.63, v: 0.066, d: 2.5, k: 'melody' },
-      { t: 18.82, f: 293.66, v: 0.071, d: 2.2, k: 'melody' },
-      { t: 19.54, f: 349.23, v: 0.067, d: 2.6, k: 'melody' },
-      { t: 20.00, f: 82.41, v: 0.100, d: 3.1, k: 'bass' },
-      { t: 20.58, f: 164.81, v: 0.047, d: 2.4, k: 'harmony' },
-      { t: 21.14, f: 246.94, v: 0.048, d: 2.3, k: 'harmony' },
-      { t: 21.92, f: 392.00, v: 0.070, d: 2.4, k: 'melody' },
-      { t: 22.72, f: 329.63, v: 0.066, d: 2.5, k: 'melody' },
-      { t: 23.48, f: 261.63, v: 0.062, d: 2.8, k: 'melody' },
-      { t: 24.00, f: 87.31, v: 0.100, d: 3.0, k: 'bass' },
-      { t: 24.55, f: 174.61, v: 0.046, d: 2.4, k: 'harmony' },
-      { t: 25.08, f: 220.00, v: 0.046, d: 2.4, k: 'harmony' },
-      { t: 25.86, f: 293.66, v: 0.064, d: 2.4, k: 'melody' },
-      { t: 26.66, f: 349.23, v: 0.068, d: 2.3, k: 'melody' },
-      { t: 27.42, f: 440.00, v: 0.060, d: 2.7, k: 'melody' },
-      { t: 28.00, f: 98.00, v: 0.112, d: 4.0, k: 'bass' },
-      { t: 28.66, f: 196.00, v: 0.052, d: 3.3, k: 'harmony' },
-      { t: 29.28, f: 246.94, v: 0.050, d: 3.0, k: 'harmony' },
-      { t: 30.10, f: 392.00, v: 0.062, d: 2.7, k: 'melody' },
-      { t: 30.88, f: 329.63, v: 0.058, d: 2.8, k: 'melody' },
-      { t: 31.56, f: 261.63, v: 0.070, d: 4.4, k: 'melody' }
+      { t: 0.00, f: 65.41, v: 0.108, d: 4.2, k: 'bass' },
+      { t: 0.72, f: 130.81, v: 0.050, d: 3.4, k: 'harmony' },
+      { t: 1.38, f: 196.00, v: 0.046, d: 3.1, k: 'harmony' },
+      { t: 2.10, f: 293.66, v: 0.066, d: 2.9, k: 'melody' },
+      { t: 3.08, f: 329.63, v: 0.074, d: 2.8, k: 'melody' },
+      { t: 4.05, f: 392.00, v: 0.066, d: 3.2, k: 'melody' },
+      { t: 5.00, f: 61.74, v: 0.100, d: 4.0, k: 'bass' },
+      { t: 5.74, f: 123.47, v: 0.048, d: 3.4, k: 'harmony' },
+      { t: 6.42, f: 196.00, v: 0.046, d: 3.0, k: 'harmony' },
+      { t: 7.20, f: 369.99, v: 0.066, d: 3.0, k: 'melody' },
+      { t: 8.18, f: 329.63, v: 0.062, d: 2.8, k: 'melody' },
+      { t: 9.05, f: 293.66, v: 0.060, d: 3.3, k: 'melody' },
+      { t: 10.00, f: 55.00, v: 0.104, d: 4.2, k: 'bass' },
+      { t: 10.76, f: 110.00, v: 0.050, d: 3.4, k: 'harmony' },
+      { t: 11.44, f: 164.81, v: 0.046, d: 3.0, k: 'harmony' },
+      { t: 12.28, f: 261.63, v: 0.064, d: 3.0, k: 'melody' },
+      { t: 13.28, f: 329.63, v: 0.070, d: 2.8, k: 'melody' },
+      { t: 14.12, f: 392.00, v: 0.060, d: 3.4, k: 'melody' },
+      { t: 15.00, f: 43.65, v: 0.102, d: 4.3, k: 'bass' },
+      { t: 15.80, f: 130.81, v: 0.048, d: 3.4, k: 'harmony' },
+      { t: 16.54, f: 174.61, v: 0.046, d: 3.0, k: 'harmony' },
+      { t: 17.35, f: 349.23, v: 0.067, d: 3.0, k: 'melody' },
+      { t: 18.28, f: 329.63, v: 0.060, d: 3.1, k: 'melody' },
+      { t: 19.15, f: 261.63, v: 0.064, d: 3.6, k: 'melody' },
+      { t: 20.00, f: 73.42, v: 0.104, d: 4.1, k: 'bass' },
+      { t: 20.82, f: 146.83, v: 0.050, d: 3.4, k: 'harmony' },
+      { t: 21.54, f: 220.00, v: 0.046, d: 3.0, k: 'harmony' },
+      { t: 22.42, f: 349.23, v: 0.066, d: 3.0, k: 'melody' },
+      { t: 23.38, f: 440.00, v: 0.070, d: 2.8, k: 'melody' },
+      { t: 24.20, f: 392.00, v: 0.062, d: 3.3, k: 'melody' },
+      { t: 25.00, f: 82.41, v: 0.100, d: 4.0, k: 'bass' },
+      { t: 25.76, f: 164.81, v: 0.048, d: 3.3, k: 'harmony' },
+      { t: 26.48, f: 246.94, v: 0.045, d: 3.0, k: 'harmony' },
+      { t: 27.35, f: 392.00, v: 0.064, d: 3.0, k: 'melody' },
+      { t: 28.24, f: 493.88, v: 0.066, d: 2.7, k: 'melody' },
+      { t: 29.15, f: 440.00, v: 0.060, d: 3.5, k: 'melody' },
+      { t: 30.00, f: 43.65, v: 0.102, d: 4.3, k: 'bass' },
+      { t: 30.82, f: 130.81, v: 0.048, d: 3.4, k: 'harmony' },
+      { t: 31.52, f: 174.61, v: 0.044, d: 3.0, k: 'harmony' },
+      { t: 32.34, f: 349.23, v: 0.062, d: 3.0, k: 'melody' },
+      { t: 33.26, f: 392.00, v: 0.066, d: 2.8, k: 'melody' },
+      { t: 34.12, f: 329.63, v: 0.058, d: 3.4, k: 'melody' },
+      { t: 35.00, f: 49.00, v: 0.106, d: 4.5, k: 'bass' },
+      { t: 35.82, f: 146.83, v: 0.050, d: 3.5, k: 'harmony' },
+      { t: 36.58, f: 196.00, v: 0.047, d: 3.2, k: 'harmony' },
+      { t: 37.42, f: 293.66, v: 0.060, d: 3.1, k: 'melody' },
+      { t: 38.34, f: 261.63, v: 0.058, d: 3.2, k: 'melody' },
+      { t: 39.15, f: 329.63, v: 0.068, d: 4.6, k: 'melody' }
     ];
     function ensureContext() {
       if (ctx) return ctx;
@@ -283,7 +283,7 @@
       var now = ctx.currentTime + 0.08;
       PIANO_MINIATURE.forEach(function (note) { pluck(note.f, now + note.t, note.v, note.d, note.k); });
       chordIndex++;
-      loopTimer = setTimeout(scheduleLoop, 34500);
+      loopTimer = setTimeout(scheduleLoop, 42000);
     }
     function startLoop() {
       var c = ensureContext();
@@ -602,16 +602,16 @@
     var text = document.getElementById('interventionText');
     if (riskVal > 70) {
       badge.className = 'px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider bg-red-500/20 text-red-500 border border-red-500/30';
-      badge.textContent = 'CRITICAL HOTSPOT RISK (ILLUSTRATIVE)';
-      text.textContent = 'Illustrative output: at this parameter mix, a real surveillance programme would typically prioritise indoor residual spraying and mobile diagnostic screening in contiguous districts.';
+      badge.textContent = 'STRONG CLUSTERING SIGNAL (EXPLAINER)';
+      text.textContent = 'Interpretation: this combination resembles a high-priority surveillance signal. A real programme would verify the data source, inspect neighbouring districts, and consider targeted sampling or outreach before action.';
     } else if (riskVal > 40) {
       badge.className = 'px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider bg-amber-500/20 text-amber-500 border border-amber-500/30';
-      badge.textContent = 'MODERATE CLUSTER RISK (ILLUSTRATIVE)';
-      text.textContent = 'Illustrative output: this parameter mix suggests increasing sentinel sampling frequency and vector-control distribution would be reasonable next steps.';
+      badge.textContent = 'MODERATE CLUSTERING SIGNAL (EXPLAINER)';
+      text.textContent = 'Interpretation: the signal is mixed. The sensible next step is not a prediction claim, but a closer look at coverage, local vulnerability and the neighbouring district pattern.';
     } else {
       badge.className = 'px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-500 border border-emerald-500/30';
-      badge.textContent = 'LOW OUTBREAK RISK (ILLUSTRATIVE)';
-      text.textContent = 'Illustrative output: standard surveillance protocols would typically suffice at this parameter mix.';
+      badge.textContent = 'LOW CLUSTERING SIGNAL (EXPLAINER)';
+      text.textContent = 'Interpretation: the selected conditions do not create a strong clustering pattern in this concept explorer. Real surveillance would still depend on verified data and field context.';
     }
   };
   window.resetSimulator = function () {
@@ -628,6 +628,7 @@
     var ctx = document.getElementById('radarChart');
     if (!ctx || typeof Chart === 'undefined') return;
     var radar = DATA.radar || { labels: [], values: [] };
+    var radarPointColors = ['#22D3EE', '#34D399', '#FBBF24', '#8B5CF6', '#EF4444', '#14B8A6', '#A78BFA'];
     new Chart(ctx, {
       type: 'radar',
       data: {
@@ -635,23 +636,40 @@
         datasets: [{
           label: 'Focus area',
           data: radar.values,
-          backgroundColor: 'rgba(34, 211, 238, 0.2)',
+          backgroundColor: 'rgba(34, 211, 238, 0.14)',
           borderColor: '#22D3EE',
-          pointBackgroundColor: '#FBBF24',
+          pointBackgroundColor: radarPointColors,
+          pointBorderColor: '#FFFFFF',
+          pointHoverBackgroundColor: '#FFFFFF',
+          pointHoverBorderColor: radarPointColors,
+          pointRadius: 4,
+          pointHoverRadius: 7,
           borderWidth: 2
         }]
       },
       options: {
         maintainAspectRatio: false,
+        animation: { duration: 1100, easing: 'easeOutQuart' },
         scales: {
           r: {
             grid: { color: 'rgba(148,163,184,0.25)' },
             angleLines: { color: 'rgba(148,163,184,0.25)' },
             ticks: { display: false },
-            pointLabels: { color: '#94A3B8', font: { size: 10, weight: 'bold' } }
+            pointLabels: { color: '#CBD5E1', font: { size: 10, weight: 'bold', family: 'Plus Jakarta Sans' } },
+            suggestedMin: 0,
+            suggestedMax: 100
           }
         },
-        plugins: { legend: { display: false } }
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                return context.label + ': relative emphasis ' + context.formattedValue + '/100';
+              }
+            }
+          }
+        }
       }
     });
   }
@@ -663,39 +681,109 @@
   function initPlotlyMap() {
     var el = document.getElementById('plotlyMap');
     if (!el || typeof Plotly === 'undefined') return;
-    var districts = DATA.districtSample || [];
-    var trace = {
-      x: districts.map(function (d) { return d.lon; }),
-      y: districts.map(function (d) { return d.lat; }),
-      mode: 'markers',
-      type: 'scatter',
-      marker: {
-        size: 11,
-        color: districts.map(function (d) { return d.risk; }),
-        colorscale: [[0, '#34D399'], [0.5, '#22D3EE'], [1, '#8B5CF6']],
-        opacity: 0.85,
-        line: { width: 1.5, color: '#FFFFFF' }
-      },
-      text: districts.map(function (d) { return d.name; }),
-      hoverinfo: 'text'
-    };
-    var layout = {
-      paper_bgcolor: 'rgba(0,0,0,0)',
-      plot_bgcolor: 'rgba(0,0,0,0)',
-      margin: { t: 10, r: 10, b: 10, l: 10 },
-      xaxis: { visible: false },
-      yaxis: { visible: false },
-      showlegend: false
-    };
-    Plotly.newPlot(el, [trace], layout, { responsive: true, displayModeBar: false });
-    el.on('plotly_click', function (data) {
-      if (!data.points.length) return;
-      var d = districts[data.points[0].pointNumber];
+    var selector = document.getElementById('districtSelector');
+
+    function collectCoords(coords, out) {
+      if (!Array.isArray(coords)) return out;
+      if (typeof coords[0] === 'number' && typeof coords[1] === 'number') {
+        out.push(coords);
+        return out;
+      }
+      coords.forEach(function (child) { collectCoords(child, out); });
+      return out;
+    }
+
+    function centroid(feature) {
+      var pts = collectCoords(feature.geometry && feature.geometry.coordinates, []);
+      if (!pts.length) return null;
+      var sx = 0, sy = 0;
+      pts.forEach(function (pt) { sx += pt[0]; sy += pt[1]; });
+      return { lon: +(sx / pts.length).toFixed(4), lat: +(sy / pts.length).toFixed(4) };
+    }
+
+    function regionCode(region) {
+      return (region || '--').split(/\s+/).map(function (part) { return part.charAt(0); }).join('').slice(0, 3);
+    }
+
+    function updateInspector(d, index, total) {
       if (!d) return;
       document.getElementById('inspectorDistrictName').textContent = d.name;
-      document.getElementById('inspectorRegion').textContent = d.region + ' Region · Lat: ' + d.lat + ', Lon: ' + d.lon;
-      showToast('Loaded ' + d.name + ' from the sample set — open the full Field Map for real surveillance data');
-    });
+      document.getElementById('inspectorRegion').textContent = d.region + ' Region · Centroid: ' + d.lat + ', ' + d.lon;
+      document.getElementById('inspectorCoverage').textContent = total + ' districts';
+      document.getElementById('inspectorRegionShort').textContent = regionCode(d.region);
+      document.getElementById('inspectorPopulation').textContent = d.population || 'Not in file';
+      document.getElementById('inspectorYearCreated').textContent = d.year_created || 'Not in file';
+      document.getElementById('inspectorNote').textContent = 'District ' + (index + 1) + ' of ' + total + ' in the homepage GeoJSON preview. This file currently exposes name, region and geometry; demographic attributes should be joined from a vetted district attribute table.';
+      if (selector) selector.value = String(index);
+    }
+
+    function plotDistricts(districts) {
+      if (!districts.length) return;
+      var trace = {
+        x: districts.map(function (d) { return d.lon; }),
+        y: districts.map(function (d) { return d.lat; }),
+        mode: 'markers',
+        type: 'scatter',
+        marker: {
+          size: 7,
+          color: districts.map(function (_, index) { return index; }),
+          colorscale: [[0, '#34D399'], [0.33, '#22D3EE'], [0.66, '#8B5CF6'], [1, '#FBBF24']],
+          opacity: 0.82,
+          line: { width: 0.8, color: '#FFFFFF' }
+        },
+        text: districts.map(function (d) { return d.name + '<br>' + d.region + ' Region'; }),
+        hoverinfo: 'text'
+      };
+      var layout = {
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        margin: { t: 10, r: 10, b: 10, l: 10 },
+        xaxis: { visible: false, scaleanchor: 'y' },
+        yaxis: { visible: false },
+        showlegend: false
+      };
+      Plotly.newPlot(el, [trace], layout, { responsive: true, displayModeBar: false });
+      if (selector) {
+        selector.innerHTML = districts.map(function (d, index) {
+          return '<option value="' + index + '">' + d.name + ' · ' + d.region + '</option>';
+        }).join('');
+        selector.addEventListener('change', function () {
+          var index = parseInt(selector.value, 10);
+          updateInspector(districts[index], index, districts.length);
+        });
+      }
+      el.on('plotly_click', function (data) {
+        if (!data.points.length) return;
+        var index = data.points[0].pointNumber;
+        var d = districts[index];
+        updateInspector(d, index, districts.length);
+        showToast('Loaded ' + d.name + ' from the 261-district GeoJSON preview');
+      });
+      var accraIndex = districts.findIndex(function (d) { return d.name.indexOf('ACCRA') !== -1; });
+      updateInspector(districts[accraIndex >= 0 ? accraIndex : 0], accraIndex >= 0 ? accraIndex : 0, districts.length);
+    }
+
+    fetch('/assets/data/ghana-districts.geojson')
+      .then(function (res) { return res.json(); })
+      .then(function (geojson) {
+        var districts = (geojson.features || []).map(function (feature) {
+          var c = centroid(feature);
+          var props = feature.properties || {};
+          return c ? {
+            name: props.name || 'Unnamed district',
+            region: props.region || 'Unknown',
+            lat: c.lat,
+            lon: c.lon,
+            population: props.population,
+            year_created: props.year_created || props.yearCreated
+          } : null;
+        }).filter(Boolean);
+        plotDistricts(districts);
+      })
+      .catch(function () {
+        plotDistricts(DATA.districtSample || []);
+        showToast('District GeoJSON preview could not load; showing fallback city sample');
+      });
   }
 
   // ---------- Reveal-on-scroll + stat count-up ----------

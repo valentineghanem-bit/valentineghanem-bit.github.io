@@ -106,6 +106,36 @@ html.cursor-native-edge .v2-cursor-action { opacity: 0 !important; }
   transform: translate3d(-120vw, -120vh, 0);
 }
 
+.v2-cursor-arrow::before {
+  content: '';
+  position: absolute;
+  width: 58px;
+  height: 58px;
+  left: -14px;
+  top: -12px;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 4%, #22D3EE 0 3px, transparent 4px),
+    radial-gradient(circle at 91% 34%, #34D399 0 3px, transparent 4px),
+    radial-gradient(circle at 76% 86%, #FBBF24 0 3px, transparent 4px),
+    radial-gradient(circle at 22% 86%, #EF4444 0 3px, transparent 4px),
+    radial-gradient(circle at 8% 34%, #8B5CF6 0 3px, transparent 4px);
+  filter: drop-shadow(0 0 7px rgba(34,211,238,0.44));
+  transform: scale(0.92);
+  transition: opacity 0.16s ease, transform 0.18s ease;
+  animation: none;
+}
+
+.v2-cursor-arrow.is-idle::before,
+.v2-cursor-arrow.is-hovering::before,
+.v2-cursor-arrow.is-active:not(.is-moving):not(.is-texting)::before {
+  opacity: 1;
+  transform: scale(1);
+  animation: v2-cursor-particle-breathe 1.85s ease-in-out infinite;
+}
+
 .v2-cursor-cluster.is-idle .v2-cursor-particle,
 .v2-cursor-cluster.is-hovering .v2-cursor-particle,
 .v2-cursor-cluster.is-active:not(.is-moving):not(.is-texting) .v2-cursor-particle {

@@ -59,8 +59,8 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       {% endfor %}
     ],
     radar: {
-      labels: ["Spatial Epidemiology", "Clinical Diagnostics", "Data Science & ML", "Public Health Policy", "GIS & Mapping", "Lab Ops Leadership"],
-      values: [88, 90, 86, 78, 82, 90]
+      labels: ["Clinical Lab Science", "Public Health Epidemiology", "Disease Surveillance", "Spatial GIS", "Predictive Modelling", "Quality Systems", "Clinical Data Science"],
+      values: [92, 90, 88, 88, 86, 89, 84]
     },
     districtSample: [
       { name: "Accra Metropolitan", region: "Greater Accra", lat: 5.6037, lon: -0.1870, risk: 62 },
@@ -292,35 +292,42 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <h2 class="text-xs font-black uppercase tracking-[0.4em] text-amber-400 mb-4">02 &mdash; Expertise</h2>
         <h3 class="text-4xl sm:text-5xl font-black font-heading">Multi-Disciplinary Technical Matrix</h3>
       </div>
-      <p class="text-slate-400 mt-3 text-sm">Relative emphasis across current work, not a measured proficiency score.</p>
+      <p class="text-slate-400 mt-3 text-sm">Relative emphasis across clinical practice, public-health work, spatial analytics and applied modelling. Not a measured proficiency score.</p>
     </div>
     <div class="grid lg:grid-cols-12 gap-12 items-center">
       <div class="lg:col-span-6 reveal">
-        <div class="glass-card bg-slate-800/60 p-6 rounded-3xl border border-slate-700 h-[400px] relative">
+        <div class="glass-card bg-slate-800/60 p-6 rounded-3xl border border-slate-700 h-[440px] relative">
           <canvas id="radarChart"></canvas>
         </div>
       </div>
-      <div class="lg:col-span-6 reveal space-y-6">
+      <div class="lg:col-span-6 reveal grid sm:grid-cols-2 gap-5">
         <div class="p-6 glass-card bg-slate-800/40 rounded-2xl border border-slate-700 hover:border-cyan-400 transition-all">
           <div class="flex items-center gap-4 mb-3">
             <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-lg">01</div>
-            <h4 class="text-xl font-bold font-heading">Spatial Epidemiology &amp; GIS</h4>
+            <h4 class="text-xl font-bold font-heading">Clinical Laboratory &amp; Quality Leadership</h4>
           </div>
-          <p class="text-sm text-slate-300 pl-14">Spatial autocorrelation (Moran's I, Bivariate LISA), disease and health-access mapping across Ghana's 261 districts, ArcGIS &amp; Folium choropleth mapping.</p>
+          <p class="text-sm text-slate-300 sm:pl-14">Medical laboratory science across clinical chemistry, haematology, microbiology-informed diagnostics, GeneXpert and real-time PCR workflows, ISO 15189 quality systems, and high-throughput laboratory operations.</p>
         </div>
         <div class="p-6 glass-card bg-slate-800/40 rounded-2xl border border-slate-700 hover:border-emerald-400 transition-all">
           <div class="flex items-center gap-4 mb-3">
             <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg">02</div>
-            <h4 class="text-xl font-bold font-heading">Clinical Diagnostic Leadership</h4>
+            <h4 class="text-xl font-bold font-heading">Public Health Epidemiology &amp; Surveillance</h4>
           </div>
-          <p class="text-sm text-slate-300 pl-14">High-complexity clinical chemistry &amp; haematology (Beckman AU5800, Sysmex XN-550, Mindray BS600, Roche), GeneXpert and real-time PCR workflows, ISO 15189 quality management.</p>
+          <p class="text-sm text-slate-300 sm:pl-14">Communicable-disease epidemiology, outbreak intelligence, screening outreach, health-systems strengthening, vaccination and WASH context, and surveillance thinking built for practical public-health decisions.</p>
         </div>
         <div class="p-6 glass-card bg-slate-800/40 rounded-2xl border border-slate-700 hover:border-violet-400 transition-all">
           <div class="flex items-center gap-4 mb-3">
             <div class="w-10 h-10 rounded-xl bg-violet-500/20 text-violet-400 flex items-center justify-center font-bold text-lg">03</div>
-            <h4 class="text-xl font-bold font-heading">Machine Learning &amp; Public Health Data</h4>
+            <h4 class="text-xl font-bold font-heading">Spatial Epidemiology &amp; Ghana District Analytics</h4>
           </div>
-          <p class="text-sm text-slate-300 pl-14">XGBoost, Random Forest, Ridge Regression and SHAP explainability for HIV/AIDS incidence forecasting; Python, R and Streamlit for reproducible dashboards.</p>
+          <p class="text-sm text-slate-300 sm:pl-14">Moran's I, bivariate LISA, disease and health-access mapping, Ghana's 261-district geography, ArcGIS, Folium and choropleth workflows for district-level public-health intelligence.</p>
+        </div>
+        <div class="p-6 glass-card bg-slate-800/40 rounded-2xl border border-slate-700 hover:border-amber-400 transition-all">
+          <div class="flex items-center gap-4 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-lg">04</div>
+            <h4 class="text-xl font-bold font-heading">Data Science, Modelling &amp; Decision Dashboards</h4>
+          </div>
+          <p class="text-sm text-slate-300 sm:pl-14">Python, R, Streamlit, XGBoost, Random Forest, Ridge Regression and SHAP explainability applied to HIV/AIDS incidence forecasting, clinical data science and reproducible health dashboards.</p>
         </div>
       </div>
     </div>
@@ -332,28 +339,28 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
     <div class="reveal text-center max-w-3xl mx-auto mb-16">
       <div class="section__ghost-wrap">
         <span class="section__ghost-num">03</span>
-        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-crimson mb-4">03 &mdash; Interactive Demo</h2>
-        <h3 class="text-4xl sm:text-5xl font-black font-heading">Spatial Autocorrelation Risk Simulator</h3>
+        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-crimson mb-4">03 &mdash; Published Work Signal Lab</h2>
+        <h3 class="text-4xl sm:text-5xl font-black font-heading">Spatial Epidemiology Concept Explorer</h3>
       </div>
-      <p class="text-slate-600 dark:text-slate-400 mt-4">An illustrative demo of the spatial-autocorrelation concept (Moran's I) behind Valentine's real published work &mdash; not a validated predictive model. Adjust the sliders to see how the computed index responds.</p>
+      <p class="text-slate-600 dark:text-slate-400 mt-4">A guided interaction based on themes from Valentine Golden Ghanem's published spatial and machine-learning work: clustering, structural risk, coverage, environmental pressure and response priority. It is an explanatory interface, not a clinical prediction tool.</p>
     </div>
     <div class="grid lg:grid-cols-12 gap-8 reveal">
       <div class="lg:col-span-5 glass-card p-8 rounded-3xl border">
-        <h4 class="text-xl font-bold font-heading mb-6 flex items-center gap-2"><i class="fa-solid fa-sliders text-cyan-500"></i> Environmental &amp; Health Controls</h4>
+        <h4 class="text-xl font-bold font-heading mb-6 flex items-center gap-2"><i class="fa-solid fa-sliders text-cyan-500"></i> Surveillance Signal Controls</h4>
         <div class="mb-6">
-          <div class="flex justify-between text-xs font-bold mb-2"><span>Vector Density (Mosquito/Rodent Index)</span><span id="vectorVal" class="text-cyan-500">65%</span></div>
+          <div class="flex justify-between text-xs font-bold mb-2"><span>Transmission / Exposure Signal</span><span id="vectorVal" class="text-cyan-500">65%</span></div>
           <input type="range" id="vectorInput" min="10" max="100" value="65" oninput="calculateOutbreakRisk()" class="w-full accent-cyan-500 cursor-pointer">
         </div>
         <div class="mb-6">
-          <div class="flex justify-between text-xs font-bold mb-2"><span>Water &amp; Sanitation Deficit Score</span><span id="sanitationVal" class="text-amber-500">45%</span></div>
+          <div class="flex justify-between text-xs font-bold mb-2"><span>Structural Vulnerability Index</span><span id="sanitationVal" class="text-amber-500">45%</span></div>
           <input type="range" id="sanitationInput" min="0" max="100" value="45" oninput="calculateOutbreakRisk()" class="w-full accent-amber-500 cursor-pointer">
         </div>
         <div class="mb-6">
-          <div class="flex justify-between text-xs font-bold mb-2"><span>Vaccination Coverage Rate</span><span id="vaccineVal" class="text-emerald-500">55%</span></div>
+          <div class="flex justify-between text-xs font-bold mb-2"><span>Service Coverage / Protective Reach</span><span id="vaccineVal" class="text-emerald-500">55%</span></div>
           <input type="range" id="vaccineInput" min="0" max="100" value="55" oninput="calculateOutbreakRisk()" class="w-full accent-emerald-500 cursor-pointer">
         </div>
         <div class="mb-6">
-          <div class="flex justify-between text-xs font-bold mb-2"><span>Seasonal Rainfall Anomaly (mm)</span><span id="rainVal" class="text-violet-500">+120mm</span></div>
+          <div class="flex justify-between text-xs font-bold mb-2"><span>Seasonal / Environmental Pressure</span><span id="rainVal" class="text-violet-500">+120mm</span></div>
           <input type="range" id="rainInput" min="0" max="300" value="120" oninput="calculateOutbreakRisk()" class="w-full accent-violet-500 cursor-pointer">
         </div>
         <button onclick="resetSimulator()" class="w-full py-3 bg-slate-200 dark:bg-slate-800 text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-slate-300 transition-colors">Reset Baseline Parameters</button>
@@ -362,10 +369,10 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <div>
           <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
             <div>
-              <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Illustrative Moran's I Index</span>
+              <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Illustrative spatial clustering index</span>
               <div id="moranIndexDisplay" class="text-5xl font-black font-heading text-cyan-500 mt-1">I = +0.72</div>
             </div>
-            <div id="riskLevelBadge" class="px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider bg-red-500/20 text-red-500 border border-red-500/30">HIGH CLUSTER RISK</div>
+            <div id="riskLevelBadge" class="px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider bg-red-500/20 text-red-500 border border-red-500/30">STRONG CLUSTERING SIGNAL</div>
           </div>
           <div class="mb-8">
             <div class="flex justify-between text-xs font-bold text-slate-500 mb-2"><span>Outbreak Probability Score</span><span id="outbreakProbPercent">74%</span></div>
@@ -374,13 +381,13 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
             </div>
           </div>
           <div class="p-5 bg-slate-100 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700">
-            <h5 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-2 flex items-center gap-2"><i class="fa-solid fa-shield-virus text-cyan-500"></i> Illustrative Response Protocol</h5>
-            <p id="interventionText" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">Deploy targeted indoor residual spraying in hot-spot contiguous districts. Increase sentinel sampling frequency.</p>
+            <h5 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-2 flex items-center gap-2"><i class="fa-solid fa-shield-virus text-cyan-500"></i> Interpretation Note</h5>
+            <p id="interventionText" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">Interpretation: this interface explains how clustered signals can change as structural, coverage and environmental inputs shift. It is not a validated predictive model.</p>
           </div>
         </div>
         <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-xs text-slate-500 font-mono">
-          <span>*Illustrative demo, not a validated model</span>
-          <a href="{{ '/map/' | relative_url }}" class="text-cyan-500 font-bold hover:underline">Inspect the real Field Map &rarr;</a>
+          <span>*Concept explorer, not a validated predictive model</span>
+          <a href="{{ '/publications/' | relative_url }}" class="text-cyan-500 font-bold hover:underline">Read the real publications &rarr;</a>
         </div>
       </div>
     </div>
@@ -393,20 +400,44 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       <div class="section__ghost-wrap">
         <span class="section__ghost-num">04</span>
         <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-4">04 &mdash; Spatial Intelligence</h2>
-        <h3 class="text-4xl sm:text-5xl font-black font-heading">Ghana District Sample</h3>
+        <h3 class="text-4xl sm:text-5xl font-black font-heading">Ghana District Intelligence Preview</h3>
       </div>
-      <p class="text-slate-600 dark:text-slate-400 mt-4">A 10-city sample for this page &mdash; the <a href="{{ '/map/' | relative_url }}" class="text-violet-500 hover:underline">full Field Map</a> plots every real screening, conference and outreach activity across all 261 districts by true coordinates.</p>
+      <p class="text-slate-600 dark:text-slate-400 mt-4">A lightweight homepage preview of the real 261-district Ghana GeoJSON used by the <a href="{{ '/map/' | relative_url }}" class="text-violet-500 hover:underline">full Field Map</a>. Select or click a district point to update the permanent inspector card.</p>
     </div>
     <div class="grid lg:grid-cols-12 gap-8 reveal">
       <div class="lg:col-span-8 glass-card p-4 rounded-[32px] border">
+        <div class="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between p-3">
+          <label for="districtSelector" class="text-[10px] font-black uppercase tracking-[0.28em] text-slate-500">District selector</label>
+          <select id="districtSelector" class="glass-card rounded-2xl px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 focus:outline-none focus:border-violet-500 min-w-[260px]">
+            <option value="">Loading 261 districts...</option>
+          </select>
+        </div>
         <div id="plotlyMap" class="w-full h-[550px] rounded-[24px] overflow-hidden"></div>
       </div>
       <div class="lg:col-span-4 glass-card p-6 rounded-[32px] border flex flex-col justify-between">
         <div>
           <div class="flex items-center gap-2 text-xs font-mono font-bold text-violet-500 uppercase mb-4"><i class="fa-solid fa-crosshairs"></i> District Inspector</div>
-          <h4 id="inspectorDistrictName" class="text-2xl font-black font-heading mb-1 text-slate-900 dark:text-white">Accra Metropolitan</h4>
-          <p class="text-xs text-slate-500 mb-6" id="inspectorRegion">Greater Accra Region &middot; Lat: 5.6037, Lon: -0.1870</p>
-          <p class="text-xs text-slate-500 leading-relaxed">This teaser uses 10 real major-city coordinates. Click a point to preview, then open the full Field Map for the complete real dataset with 261 districts.</p>
+          <h4 id="inspectorDistrictName" class="text-2xl font-black font-heading mb-1 text-slate-900 dark:text-white">Loading district layer</h4>
+          <p class="text-xs text-slate-500 mb-6" id="inspectorRegion">Reading assets/data/ghana-districts.geojson</p>
+          <div class="grid grid-cols-2 gap-3 mb-6">
+            <div class="rounded-2xl bg-slate-100 dark:bg-slate-800/70 p-3">
+              <div class="text-[10px] uppercase font-black tracking-wider text-slate-400">Coverage</div>
+              <div id="inspectorCoverage" class="text-lg font-black text-violet-500">261</div>
+            </div>
+            <div class="rounded-2xl bg-slate-100 dark:bg-slate-800/70 p-3">
+              <div class="text-[10px] uppercase font-black tracking-wider text-slate-400">Region</div>
+              <div id="inspectorRegionShort" class="text-lg font-black text-cyan-500">--</div>
+            </div>
+            <div class="rounded-2xl bg-slate-100 dark:bg-slate-800/70 p-3">
+              <div class="text-[10px] uppercase font-black tracking-wider text-slate-400">Population</div>
+              <div id="inspectorPopulation" class="text-sm font-black text-slate-600 dark:text-slate-300">Not in file</div>
+            </div>
+            <div class="rounded-2xl bg-slate-100 dark:bg-slate-800/70 p-3">
+              <div class="text-[10px] uppercase font-black tracking-wider text-slate-400">Year Created</div>
+              <div id="inspectorYearCreated" class="text-sm font-black text-slate-600 dark:text-slate-300">Not in file</div>
+            </div>
+          </div>
+          <p id="inspectorNote" class="text-xs text-slate-500 leading-relaxed">This homepage preview uses the real boundary dataset. The current GeoJSON exposes district name and region; population and year-created fields can be added once a vetted district attribute table is merged.</p>
         </div>
         <div class="mt-8 pt-4 border-t border-slate-200 dark:border-slate-800 text-center">
           <a href="{{ '/map/' | relative_url }}" class="text-xs font-bold text-violet-500 hover:underline">Open the full Field Map &rarr;</a>
@@ -425,6 +456,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
           <h2 class="text-xs font-black uppercase tracking-[0.4em] text-emerald-500 mb-4">05 &mdash; Academic Repository</h2>
           <h3 class="text-4xl sm:text-5xl font-black font-heading">Publications &amp; Preprints</h3>
         </div>
+        <p class="mt-4 text-sm text-slate-600 dark:text-slate-400 max-w-3xl">A concise evidence shelf for Valentine Golden Ghanem's peer-reviewed publications, preprints, data repositories and model artifacts across HIV, NHIS inequities, infectious-disease forecasting and spatial epidemiology.</p>
       </div>
       <div class="w-full md:w-auto flex flex-col sm:flex-row gap-3">
         <div class="relative">
@@ -437,6 +469,20 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
           <option value="Clinical Science">Clinical Science</option>
           <option value="Machine Learning">Machine Learning</option>
         </select>
+      </div>
+    </div>
+    <div class="grid sm:grid-cols-3 gap-4 mb-8 reveal">
+      <div class="glass-card rounded-2xl border p-5">
+        <div class="text-3xl font-black text-emerald-500">3</div>
+        <div class="text-[10px] uppercase tracking-widest font-black text-slate-500">Peer-reviewed publications</div>
+      </div>
+      <div class="glass-card rounded-2xl border p-5">
+        <div class="text-3xl font-black text-violet-500">2</div>
+        <div class="text-[10px] uppercase tracking-widest font-black text-slate-500">Preprints / repository records</div>
+      </div>
+      <div class="glass-card rounded-2xl border p-5">
+        <div class="text-3xl font-black text-cyan-500">261</div>
+        <div class="text-[10px] uppercase tracking-widest font-black text-slate-500">District-scale spatial work</div>
       </div>
     </div>
     <div id="publicationsContainer" class="space-y-4 reveal"></div>
@@ -452,6 +498,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
           <h2 class="text-xs font-black uppercase tracking-[0.4em] text-mint mb-4">06 &mdash; Portfolio</h2>
           <h3 class="text-4xl sm:text-5xl font-black font-heading">Selected Projects &amp; Models</h3>
         </div>
+        <p class="mt-4 text-sm text-slate-600 dark:text-slate-400 max-w-3xl">Dashboards, models, algorithms, datasets and clinical research records that show the working side of the publications: data pipelines, forecasting tools, GIS outputs and laboratory science projects.</p>
       </div>
       <div class="flex flex-wrap gap-2">
         <button onclick="filterPortfolio('all')" data-cat="all" class="filter-btn px-5 py-2 rounded-full text-xs font-bold bg-slate-900 dark:bg-white text-white dark:text-slate-900 transition-all">All Projects</button>
@@ -460,7 +507,19 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <button onclick="filterPortfolio('Clinical')" data-cat="Clinical" class="filter-btn px-5 py-2 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-all">Clinical Ops</button>
       </div>
     </div>
-    <div id="portfolio-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 reveal"></div>
+    <div class="grid lg:grid-cols-12 gap-8 reveal">
+      <div id="portfolio-grid" class="lg:col-span-8 grid md:grid-cols-2 gap-8"></div>
+      <aside class="lg:col-span-4 glass-card rounded-[32px] border p-7 h-fit lg:sticky lg:top-28">
+        <div class="text-[10px] font-black uppercase tracking-[0.35em] text-mint mb-4">Artifact Stack</div>
+        <h4 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-4">Models, dashboards and code-backed evidence.</h4>
+        <div class="space-y-3 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+          <p><strong class="text-cyan-500">Forecasting:</strong> Random Forest, Ridge Regression, XGBoost, SVR and ensemble models.</p>
+          <p><strong class="text-violet-500">Spatial GIS:</strong> Ghana district maps, choropleths, LISA logic and field-map interfaces.</p>
+          <p><strong class="text-amber-500">Clinical ops:</strong> diagnostic laboratory quality, antimicrobial resistance and workflow records.</p>
+        </div>
+        <a href="{{ '/portfolio/' | relative_url }}" class="mt-6 inline-flex items-center gap-2 text-xs font-black text-emerald-500 hover:underline">Open all projects <i class="fa-solid fa-arrow-right"></i></a>
+      </aside>
+    </div>
     <div class="text-center mt-10 reveal">
       <a href="{{ '/portfolio/' | relative_url }}" class="text-xs font-bold text-emerald-500 hover:underline">View the full Portfolio page &rarr;</a>
     </div>
@@ -476,6 +535,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
           <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-4">07 &mdash; Field &amp; Diagnostic Operations</h2>
           <h3 class="text-4xl font-black font-heading">A Look Behind the Work</h3>
         </div>
+        <p class="mt-4 text-sm text-slate-600 dark:text-slate-400 max-w-2xl">Portraits and field images from Valentine Golden Ghanem's clinical, institutional and public-health work. Preview cards preserve faces with top-aware framing; the full gallery opens uncropped views.</p>
       </div>
       <a href="{{ '/gallery/' | relative_url }}" class="text-xs font-bold text-violet-500 hover:underline">Full Gallery (26 photos) &rarr;</a>
     </div>
@@ -483,9 +543,12 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       {%- for item in site.data.gallery_portraits limit:4 -%}
       <div onclick="openLightbox('{{ item.url | relative_url }}', 'Field &amp; Diagnostic Operations', '{{ item.caption }}')"
            class="h-64 bg-slate-800 rounded-3xl overflow-hidden relative group cursor-pointer p-6 flex items-end {% if forloop.index == 2 %}sm:col-span-2{% endif %}">
-        <img src="{{ item.url | relative_url }}" alt="{{ item.caption }}, Valentine Golden Ghanem" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+        <img src="{{ item.url | relative_url }}" alt="{{ item.caption }}, Valentine Golden Ghanem" class="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500">
         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/10 to-transparent"></div>
-        <div class="relative z-10 text-xs font-black uppercase text-white tracking-widest bg-slate-900/80 px-3 py-1.5 rounded-lg">View in Gallery &rarr;</div>
+        <div class="relative z-10">
+          <div class="text-xs font-black uppercase text-white tracking-widest bg-slate-900/80 px-3 py-1.5 rounded-lg inline-flex">View in Gallery &rarr;</div>
+          <p class="home-gallery-caption mt-2 text-[11px] text-white/80">{{ item.caption }}</p>
+        </div>
       </div>
       {%- endfor -%}
     </div>
