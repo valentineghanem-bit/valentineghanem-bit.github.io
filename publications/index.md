@@ -42,7 +42,7 @@ extra_js: ["publications-fx.js"]
     <div class="section__ghost-wrap">
       <span class="section__ghost-num">01</span>
       <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-2">01</h2>
-      <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">Peer-reviewed publications</h3>
+      <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">Publications, preprints and research records</h3>
     </div>
     <p class="filter-empty hidden text-center py-10 text-slate-400 font-mono text-sm">No publications match that search.</p>
     <ul class="grid gap-5 mb-20 list-none p-0" data-pub-list>

@@ -1,13 +1,61 @@
 <footer id="contact" class="bg-slate-900 text-white relative overflow-hidden">
-  <div class="marquee marquee--footer block py-3 border-b border-slate-800 no-underline" aria-hidden="true">
-    <div class="marquee__track">
-      {%- assign footer_ticker = "Biomedical Scientist|Epidemiologist|Principal Biomedical Scientist|Public Health Researcher|Clinical Microbiology|Diagnostic Microbiology|Antimicrobial Resistance|AMR Surveillance|Culture and Sensitivity|Pathogen Detection|Nosocomial Infection Control|Clinical Laboratory Leadership|Laboratory Medicine|Clinical Diagnostics|Quality Management Systems|Biosafety and Biosecurity|Epidemiological Surveillance|Field Epidemiology|Spatial Epidemiology|Computational Epidemiology|Geospatial Analytics|GIS Mapping|Disease Surveillance|Outbreak Intelligence|Sentinel Surveillance|Syndromic Surveillance|Public Health Intelligence|Health Protection|One Health Surveillance|Communicable Disease Control|WASH Epidemiology|HIV/AIDS Surveillance|TB Surveillance|Vector-Borne Disease Mapping|Moran's I|LISA Hotspots|Spatial Autocorrelation|Cluster Detection|Risk Stratification|Predictive Modelling|Machine Learning|Explainable AI|Clinical Data Science|Health Informatics|Health Systems Research|Universal Health Coverage|Health Equity|Public Health Advisory|Ghana District Analytics|261 Districts|Accra, Ghana" | split: "|" -%}
-      {% for item in footer_ticker %}<span class="marquee__item">{{ item }}</span>{% endfor %}
-      {% for item in footer_ticker %}<span class="marquee__item">{{ item }}</span>{% endfor %}
-      {% for item in footer_ticker %}<span class="marquee__item">{{ item }}</span>{% endfor %}
-      {% for item in footer_ticker %}<span class="marquee__item">{{ item }}</span>{% endfor %}
+  <section id="methods-toolchain" class="technical-stack" data-technical-stack aria-labelledby="technicalStackTitle">
+    <div class="technical-stack__header">
+      <div>
+        <p class="technical-stack__eyebrow">Applied methods, platforms and libraries</p>
+        <h2 id="technicalStackTitle">Methods &amp; Toolchain</h2>
+        <p class="technical-stack__summary">The software, spatial methods, modelling approaches and laboratory systems used across Valentine Golden Ghanem's research and professional practice.</p>
+      </div>
+      <div class="technical-stack__controls" aria-label="Filter the methods and toolchain">
+        <div class="technical-stack__filters" role="group" aria-label="Technical stack category">
+          <button type="button" data-stack-filter="all" aria-pressed="true">All</button>
+          <button type="button" data-stack-filter="code" aria-pressed="false">Code</button>
+          <button type="button" data-stack-filter="spatial" aria-pressed="false">Spatial</button>
+          <button type="button" data-stack-filter="modelling" aria-pressed="false">Models</button>
+          <button type="button" data-stack-filter="public-health" aria-pressed="false">Epidemiology</button>
+          <button type="button" data-stack-filter="laboratory" aria-pressed="false">Laboratory</button>
+        </div>
+        <button type="button" class="technical-stack__motion" data-stack-motion aria-pressed="false" aria-label="Pause methods and toolchain motion" title="Pause motion">
+          <i class="fa-solid fa-pause" aria-hidden="true"></i>
+        </button>
+      </div>
     </div>
-  </div>
+
+    {%- assign stack_rails = "tools|methods" | split: "|" -%}
+    {%- for rail in stack_rails -%}
+    <div class="technical-stack__rail technical-stack__rail--{{ rail }}" data-stack-rail="{{ rail }}" aria-label="{% if rail == 'tools' %}Software, languages and analytical platforms{% else %}Methods, surveillance practice and laboratory systems{% endif %}">
+      <div class="technical-stack__track">
+        {%- for copy in (1..2) -%}
+        <div class="technical-stack__group"{% if copy == 2 %} aria-hidden="true"{% endif %}>
+          {%- for item in site.data.technical_stack -%}
+          {%- if item.rail == rail -%}
+          <button type="button"
+                  class="technical-stack__item"
+                  data-stack-category="{{ item.category }}"
+                  data-stack-name="{{ item.name | escape }}"
+                  data-stack-detail="{{ item.detail | escape }}"
+                  aria-label="{{ item.name | escape }}: {{ item.detail | escape }}"
+                  aria-pressed="false"
+                  {% if copy == 2 %}tabindex="-1"{% endif %}>
+            <span class="technical-stack__mark" aria-hidden="true">
+              {%- if item.icon -%}<i class="{{ item.icon }}"></i>{%- else -%}{{ item.mark }}{%- endif -%}
+            </span>
+            <span>{{ item.name }}</span>
+          </button>
+          {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {%- endfor -%}
+      </div>
+    </div>
+    {%- endfor -%}
+
+    <div class="technical-stack__inspector" aria-live="polite">
+      <span class="technical-stack__inspector-label">Practice note</span>
+      <strong data-stack-inspector-name>Python</strong>
+      <span data-stack-inspector-detail>Disease modelling, spatial analysis, reproducible pipelines and dashboard engineering.</span>
+    </div>
+  </section>
   <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center py-14 px-6">
     <div class="reveal">
       <h2 class="text-4xl sm:text-5xl font-black font-heading mb-5 leading-tight">
@@ -55,7 +103,14 @@
   </div>
   <div class="border-t border-slate-800 py-5 px-6">
     <div class="max-w-7xl mx-auto flex flex-col items-center gap-2 text-center">
-      <img src="{{ '/assets/img/brand/vgg-master-emblem-theme-transparent.png' | relative_url }}" alt="Valentine Golden Ghanem faceted G site favicon" class="w-[88px] h-[88px] rounded-[1.9rem] bg-slate-900 p-1.5 shadow-2xl shadow-slate-950/25 ring-1 ring-slate-700/70">
+      <button type="button"
+              class="site-footer__home-button"
+              onclick="scrollToTopV3(event)"
+              aria-label="Return to the top of Valentine Ghanem's website"
+              title="Return to top">
+        <img src="{{ '/assets/img/brand/vgg-master-emblem-theme-transparent.png' | relative_url }}" alt="" aria-hidden="true">
+        <span class="sr-only">Return to top</span>
+      </button>
       <p class="text-xs font-mono text-slate-500">&copy; {{ 'now' | date: "%Y" }} {{ site.data.profile.name }}, MLS (CORU), ACSLM, AHPC, FRSPH, VvE. All rights reserved.</p>
     </div>
   </div>

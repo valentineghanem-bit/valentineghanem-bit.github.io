@@ -40,23 +40,34 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       {% for p in site.data.publications %}
       {
         title: {{ p.title | jsonify }},
+        journal: {{ p.journal | jsonify }},
         year: {{ p.year | jsonify }},
-        category: {% if p.title contains "Spatial" or p.title contains "District" %}"Epidemiology"{% elsif p.title contains "Machine Learning" or p.title contains "Ensemble" or p.title contains "Explainable" %}"Machine Learning"{% else %}"Clinical Science"{% endif %},
+        record_type: {{ p.record_type | jsonify }},
         status: {{ p.status | jsonify }},
         doi_url: {{ p.doi_url | jsonify }},
-        summary: {{ p.summary | jsonify }}
+        citation: {{ p.citation | jsonify }},
+        summary: {{ p.summary | jsonify }},
+        methods: {{ p.methods | jsonify }},
+        caveat: {{ p.caveat | jsonify }},
+        links: [{% for l in p.links %}{ label: {{ l.label | jsonify }}, url: {{ l.url | jsonify }} },{% endfor %}]
       },
       {% endfor %}
     ],
-    portfolio: [
-      {% for p in site.data.portfolio.research_projects %}
-      { title: {{ p.title | jsonify }}, category: {% if p.title contains "Antimicrobial" %}"Clinical"{% else %}"Machine Learning"{% endif %}, desc: {{ p.summary | jsonify }}, links: [{% for l in p.links %}{ label: {{ l.label | jsonify }}, url: {{ l.url | relative_url | jsonify }} },{% endfor %}] },
-      {% endfor %}
-      {% for p in site.data.portfolio.data_visualisations %}
-      { title: {{ p.title | jsonify }}, category: "Spatial GIS", desc: {{ p.summary | jsonify }}, links: [{% for l in p.links %}{ label: {{ l.label | jsonify }}, url: {{ l.url | relative_url | jsonify }} },{% endfor %}] },
-      {% endfor %}
-      {% for p in site.data.portfolio.capstone_projects %}
-      { title: {{ p.title | jsonify }}, category: "Machine Learning", desc: {{ p.summary | jsonify }}, links: [{% for l in p.links %}{ label: {{ l.label | jsonify }}, url: {{ l.url | relative_url | jsonify }} },{% endfor %}] },
+    artifacts: [
+      {% for a in site.data.home_artifacts %}
+      {
+        id: {{ a.id | jsonify }},
+        title: {{ a.title | jsonify }},
+        domain: {{ a.domain | jsonify }},
+        status: {{ a.status | jsonify }},
+        icon: {{ a.icon | jsonify }},
+        summary: {{ a.summary | jsonify }},
+        evidence: {{ a.evidence | jsonify }},
+        methods: {{ a.methods | jsonify }},
+        repo_url: {{ a.repo_url | jsonify }},
+        demo_url: {{ a.demo_url | jsonify }},
+        release_url: {{ a.release_url | jsonify }}
+      },
       {% endfor %}
     ],
     radar: {
@@ -349,10 +360,10 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   </div>
 </section>
 
-<section id="research" class="py-32 bg-slate-900 text-white relative overflow-hidden">
+<section id="research" class="home-expertise-section py-32 bg-slate-900 text-white relative overflow-hidden">
   <div class="blob w-[500px] h-[500px] bg-amber-500/10 top-0 right-0 pointer-events-none"></div>
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="text-center mb-20 reveal">
+  <div class="home-expertise-section__inner max-w-7xl mx-auto px-6">
+    <div class="home-expertise-section__header text-center mb-20 reveal">
       <div class="section__ghost-wrap">
         <span class="section__ghost-num">02</span>
         <h2 class="text-xs font-black uppercase tracking-[0.4em] text-amber-400 mb-4">02 &mdash; Expertise</h2>
@@ -360,8 +371,8 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       </div>
       <p class="text-slate-400 mt-3 text-sm">Relative emphasis across clinical practice, public-health work, spatial analytics and applied modelling. Not a measured proficiency score.</p>
     </div>
-    <div class="grid lg:grid-cols-12 gap-12 items-start">
-      <div class="lg:col-span-6 reveal">
+    <div class="home-expertise-layout grid lg:grid-cols-12 gap-12 items-start">
+      <div class="home-expertise-radar-column lg:col-span-6 reveal">
         <div class="home-radar-card glass-card bg-slate-800/60 p-6 rounded-3xl border border-slate-700 relative">
           <div class="home-radar-plot">
             <canvas id="radarChart" aria-label="Radar chart showing Valentine Golden Ghanem's relative emphasis across laboratory quality, public health, surveillance, spatial GIS, predictive modelling, quality systems and clinical data"></canvas>
@@ -391,7 +402,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
           <p class="mt-4 text-[11px] leading-relaxed text-slate-400 font-mono">Relative emphasis only. The radar visualises the shape of Valentine Golden Ghanem's current portfolio; it is not a scored proficiency test.</p>
         </div>
       </div>
-      <div class="lg:col-span-6 reveal grid sm:grid-cols-2 gap-5">
+      <div class="home-expertise-cards lg:col-span-6 reveal grid sm:grid-cols-2 gap-5">
         <article class="home-expertise-card is-active p-6 glass-card bg-slate-800/40 rounded-2xl border border-slate-700 hover:border-cyan-400 transition-all" data-radar-index="0" tabindex="0" role="button" aria-label="Inspect Clinical Laboratory and Quality Leadership in the radar">
           <div class="flex items-center gap-4 mb-3">
             <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-lg">01</div>
@@ -557,110 +568,169 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   </div>
 </section>
 
-<section id="publications" class="py-32 px-6 bg-slate-50/50 dark:bg-slate-900/40 border-t border-slate-200 dark:border-slate-800">
+<section id="publications" class="home-academic-section py-32 px-6 border-t">
   <div class="max-w-7xl mx-auto">
-    <div class="reveal flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
-      <div>
-        <div class="section__ghost-wrap">
-          <span class="section__ghost-num">04</span>
-          <h2 class="text-xs font-black uppercase tracking-[0.4em] text-emerald-500 mb-4">04 &mdash; Academic Repository</h2>
-          <h3 class="text-4xl sm:text-5xl font-black font-heading">Publications &amp; Preprints</h3>
+    <header class="home-section-heading reveal">
+      <div class="section__ghost-wrap">
+        <span class="section__ghost-num">04</span>
+        <h2>04 &mdash; Academic Repository</h2>
+        <h3>Publications &amp; Preprints</h3>
+      </div>
+      <p>Six connected records: three peer-reviewed articles, two active preprints and one citable data-and-software deposit. Each record keeps its scholarly status, source and limitations visible.</p>
+    </header>
+
+    <dl class="academic-counts reveal" aria-label="Academic record summary">
+      <div><dt>Peer-reviewed</dt><dd>3</dd><span>journal articles</span></div>
+      <div><dt>Preprints</dt><dd>2</dd><span>under review or awaiting review</span></div>
+      <div><dt>Data + software</dt><dd>1</dd><span>citable repository record</span></div>
+    </dl>
+
+    <div class="academic-repository reveal" data-academic-repository>
+      <nav class="academic-record-list" role="tablist" aria-label="Select a scholarly record">
+        <div class="academic-pane-label">Research record</div>
+        {% for pub in site.data.publications %}
+        <button type="button"
+                role="tab"
+                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+                data-academic-index="{{ forloop.index0 }}"
+                class="{% if forloop.first %}is-active{% endif %}">
+          <span>{{ forloop.index | prepend: "0" | slice: -2, 2 }}</span>
+          <b>{{ pub.status }}</b>
+          <strong>{{ pub.title }}</strong>
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </button>
+        {% endfor %}
+      </nav>
+
+      <article class="academic-record-detail" role="tabpanel" aria-live="polite">
+        <div class="academic-record-meta">
+          <span id="academicStatus" class="academic-status academic-status--peer_reviewed">Peer-reviewed</span>
+          <span id="academicSource">Cureus &middot; 2026</span>
         </div>
-        <p class="mt-4 text-sm text-slate-600 dark:text-slate-400 max-w-3xl">A concise evidence shelf for Valentine Golden Ghanem's peer-reviewed publications, preprints, data repositories and model artifacts across HIV, NHIS inequities, infectious-disease forecasting and spatial epidemiology.</p>
-      </div>
-      <div class="w-full md:w-auto flex flex-col sm:flex-row gap-3">
-        <div class="relative">
-          <input type="text" id="pubSearchInput" onkeyup="filterPublications()" placeholder="Search title, topic..." class="px-4 py-2.5 pl-10 glass-card rounded-full text-xs font-medium focus:outline-none focus:border-cyan-500 w-full sm:w-64">
-          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+        <h4 id="academicTitle">{{ site.data.publications[0].title }}</h4>
+        <p id="academicSummary">{{ site.data.publications[0].summary }}</p>
+        <div id="academicMethods" class="academic-methods" aria-label="Methods">
+          {% for method in site.data.publications[0].methods %}<span>{{ method }}</span>{% endfor %}
         </div>
-        <select id="pubCategoryFilter" onchange="filterPublications()" class="px-4 py-2.5 glass-card rounded-full text-xs font-bold focus:outline-none text-slate-700 dark:text-slate-300">
-          <option value="all">All Domains</option>
-          <option value="Epidemiology">Epidemiology</option>
-          <option value="Clinical Science">Clinical Science</option>
-          <option value="Machine Learning">Machine Learning</option>
-        </select>
-      </div>
+        <div class="academic-caveat">
+          <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+          <p id="academicCaveat">{{ site.data.publications[0].caveat }}</p>
+        </div>
+        <div id="academicLinks" class="academic-actions">
+          <a href="{{ site.data.publications[0].doi_url }}" target="_blank" rel="noopener"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Open DOI</a>
+          <button type="button" id="academicCopyCitation"><i class="fa-regular fa-copy" aria-hidden="true"></i> Copy citation</button>
+        </div>
+      </article>
+
+      <aside class="academic-provenance">
+        <div class="academic-pane-label">Record interpretation</div>
+        <div class="academic-provenance-mark" aria-hidden="true"><i class="fa-solid fa-fingerprint"></i></div>
+        <h4>Paper, method and artifact remain distinct.</h4>
+        <p>Peer review, preprint status and software deposits are not interchangeable. This reader preserves those boundaries while showing how the scholarly and technical records connect.</p>
+        <a href="{{ '/publications/' | relative_url }}">Open the complete academic record <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+      </aside>
     </div>
-    <div class="grid sm:grid-cols-3 gap-4 mb-8 reveal">
-      <div class="glass-card rounded-2xl border p-5">
-        <div class="text-3xl font-black text-emerald-500">3</div>
-        <div class="text-[10px] uppercase tracking-widest font-black text-slate-500">Peer-reviewed publications</div>
-      </div>
-      <div class="glass-card rounded-2xl border p-5">
-        <div class="text-3xl font-black text-violet-500">2</div>
-        <div class="text-[10px] uppercase tracking-widest font-black text-slate-500">Preprints / repository records</div>
-      </div>
-      <div class="glass-card rounded-2xl border p-5">
-        <div class="text-3xl font-black text-cyan-500">261</div>
-        <div class="text-[10px] uppercase tracking-widest font-black text-slate-500">District-scale spatial work</div>
-      </div>
-    </div>
-    <div id="publicationsContainer" class="space-y-4 reveal"></div>
   </div>
 </section>
 
-<section id="portfolio" class="py-32 px-6">
+<section id="portfolio" class="home-portfolio-section py-32 px-6">
   <div class="max-w-7xl mx-auto">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8 reveal">
+    <header class="home-section-heading home-section-heading--split reveal">
       <div>
         <div class="section__ghost-wrap">
           <span class="section__ghost-num">05</span>
-          <h2 class="text-xs font-black uppercase tracking-[0.4em] text-mint mb-4">05 &mdash; Portfolio</h2>
-          <h3 class="text-4xl sm:text-5xl font-black font-heading">Selected Projects &amp; Models</h3>
+          <h2>05 &mdash; Portfolio</h2>
+          <h3>Selected Projects &amp; Models</h3>
         </div>
-        <p class="mt-4 text-sm text-slate-600 dark:text-slate-400 max-w-3xl">Dashboards, models, algorithms, datasets and clinical research records that show the working side of the publications: data pipelines, forecasting tools, GIS outputs and laboratory science projects.</p>
+        <p>Open the systems behind the research: reproducible pipelines, Ghana district models, source-provenance audits and interactive dashboards.</p>
       </div>
-      <div class="flex flex-wrap gap-2">
-        <button onclick="filterPortfolio('all')" data-cat="all" class="filter-btn px-5 py-2 rounded-full text-xs font-bold bg-slate-900 dark:bg-white text-white dark:text-slate-900 transition-all">All Projects</button>
-        <button onclick="filterPortfolio('Spatial GIS')" data-cat="Spatial GIS" class="filter-btn px-5 py-2 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-all">Spatial GIS</button>
-        <button onclick="filterPortfolio('Machine Learning')" data-cat="Machine Learning" class="filter-btn px-5 py-2 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-all">Machine Learning</button>
-        <button onclick="filterPortfolio('Clinical')" data-cat="Clinical" class="filter-btn px-5 py-2 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-all">Clinical Ops</button>
+      <div class="artifact-filters" role="group" aria-label="Filter featured artifacts">
+        <button type="button" class="is-active" data-artifact-filter="all">All systems</button>
+        <button type="button" data-artifact-filter="Spatial epidemiology">Spatial</button>
+        <button type="button" data-artifact-filter="Health equity">Equity</button>
+        <button type="button" data-artifact-filter="Forecasting">Forecasting</button>
       </div>
-    </div>
-    <div class="grid lg:grid-cols-12 gap-8 reveal">
-      <div id="portfolio-grid" class="lg:col-span-8 grid md:grid-cols-2 gap-8"></div>
-      <aside class="lg:col-span-4 glass-card rounded-[32px] border p-7 h-fit lg:sticky lg:top-28">
-        <div class="text-[10px] font-black uppercase tracking-[0.35em] text-mint mb-4">Artifact Stack</div>
-        <h4 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-4">Models, dashboards and code-backed evidence.</h4>
-        <div class="space-y-3 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-          <p><strong class="text-cyan-500">Forecasting:</strong> Random Forest, Ridge Regression, XGBoost, SVR and ensemble models.</p>
-          <p><strong class="text-violet-500">Spatial GIS:</strong> Ghana district maps, choropleths, LISA logic and field-map interfaces.</p>
-          <p><strong class="text-amber-500">Clinical ops:</strong> diagnostic laboratory quality, antimicrobial resistance and workflow records.</p>
+    </header>
+
+    <div class="artifact-workbench reveal" data-artifact-workbench>
+      <div class="artifact-catalogue" id="artifactCatalogue" aria-live="polite"></div>
+      <aside class="artifact-inspector" aria-live="polite">
+        <div class="artifact-inspector__topline">
+          <span id="artifactDomain">Maternal health</span>
+          <span id="artifactStatus">Preprint and reproducible analysis</span>
         </div>
-        <a href="{{ '/portfolio/' | relative_url }}" class="mt-6 inline-flex items-center gap-2 text-xs font-black text-emerald-500 hover:underline">Open all projects <i class="fa-solid fa-arrow-right"></i></a>
+        <div class="artifact-inspector__icon"><i id="artifactIcon" class="fa-solid fa-person-pregnant" aria-hidden="true"></i></div>
+        <h4 id="artifactTitle">Antenatal Care and Fertility Inequities</h4>
+        <p id="artifactSummary">{{ site.data.home_artifacts[0].summary }}</p>
+        <div class="artifact-evidence">
+          <span>What the repository demonstrates</span>
+          <p id="artifactEvidence">{{ site.data.home_artifacts[0].evidence }}</p>
+        </div>
+        <div id="artifactMethods" class="artifact-methods">
+          {% for method in site.data.home_artifacts[0].methods %}<span>{{ method }}</span>{% endfor %}
+        </div>
+        <div id="artifactActions" class="artifact-actions"></div>
       </aside>
     </div>
-    <div class="text-center mt-10 reveal">
-      <a href="{{ '/portfolio/' | relative_url }}" class="text-xs font-bold text-emerald-500 hover:underline">View the full Portfolio page &rarr;</a>
-    </div>
+    <a class="home-section-link reveal" href="{{ '/portfolio/' | relative_url }}">Browse the complete portfolio <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
   </div>
 </section>
 
-<section id="gallery" class="py-32 bg-slate-50/50 dark:bg-slate-900/60 border-t border-slate-200 dark:border-slate-800">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="reveal mb-12 flex items-end justify-between flex-wrap gap-4">
+{% assign operation_lead = site.data.gallery_portraits[2] %}
+{% assign operation_lis = site.data.gallery_portraits[4] %}
+{% assign operation_biosafety = site.data.gallery_portraits[10] %}
+{% assign operation_data = site.data.gallery_portraits[13] %}
+<section id="gallery" class="home-operations-section py-32 px-6 border-t">
+  <div class="max-w-7xl mx-auto">
+    <header class="home-section-heading home-section-heading--split reveal">
       <div>
         <div class="section__ghost-wrap">
           <span class="section__ghost-num">06</span>
-          <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-4">06 &mdash; Field &amp; Diagnostic Operations</h2>
-          <h3 class="text-4xl font-black font-heading">A Look Behind the Work</h3>
+          <h2>06 &mdash; Field &amp; Diagnostic Operations</h2>
+          <h3>A Look Behind the Work</h3>
         </div>
-        <p class="mt-4 text-sm text-slate-600 dark:text-slate-400 max-w-2xl">Portraits and field images from Valentine Golden Ghanem's clinical, institutional and public-health work. Preview cards preserve faces with top-aware framing; the full gallery opens uncropped views.</p>
+        <p>Clinical evidence is built through people, instruments and disciplined workflows. These scenes connect outreach coordination, laboratory practice and data review without duplicating the full Gallery.</p>
       </div>
-      <a href="{{ '/gallery/' | relative_url }}" class="text-xs font-bold text-violet-500 hover:underline">Full Gallery (26 photos) &rarr;</a>
+      <a href="{{ '/gallery/' | relative_url }}">Open all 26 photographs <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+    </header>
+
+    <div class="operations-stage reveal">
+      <button type="button"
+              class="operations-lead"
+              data-operation-lightbox
+              data-lightbox-img="{{ operation_lead.url | relative_url }}"
+              data-lightbox-title="Field coordination"
+              data-lightbox-desc="{{ operation_lead.caption | escape }}"
+              aria-label="Open field coordination photograph of Valentine Golden Ghanem">
+        <img src="{{ operation_lead.url | relative_url }}" alt="{{ operation_lead.caption }} Valentine Golden Ghanem." loading="lazy">
+        <span class="operations-image-label"><b>01</b> Field coordination</span>
+      </button>
+      <aside class="operations-brief">
+        <span class="academic-pane-label">Operational continuum</span>
+        <h4>From specimen quality to population response.</h4>
+        <p>Valentine Golden Ghanem's work connects laboratory evidence with the practical decisions that follow: quality checks, team communication, surveillance interpretation and targeted public-health action.</p>
+        <dl>
+          <div><dt>Diagnostic practice</dt><dd>Quality-controlled workflows, biosafety and traceable laboratory records.</dd></div>
+          <div><dt>Field coordination</dt><dd>Screening, outreach and clear communication across clinical and community teams.</dd></div>
+          <div><dt>Data translation</dt><dd>Turning clinical and spatial signals into evidence that can be reviewed and acted upon.</dd></div>
+        </dl>
+      </aside>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 reveal">
-      {%- for item in site.data.gallery_portraits limit:4 -%}
-      <div onclick="openLightbox('{{ item.url | relative_url }}', 'Field &amp; Diagnostic Operations', '{{ item.caption }}')"
-           class="h-64 bg-slate-800 rounded-3xl overflow-hidden relative group cursor-pointer p-6 flex items-end {% if forloop.index == 2 %}sm:col-span-2{% endif %}">
-        <img src="{{ item.url | relative_url }}" alt="{{ item.caption }}, Valentine Golden Ghanem" class="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500">
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/10 to-transparent"></div>
-        <div class="relative z-10">
-          <div class="text-xs font-black uppercase text-white tracking-widest bg-slate-900/80 px-3 py-1.5 rounded-lg inline-flex">View in Gallery &rarr;</div>
-          <p class="home-gallery-caption mt-2 text-[11px] text-white/80">{{ item.caption }}</p>
-        </div>
-      </div>
-      {%- endfor -%}
+
+    <div class="operations-strip reveal">
+      <button type="button" data-operation-lightbox data-lightbox-img="{{ operation_biosafety.url | relative_url }}" data-lightbox-title="Diagnostic practice" data-lightbox-desc="{{ operation_biosafety.caption | escape }}" aria-label="Open diagnostic practice photograph of Valentine Golden Ghanem">
+        <span class="operations-image-wrap"><img src="{{ operation_biosafety.url | relative_url }}" alt="{{ operation_biosafety.caption }} Valentine Golden Ghanem." loading="lazy"></span>
+        <span><b>02</b><strong>Diagnostic practice</strong><small>{{ operation_biosafety.caption }}</small></span>
+      </button>
+      <button type="button" data-operation-lightbox data-lightbox-img="{{ operation_lis.url | relative_url }}" data-lightbox-title="Laboratory information workflow" data-lightbox-desc="{{ operation_lis.caption | escape }}" aria-label="Open laboratory information workflow photograph of Valentine Golden Ghanem">
+        <span class="operations-image-wrap"><img src="{{ operation_lis.url | relative_url }}" alt="{{ operation_lis.caption }} Valentine Golden Ghanem." loading="lazy"></span>
+        <span><b>03</b><strong>Laboratory information workflow</strong><small>{{ operation_lis.caption }}</small></span>
+      </button>
+      <button type="button" data-operation-lightbox data-lightbox-img="{{ operation_data.url | relative_url }}" data-lightbox-title="Epidemiological data review" data-lightbox-desc="{{ operation_data.caption | escape }}" aria-label="Open epidemiological data review photograph of Valentine Golden Ghanem">
+        <span class="operations-image-wrap"><img src="{{ operation_data.url | relative_url }}" alt="{{ operation_data.caption }} Valentine Golden Ghanem." loading="lazy"></span>
+        <span><b>04</b><strong>Epidemiological data review</strong><small>{{ operation_data.caption }}</small></span>
+      </button>
     </div>
   </div>
 </section>

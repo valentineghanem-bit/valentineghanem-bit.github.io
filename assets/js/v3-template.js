@@ -151,80 +151,100 @@
     tick();
   }
 
-  // ---------- Soft classical piano ambience -- synthesized locally.
-  // No audio files, no third-party music, and the same mute key as v2 so the
-  // visitor's preference stays consistent across templates. ----------
+  // ---------- Original Romantic-era piano miniature, synthesized locally.
+  // No recording or third-party composition is used. A continuous 16-bar
+  // score, damped piano partials, stereo register placement and a short room
+  // response replace the old isolated oscillator taps. ----------
   var vgAudioV3 = (function () {
-    var ctx = null, masterGain = null, delayNode = null, feedbackGain = null;
-    var isOn = false, button = null, loopTimer = null, chordIndex = 0, startedFromGestureAt = 0;
+    var ctx = null, masterGain = null, roomNode = null, roomGain = null;
+    var compressor = null, hammerNoise = null;
+    var isOn = false, button = null, loopTimer = null, startedFromGestureAt = 0;
+    var activeSources = [];
     var MUTE_KEY = 'vg-v2-audio-muted';
     var wantsOn = localStorage.getItem(MUTE_KEY) !== 'true';
-    var lastActivity = Date.now();
-    ['scroll', 'mousemove', 'pointerdown', 'keydown', 'touchstart'].forEach(function (evt) {
-      window.addEventListener(evt, function () { lastActivity = Date.now(); }, { passive: true });
-    });
-    var currentCutoff = 980;
-    function updateEngagement() {
-      if (!ctx || !isOn) return;
-      var idleMs = Date.now() - lastActivity;
-      var engagement = Math.max(0, 1 - idleMs / 18000);
-      currentCutoff = 820 + engagement * 620;
-      feedbackGain.gain.setTargetAtTime(0.38 - engagement * 0.08, ctx.currentTime, 3.8);
-    }
-    setInterval(updateEngagement, 2500);
-    // Original 40-second miniature: Cadd9 -> G/B -> Am7 -> Fmaj7 -> Dm9
-    // -> Em7 -> Fmaj7 -> Gsus -> C. Slower phrase, fuller harmony, and a
-    // singable top line so it reads as piano ambience rather than alerts.
-    var PIANO_MINIATURE = [
-      { t: 0.00, f: 65.41, v: 0.108, d: 4.2, k: 'bass' },
-      { t: 0.72, f: 130.81, v: 0.050, d: 3.4, k: 'harmony' },
-      { t: 1.38, f: 196.00, v: 0.046, d: 3.1, k: 'harmony' },
-      { t: 2.10, f: 293.66, v: 0.066, d: 2.9, k: 'melody' },
-      { t: 3.08, f: 329.63, v: 0.074, d: 2.8, k: 'melody' },
-      { t: 4.05, f: 392.00, v: 0.066, d: 3.2, k: 'melody' },
-      { t: 5.00, f: 61.74, v: 0.100, d: 4.0, k: 'bass' },
-      { t: 5.74, f: 123.47, v: 0.048, d: 3.4, k: 'harmony' },
-      { t: 6.42, f: 196.00, v: 0.046, d: 3.0, k: 'harmony' },
-      { t: 7.20, f: 369.99, v: 0.066, d: 3.0, k: 'melody' },
-      { t: 8.18, f: 329.63, v: 0.062, d: 2.8, k: 'melody' },
-      { t: 9.05, f: 293.66, v: 0.060, d: 3.3, k: 'melody' },
-      { t: 10.00, f: 55.00, v: 0.104, d: 4.2, k: 'bass' },
-      { t: 10.76, f: 110.00, v: 0.050, d: 3.4, k: 'harmony' },
-      { t: 11.44, f: 164.81, v: 0.046, d: 3.0, k: 'harmony' },
-      { t: 12.28, f: 261.63, v: 0.064, d: 3.0, k: 'melody' },
-      { t: 13.28, f: 329.63, v: 0.070, d: 2.8, k: 'melody' },
-      { t: 14.12, f: 392.00, v: 0.060, d: 3.4, k: 'melody' },
-      { t: 15.00, f: 43.65, v: 0.102, d: 4.3, k: 'bass' },
-      { t: 15.80, f: 130.81, v: 0.048, d: 3.4, k: 'harmony' },
-      { t: 16.54, f: 174.61, v: 0.046, d: 3.0, k: 'harmony' },
-      { t: 17.35, f: 349.23, v: 0.067, d: 3.0, k: 'melody' },
-      { t: 18.28, f: 329.63, v: 0.060, d: 3.1, k: 'melody' },
-      { t: 19.15, f: 261.63, v: 0.064, d: 3.6, k: 'melody' },
-      { t: 20.00, f: 73.42, v: 0.104, d: 4.1, k: 'bass' },
-      { t: 20.82, f: 146.83, v: 0.050, d: 3.4, k: 'harmony' },
-      { t: 21.54, f: 220.00, v: 0.046, d: 3.0, k: 'harmony' },
-      { t: 22.42, f: 349.23, v: 0.066, d: 3.0, k: 'melody' },
-      { t: 23.38, f: 440.00, v: 0.070, d: 2.8, k: 'melody' },
-      { t: 24.20, f: 392.00, v: 0.062, d: 3.3, k: 'melody' },
-      { t: 25.00, f: 82.41, v: 0.100, d: 4.0, k: 'bass' },
-      { t: 25.76, f: 164.81, v: 0.048, d: 3.3, k: 'harmony' },
-      { t: 26.48, f: 246.94, v: 0.045, d: 3.0, k: 'harmony' },
-      { t: 27.35, f: 392.00, v: 0.064, d: 3.0, k: 'melody' },
-      { t: 28.24, f: 493.88, v: 0.066, d: 2.7, k: 'melody' },
-      { t: 29.15, f: 440.00, v: 0.060, d: 3.5, k: 'melody' },
-      { t: 30.00, f: 43.65, v: 0.102, d: 4.3, k: 'bass' },
-      { t: 30.82, f: 130.81, v: 0.048, d: 3.4, k: 'harmony' },
-      { t: 31.52, f: 174.61, v: 0.044, d: 3.0, k: 'harmony' },
-      { t: 32.34, f: 349.23, v: 0.062, d: 3.0, k: 'melody' },
-      { t: 33.26, f: 392.00, v: 0.066, d: 2.8, k: 'melody' },
-      { t: 34.12, f: 329.63, v: 0.058, d: 3.4, k: 'melody' },
-      { t: 35.00, f: 49.00, v: 0.106, d: 4.5, k: 'bass' },
-      { t: 35.82, f: 146.83, v: 0.050, d: 3.5, k: 'harmony' },
-      { t: 36.58, f: 196.00, v: 0.047, d: 3.2, k: 'harmony' },
-      { t: 37.42, f: 293.66, v: 0.060, d: 3.1, k: 'melody' },
-      { t: 38.34, f: 261.63, v: 0.058, d: 3.2, k: 'melody' },
-      { t: 39.15, f: 329.63, v: 0.068, d: 4.6, k: 'melody' }
+
+    var BAR_SECONDS = 3.2;
+    var LOOP_MILLISECONDS = 54000;
+    var ROMANTIC_BARS = [
+      [44, 56, 60, 63, 70], [43, 55, 58, 63, 67], [41, 53, 56, 60, 63], [37, 49, 53, 56, 60],
+      [34, 46, 49, 53, 56], [39, 51, 55, 58, 61], [39, 51, 56, 60, 63], [42, 54, 57, 60, 63],
+      [41, 53, 56, 60, 68], [39, 51, 55, 58, 63], [37, 49, 53, 56, 63], [39, 51, 55, 58, 65],
+      [48, 55, 60, 63, 68], [37, 49, 53, 58, 65], [39, 51, 56, 58, 65], [44, 56, 60, 63, 70]
     ];
+    var MELODY_PHRASES = [
+      [[0.72, 72, 1.38, 0.066], [2.15, 75, 1.05, 0.074]],
+      [[0.38, 74, 0.82, 0.064], [1.34, 70, 0.92, 0.070], [2.42, 67, 0.74, 0.058]],
+      [[0.62, 68, 1.06, 0.064], [1.84, 72, 0.62, 0.072], [2.55, 77, 0.62, 0.076]],
+      [[0.34, 75, 0.84, 0.068], [1.32, 73, 1.48, 0.073]],
+      [[0.58, 70, 0.72, 0.062], [1.44, 73, 0.78, 0.069], [2.36, 77, 0.74, 0.076]],
+      [[0.28, 79, 0.72, 0.078], [1.18, 77, 0.68, 0.070], [2.04, 75, 1.08, 0.067]],
+      [[0.66, 72, 0.72, 0.064], [1.52, 75, 0.72, 0.070], [2.38, 80, 0.76, 0.080]],
+      [[0.38, 78, 0.68, 0.074], [1.24, 75, 0.74, 0.067], [2.18, 72, 0.96, 0.064]],
+      [[0.74, 72, 0.94, 0.066], [1.84, 68, 0.64, 0.060], [2.56, 72, 0.60, 0.068]],
+      [[0.32, 79, 0.74, 0.078], [1.24, 75, 0.74, 0.069], [2.18, 74, 0.92, 0.065]],
+      [[0.48, 73, 0.72, 0.066], [1.34, 77, 0.76, 0.074], [2.26, 80, 0.84, 0.080]],
+      [[0.26, 82, 0.70, 0.082], [1.12, 79, 0.72, 0.074], [2.02, 75, 1.10, 0.068]],
+      [[0.56, 80, 0.76, 0.078], [1.48, 79, 0.62, 0.071], [2.24, 77, 0.86, 0.068]],
+      [[0.34, 75, 0.72, 0.067], [1.22, 73, 0.72, 0.064], [2.10, 70, 1.02, 0.061]],
+      [[0.42, 68, 0.68, 0.060], [1.28, 70, 0.68, 0.064], [2.12, 71, 0.96, 0.066]],
+      [[0.38, 72, 0.76, 0.068], [1.30, 75, 0.80, 0.074], [2.28, 68, 3.20, 0.079]]
+    ];
+
+    function noteToHz(midi) {
+      return 440 * Math.pow(2, (midi - 69) / 12);
+    }
+
+    function trackSource(source) {
+      activeSources.push(source);
+      source.addEventListener('ended', function () {
+        var index = activeSources.indexOf(source);
+        if (index !== -1) activeSources.splice(index, 1);
+      }, { once: true });
+      return source;
+    }
+
+    function buildPianoMiniature() {
+      var score = [];
+      var pattern = [0, 1, 2, 3, 4, 2];
+      ROMANTIC_BARS.forEach(function (bar, barIndex) {
+        var barStart = barIndex * BAR_SECONDS;
+        pattern.forEach(function (voiceIndex, step) {
+          score.push({
+            t: barStart + step * 0.52 + (barIndex % 3 === 1 ? 0.018 : 0),
+            f: noteToHz(bar[voiceIndex]),
+            v: step === 0 ? 0.068 : 0.033 + (step === 3 ? 0.005 : 0),
+            d: step === 0 ? 4.6 : 2.85,
+            k: step === 0 ? 'bass' : 'harmony'
+          });
+        });
+        MELODY_PHRASES[barIndex].forEach(function (note) {
+          score.push({
+            t: barStart + note[0],
+            f: noteToHz(note[1]),
+            v: note[3],
+            d: Math.max(2.6, note[2] + 2.1),
+            k: 'melody'
+          });
+        });
+      });
+      return score.sort(function (a, b) { return a.t - b.t; });
+    }
+
+    var PIANO_MINIATURE = buildPianoMiniature();
+
+    function createRoomImpulse(audioContext) {
+      var length = Math.floor(audioContext.sampleRate * 2.7);
+      var impulse = audioContext.createBuffer(2, length, audioContext.sampleRate);
+      for (var channel = 0; channel < 2; channel++) {
+        var data = impulse.getChannelData(channel);
+        for (var i = 0; i < length; i++) {
+          var envelope = Math.pow(1 - i / length, 2.8);
+          data[i] = (Math.random() * 2 - 1) * envelope * 0.48;
+        }
+      }
+      return impulse;
+    }
+
     function ensureContext() {
       if (ctx) return ctx;
       var AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -232,73 +252,91 @@
       ctx = new AudioCtx();
       masterGain = ctx.createGain();
       masterGain.gain.value = 0;
-      delayNode = ctx.createDelay(2.4);
-      delayNode.delayTime.value = 0.62;
-      feedbackGain = ctx.createGain();
-      feedbackGain.gain.value = 0.28;
-      delayNode.connect(feedbackGain);
-      feedbackGain.connect(delayNode);
-      masterGain.connect(delayNode);
-      delayNode.connect(ctx.destination);
-      masterGain.connect(ctx.destination);
+      roomNode = ctx.createConvolver();
+      roomNode.buffer = createRoomImpulse(ctx);
+      roomGain = ctx.createGain();
+      roomGain.gain.value = 0.17;
+      compressor = ctx.createDynamicsCompressor();
+      compressor.threshold.value = -20;
+      compressor.knee.value = 18;
+      compressor.ratio.value = 3.2;
+      compressor.attack.value = 0.012;
+      compressor.release.value = 0.34;
+      hammerNoise = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.028), ctx.sampleRate);
+      var noiseData = hammerNoise.getChannelData(0);
+      for (var i = 0; i < noiseData.length; i++) {
+        noiseData[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / noiseData.length, 3);
+      }
+      masterGain.connect(compressor);
+      masterGain.connect(roomGain);
+      roomGain.connect(roomNode);
+      roomNode.connect(compressor);
+      compressor.connect(ctx.destination);
       return ctx;
     }
+
     function pluck(freq, when, peak, decay, noteKind) {
-      var osc = ctx.createOscillator();
-      var octave = ctx.createOscillator();
-      var felt = ctx.createOscillator();
-      var octaveGain = ctx.createGain();
-      var feltGain = ctx.createGain();
-      var mix = ctx.createGain();
-      var g = ctx.createGain();
+      var voice = ctx.createGain();
       var filt = ctx.createBiquadFilter();
+      var pan = ctx.createStereoPanner ? ctx.createStereoPanner() : ctx.createGain();
+      var midiPosition = Math.max(-1, Math.min(1, Math.log(freq / 220) / Math.log(4)));
+      var partialRatios = [1, 2.003, 3.011, 4.027, 5.052];
+      var partialLevels = [1, 0.42, 0.20, 0.095, 0.042];
       filt.type = 'lowpass';
-      filt.frequency.value = noteKind === 'melody' ? currentCutoff + 260 : currentCutoff - 140;
-      filt.Q.value = 0.28;
-      osc.type = 'triangle';
-      octave.type = 'sine';
-      felt.type = 'sine';
-      osc.frequency.value = freq;
-      osc.detune.setValueAtTime(noteKind === 'melody' ? -2 : -5, when);
-      octave.frequency.value = freq * 2.004;
-      octave.detune.setValueAtTime(2, when);
-      felt.frequency.value = freq * 0.502;
-      felt.detune.setValueAtTime(-3, when);
-      octaveGain.gain.value = noteKind === 'melody' ? 0.20 : 0.13;
-      feltGain.gain.value = noteKind === 'bass' ? 0.22 : 0.08;
-      mix.gain.value = 1;
-      g.gain.setValueAtTime(0, when);
-      g.gain.linearRampToValueAtTime(peak, when + (noteKind === 'bass' ? 0.032 : 0.020));
-      g.gain.exponentialRampToValueAtTime(Math.max(0.001, peak * 0.42), when + 0.52);
-      g.gain.exponentialRampToValueAtTime(0.0001, when + decay);
-      osc.connect(mix);
-      octave.connect(octaveGain); octaveGain.connect(mix);
-      felt.connect(feltGain); feltGain.connect(mix);
-      mix.connect(g); g.connect(filt); filt.connect(masterGain);
-      osc.start(when); octave.start(when); felt.start(when);
-      osc.stop(when + decay + 0.12); octave.stop(when + decay + 0.12); felt.stop(when + decay + 0.12);
+      filt.frequency.value = noteKind === 'melody' ? 4100 : (noteKind === 'bass' ? 1850 : 2850);
+      filt.Q.value = 0.36;
+      if (pan.pan) pan.pan.value = midiPosition * 0.32;
+      partialRatios.forEach(function (ratio, index) {
+        var oscillator = trackSource(ctx.createOscillator());
+        var partialGain = ctx.createGain();
+        var partialDecay = decay / (1 + index * 0.34);
+        oscillator.type = 'sine';
+        oscillator.frequency.value = freq * ratio;
+        oscillator.detune.value = (index - 2) * 0.55;
+        partialGain.gain.setValueAtTime(0.0001, when);
+        partialGain.gain.exponentialRampToValueAtTime(Math.max(0.0002, peak * partialLevels[index]), when + 0.009 + index * 0.0015);
+        partialGain.gain.exponentialRampToValueAtTime(0.0001, when + partialDecay);
+        oscillator.connect(partialGain);
+        partialGain.connect(voice);
+        oscillator.start(when);
+        oscillator.stop(when + partialDecay + 0.08);
+      });
+      var hammer = trackSource(ctx.createBufferSource());
+      var hammerGain = ctx.createGain();
+      hammer.buffer = hammerNoise;
+      hammerGain.gain.setValueAtTime(noteKind === 'melody' ? peak * 0.16 : peak * 0.09, when);
+      hammerGain.gain.exponentialRampToValueAtTime(0.0001, when + 0.026);
+      hammer.connect(hammerGain);
+      hammerGain.connect(voice);
+      hammer.start(when);
+      voice.connect(filt);
+      filt.connect(pan);
+      pan.connect(masterGain);
     }
+
     function scheduleLoop() {
       if (!isOn || !ctx) return;
-      var now = ctx.currentTime + 0.08;
+      var now = ctx.currentTime + 0.12;
       PIANO_MINIATURE.forEach(function (note) { pluck(note.f, now + note.t, note.v, note.d, note.k); });
-      chordIndex++;
-      loopTimer = setTimeout(scheduleLoop, 42000);
+      loopTimer = setTimeout(scheduleLoop, LOOP_MILLISECONDS);
     }
+
     function startLoop() {
       var c = ensureContext();
       if (!c) return;
       if (c.state === 'suspended') c.resume();
       masterGain.gain.cancelScheduledValues(c.currentTime);
       masterGain.gain.setValueAtTime(masterGain.gain.value, c.currentTime);
-      masterGain.gain.linearRampToValueAtTime(3.15, c.currentTime + 0.45);
-      updateEngagement();
+      masterGain.gain.linearRampToValueAtTime(0.88, c.currentTime + 0.9);
       if (!loopTimer) scheduleLoop();
     }
     function stopLoop() {
       if (!ctx) return;
       clearTimeout(loopTimer);
       loopTimer = null;
+      activeSources.splice(0).forEach(function (source) {
+        try { source.stop(); } catch (error) { /* Source has already ended. */ }
+      });
       masterGain.gain.cancelScheduledValues(ctx.currentTime);
       masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
       masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.7);
@@ -392,7 +430,13 @@
   window.scrollToTopV3 = function (event) {
     var path = window.location.pathname.replace(/\/+$/, '') || '/';
     if (event && path === '/') event.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    var target = document.querySelector('main h1, h1');
+    if (target) {
+      target.setAttribute('tabindex', '-1');
+      window.setTimeout(function () { target.focus({ preventScroll: true }); }, reduceMotion ? 0 : 450);
+    }
   };
   (function initNavScrollBehavior() {
     var nav = document.getElementById('site-nav');
@@ -487,62 +531,180 @@
     }).join('');
   };
 
-  // ---------- Publications ----------
-  function renderPublications(items) {
-    var container = document.getElementById('publicationsContainer');
-    if (!container) return;
-    container.innerHTML = items.map(function (pub) {
-      return '<div class="glass-card p-6 rounded-2xl border hover:border-cyan-500 transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-4">' +
-        '<div class="space-y-1">' +
-        '<div class="flex items-center gap-2 flex-wrap">' +
-        '<span class="text-[10px] font-bold font-mono px-2.5 py-0.5 bg-cyan-500/10 text-cyan-500 rounded-md uppercase">' + pub.year + ' &middot; ' + pub.category + '</span>' +
-        '<span class="text-[10px] font-mono text-slate-400">' + pub.status + '</span>' +
-        '</div>' +
-        '<h4 class="text-base font-bold font-heading text-slate-900 dark:text-white">' + pub.title + '</h4>' +
-        '<p class="text-xs text-slate-500 leading-relaxed">' + pub.summary + '</p>' +
-        '</div>' +
-        '<div class="flex items-center gap-2 whitespace-nowrap">' +
-        '<a href="' + pub.doi_url + '" target="_blank" rel="noopener" class="px-4 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold rounded-xl hover:opacity-90 transition-opacity">Read Paper &rarr;</a>' +
-        '</div></div>';
-    }).join('');
+  function escapeMarkup(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
   }
 
-  window.filterPublications = function () {
-    var searchEl = document.getElementById('pubSearchInput');
-    var catEl = document.getElementById('pubCategoryFilter');
-    var search = (searchEl ? searchEl.value : '').toLowerCase();
-    var cat = catEl ? catEl.value : 'all';
-    var items = (DATA.publications || []).filter(function (p) {
-      var matchesSearch = p.title.toLowerCase().indexOf(search) !== -1 || p.summary.toLowerCase().indexOf(search) !== -1;
-      var matchesCat = cat === 'all' || p.category === cat;
-      return matchesSearch && matchesCat;
-    });
-    renderPublications(items);
-  };
+  function safeExternalUrl(value) {
+    try {
+      var parsed = new URL(value, window.location.origin);
+      return parsed.protocol === 'https:' || parsed.protocol === 'http:' ? parsed.href : '#';
+    } catch (_) {
+      return '#';
+    }
+  }
 
-  // ---------- Portfolio ----------
-  window.filterPortfolio = function (cat) {
-    var grid = document.getElementById('portfolio-grid');
-    if (!grid) return;
-    document.querySelectorAll('.filter-btn').forEach(function (btn) {
-      var isActive = btn.getAttribute('data-cat') === cat;
-      btn.className = isActive
-        ? 'filter-btn px-5 py-2 rounded-full text-xs font-bold bg-slate-900 dark:bg-white text-white dark:text-slate-900 transition-all'
-        : 'filter-btn px-5 py-2 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-all';
+  // ---------- Home academic repository ----------
+  function initAcademicRepository() {
+    var root = document.querySelector('[data-academic-repository]');
+    var items = DATA.publications || [];
+    if (!root || !items.length) return;
+    var tabs = Array.prototype.slice.call(root.querySelectorAll('[data-academic-index]'));
+    var title = document.getElementById('academicTitle');
+    var status = document.getElementById('academicStatus');
+    var source = document.getElementById('academicSource');
+    var summary = document.getElementById('academicSummary');
+    var methods = document.getElementById('academicMethods');
+    var caveat = document.getElementById('academicCaveat');
+    var links = document.getElementById('academicLinks');
+    var copy = document.getElementById('academicCopyCitation');
+    var activeIndex = 0;
+
+    function statusLabel(type) {
+      if (type === 'peer_reviewed') return 'Peer-reviewed';
+      if (type === 'preprint') return 'Preprint';
+      return 'Data and software';
+    }
+
+    function selectRecord(index, focusTab) {
+      if (index < 0 || index >= items.length) return;
+      activeIndex = index;
+      var item = items[index];
+      tabs.forEach(function (tab, tabIndex) {
+        var selected = tabIndex === index;
+        tab.classList.toggle('is-active', selected);
+        tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+        tab.tabIndex = selected ? 0 : -1;
+      });
+      status.className = 'academic-status academic-status--' + escapeMarkup(item.record_type || 'repository');
+      status.textContent = statusLabel(item.record_type);
+      source.textContent = item.journal + ' · ' + item.year;
+      title.textContent = item.title;
+      summary.textContent = item.summary;
+      caveat.textContent = item.caveat || 'Interpret this record within the stated study design and source limitations.';
+      methods.innerHTML = (item.methods || []).map(function (method) {
+        return '<span>' + escapeMarkup(method) + '</span>';
+      }).join('');
+      var actionLinks = [{
+        label: item.record_type === 'repository' ? 'Open record' : 'Open DOI',
+        url: item.doi_url,
+        icon: item.record_type === 'repository' ? 'fa-box-archive' : 'fa-book-open'
+      }].concat((item.links || []).map(function (entry) {
+        return { label: entry.label, url: entry.url, icon: 'fa-arrow-up-right-from-square' };
+      }));
+      links.innerHTML = actionLinks.map(function (entry) {
+        return '<a href="' + safeExternalUrl(entry.url) + '" target="_blank" rel="noopener">' +
+          '<i class="fa-solid ' + entry.icon + '" aria-hidden="true"></i> ' + escapeMarkup(entry.label) + '</a>';
+      }).join('') +
+        '<button type="button" id="academicCopyCitation"><i class="fa-regular fa-copy" aria-hidden="true"></i> Copy citation</button>';
+      copy = document.getElementById('academicCopyCitation');
+      copy.addEventListener('click', function () {
+        copyToClipboard(items[activeIndex].citation, 'Citation copied to clipboard');
+      });
+      if (focusTab) tabs[index].focus();
+    }
+
+    tabs.forEach(function (tab, index) {
+      tab.addEventListener('click', function () { selectRecord(index, false); });
+      tab.addEventListener('keydown', function (event) {
+        var target = index;
+        if (event.key === 'ArrowDown' || event.key === 'ArrowRight') target = (index + 1) % tabs.length;
+        else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') target = (index - 1 + tabs.length) % tabs.length;
+        else if (event.key === 'Home') target = 0;
+        else if (event.key === 'End') target = tabs.length - 1;
+        else return;
+        event.preventDefault();
+        selectRecord(target, true);
+      });
     });
-    var items = (DATA.portfolio || []).filter(function (p) { return cat === 'all' || p.category === cat; });
-    grid.innerHTML = items.map(function (p) {
-      var linksHtml = (p.links || []).map(function (l) {
-        return '<a href="' + l.url + '" target="_blank" rel="noopener" class="hover:underline">' + l.label + '</a>';
-      }).join(' &middot; ');
-      return '<div class="glass-card p-7 rounded-3xl border hover:-translate-y-2 transition-all group">' +
-        '<span class="text-[10px] font-mono font-bold uppercase text-cyan-500 mb-2 block">' + p.category + '</span>' +
-        '<h4 class="text-xl font-bold font-heading mb-3 group-hover:text-cyan-400 transition-colors">' + p.title + '</h4>' +
-        '<p class="text-xs text-slate-500 leading-relaxed mb-4">' + p.desc + '</p>' +
-        (linksHtml ? '<div class="flex items-center gap-2 text-xs font-bold text-cyan-600 dark:text-cyan-400 flex-wrap">' + linksHtml + '</div>' : '') +
-        '</div>';
-    }).join('');
-  };
+    selectRecord(0, false);
+  }
+
+  // ---------- Home artifact workbench ----------
+  function initArtifactWorkbench() {
+    var root = document.querySelector('[data-artifact-workbench]');
+    var catalogue = document.getElementById('artifactCatalogue');
+    var items = DATA.artifacts || [];
+    if (!root || !catalogue || !items.length) return;
+    var activeId = items[0].id;
+    var activeFilter = 'all';
+    var domain = document.getElementById('artifactDomain');
+    var status = document.getElementById('artifactStatus');
+    var icon = document.getElementById('artifactIcon');
+    var title = document.getElementById('artifactTitle');
+    var summary = document.getElementById('artifactSummary');
+    var evidence = document.getElementById('artifactEvidence');
+    var methods = document.getElementById('artifactMethods');
+    var actions = document.getElementById('artifactActions');
+    var filterButtons = Array.prototype.slice.call(document.querySelectorAll('[data-artifact-filter]'));
+
+    function visibleItems() {
+      return items.filter(function (item) { return activeFilter === 'all' || item.domain === activeFilter; });
+    }
+
+    function selectArtifact(id) {
+      var item = items.find(function (candidate) { return candidate.id === id; });
+      if (!item) return;
+      activeId = id;
+      catalogue.querySelectorAll('[data-artifact-id]').forEach(function (button) {
+        var selected = button.getAttribute('data-artifact-id') === id;
+        button.classList.toggle('is-active', selected);
+        button.setAttribute('aria-pressed', selected ? 'true' : 'false');
+      });
+      domain.textContent = item.domain;
+      status.textContent = item.status;
+      icon.className = 'fa-solid ' + item.icon;
+      title.textContent = item.title;
+      summary.textContent = item.summary;
+      evidence.textContent = item.evidence;
+      methods.innerHTML = (item.methods || []).map(function (method) {
+        return '<span>' + escapeMarkup(method) + '</span>';
+      }).join('');
+      var actionData = [
+        { label: 'Open repository', url: item.repo_url, icon: 'fa-brands fa-github' },
+        item.demo_url ? { label: 'Launch dashboard', url: item.demo_url, icon: 'fa-solid fa-chart-column' } : null,
+        item.release_url ? { label: 'Open release DOI', url: item.release_url, icon: 'fa-solid fa-box-archive' } : null
+      ].filter(Boolean);
+      actions.innerHTML = actionData.map(function (entry) {
+        return '<a href="' + safeExternalUrl(entry.url) + '" target="_blank" rel="noopener"><i class="' +
+          entry.icon + '" aria-hidden="true"></i> ' + escapeMarkup(entry.label) + '</a>';
+      }).join('');
+    }
+
+    function renderCatalogue() {
+      var shown = visibleItems();
+      if (!shown.some(function (item) { return item.id === activeId; })) activeId = shown[0] ? shown[0].id : '';
+      catalogue.innerHTML = shown.map(function (item, index) {
+        return '<button type="button" data-artifact-id="' + escapeMarkup(item.id) + '" aria-pressed="' +
+          (item.id === activeId ? 'true' : 'false') + '" class="' + (item.id === activeId ? 'is-active' : '') + '">' +
+          '<span>' + String(index + 1).padStart(2, '0') + '</span>' +
+          '<i class="fa-solid ' + escapeMarkup(item.icon) + '" aria-hidden="true"></i>' +
+          '<span><b>' + escapeMarkup(item.domain) + '</b><strong>' + escapeMarkup(item.title) + '</strong></span>' +
+          '<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>';
+      }).join('');
+      catalogue.querySelectorAll('[data-artifact-id]').forEach(function (button) {
+        button.addEventListener('click', function () { selectArtifact(button.getAttribute('data-artifact-id')); });
+      });
+      if (activeId) selectArtifact(activeId);
+    }
+
+    filterButtons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        activeFilter = button.getAttribute('data-artifact-filter') || 'all';
+        filterButtons.forEach(function (candidate) {
+          candidate.classList.toggle('is-active', candidate === button);
+          candidate.setAttribute('aria-pressed', candidate === button ? 'true' : 'false');
+        });
+        renderCatalogue();
+      });
+    });
+    renderCatalogue();
+  }
 
   // ---------- Modals ----------
   window.openCvModal = function () {
@@ -558,7 +720,8 @@
   window.openLightbox = function (img, title, desc) {
     var imgEl = document.getElementById('lightboxImg');
     imgEl.src = img;
-    imgEl.alt = (desc || title || 'Photo') + ', Valentine Golden Ghanem';
+    var altBase = (desc || title || 'Photo').replace(/[\s.,;:!?]+$/, '');
+    imgEl.alt = altBase + ', Valentine Golden Ghanem';
     document.getElementById('lightboxTitle').textContent = title;
     document.getElementById('lightboxDesc').textContent = desc;
     document.getElementById('lightboxModal').classList.remove('opacity-0', 'pointer-events-none');
@@ -566,6 +729,19 @@
   window.closeLightbox = function () {
     document.getElementById('lightboxModal').classList.add('opacity-0', 'pointer-events-none');
   };
+
+  function initOperationLightboxes() {
+    document.querySelectorAll('[data-operation-lightbox]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        window.openLightbox(
+          button.getAttribute('data-lightbox-img') || '',
+          button.getAttribute('data-lightbox-title') || 'Field and diagnostic operations',
+          button.getAttribute('data-lightbox-desc') || ''
+        );
+      });
+    });
+  }
+
   window.toggleMobileNav = function () {
     document.getElementById('mobileDrawer').classList.toggle('hidden');
   };
@@ -1313,9 +1489,7 @@
   }
 
   // ---------- Portfolio page category filter chips ----------
-  // Distinct from window.filterPortfolio (Home's teaser grid, #portfolio-grid
-  // + .filter-btn) -- this is the real Portfolio page's own filter, ported
-  // from site.js's [data-portfolio-root] block unchanged.
+  // Dedicated Portfolio-page filter; independent of Home's artifact workbench.
   function initPortfolioCategoryFilter() {
     var root = document.querySelector('[data-portfolio-root]');
     if (!root) return;
@@ -1346,13 +1520,99 @@
     });
   }
 
+  // ---------- Methods & Toolchain ----------
+  // The paired rails are CSS-driven for smooth, low-cost motion. JavaScript
+  // only handles filtering, deliberate pause/play and the evidence inspector.
+  function initTechnicalStack() {
+    var root = document.querySelector('[data-technical-stack]');
+    if (!root) return;
+
+    var filters = Array.prototype.slice.call(root.querySelectorAll('[data-stack-filter]'));
+    var items = Array.prototype.slice.call(root.querySelectorAll('.technical-stack__item'));
+    var rails = Array.prototype.slice.call(root.querySelectorAll('[data-stack-rail]'));
+    var motionButton = root.querySelector('[data-stack-motion]');
+    var inspectorName = root.querySelector('[data-stack-inspector-name]');
+    var inspectorDetail = root.querySelector('[data-stack-inspector-detail]');
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function inspect(item) {
+      if (!item) return;
+      var name = item.getAttribute('data-stack-name') || '';
+      var detail = item.getAttribute('data-stack-detail') || '';
+      if (inspectorName) inspectorName.textContent = name;
+      if (inspectorDetail) inspectorDetail.textContent = detail;
+      items.forEach(function (candidate) {
+        candidate.classList.toggle('is-active', candidate.getAttribute('data-stack-name') === name);
+        candidate.setAttribute('aria-pressed', candidate.getAttribute('data-stack-name') === name ? 'true' : 'false');
+      });
+    }
+
+    function applyFilter(category) {
+      filters.forEach(function (button) {
+        button.setAttribute('aria-pressed', button.getAttribute('data-stack-filter') === category ? 'true' : 'false');
+      });
+      items.forEach(function (item) {
+        item.hidden = category !== 'all' && item.getAttribute('data-stack-category') !== category;
+      });
+      rails.forEach(function (rail) {
+        var primaryGroup = rail.querySelector('.technical-stack__group:not([aria-hidden="true"])');
+        rail.hidden = !primaryGroup || !primaryGroup.querySelector('.technical-stack__item:not([hidden])');
+      });
+      inspect(items.find(function (item) {
+        return !item.hidden && !item.closest('[aria-hidden="true"]');
+      }));
+    }
+
+    filters.forEach(function (button) {
+      button.addEventListener('click', function () {
+        applyFilter(button.getAttribute('data-stack-filter') || 'all');
+      });
+    });
+
+    items.forEach(function (item) {
+      item.addEventListener('pointerenter', function () { inspect(item); });
+      item.addEventListener('focus', function () { inspect(item); });
+      item.addEventListener('click', function () { inspect(item); });
+    });
+
+    if (motionButton) {
+      function syncMotionButton() {
+        var isPaused = root.classList.contains('is-paused');
+        motionButton.setAttribute('aria-pressed', isPaused ? 'true' : 'false');
+        motionButton.setAttribute('aria-label', isPaused ? 'Resume methods and toolchain motion' : 'Pause methods and toolchain motion');
+        motionButton.setAttribute('title', isPaused ? 'Resume motion' : 'Pause motion');
+        motionButton.innerHTML = '<i class="fa-solid ' + (isPaused ? 'fa-play' : 'fa-pause') + '" aria-hidden="true"></i>';
+      }
+
+      if (reducedMotion.matches) {
+        root.classList.add('is-paused');
+        motionButton.disabled = true;
+        motionButton.setAttribute('aria-label', 'Motion disabled by reduced-motion preference');
+        motionButton.setAttribute('title', 'Motion disabled by system preference');
+      } else {
+        motionButton.addEventListener('click', function () {
+          root.classList.toggle('is-paused');
+          syncMotionButton();
+        });
+      }
+      syncMotionButton();
+      if (reducedMotion.matches) {
+        motionButton.setAttribute('aria-label', 'Motion disabled by reduced-motion preference');
+        motionButton.setAttribute('title', 'Motion disabled by system preference');
+      }
+    }
+
+    applyFilter('all');
+  }
+
   var didBootV3 = false;
   function bootV3Template() {
     if (didBootV3) return;
     didBootV3 = true;
     window.switchJourneyTab('education');
-    renderPublications(DATA.publications || []);
-    window.filterPortfolio('all');
+    initAcademicRepository();
+    initArtifactWorkbench();
+    initOperationLightboxes();
     initRadarChart();
     initMicroscopicInfectionCanvas();
     startTypewriter();
@@ -1380,6 +1640,7 @@
     initPublicationsFilter();
     initPortfolioCategoryFilter();
     initCpdFilter();
+    initTechnicalStack();
   }
 
   if (document.readyState === 'loading') {
