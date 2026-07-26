@@ -116,12 +116,12 @@
   </div>
 </footer>
 
-<div id="cvModal" class="fixed inset-0 z-[9999] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+<div id="cvModal" role="dialog" aria-modal="true" aria-labelledby="cvModalTitle" class="fixed inset-0 z-[9999] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
   <div class="glass-card bg-slate-900 border-slate-800 text-white rounded-3xl max-w-2xl w-full p-8 max-h-[90vh] overflow-y-auto relative">
-    <button onclick="closeCvModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+    <button type="button" aria-label="Close CV overview dialog" onclick="closeCvModal()" class="absolute top-4 right-4 w-11 h-11 flex items-center justify-center text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl" aria-hidden="true"></i></button>
     <div class="border-b border-slate-800 pb-6 mb-6">
       <span class="text-xs font-mono text-cyan-400 font-bold uppercase">Curriculum Vitae Overview</span>
-      <h3 class="text-3xl font-black font-heading mt-1">{{ site.data.profile.name }}</h3>
+      <h3 id="cvModalTitle" class="text-3xl font-black font-heading mt-1">{{ site.data.profile.name }}</h3>
       <p class="text-xs text-slate-400 mt-1">Medical Laboratory Scientist &middot; Epidemiologist &middot; Public Health Researcher</p>
     </div>
     <div class="space-y-6 text-xs text-slate-300 leading-relaxed">
@@ -139,16 +139,16 @@
       </div>
     </div>
     <div class="mt-8 pt-6 border-t border-slate-800 flex justify-between items-center">
-      <a href="{{ site.data.profile.cv_download_url | relative_url }}" download class="px-5 py-2.5 bg-cyan-500 text-slate-950 font-bold rounded-xl text-xs">Download Full CV</a>
-      <button onclick="closeCvModal()" class="text-slate-400 hover:text-white text-xs">Close</button>
+      <a href="{{ site.data.profile.cv_download_url | relative_url }}" download class="min-h-[44px] inline-flex items-center px-5 py-2.5 bg-cyan-500 text-slate-950 font-bold rounded-xl text-xs">Download Full CV</a>
+      <button type="button" onclick="closeCvModal()" class="min-h-[44px] px-3 text-slate-400 hover:text-white text-xs">Close</button>
     </div>
   </div>
 </div>
 
-<div id="lightboxModal" class="fixed inset-0 z-[9999] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+<div id="lightboxModal" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle" class="fixed inset-0 z-[9999] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
   <div class="max-w-4xl w-full glass-card bg-slate-900 border-slate-800 rounded-3xl overflow-hidden relative">
-    <button onclick="closeLightbox()" class="absolute top-4 right-4 z-10 text-white bg-slate-800/80 w-9 h-9 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark text-lg"></i></button>
-    <img id="lightboxImg" src="" alt="Enlarged" class="w-full h-80 sm:h-96 object-cover">
+    <button type="button" aria-label="Close enlarged photograph" onclick="closeLightbox()" class="absolute top-4 right-4 z-10 text-white bg-slate-800/80 w-11 h-11 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark text-lg" aria-hidden="true"></i></button>
+    <img id="lightboxImg" src="" alt="Enlarged photograph of Valentine Golden Ghanem" class="w-full h-80 sm:h-96 object-cover">
     <div class="p-6">
       <h4 id="lightboxTitle" class="text-xl font-bold font-heading text-white"></h4>
       <p id="lightboxDesc" class="text-xs text-slate-300 mt-2 leading-relaxed"></p>

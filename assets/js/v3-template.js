@@ -422,11 +422,7 @@
     showToast(next.charAt(0).toUpperCase() + next.slice(1) + ' theme');
   };
 
-  // ---------- Logo top action + auto-hide/reveal nav ----------
-  // One scroll listener drives both: the nav slides out of view on scroll
-  // DOWN past a small threshold (so it doesn't flicker on tiny scrolls) and
-  // slides back in on any scroll UP, regardless of position -- the common
-  // "get out of the way while reading, come back the moment you want it" pattern.
+  // ---------- Logo top action + auto-hiding side navigation ----------
   window.scrollToTopV3 = function (event) {
     var path = window.location.pathname.replace(/\/+$/, '') || '/';
     if (event && path === '/') event.preventDefault();
@@ -438,27 +434,89 @@
       window.setTimeout(function () { target.focus({ preventScroll: true }); }, reduceMotion ? 0 : 450);
     }
   };
-  (function initNavScrollBehavior() {
+  (function initSideNavBehavior() {
     var nav = document.getElementById('site-nav');
-    if (!nav) return;
-    var lastY = window.scrollY;
-    var ticking = false;
-    var REVEAL_THRESHOLD = 80;
-    function onScroll() {
-      var y = window.scrollY;
-      if (y <= REVEAL_THRESHOLD) {
-        nav.style.transform = '';
-      } else if (y > lastY) {
-        nav.style.transform = 'translateX(-50%) translateY(-140%)';
-      } else if (y < lastY) {
-        nav.style.transform = 'translateX(-50%) translateY(0)';
-      }
-      lastY = y;
-      ticking = false;
+    var panel = document.getElementById('sideNavPanel');
+    var toggle = document.getElementById('sideNavToggle');
+    var backdrop = document.getElementById('sideNavBackdrop');
+    if (!nav || !panel || !toggle) return;
+    var closeTimer = 0;
+    var pinned = false;
+    var mobileQuery = window.matchMedia('(max-width: 767px)');
+    var sectionNumber = toggle.querySelector('[data-nav-section-number]');
+    var sectionLabel = toggle.querySelector('[data-nav-section-label]');
+    var sectionMarkers = Array.prototype.slice.call(document.querySelectorAll('[data-nav-marker]'));
+    var markerTicking = false;
+
+    function setOpen(open, pin) {
+      window.clearTimeout(closeTimer);
+      if (typeof pin === 'boolean') pinned = pin;
+      nav.classList.toggle('is-open', open);
+      panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.setAttribute('aria-label', open ? 'Close site navigation' : 'Open site navigation');
+      if (backdrop) backdrop.classList.toggle('is-open', open && mobileQuery.matches);
     }
+
+    function scheduleClose() {
+      if (pinned || mobileQuery.matches) return;
+      window.clearTimeout(closeTimer);
+      closeTimer = window.setTimeout(function () {
+        if (!nav.matches(':focus-within') && !nav.matches(':hover')) setOpen(false);
+      }, 720);
+    }
+
+    function syncSectionMarker() {
+      markerTicking = false;
+      if (!sectionMarkers.length) return;
+      var probe = window.innerHeight * 0.34;
+      var active = sectionMarkers[0];
+      sectionMarkers.forEach(function (section) {
+        if (section.getBoundingClientRect().top <= probe) active = section;
+      });
+      var colour = active.dataset.navColour || '#22D3EE';
+      toggle.style.setProperty('--section-colour', colour);
+      if (sectionNumber) sectionNumber.textContent = active.dataset.navMarker || '00';
+      if (sectionLabel) sectionLabel.textContent = active.dataset.navLabel || 'Section';
+    }
+
+    toggle.addEventListener('click', function () {
+      if (nav.classList.contains('is-open') && pinned) {
+        setOpen(false, false);
+      } else {
+        setOpen(true, true);
+      }
+    });
+    nav.addEventListener('pointerenter', function () {
+      if (!mobileQuery.matches) setOpen(true);
+    });
+    nav.addEventListener('pointerleave', scheduleClose);
+    nav.addEventListener('focusin', function () { setOpen(true); });
+    nav.addEventListener('focusout', scheduleClose);
+    nav.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        if (mobileQuery.matches) setOpen(false, false);
+      });
+    });
+    if (backdrop) backdrop.addEventListener('click', function () { setOpen(false, false); });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && nav.classList.contains('is-open')) {
+        setOpen(false, false);
+        toggle.focus();
+      }
+    });
+    mobileQuery.addEventListener('change', function () { setOpen(false, false); });
     window.addEventListener('scroll', function () {
-      if (!ticking) { ticking = true; setTimeout(onScroll, 16); }
+      if (!markerTicking) {
+        markerTicking = true;
+        window.requestAnimationFrame(syncSectionMarker);
+      }
     }, { passive: true });
+    syncSectionMarker();
+    window.toggleSideNavV3 = function () {
+      var willOpen = !nav.classList.contains('is-open');
+      setOpen(willOpen, willOpen);
+    };
   })();
 
   // ---------- Footer icon tray: bounce, then open ----------
@@ -743,7 +801,7 @@
   }
 
   window.toggleMobileNav = function () {
-    document.getElementById('mobileDrawer').classList.toggle('hidden');
+    if (window.toggleSideNavV3) window.toggleSideNavV3();
   };
 
 

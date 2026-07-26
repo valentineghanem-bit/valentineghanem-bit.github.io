@@ -2,176 +2,262 @@
 layout: v3
 permalink: /about/
 jsonld: about
-title: "About"
-description: "Biography, biodata and professional profile of Valentine Golden Ghanem, a Ghanaian medical scientist, epidemiologist and public health researcher."
-extra_js: ["canvas-field.js", "about-fx.js"]
+title: "About Valentine Golden Ghanem"
+description: "Professional profile of Valentine Golden Ghanem, a Ghanaian medical scientist, epidemiologist and public health researcher."
+extra_css: ["about-v3.css"]
+extra_js: ["about-fx.js"]
 ---
 {% include nav-v3.html %}
 {%- assign rep_img = site.data.images | where: "representative", true | first -%}
-{%- assign frsph = site.data.profile.memberships | where_exp: "m", "m.abbreviation == 'FRSPH'" | first -%}
-{%- assign acslm = site.data.profile.memberships | where_exp: "m", "m.abbreviation == 'ACSLM'" | first -%}
-{%- assign gamls = site.data.profile.memberships | where_exp: "m", "m.abbreviation == 'GAMLS'" | first -%}
-{%- assign vve = site.data.profile.memberships | where_exp: "m", "m.abbreviation == 'VvE'" | first -%}
-<div class="about-v2">
+{%- assign first_domain = site.data.about_expertise | first -%}
 
-<section class="relative overflow-hidden pt-40 pb-20 px-6">
-  <div class="canvas-field absolute inset-0 z-0 opacity-40" data-canvas-field data-palette="v2" data-intensity="0.5" aria-hidden="true"></div>
-  <div class="blob w-[500px] h-[500px] bg-cyan-400/10 -top-32 -left-32 pointer-events-none"></div>
-  <div class="max-w-[1800px] mx-auto relative z-10">
-    <p class="font-mono text-xs text-slate-400 mb-6"><a href="{{ '/' | relative_url }}" class="hover:text-cyan-500">Home</a> / About</p>
-    <div class="grid lg:grid-cols-12 gap-12 items-center">
-      <div class="lg:col-span-7">
-        <h1 class="text-4xl sm:text-5xl md:text-6xl font-black font-heading tracking-tight text-slate-900 dark:text-white mb-6">About {{ site.data.profile.name }}</h1>
-        <blockquote class="spotlight-glow relative pl-6 py-2 mb-6 border-l-4 border-cyan-500 bg-cyan-500/5 rounded-r-2xl">
-          <p class="text-lg sm:text-xl italic text-slate-800 dark:text-slate-200 leading-snug">{{ site.data.profile.disambiguating_description }}</p>
-        </blockquote>
-        <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">{{ site.data.profile.description }}</p>
+<main class="about-v3" id="main-content">
+  <section class="about-profile-hero" aria-labelledby="aboutTitle" data-nav-marker="00" data-nav-label="Profile" data-nav-colour="#22D3EE">
+    <div class="about-profile-hero__grid">
+      <div class="about-profile-hero__copy reveal">
+        <p class="about-v3__breadcrumb"><a href="{{ '/' | relative_url }}">Home</a><span>/</span>About</p>
+        <p class="about-v3__eyebrow">Medical science <b>&bull;</b> Epidemiology <b>&bull;</b> Public health</p>
+        <h1 id="aboutTitle">{{ site.data.profile.name }}</h1>
+        <p class="about-profile-hero__role">{{ site.data.profile.job_titles | join: " / " }}</p>
+        <p class="about-profile-hero__summary">{{ site.data.profile.description | strip_newlines }}</p>
+        <div class="about-profile-hero__status" aria-label="Current professional scope">
+          <span><i class="fa-solid fa-flask-vial" aria-hidden="true"></i> Principal Biomedical Scientist</span>
+          <span><i class="fa-solid fa-earth-africa" aria-hidden="true"></i> Accra, Ghana</span>
+          <span><i class="fa-solid fa-id-card-clip" aria-hidden="true"></i> Ghana and Ireland registrations</span>
+        </div>
       </div>
-      <div class="lg:col-span-5 flex justify-center lg:justify-end">
-        <figure class="relative w-full max-w-sm glass-card rounded-[28px] p-3 border shadow-2xl" data-parallax="0.08">
-          <div class="absolute top-6 right-6 z-20 bg-slate-900/90 backdrop-blur-md text-white text-[10px] font-mono tracking-widest px-3 py-1.5 rounded-full border border-slate-700">Dual-licensed &middot; Ghana &amp; Ireland</div>
-          <img src="{{ rep_img.content_url }}" alt="{{ rep_img.name }}" width="{{ rep_img.width }}" height="{{ rep_img.height }}" loading="lazy" class="w-full h-auto object-cover rounded-[20px]" onerror="this.closest('figure').style.display='none'">
-          <figcaption class="text-xs font-mono text-slate-400 text-center mt-2 pb-1">{{ rep_img.caption }}</figcaption>
-        </figure>
+
+      <figure class="about-profile-hero__portrait reveal">
+        <div class="about-profile-hero__image">
+          <span class="about-profile-hero__ruler" aria-hidden="true"></span>
+          <img src="{{ rep_img.content_url }}"
+               alt="{{ rep_img.name }}"
+               width="{{ rep_img.width }}"
+               height="{{ rep_img.height }}"
+               loading="eager"
+               fetchpriority="high"
+               onerror="this.closest('figure').style.display='none'">
+        </div>
+        <figcaption>
+          <span>{{ rep_img.caption }}</span>
+          <b>Cocoa Clinic, Ghana COCOBOD</b>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="professional-remit" class="about-v3__section about-remit" aria-labelledby="aboutRemitTitle" data-nav-marker="01" data-nav-label="Remit" data-nav-colour="#34D399">
+    <div class="about-v3__inner">
+      <header class="about-v3__section-header reveal">
+        <span class="about-v3__ghost" aria-hidden="true">01</span>
+        <p>01 - Professional remit</p>
+        <h2 id="aboutRemitTitle">Clinical evidence, population insight and decision systems</h2>
+      </header>
+
+      <div class="about-remit__layout">
+        <div class="about-remit__statement reveal">
+          <p>{{ site.data.profile.statement_of_purpose }}</p>
+          <blockquote>{{ site.data.profile.aim }}</blockquote>
+          <div class="about-remit__languages">
+            <span>Working languages</span>
+            {% for lang in site.data.profile.languages %}<b>{{ lang.name }}</b>{% endfor %}
+          </div>
+        </div>
+
+        <ol class="about-remit__sequence reveal" aria-label="Professional operating model">
+          <li style="--remit-colour:#22D3EE">
+            <span>01</span>
+            <div><h3>Diagnostic reliability</h3><p>Laboratory operations, quality systems and clinical context establish the evidence base.</p></div>
+          </li>
+          <li style="--remit-colour:#34D399">
+            <span>02</span>
+            <div><h3>Population interpretation</h3><p>Epidemiology, surveillance and field experience explain how that evidence behaves across people and places.</p></div>
+          </li>
+          <li style="--remit-colour:#A78BFA">
+            <span>03</span>
+            <div><h3>Decision infrastructure</h3><p>Spatial analysis, modelling and interactive tools make the findings inspectable and useful.</p></div>
+          </li>
+        </ol>
+      </div>
+
+      <p class="about-remit__vision reveal">{{ site.data.profile.career_vision }}</p>
+    </div>
+  </section>
+
+  <section id="practice-matrix" class="about-v3__section about-matrix" aria-labelledby="aboutMatrixTitle" data-nav-marker="02" data-nav-label="Expertise" data-nav-colour="#A78BFA">
+    <div class="about-v3__inner">
+      <header class="about-v3__section-header reveal">
+        <span class="about-v3__ghost" aria-hidden="true">02</span>
+        <p>02 - Expertise</p>
+        <h2 id="aboutMatrixTitle">Multi-Disciplinary Practice Matrix</h2>
+        <span>Five connected domains, each tied to methods, professional evidence and a practical output.</span>
+      </header>
+
+      <div class="about-matrix__workspace reveal" data-about-matrix>
+        <div class="about-matrix__tabs" role="tablist" aria-label="Professional expertise domains">
+          {% for domain in site.data.about_expertise %}
+          <button type="button"
+                  id="about-domain-{{ domain.id }}"
+                  role="tab"
+                  aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                  aria-controls="aboutMatrixInspector"
+                  tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+                  class="about-matrix__tab{% if forloop.first %} is-active{% endif %}"
+                  style="--domain-colour:{{ domain.colour }}"
+                  data-domain-id="{{ domain.id }}"
+                  data-domain-number="{{ domain.number }}"
+                  data-domain-title="{{ domain.title | escape }}"
+                  data-domain-remit="{{ domain.remit | escape }}"
+                  data-domain-methods="{{ domain.methods | join: '||' | escape }}"
+                  data-domain-evidence="{{ domain.evidence | escape }}"
+                  data-domain-output="{{ domain.output | escape }}">
+            <span>{{ domain.number }}</span>
+            <strong>{{ domain.title }}</strong>
+            <small>{{ domain.short }}</small>
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </button>
+          {% endfor %}
+        </div>
+
+        <article id="aboutMatrixInspector" class="about-matrix__inspector" role="tabpanel" aria-labelledby="about-domain-{{ first_domain.id }}" style="--domain-colour:{{ first_domain.colour }}">
+          <header>
+            <span data-matrix-number>{{ first_domain.number }}</span>
+            <div>
+              <p>Active practice domain</p>
+              <h3 data-matrix-title>{{ first_domain.title }}</h3>
+            </div>
+          </header>
+          <p class="about-matrix__remit" data-matrix-remit>{{ first_domain.remit }}</p>
+          <div class="about-matrix__methods" data-matrix-methods aria-label="Methods">
+            {% for method in first_domain.methods %}<span>{{ method }}</span>{% endfor %}
+          </div>
+          <div class="about-matrix__evidence">
+            <section>
+              <p>Professional evidence</p>
+              <span data-matrix-evidence>{{ first_domain.evidence }}</span>
+            </section>
+            <section>
+              <p>Practical output</p>
+              <span data-matrix-output>{{ first_domain.output }}</span>
+            </section>
+          </div>
+          <div class="about-matrix__signal" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        </article>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="py-24 px-6 border-t border-slate-200 dark:border-slate-800">
-  <div class="max-w-[1800px] mx-auto">
-    <div class="section__ghost-wrap">
-      <span class="section__ghost-num">01</span>
-      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-4">01 &mdash; Identity</h2>
-      <h3 class="text-3xl sm:text-4xl font-black font-heading text-slate-900 dark:text-white mb-10">Biodata &amp; languages</h3>
-    </div>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div class="specimen relative overflow-hidden glass-card rounded-2xl p-7 border">
-        <div class="specimen-scan" aria-hidden="true"></div>
-        <p class="font-mono text-xs uppercase tracking-widest text-cyan-500 mb-4">Personal biodata</p>
-        <div class="flex justify-between border-b border-dashed border-slate-200 dark:border-slate-700 py-2.5 text-sm"><span class="font-mono text-[11px] uppercase text-slate-400">Date of birth</span><span class="text-slate-800 dark:text-slate-200">25 April 1987</span></div>
-        <div class="flex justify-between border-b border-dashed border-slate-200 dark:border-slate-700 py-2.5 text-sm"><span class="font-mono text-[11px] uppercase text-slate-400">Place of birth</span><span class="text-slate-800 dark:text-slate-200">{{ site.data.profile.birth_place }}</span></div>
-        <div class="flex justify-between border-b border-dashed border-slate-200 dark:border-slate-700 py-2.5 text-sm"><span class="font-mono text-[11px] uppercase text-slate-400">Nationality</span><span class="text-slate-800 dark:text-slate-200">{{ site.data.profile.nationality }}</span></div>
-        <div class="flex justify-between py-2.5 text-sm"><span class="font-mono text-[11px] uppercase text-slate-400">Religion</span><span class="text-slate-800 dark:text-slate-200">{{ site.data.profile.religion }}</span></div>
+  <section id="professional-verification" class="about-v3__section about-verification" aria-labelledby="aboutVerificationTitle" data-nav-marker="03" data-nav-label="Verified" data-nav-colour="#FBBF24">
+    <div class="about-v3__inner">
+      <header class="about-v3__section-header reveal">
+        <span class="about-v3__ghost" aria-hidden="true">03</span>
+        <p>03 - Professional verification</p>
+        <h2 id="aboutVerificationTitle">Registrations, memberships and scholarly identifiers</h2>
+      </header>
+
+      <div class="about-verification__ledger reveal">
+        {% for licence in site.data.profile.licensure %}
+        <article class="about-verification__entry">
+          <span class="about-verification__state">Registered</span>
+          <p>{{ licence.jurisdiction }}</p>
+          <h3>{{ licence.credential }}</h3>
+          <strong>{{ licence.body }} ({{ licence.abbreviation }})</strong>
+          <code>{{ licence.reg_no }}</code>
+        </article>
+        {% endfor %}
+        {% for membership in site.data.profile.memberships %}
+        <article class="about-verification__entry">
+          <span class="about-verification__state">Current membership</span>
+          <p>{{ membership.abbreviation }}</p>
+          <h3>{% if membership.role %}{{ membership.role }}, {% endif %}{{ membership.name }}</h3>
+          {% if membership.note %}<strong>{{ membership.note }}</strong>{% endif %}
+          <code>{{ membership.reg_no }}</code>
+        </article>
+        {% endfor %}
+        {% for pending in site.data.profile.certifications_in_progress %}
+        <article class="about-verification__entry about-verification__entry--pending">
+          <span class="about-verification__state">In progress</span>
+          <p>Pending credential</p>
+          <h3>{{ pending.name }}</h3>
+          <strong>{{ pending.note }}</strong>
+          <code>Not represented as completed</code>
+        </article>
+        {% endfor %}
       </div>
-      <div class="specimen relative overflow-hidden glass-card rounded-2xl p-7 border">
-        <div class="specimen-scan" aria-hidden="true"></div>
-        <p class="font-mono text-xs uppercase tracking-widest text-cyan-500 mb-4">Languages</p>
-        {% for lang in site.data.profile.languages %}
-        <div class="py-2.5 text-sm border-b border-dashed border-slate-200 dark:border-slate-700 last:border-0 text-slate-800 dark:text-slate-200">{{ lang.name }}</div>
+
+      <div class="about-identifiers reveal" aria-label="Scholarly identifiers">
+        <p>Research identity</p>
+        <div>
+          {% for ident in site.data.profile.identifiers %}
+          <a href="{{ ident.url }}" target="_blank" rel="noopener">
+            <span>{{ ident.property_id }}</span><code>{{ ident.value }}</code><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="academic-formation" class="about-v3__section about-education" aria-labelledby="aboutEducationTitle" data-nav-marker="04" data-nav-label="Education" data-nav-colour="#F87171">
+    <div class="about-v3__inner">
+      <header class="about-v3__section-header reveal">
+        <span class="about-v3__ghost" aria-hidden="true">04</span>
+        <p>04 - Academic formation</p>
+        <h2 id="aboutEducationTitle">Education across laboratory science, public health, data and law</h2>
+      </header>
+
+      <div class="about-education__grid reveal">
+        {% for credential in site.data.profile.credentials %}
+        <article class="about-education__record{% if credential.status == 'in progress' %} is-current{% endif %}">
+          <header>
+            <span>{{ forloop.index | prepend: "0" | slice: -2, 2 }}</span>
+            <p>{% if credential.status == "in progress" %}In progress{% else %}Completed{% endif %}</p>
+          </header>
+          <h3>{{ credential.name }}</h3>
+          <strong>{{ credential.institution }}</strong>
+          <div>
+            {% if credential.year %}<span>{{ credential.year }}</span>{% endif %}
+            {% if credential.note %}<span>{{ credential.note }}</span>{% endif %}
+          </div>
+        </article>
         {% endfor %}
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="py-24 px-6 bg-slate-50/50 dark:bg-slate-900/40 border-t border-slate-200 dark:border-slate-800">
-  <div class="max-w-[1800px] mx-auto">
-    <div class="section__ghost-wrap">
-      <span class="section__ghost-num">02</span>
-      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-emerald-500 mb-4">02 &mdash; Purpose</h2>
-      <h3 class="text-3xl sm:text-4xl font-black font-heading text-slate-900 dark:text-white mb-10">Vision &amp; objectives</h3>
-    </div>
-    <div class="relative pl-6 mb-10" data-manifesto>
-      <div class="absolute left-0 top-1 bottom-1 w-0.5 bg-slate-200 dark:bg-slate-700"></div>
-      <div class="manifesto-rail-fill absolute left-0 top-1 w-0.5"></div>
-      <p class="text-lg sm:text-xl italic text-slate-800 dark:text-slate-200 leading-relaxed">{{ site.data.profile.statement_of_purpose }}</p>
-    </div>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div class="glass-card rounded-2xl p-7 border">
-        <h4 class="font-bold font-heading text-lg text-slate-900 dark:text-white mb-3">Career vision</h4>
-        <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{{ site.data.profile.career_vision }}</p>
+  <section id="career-record" class="about-v3__section about-record" aria-labelledby="aboutRecordTitle" data-nav-marker="05" data-nav-label="Career" data-nav-colour="#22D3EE">
+    <div class="about-v3__inner">
+      <header class="about-v3__section-header reveal">
+        <span class="about-v3__ghost" aria-hidden="true">05</span>
+        <p>05 - Career record</p>
+        <h2 id="aboutRecordTitle">Clinical leadership and field practice</h2>
+        <span>Filter the record, then open an entry for its professional context.</span>
+      </header>
+
+      <div class="about-record__filters reveal" role="group" aria-label="Filter career record">
+        <button type="button" class="is-active" data-record-filter="all" aria-pressed="true">All practice</button>
+        <button type="button" data-record-filter="practice" aria-pressed="false">Laboratory appointments</button>
+        <button type="button" data-record-filter="field" aria-pressed="false">Field and outreach</button>
       </div>
-      <div class="glass-card rounded-2xl p-7 border">
-        <h4 class="font-bold font-heading text-lg text-slate-900 dark:text-white mb-3">Aim &amp; objectives</h4>
-        <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-3">{{ site.data.profile.aim }}</p>
-        <ul class="space-y-2 text-sm text-slate-700 dark:text-slate-300 list-disc pl-4">
-          {% for o in site.data.profile.objectives %}<li>{{ o }}</li>{% endfor %}
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
 
-<section class="py-24 px-6 border-t border-slate-200 dark:border-slate-800">
-  <div class="max-w-[1800px] mx-auto">
-    <div class="section__ghost-wrap">
-      <span class="section__ghost-num">03</span>
-      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-4">03 &mdash; Expertise</h2>
-      <h3 class="text-3xl sm:text-4xl font-black font-heading text-slate-900 dark:text-white mb-10">Areas of expertise</h3>
-    </div>
-    <div class="flex flex-wrap gap-2.5" data-pills>
-      {% for topic in site.data.profile.knows_about %}
-      <span class="reveal-pill px-4 py-2 glass-card rounded-full text-sm font-mono text-slate-600 dark:text-slate-300 hover:border-cyan-500 hover:text-slate-900 dark:hover:text-white transition-colors">{{ topic }}</span>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-<section class="py-24 px-6 bg-slate-50/50 dark:bg-slate-900/40 border-t border-slate-200 dark:border-slate-800">
-  <div class="max-w-[1800px] mx-auto">
-    <div class="section__ghost-wrap">
-      <span class="section__ghost-num">04</span>
-      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-amber-500 mb-4">04 &mdash; Verification</h2>
-      <h3 class="text-3xl sm:text-4xl font-black font-heading text-slate-900 dark:text-white mb-10">Identifiers</h3>
-    </div>
-    <div class="grid sm:grid-cols-2 gap-x-10" data-idents>
-      {% for ident in site.data.profile.identifiers %}
-      <div class="reveal-ident flex justify-between items-center border-b border-dashed border-slate-200 dark:border-slate-700 py-3 font-mono text-sm">
-        <span class="text-[11px] uppercase tracking-wide text-slate-400">{{ ident.property_id }}</span>
-        <a href="{{ ident.url }}" target="_blank" rel="noopener" class="text-cyan-600 dark:text-cyan-400 hover:underline">{{ ident.value }}<span class="ident-cursor" aria-hidden="true"></span></a>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-<section class="py-24 px-6 relative overflow-hidden border-t border-slate-200 dark:border-slate-800">
-  <div class="canvas-field absolute inset-0 z-0 opacity-30" data-canvas-field data-palette="v2" data-intensity="0.35" aria-hidden="true"></div>
-  <div class="max-w-[1800px] mx-auto relative z-10">
-    <div class="section__ghost-wrap">
-      <span class="section__ghost-num">05</span>
-      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-crimson mb-4">05 &mdash; Credentials</h2>
-      <h3 class="text-3xl sm:text-4xl font-black font-heading text-slate-900 dark:text-white mb-10">Fellowships &amp; registrations</h3>
-    </div>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-      {% for c in site.data.profile.credentials %}
-      <div class="spotlight-glow glass-card rounded-2xl p-5 border {% if c.status == 'in progress' %}border-l-4 border-l-violet-500{% else %}border-l-4 border-l-amber-500{% endif %}">
-        <p class="font-bold text-slate-900 dark:text-white text-sm mb-1">{{ c.name }}</p>
-        <p class="font-mono text-xs text-slate-500 dark:text-slate-400">{{ c.institution }}{% if c.year %} &middot; {{ c.year }}{% endif %}{% if c.note %} &middot; {{ c.note }}{% endif %}{% if c.status == 'in progress' %} &middot; in progress{% endif %}</p>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-<section class="py-24 px-6 bg-slate-50/50 dark:bg-slate-900/40 border-t border-slate-200 dark:border-slate-800">
-  <div class="max-w-[1800px] mx-auto">
-    <div class="flex items-baseline justify-between flex-wrap gap-4 mb-2">
-      <div class="section__ghost-wrap">
-        <span class="section__ghost-num">06</span>
-        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-mint mb-4">06 &mdash; Journey</h2>
-        <h3 class="text-3xl sm:text-4xl font-black font-heading text-slate-900 dark:text-white">Academic &amp; professional timeline</h3>
+      <div class="about-record__list reveal" data-about-records>
+        {% for record in site.data.timeline %}
+        {% if record.category == "practice" or record.category == "field" %}
+        <article class="about-record__item" data-record-category="{{ record.category }}">
+          <button type="button" aria-expanded="false">
+            <span>{{ record.dates }}</span>
+            <strong>{{ record.title }}</strong>
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+          </button>
+          <div class="about-record__detail" hidden>
+            <p>{{ record.description }}</p>
+          </div>
+        </article>
+        {% endif %}
+        {% endfor %}
       </div>
     </div>
-    <p class="font-mono text-xs text-slate-400 mb-8">{{ site.data.timeline | size }} entries, reverse-chronological &mdash; tap any record for the full detail.</p>
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3" data-record-grid>
-      {% for t in site.data.timeline %}
-      <button type="button" class="record-card reveal-record relative text-left glass-card rounded-2xl p-4 border min-h-[112px] flex flex-col gap-1 hover:-translate-y-1 hover:shadow-xl transition-all cursor-pointer"
-        data-record-icon="{{ t.icon | escape }}"
-        data-record-dates="{{ t.dates | escape }}"
-        data-record-title="{{ t.title | escape }}"
-        data-record-desc="{{ t.description | escape }}">
-        <span class="record-card-icon text-xl" aria-hidden="true">{{ t.icon }}</span>
-        <span class="record-card-dates font-mono text-[10px] text-slate-400">{{ t.dates }}</span>
-        <span class="record-card-title font-heading font-semibold text-sm text-slate-900 dark:text-white leading-snug line-clamp-3">{{ t.title }}</span>
-        {% if t.description %}<span class="absolute top-3 right-3 font-mono text-sm text-cyan-500">+</span>{% endif %}
-      </button>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-</div>
+  </section>
+</main>
 
 {% include footer-v3.html %}

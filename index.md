@@ -156,7 +156,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
 
 {% include nav-v3.html %}
 
-<section id="hero" class="home-hero min-h-screen pt-36 pb-20 flex flex-col justify-center items-center px-6 relative overflow-hidden">
+<section id="hero" class="home-hero min-h-screen pt-36 pb-20 flex flex-col justify-center items-center px-6 relative overflow-hidden" data-nav-marker="00" data-nav-label="Top" data-nav-colour="#22D3EE">
   <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
     <div class="absolute inset-0 graded-hero-overlay"></div>
     <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/70 to-slate-950/90 dark:from-slate-950/95 dark:via-slate-950/75 dark:to-slate-950/95"></div>
@@ -172,7 +172,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       </div>
 
       <div class="home-hero__credentials flex flex-wrap items-center gap-3 mb-4 text-xs font-mono font-bold text-slate-300" aria-label="Professional registrations and memberships">
-        <span class="text-cyan-500 font-extrabold uppercase tracking-widest text-sm">{{ site.data.profile.name | upcase }}</span>
+        <span class="home-hero__identity-label">{{ site.data.profile.name | upcase }}</span>
         <span>&bull;</span>
         <span class="px-2.5 py-0.5 rounded bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20">MLS (CORU)</span>
         <span class="px-2.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">ACSLM</span>
@@ -181,7 +181,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <span class="px-2.5 py-0.5 rounded bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20">VvE</span>
       </div>
 
-      <p class="home-hero__role text-sm sm:text-base font-mono font-semibold text-cyan-400 mb-4 uppercase tracking-wide break-words" aria-hidden="true">
+      <p class="home-hero__role home-hero__identity-label mb-4 break-words" aria-hidden="true">
         <span data-typed-text data-words="{{ site.data.profile.job_titles | jsonify | escape }}"></span><span class="typed-cursor"></span>
       </p>
       <span class="sr-only">Principal Biomedical Scientist, epidemiologist and public health researcher</span>
@@ -218,11 +218,13 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       </div>
     </div>
 
-    <div class="home-hero__portrait lg:col-span-5 reveal relative flex justify-center lg:justify-end lg:self-end h-[380px] sm:h-[560px] lg:h-[78vh] lg:min-h-[560px] lg:max-h-[820px] w-full min-w-0">
-      <img src="{{ '/assets/img/gallery/portraits/hero-green-shirt-cutout.png' | relative_url }}"
-           alt="Portrait of Valentine Golden Ghanem, Principal Biomedical Scientist, epidemiologist and public health researcher"
-           class="h-full w-auto max-w-full lg:max-w-none object-contain object-bottom drop-shadow-[0_30px_60px_rgba(6,182,212,0.25)]">
-      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 lg:left-auto lg:right-4 lg:translate-x-0 flex items-center gap-2.5 px-4 py-2 glass-card rounded-full border border-cyan-500/30 text-xs font-mono backdrop-blur-xl shadow-2xl whitespace-nowrap">
+    <div class="home-hero__portrait lg:col-span-5 reveal relative flex flex-col items-center lg:items-end lg:self-end h-[420px] sm:h-[600px] lg:h-[78vh] lg:min-h-[600px] lg:max-h-[860px] w-full min-w-0">
+      <div class="home-hero__portrait-frame flex-1 min-h-0 w-full flex items-end justify-center lg:justify-end">
+        <img src="{{ '/assets/img/gallery/portraits/hero-green-shirt-cutout.png' | relative_url }}"
+             alt="Portrait of Valentine Golden Ghanem, Principal Biomedical Scientist, epidemiologist and public health researcher"
+             class="h-full w-auto max-w-full lg:max-w-none object-contain object-bottom drop-shadow-[0_30px_60px_rgba(6,182,212,0.25)]">
+      </div>
+      <div class="home-hero__workplace mt-4 flex items-center gap-2.5 px-4 py-2 glass-card rounded-full border border-cyan-500/30 text-xs font-mono backdrop-blur-xl shadow-2xl whitespace-nowrap">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
         <span class="text-slate-700 dark:text-slate-200 font-semibold">{{ site.data.organization.cocoa_clinic.name }}, {{ site.data.organization.cocoa_clinic.parent_organization.name }}</span>
       </div>
@@ -255,7 +257,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   </div>
 </section>
 
-<section id="sub-hero" class="py-24 px-6 bg-slate-50/50 dark:bg-slate-900/40 border-y border-slate-200 dark:border-slate-800 relative">
+<section id="sub-hero" class="py-24 px-6 bg-slate-50/50 dark:bg-slate-900/40 border-y border-slate-200 dark:border-slate-800 relative" data-nav-marker="00" data-nav-label="Profile" data-nav-colour="#34D399">
   <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
     <div class="lg:col-span-7 reveal">
       <div class="inline-flex items-center gap-2 text-xs font-mono font-bold text-red-500 tracking-widest uppercase mb-4">
@@ -315,7 +317,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   </div>
 </section>
 
-<section id="about" class="py-32 px-6 relative">
+<section id="about" class="py-32 px-6 relative" data-nav-marker="01" data-nav-label="Identity" data-nav-colour="#22D3EE">
   <div class="max-w-7xl mx-auto">
     <div class="reveal text-center max-w-3xl mx-auto mb-16">
       <div class="section__ghost-wrap">
@@ -358,7 +360,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   </div>
 </section>
 
-<section id="research" class="home-expertise-section py-32 bg-slate-900 text-white relative overflow-hidden">
+<section id="research" class="home-expertise-section py-32 bg-slate-900 text-white relative overflow-hidden" data-nav-marker="02" data-nav-label="Expertise" data-nav-colour="#FBBF24">
   <div class="blob w-[500px] h-[500px] bg-amber-500/10 top-0 right-0 pointer-events-none"></div>
   <div class="home-expertise-section__inner max-w-7xl mx-auto px-6">
     <div class="home-expertise-section__header text-center mb-20 reveal">
@@ -454,7 +456,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   </div>
 </section>
 
-<section id="fieldmap" class="district-intelligence-section py-32 px-6 relative">
+<section id="fieldmap" class="district-intelligence-section py-32 px-6 relative" data-nav-marker="03" data-nav-label="Atlas" data-nav-colour="#A78BFA">
   <div class="max-w-7xl mx-auto">
     <div class="reveal text-center max-w-4xl mx-auto mb-12">
       <div class="section__ghost-wrap">
@@ -566,7 +568,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   </div>
 </section>
 
-<section id="publications" class="home-academic-section py-32 px-6 border-t">
+<section id="publications" class="home-academic-section py-32 px-6 border-t" data-nav-marker="04" data-nav-label="Research" data-nav-colour="#F87171">
   <div class="max-w-7xl mx-auto">
     <header class="home-section-heading reveal">
       <div class="section__ghost-wrap">
@@ -632,7 +634,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   </div>
 </section>
 
-<section id="portfolio" class="home-portfolio-section py-32 px-6">
+<section id="portfolio" class="home-portfolio-section py-32 px-6" data-nav-marker="05" data-nav-label="Portfolio" data-nav-colour="#34D399">
   <div class="max-w-7xl mx-auto">
     <header class="home-section-heading home-section-heading--split reveal">
       <div>
@@ -679,7 +681,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
 {% assign operation_lis = site.data.gallery_portraits[4] %}
 {% assign operation_biosafety = site.data.gallery_portraits[10] %}
 {% assign operation_data = site.data.gallery_portraits[13] %}
-<section id="gallery" class="home-operations-section py-32 px-6 border-t">
+<section id="gallery" class="home-operations-section py-32 px-6 border-t" data-nav-marker="06" data-nav-label="Fieldwork" data-nav-colour="#22D3EE">
   <div class="max-w-7xl mx-auto">
     <header class="home-section-heading home-section-heading--split reveal">
       <div>

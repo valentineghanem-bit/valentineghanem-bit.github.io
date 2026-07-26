@@ -120,16 +120,24 @@ licensure:
     reg_no: "MS 063958"
 certifications_in_progress:
   - name: "Epidemioloog A, Netherlands"
-    note: "Panel expected June 2026"
+    note: "Registration in progress; not represented as completed."
   - name: "Certified in Public Health (CPH)"
-    note: "Examination preparation ongoing, July 2026"
+    note: "Examination preparation in progress; not represented as completed."
 religion: "Christianity"
 statement_of_purpose: >
-  I intend to pursue a career at the junction of diagnostic medicine and public health systems, supporting evidence-based approaches. I am also dedicated to transforming the lessons gleaned from the laboratory into actionable insights that can be utilized to respond promptly and enhance disease surveillance. This is why I find fulfillment in being both an academic researcher and a clinician: my goal is to integrate essential clinical data with the realities of the public health system.
+  My work connects diagnostic medicine with public-health systems. I translate
+  laboratory and field evidence into practical intelligence for surveillance,
+  service planning and earlier response, while keeping clinical realities visible
+  in every analytical decision.
 career_vision: >
-  I anticipate leading initiatives to harmonize biomedical science, data science, and policy to advance health equity in Africa. I aspire to contribute to a future in which proactive epidemic response plans and sustainable health systems, particularly in resource-limited settings, benefit from the combination of predictive modeling, digital health technologies, and focused interventions.
+  I aim to lead work that brings biomedical science, epidemiology, data science
+  and policy into the same decision process. The objective is stronger disease
+  surveillance and more equitable health systems across Africa, especially where
+  resources and routine data are limited.
 aim: >
-  To bridge the gap between clinical diagnostic medicine and public health systems in Africa by leveraging data science and digital health technologies to build proactive, equitable, and evidence-based disease surveillance and epidemic response frameworks.
+  To connect clinical diagnostic evidence with public-health action through
+  reproducible analysis, digital tools and decision systems designed for African
+  health settings.
 objectives:
   - "Translate laboratory insights: establish robust mechanisms that convert raw, laboratory-derived diagnostic data into actionable, real-time insights for public health surveillance systems."
   - "Deploy digital health & predictive tools: design, evaluate, or implement predictive modeling tools and digital health technologies optimized for early epidemic detection and response in resource-limited settings."
