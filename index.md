@@ -186,8 +186,8 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       </p>
 
       <div class="flex flex-wrap items-center gap-4 mb-10">
-        <a href="#simulator" class="magnetic-btn px-7 py-3.5 bg-gradient-to-r from-cyan-500 to-emerald-500 text-slate-950 font-black text-xs uppercase tracking-widest rounded-2xl hover:shadow-xl hover:shadow-cyan-500/25 transition-all hover:scale-105 flex items-center gap-2" style="transform: translate(var(--mx, 0px), var(--my, 0px))">
-          <i class="fa-solid fa-flask text-sm"></i> Launch Outbreak Lab
+        <a href="#fieldmap" class="magnetic-btn px-7 py-3.5 bg-gradient-to-r from-cyan-500 to-emerald-500 text-slate-950 font-black text-xs uppercase tracking-widest rounded-2xl hover:shadow-xl hover:shadow-cyan-500/25 transition-all hover:scale-105 flex items-center gap-2" style="transform: translate(var(--mx, 0px), var(--my, 0px))">
+          <i class="fa-solid fa-chart-area text-sm"></i> Explore District Data
         </a>
         <a href="{{ '/map/' | relative_url }}" class="magnetic-btn px-7 py-3.5 glass-card text-slate-800 dark:text-slate-200 font-black text-xs uppercase tracking-widest rounded-2xl hover:border-cyan-500 transition-all flex items-center gap-2" style="transform: translate(var(--mx, 0px), var(--my, 0px))">
           <i class="fa-solid fa-map-location-dot text-cyan-500"></i> Surveillance Map
@@ -439,66 +439,6 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
             <span><b>Interface output</b> Streamlit dashboards, model files, reproducible scripts and interactive decision-support artifacts.</span>
           </div>
         </article>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="simulator" class="py-32 px-6 bg-slate-50/50 dark:bg-slate-900/60 border-y border-slate-200 dark:border-slate-800">
-  <div class="max-w-7xl mx-auto">
-    <div class="reveal text-center max-w-3xl mx-auto mb-16">
-      <div class="section__ghost-wrap">
-        <span class="section__ghost-num">03</span>
-        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-crimson mb-4">03 &mdash; Published Work Signal Lab</h2>
-        <h3 class="text-4xl sm:text-5xl font-black font-heading">Spatial Epidemiology Concept Explorer</h3>
-      </div>
-      <p class="text-slate-600 dark:text-slate-400 mt-4">A guided interaction based on themes from Valentine Golden Ghanem's published spatial and machine-learning work: clustering, structural risk, coverage, environmental pressure and response priority. It is an explanatory interface, not a clinical prediction tool.</p>
-    </div>
-    <div class="grid lg:grid-cols-12 gap-8 reveal">
-      <div class="lg:col-span-5 glass-card p-8 rounded-3xl border">
-        <h4 class="text-xl font-bold font-heading mb-6 flex items-center gap-2"><i class="fa-solid fa-sliders text-cyan-500"></i> Surveillance Signal Controls</h4>
-        <div class="mb-6">
-          <div class="flex justify-between text-xs font-bold mb-2"><span>Transmission / Exposure Signal</span><span id="vectorVal" class="text-cyan-500">65%</span></div>
-          <input type="range" id="vectorInput" min="10" max="100" value="65" oninput="calculateOutbreakRisk()" class="w-full accent-cyan-500 cursor-pointer">
-        </div>
-        <div class="mb-6">
-          <div class="flex justify-between text-xs font-bold mb-2"><span>Structural Vulnerability Index</span><span id="sanitationVal" class="text-amber-500">45%</span></div>
-          <input type="range" id="sanitationInput" min="0" max="100" value="45" oninput="calculateOutbreakRisk()" class="w-full accent-amber-500 cursor-pointer">
-        </div>
-        <div class="mb-6">
-          <div class="flex justify-between text-xs font-bold mb-2"><span>Service Coverage / Protective Reach</span><span id="vaccineVal" class="text-emerald-500">55%</span></div>
-          <input type="range" id="vaccineInput" min="0" max="100" value="55" oninput="calculateOutbreakRisk()" class="w-full accent-emerald-500 cursor-pointer">
-        </div>
-        <div class="mb-6">
-          <div class="flex justify-between text-xs font-bold mb-2"><span>Seasonal / Environmental Pressure</span><span id="rainVal" class="text-violet-500">+120mm</span></div>
-          <input type="range" id="rainInput" min="0" max="300" value="120" oninput="calculateOutbreakRisk()" class="w-full accent-violet-500 cursor-pointer">
-        </div>
-        <button onclick="resetSimulator()" class="w-full py-3 bg-slate-200 dark:bg-slate-800 text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-slate-300 transition-colors">Reset Baseline Parameters</button>
-      </div>
-      <div class="lg:col-span-7 glass-card p-8 rounded-3xl border flex flex-col justify-between">
-        <div>
-          <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
-            <div>
-              <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Illustrative spatial clustering index</span>
-              <div id="moranIndexDisplay" class="text-5xl font-black font-heading text-cyan-500 mt-1">I = +0.72</div>
-            </div>
-            <div id="riskLevelBadge" class="px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider bg-red-500/20 text-red-500 border border-red-500/30">STRONG CLUSTERING SIGNAL</div>
-          </div>
-          <div class="mb-8">
-            <div class="flex justify-between text-xs font-bold text-slate-500 mb-2"><span>Outbreak Probability Score</span><span id="outbreakProbPercent">74%</span></div>
-            <div class="w-full bg-slate-200 dark:bg-slate-800 h-4 rounded-full overflow-hidden p-0.5">
-              <div id="outbreakProgressBar" class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-red-500 rounded-full transition-all duration-300" style="width: 74%;"></div>
-            </div>
-          </div>
-          <div class="p-5 bg-slate-100 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700">
-            <h5 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-2 flex items-center gap-2"><i class="fa-solid fa-shield-virus text-cyan-500"></i> Interpretation Note</h5>
-            <p id="interventionText" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">Interpretation: this interface explains how clustered signals can change as structural, coverage and environmental inputs shift. It is not a validated predictive model.</p>
-          </div>
-        </div>
-        <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-xs text-slate-500 font-mono">
-          <span>*Concept explorer, not a validated predictive model</span>
-          <a href="{{ '/publications/' | relative_url }}" class="text-cyan-500 font-bold hover:underline">Read the real publications &rarr;</a>
-        </div>
       </div>
     </div>
   </div>

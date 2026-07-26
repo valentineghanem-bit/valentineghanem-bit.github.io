@@ -571,58 +571,6 @@
   };
 
 
-  // ---------- Outbreak risk simulator ----------
-  // A transparent, simplified illustrative weighting (not a validated
-  // clinical/epidemiological model) -- same simple formula the template
-  // shipped with, kept because the interactive mechanic itself (sliders ->
-  // computed score -> visual feedback) is a legitimate portfolio demo of
-  // the underlying spatial-autocorrelation concept, as long as it isn't
-  // presented as real predictive output.
-  window.calculateOutbreakRisk = function () {
-    var vecEl = document.getElementById('vectorInput');
-    if (!vecEl) return;
-    var vec = parseInt(vecEl.value, 10);
-    var san = parseInt(document.getElementById('sanitationInput').value, 10);
-    var vac = parseInt(document.getElementById('vaccineInput').value, 10);
-    var rain = parseInt(document.getElementById('rainInput').value, 10);
-
-    document.getElementById('vectorVal').textContent = vec + '%';
-    document.getElementById('sanitationVal').textContent = san + '%';
-    document.getElementById('vaccineVal').textContent = vac + '%';
-    document.getElementById('rainVal').textContent = '+' + rain + 'mm';
-
-    var riskVal = Math.min(99, Math.max(10, Math.round((vec * 0.35) + (san * 0.3) + (rain * 0.2) - (vac * 0.4) + 20)));
-    var moranI = ((riskVal / 100) * 1.2 - 0.2).toFixed(2);
-
-    document.getElementById('moranIndexDisplay').textContent = 'I = ' + (moranI > 0 ? '+' : '') + moranI;
-    document.getElementById('outbreakProbPercent').textContent = riskVal + '%';
-    document.getElementById('outbreakProgressBar').style.width = riskVal + '%';
-
-    var badge = document.getElementById('riskLevelBadge');
-    var text = document.getElementById('interventionText');
-    if (riskVal > 70) {
-      badge.className = 'px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider bg-red-500/20 text-red-500 border border-red-500/30';
-      badge.textContent = 'STRONG CLUSTERING SIGNAL (EXPLAINER)';
-      text.textContent = 'Interpretation: this combination resembles a high-priority surveillance signal. A real programme would verify the data source, inspect neighbouring districts, and consider targeted sampling or outreach before action.';
-    } else if (riskVal > 40) {
-      badge.className = 'px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider bg-amber-500/20 text-amber-500 border border-amber-500/30';
-      badge.textContent = 'MODERATE CLUSTERING SIGNAL (EXPLAINER)';
-      text.textContent = 'Interpretation: the signal is mixed. The sensible next step is not a prediction claim, but a closer look at coverage, local vulnerability and the neighbouring district pattern.';
-    } else {
-      badge.className = 'px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-500 border border-emerald-500/30';
-      badge.textContent = 'LOW CLUSTERING SIGNAL (EXPLAINER)';
-      text.textContent = 'Interpretation: the selected conditions do not create a strong clustering pattern in this concept explorer. Real surveillance would still depend on verified data and field context.';
-    }
-  };
-  window.resetSimulator = function () {
-    document.getElementById('vectorInput').value = 65;
-    document.getElementById('sanitationInput').value = 45;
-    document.getElementById('vaccineInput').value = 55;
-    document.getElementById('rainInput').value = 120;
-    window.calculateOutbreakRisk();
-    showToast('Simulator parameters reset');
-  };
-
   // ---------- Radar chart (real skills data) ----------
   function initRadarChart() {
     var ctx = document.getElementById('radarChart');
@@ -1407,7 +1355,6 @@
     window.filterPortfolio('all');
     initPlotlyMap();
     initRadarChart();
-    window.calculateOutbreakRisk();
     initMicroscopicInfectionCanvas();
     startTypewriter();
     if (window.v2Motion) window.v2Motion.attachMagnetic('.magnetic-btn');
