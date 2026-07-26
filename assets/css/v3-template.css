@@ -1055,14 +1055,565 @@ html[data-v2-theme="dark"] .filter-chip.is-active, html[data-v2-theme="dim"] .fi
    visible "01"/"02" label + heading text stay exactly as already built,
    this is a purely additive background layer. */
 .v3-scope .section__ghost-num {
-  position: absolute; top: -0.3em; left: -0.02em; z-index: 0; pointer-events: none;
+  position: absolute; top: -0.28em; left: 50%; z-index: 0; pointer-events: none;
+  transform: translateX(-50%);
   font-family: 'Space Grotesk', sans-serif; font-weight: 800; line-height: 0.8;
-  font-size: clamp(5rem, 13vw, 11rem); color: #0F172A; opacity: 0.05;
+  font-size: clamp(6rem, 13vw, 11rem); color: #64748B; opacity: 0.09;
   user-select: none; white-space: nowrap;
 }
-html[data-v2-theme="dark"] .v3-scope .section__ghost-num, html[data-v2-theme="dim"] .v3-scope .section__ghost-num { color: #F1F5F9; opacity: 0.06; }
-.v3-scope .section__ghost-wrap { position: relative; }
+html[data-v2-theme="dark"] .v3-scope .section__ghost-num, html[data-v2-theme="dim"] .v3-scope .section__ghost-num { color: #CBD5E1; opacity: 0.1; }
+.v3-scope #research .section__ghost-num { color: #CBD5E1; opacity: 0.12; }
+.v3-scope .section__ghost-wrap { position: relative; isolation: isolate; min-height: clamp(6rem, 10vw, 9rem); }
 .v3-scope .section__ghost-wrap > *:not(.section__ghost-num) { position: relative; z-index: 1; }
+
+@media (max-width: 640px) {
+  .v3-scope .section__ghost-num { top: -0.12em; font-size: 6rem; }
+  .v3-scope .section__ghost-wrap { min-height: 6rem; }
+}
+
+/* ============================================================
+   Home 03: bespoke HI-EI district intelligence engine. ECharts
+   owns the 261-boundary SVG; the adjacent inspector stays native
+   HTML so values, tabs and actions remain fully accessible. ----- */
+.v3-scope .district-intelligence-section {
+  --district-ink: #0F172A;
+  --district-muted: #64748B;
+  --district-line: rgba(148, 163, 184, 0.34);
+  --district-surface: rgba(255, 255, 255, 0.82);
+  --district-raised: #FFFFFF;
+  background:
+    linear-gradient(rgba(248, 250, 252, 0.84), rgba(248, 250, 252, 0.84)),
+    linear-gradient(90deg, rgba(99, 210, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(rgba(167, 255, 205, 0.07) 1px, transparent 1px);
+  background-size: auto, 32px 32px, 32px 32px;
+}
+.v3-scope .district-explorer {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(320px, 0.75fr);
+  border: 1px solid var(--district-line);
+  background: var(--district-surface);
+  box-shadow: 0 24px 64px -42px rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(18px);
+  border-radius: 8px;
+  overflow: clip;
+}
+.v3-scope .district-map-panel {
+  min-width: 0;
+  padding: 24px;
+  border-right: 1px solid var(--district-line);
+}
+.v3-scope .district-map-toolbar {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.42fr) minmax(220px, 0.72fr) minmax(0, 1.3fr);
+  align-items: end;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.v3-scope .district-geography-control,
+.v3-scope .district-selector-control,
+.v3-scope .district-metric-control {
+  display: grid;
+  gap: 8px;
+}
+.v3-scope .district-geography-control > span,
+.v3-scope .district-selector-control label,
+.v3-scope .district-metric-control > span {
+  color: var(--district-muted);
+  font-family: 'Fira Code', monospace;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.v3-scope .district-geography-control > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--district-line);
+  border-radius: 6px;
+  background: rgba(226, 232, 240, 0.5);
+}
+.v3-scope .district-geography-control button {
+  min-height: 44px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #475569;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+.v3-scope .district-geography-control button:hover { border-color: rgba(99, 210, 255, 0.7); color: #0F172A; }
+.v3-scope .district-geography-control button.is-active { background: #9766E1; color: #FFFFFF; }
+.v3-scope .district-selector-control select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 40px 0 12px;
+  border: 1px solid var(--district-line);
+  border-radius: 6px;
+  background: var(--district-raised);
+  color: var(--district-ink);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.v3-scope .district-metric-control > div {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--district-line);
+  border-radius: 6px;
+  background: rgba(226, 232, 240, 0.5);
+}
+.v3-scope .district-metric-control button {
+  min-width: 0;
+  min-height: 44px;
+  padding: 7px 6px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #475569;
+  font-size: 0.67rem;
+  font-weight: 800;
+  line-height: 1.25;
+  transition: background 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+.v3-scope .district-metric-control button:hover {
+  color: #0F172A;
+  border-color: rgba(99, 210, 255, 0.7);
+}
+.v3-scope .district-metric-control button:active { transform: translateY(1px); }
+.v3-scope .district-metric-control button.is-active {
+  background: #0F172A;
+  border-color: #0F172A;
+  color: #FFFFFF;
+}
+.v3-scope .district-selector-control select:focus-visible,
+.v3-scope .district-geography-control button:focus-visible,
+.v3-scope .district-metric-control button:focus-visible,
+.v3-scope .district-inspector-tabs button:focus-visible,
+.v3-scope .district-inspector-actions a:focus-visible,
+.v3-scope .district-inspector-actions button:focus-visible,
+.v3-scope .district-map-echarts:focus-visible {
+  outline: 3px solid #63D2FF;
+  outline-offset: 2px;
+}
+.v3-scope .district-map-caption {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 4px 12px;
+}
+.v3-scope .district-map-caption > div { display: grid; gap: 4px; }
+.v3-scope .district-map-kicker {
+  color: #9766E1;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.63rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.v3-scope .district-map-caption strong {
+  color: var(--district-ink);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.08rem;
+}
+.v3-scope #districtMapCoverage {
+  color: var(--district-muted);
+  font-family: 'Fira Code', monospace;
+  font-size: 0.63rem;
+  text-align: right;
+}
+.v3-scope .district-map-caption__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+.v3-scope #districtMapReset {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 12px;
+  border: 1px solid var(--district-line);
+  border-radius: 5px;
+  color: #475569;
+  font-size: 0.66rem;
+  font-weight: 800;
+  transition: border-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+.v3-scope #districtMapReset:hover { border-color: #9766E1; color: #0F172A; transform: translateY(-1px); }
+.v3-scope #districtMapReset:active { transform: translateY(0); }
+.v3-scope .district-map-frame {
+  position: relative;
+  min-height: 580px;
+  border: 1px solid var(--district-line);
+  border-radius: 6px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(99, 210, 255, 0.1), transparent 56%),
+    #F8FAFC;
+}
+.v3-scope .district-map-echarts {
+  width: 100%;
+  height: 580px;
+}
+.v3-scope .district-map-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 12px;
+  background: rgba(248, 250, 252, 0.92);
+  color: #475569;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.72rem;
+}
+.v3-scope .district-map-loading[hidden] { display: none; }
+.v3-scope .district-map-loading i { color: #9766E1; font-size: 1.25rem; }
+.v3-scope .district-map-loading.is-error i { color: #FF5964; }
+.v3-scope .district-map-legend {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  padding: 12px 4px 0;
+}
+.v3-scope .district-map-legend__item {
+  display: grid;
+  gap: 5px;
+  color: var(--district-muted);
+  font-family: 'Fira Code', monospace;
+  font-size: 0.58rem;
+}
+.v3-scope .district-map-legend__item i {
+  width: 100%;
+  height: 5px;
+  border-radius: 2px;
+  background: var(--legend-colour);
+}
+.v3-scope .district-map-legend__item b { font-weight: 700; }
+.v3-scope .district-map-source {
+  margin: 14px 4px 0;
+  color: var(--district-muted);
+  font-size: 0.68rem;
+  line-height: 1.65;
+}
+.v3-scope .district-echarts-tooltip {
+  display: grid;
+  width: 210px;
+  gap: 4px;
+  white-space: normal;
+}
+.v3-scope .district-echarts-tooltip strong { font-size: 0.86rem; }
+.v3-scope .district-echarts-tooltip span,
+.v3-scope .district-echarts-tooltip small { color: #64748B; font-size: 0.68rem; }
+.v3-scope .district-echarts-tooltip b { margin-top: 5px; color: #9766E1; font-size: 0.72rem; }
+
+.v3-scope .district-inspector {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: 28px;
+  background:
+    linear-gradient(150deg, rgba(151, 102, 225, 0.08), transparent 30%),
+    var(--district-raised);
+  transition: background-color 240ms ease, box-shadow 240ms ease;
+}
+.v3-scope .district-inspector.is-hotspot,
+.v3-scope .district-inspector.is-middle,
+.v3-scope .district-inspector.is-coldspot {
+  --district-ink: #0F172A;
+  --district-muted: #475569;
+  --district-line: rgba(100, 116, 139, 0.28);
+}
+.v3-scope .district-inspector.is-hotspot {
+  background:
+    linear-gradient(145deg, rgba(255, 89, 100, 0.28), rgba(255, 255, 255, 0.94) 58%),
+    #FFF5F5;
+  box-shadow: inset 5px 0 0 #FF5964;
+}
+.v3-scope .district-inspector.is-middle {
+  background: #FFFFFF;
+  box-shadow: inset 5px 0 0 #FFE87A;
+}
+.v3-scope .district-inspector.is-coldspot {
+  background: #FFFFFF;
+  box-shadow: inset 5px 0 0 #63D2FF;
+}
+.v3-scope .district-inspector-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.v3-scope .district-signal-badge {
+  flex: none;
+  max-width: 55%;
+  padding: 6px 8px;
+  border: 1px solid rgba(100, 116, 139, 0.24);
+  border-radius: 4px;
+  color: #334155;
+  background: rgba(255, 255, 255, 0.74);
+  font-family: 'Fira Code', monospace;
+  font-size: 0.55rem;
+  font-weight: 800;
+  line-height: 1.3;
+  text-align: right;
+  text-transform: uppercase;
+}
+.v3-scope .district-inspector.is-hotspot .district-signal-badge {
+  border-color: rgba(255, 89, 100, 0.5);
+  color: #881337;
+  background: rgba(255, 255, 255, 0.82);
+}
+.v3-scope .district-inspector.is-middle .district-signal-badge {
+  border-color: rgba(202, 138, 4, 0.42);
+  color: #713F12;
+  background: rgba(255, 255, 255, 0.82);
+}
+.v3-scope .district-inspector.is-coldspot .district-signal-badge {
+  border-color: rgba(14, 116, 144, 0.38);
+  color: #155E75;
+}
+.v3-scope .district-inspector header {
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--district-line);
+}
+.v3-scope .district-inspector header h4 {
+  margin-top: 12px;
+  color: var(--district-ink);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.5rem, 2.3vw, 2.15rem);
+  font-weight: 800;
+  line-height: 1.08;
+}
+.v3-scope .district-inspector header p {
+  margin-top: 8px;
+  color: var(--district-muted);
+  font-size: 0.78rem;
+}
+.v3-scope .district-identity {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding: 20px 0;
+}
+.v3-scope .district-identity div { min-width: 0; }
+.v3-scope .district-identity dt {
+  color: var(--district-muted);
+  font-family: 'Fira Code', monospace;
+  font-size: 0.57rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.v3-scope .district-identity dd {
+  margin-top: 5px;
+  overflow-wrap: anywhere;
+  color: var(--district-ink);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+.v3-scope .district-inspector-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--district-line);
+  border-radius: 6px;
+  background: rgba(226, 232, 240, 0.52);
+}
+.v3-scope .district-inspector-tabs button {
+  min-height: 44px;
+  border-radius: 4px;
+  color: #475569;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+.v3-scope .district-inspector-tabs button:hover { color: #0F172A; }
+.v3-scope .district-inspector-tabs button.is-active {
+  background: #FFFFFF;
+  color: #0F172A;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.08);
+}
+.v3-scope .district-inspector-panel {
+  display: grid;
+  gap: 15px;
+  max-height: 360px;
+  overflow-y: auto;
+  padding: 22px 0;
+  scrollbar-width: thin;
+  scrollbar-color: #94A3B8 transparent;
+}
+.v3-scope .district-indicator-row > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+  color: var(--district-muted);
+  font-size: 0.7rem;
+}
+.v3-scope .district-indicator-row strong {
+  flex: none;
+  color: var(--district-ink);
+  font-family: 'Fira Code', monospace;
+  font-size: 0.68rem;
+}
+.v3-scope .district-indicator-track {
+  display: block;
+  width: 100%;
+  height: 5px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: #E2E8F0;
+}
+.v3-scope .district-indicator-track i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #63D2FF, #9766E1);
+  transition: width 300ms ease;
+}
+.v3-scope .district-inspector-note {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  margin-top: auto;
+  padding: 14px 0;
+  border-top: 1px solid var(--district-line);
+  border-bottom: 1px solid var(--district-line);
+  color: var(--district-muted);
+  font-size: 0.68rem;
+  line-height: 1.6;
+}
+.v3-scope .district-inspector-note i { margin-top: 3px; color: #FFE87A; }
+.v3-scope .district-inspector-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  padding-top: 20px;
+}
+.v3-scope .district-inspector-actions a,
+.v3-scope .district-inspector-actions button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 5px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+.v3-scope .district-inspector-actions a {
+  background: #0F172A;
+  color: #FFFFFF;
+}
+.v3-scope .district-inspector-actions button {
+  border: 1px solid var(--district-line);
+  color: #475569;
+}
+.v3-scope .district-inspector-actions a:hover,
+.v3-scope .district-inspector-actions button:hover { transform: translateY(-1px); }
+.v3-scope .district-inspector-actions button:hover {
+  border-color: #9766E1;
+  color: #0F172A;
+}
+
+html[data-v2-theme="dark"] .v3-scope .district-intelligence-section,
+html[data-v2-theme="dim"] .v3-scope .district-intelligence-section {
+  --district-ink: #F8FAFC;
+  --district-muted: #94A3B8;
+  --district-line: rgba(148, 163, 184, 0.24);
+  --district-surface: rgba(15, 23, 42, 0.86);
+  --district-raised: #111827;
+  background:
+    linear-gradient(rgba(2, 6, 23, 0.9), rgba(2, 6, 23, 0.9)),
+    linear-gradient(90deg, rgba(99, 210, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(rgba(167, 255, 205, 0.07) 1px, transparent 1px);
+  background-size: auto, 32px 32px, 32px 32px;
+}
+html[data-v2-theme="dark"] .v3-scope .district-map-frame,
+html[data-v2-theme="dim"] .v3-scope .district-map-frame { background: #0F172A; }
+html[data-v2-theme="dark"] .v3-scope .district-map-loading,
+html[data-v2-theme="dim"] .v3-scope .district-map-loading { background: rgba(15, 23, 42, 0.94); color: #CBD5E1; }
+html[data-v2-theme="dark"] .v3-scope .district-selector-control select,
+html[data-v2-theme="dim"] .v3-scope .district-selector-control select { background: #111827; color: #F8FAFC; }
+html[data-v2-theme="dark"] .v3-scope .district-metric-control > div,
+html[data-v2-theme="dim"] .v3-scope .district-metric-control > div,
+html[data-v2-theme="dark"] .v3-scope .district-geography-control > div,
+html[data-v2-theme="dim"] .v3-scope .district-geography-control > div,
+html[data-v2-theme="dark"] .v3-scope .district-inspector-tabs,
+html[data-v2-theme="dim"] .v3-scope .district-inspector-tabs { background: rgba(30, 41, 59, 0.8); }
+html[data-v2-theme="dark"] .v3-scope .district-geography-control button,
+html[data-v2-theme="dim"] .v3-scope .district-geography-control button,
+html[data-v2-theme="dark"] .v3-scope .district-metric-control button,
+html[data-v2-theme="dim"] .v3-scope .district-metric-control button,
+html[data-v2-theme="dark"] .v3-scope .district-inspector-tabs button,
+html[data-v2-theme="dim"] .v3-scope .district-inspector-tabs button,
+html[data-v2-theme="dark"] .v3-scope #districtMapReset,
+html[data-v2-theme="dim"] .v3-scope #districtMapReset { color: #CBD5E1; }
+html[data-v2-theme="dark"] .v3-scope .district-inspector-tabs button.is-active,
+html[data-v2-theme="dim"] .v3-scope .district-inspector-tabs button.is-active { background: #334155; color: #FFFFFF; }
+html[data-v2-theme="dark"] .v3-scope .district-indicator-track,
+html[data-v2-theme="dim"] .v3-scope .district-indicator-track { background: #334155; }
+html[data-v2-theme="dark"] .v3-scope .district-inspector:is(.is-hotspot, .is-middle, .is-coldspot) .district-inspector-tabs,
+html[data-v2-theme="dim"] .v3-scope .district-inspector:is(.is-hotspot, .is-middle, .is-coldspot) .district-inspector-tabs {
+  background: rgba(226, 232, 240, 0.62);
+}
+html[data-v2-theme="dark"] .v3-scope .district-inspector:is(.is-hotspot, .is-middle, .is-coldspot) .district-inspector-tabs button,
+html[data-v2-theme="dim"] .v3-scope .district-inspector:is(.is-hotspot, .is-middle, .is-coldspot) .district-inspector-tabs button {
+  color: #475569;
+}
+html[data-v2-theme="dark"] .v3-scope .district-inspector:is(.is-hotspot, .is-middle, .is-coldspot) .district-inspector-tabs button.is-active,
+html[data-v2-theme="dim"] .v3-scope .district-inspector:is(.is-hotspot, .is-middle, .is-coldspot) .district-inspector-tabs button.is-active {
+  color: #0F172A;
+  background: #FFFFFF;
+}
+html[data-v2-theme="dark"] .v3-scope .district-inspector:is(.is-hotspot, .is-middle, .is-coldspot) .district-indicator-track,
+html[data-v2-theme="dim"] .v3-scope .district-inspector:is(.is-hotspot, .is-middle, .is-coldspot) .district-indicator-track {
+  background: #E2E8F0;
+}
+
+@media (max-width: 1050px) {
+  .v3-scope .district-explorer { grid-template-columns: 1fr; }
+  .v3-scope .district-map-panel { border-right: 0; border-bottom: 1px solid var(--district-line); }
+  .v3-scope .district-inspector { min-height: 620px; }
+  .v3-scope .district-map-toolbar { grid-template-columns: minmax(150px, 0.42fr) minmax(220px, 0.72fr); }
+  .v3-scope .district-metric-control { grid-column: 1 / -1; }
+}
+@media (max-width: 760px) {
+  .v3-scope .district-map-panel,
+  .v3-scope .district-inspector { padding: 16px; }
+  .v3-scope .district-map-toolbar { grid-template-columns: 1fr; }
+  .v3-scope .district-metric-control { grid-column: auto; }
+  .v3-scope .district-metric-control > div { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .v3-scope .district-metric-control button:last-child { grid-column: 1 / -1; }
+  .v3-scope .district-map-caption { align-items: start; flex-direction: column; }
+  .v3-scope .district-map-caption__actions { width: 100%; justify-content: space-between; }
+  .v3-scope #districtMapCoverage { text-align: left; }
+  .v3-scope .district-map-frame { min-height: 440px; }
+  .v3-scope .district-map-echarts { height: 440px; }
+  .v3-scope .district-identity { grid-template-columns: 1fr 1fr; }
+  .v3-scope .district-identity div:last-child { grid-column: 1 / -1; }
+  .v3-scope .district-inspector { min-height: auto; }
+  .v3-scope .district-inspector-heading { align-items: flex-start; flex-direction: column; }
+  .v3-scope .district-signal-badge { max-width: 100%; text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .v3-scope .district-geography-control button,
+  .v3-scope .district-metric-control button,
+  .v3-scope #districtMapReset,
+  .v3-scope .district-indicator-track i,
+  .v3-scope .district-inspector,
+  .v3-scope .district-inspector-actions a,
+  .v3-scope .district-inspector-actions button { transition: none; }
+}
 
 /* ============================================================
    Field Map: ECharts chrome overlays (compass/scale/zoom/hint sit

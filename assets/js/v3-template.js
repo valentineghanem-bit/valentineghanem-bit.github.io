@@ -1353,7 +1353,6 @@
     window.switchJourneyTab('education');
     renderPublications(DATA.publications || []);
     window.filterPortfolio('all');
-    initPlotlyMap();
     initRadarChart();
     initMicroscopicInfectionCanvas();
     startTypewriter();

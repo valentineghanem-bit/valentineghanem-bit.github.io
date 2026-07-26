@@ -5,6 +5,7 @@ jsonld: home
 title: "Valentine Ghanem"
 browser_title: "Valentine Ghanem"
 description: "Official website of Valentine Golden Ghanem, a Ghanaian medical scientist, epidemiologist and public health researcher."
+extra_js: ["vendor/echarts.min.js", "home-district-engine.js"]
 ---
 {%- assign msph = site.data.profile.credentials | where_exp: "c", "c.name contains 'Public Health'" | first -%}
 {%- assign mds = site.data.profile.credentials | where_exp: "c", "c.name contains 'Data Science'" | first -%}
@@ -444,55 +445,114 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   </div>
 </section>
 
-<section id="fieldmap" class="py-32 px-6 relative">
+<section id="fieldmap" class="district-intelligence-section py-32 px-6 relative">
   <div class="max-w-7xl mx-auto">
-    <div class="reveal text-center max-w-3xl mx-auto mb-16">
+    <div class="reveal text-center max-w-4xl mx-auto mb-12">
       <div class="section__ghost-wrap">
-        <span class="section__ghost-num">04</span>
-        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-4">04 &mdash; Spatial Intelligence</h2>
-        <h3 class="text-4xl sm:text-5xl font-black font-heading">Ghana District Intelligence Preview</h3>
+        <span class="section__ghost-num">03</span>
+        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-4">03 &mdash; Spatial Intelligence</h2>
+        <h3 class="text-4xl sm:text-5xl font-black font-heading">Ghana Health Intelligence Atlas</h3>
       </div>
-      <p class="text-slate-600 dark:text-slate-400 mt-4">A lightweight homepage preview of the real 261-district Ghana GeoJSON used by the <a href="{{ '/map/' | relative_url }}" class="text-violet-500 hover:underline">full Field Map</a>. Select or click a district point to update the permanent inspector card.</p>
+      <p class="text-slate-600 dark:text-slate-400 mt-4">Move between Ghana's 16 regions and 261 districts to compare population context, social determinants, health-service coverage and selected outcomes represented in Valentine Golden Ghanem's research repositories. A map selection immediately updates the evidence card.</p>
     </div>
-    <div class="grid lg:grid-cols-12 gap-8 reveal">
-      <div class="lg:col-span-8 glass-card p-4 rounded-[32px] border">
-        <div class="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between p-3">
-          <label for="districtSelector" class="text-[10px] font-black uppercase tracking-[0.28em] text-slate-500">District selector</label>
-          <select id="districtSelector" class="glass-card rounded-2xl px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 focus:outline-none focus:border-violet-500 min-w-[260px]">
-            <option value="">Loading 261 districts...</option>
-          </select>
-        </div>
-        <div id="plotlyMap" class="w-full h-[550px] rounded-[24px] overflow-hidden"></div>
-      </div>
-      <div class="lg:col-span-4 glass-card p-6 rounded-[32px] border flex flex-col justify-between">
-        <div>
-          <div class="flex items-center gap-2 text-xs font-mono font-bold text-violet-500 uppercase mb-4"><i class="fa-solid fa-crosshairs"></i> District Inspector</div>
-          <h4 id="inspectorDistrictName" class="text-2xl font-black font-heading mb-1 text-slate-900 dark:text-white">Loading district layer</h4>
-          <p class="text-xs text-slate-500 mb-6" id="inspectorRegion">Reading assets/data/ghana-districts.geojson</p>
-          <div class="grid grid-cols-2 gap-3 mb-6">
-            <div class="rounded-2xl bg-slate-100 dark:bg-slate-800/70 p-3">
-              <div class="text-[10px] uppercase font-black tracking-wider text-slate-400">Coverage</div>
-              <div id="inspectorCoverage" class="text-lg font-black text-violet-500">261</div>
-            </div>
-            <div class="rounded-2xl bg-slate-100 dark:bg-slate-800/70 p-3">
-              <div class="text-[10px] uppercase font-black tracking-wider text-slate-400">Region</div>
-              <div id="inspectorRegionShort" class="text-lg font-black text-cyan-500">--</div>
-            </div>
-            <div class="rounded-2xl bg-slate-100 dark:bg-slate-800/70 p-3">
-              <div class="text-[10px] uppercase font-black tracking-wider text-slate-400">Population</div>
-              <div id="inspectorPopulation" class="text-sm font-black text-slate-600 dark:text-slate-300">Not in file</div>
-            </div>
-            <div class="rounded-2xl bg-slate-100 dark:bg-slate-800/70 p-3">
-              <div class="text-[10px] uppercase font-black tracking-wider text-slate-400">Year Created</div>
-              <div id="inspectorYearCreated" class="text-sm font-black text-slate-600 dark:text-slate-300">Not in file</div>
+
+    <div id="ghanaDistrictExplorer"
+         class="district-explorer reveal"
+         data-geo-url="{{ '/assets/data/ghana-districts.geojson' | relative_url }}"
+         data-region-geo-url="{{ '/assets/data/ghana-regions.geojson' | relative_url }}"
+         data-facts-url="{{ '/assets/data/ghana-district-facts.json' | relative_url }}"
+         aria-busy="true">
+      <div class="district-map-panel">
+        <div class="district-map-toolbar">
+          <div class="district-geography-control">
+            <span>Map view</span>
+            <div role="group" aria-label="Geographic level">
+              <button type="button" class="is-active" data-geography-view="regions" aria-pressed="true">Regions</button>
+              <button type="button" data-geography-view="districts" aria-pressed="false">Districts</button>
             </div>
           </div>
-          <p id="inspectorNote" class="text-xs text-slate-500 leading-relaxed">This homepage preview uses the real boundary dataset. The current GeoJSON exposes district name and region; population and year-created fields can be added once a vetted district attribute table is merged.</p>
+          <div class="district-selector-control">
+            <label for="districtSelector" id="geographySelectorLabel">Region selector</label>
+            <select id="districtSelector">
+            <option value="">Loading regional atlas...</option>
+          </select>
+          </div>
+          <div class="district-metric-control" role="group" aria-label="Map colour indicator">
+            <span>Map colour</span>
+            <div>
+              <button type="button" class="is-active" data-district-metric="health" aria-pressed="true">Health score</button>
+              <button type="button" data-district-metric="poverty" aria-pressed="false">Poverty</button>
+              <button type="button" data-district-metric="insurance" aria-pressed="false">Insurance</button>
+              <button type="button" data-district-metric="illiteracy" aria-pressed="false">Illiteracy</button>
+              <button type="button" data-district-metric="sanitation" aria-pressed="false">Sanitation</button>
+            </div>
+          </div>
         </div>
-        <div class="mt-8 pt-4 border-t border-slate-200 dark:border-slate-800 text-center">
-          <a href="{{ '/map/' | relative_url }}" class="text-xs font-bold text-violet-500 hover:underline">Open the full Field Map &rarr;</a>
+
+        <div class="district-map-caption">
+          <div>
+            <span class="district-map-kicker">Bespoke HI-EI atlas engine &middot; ECharts SVG</span>
+            <strong id="districtMapMetricLabel">Regional SDG health score</strong>
+          </div>
+          <div class="district-map-caption__actions">
+            <span id="districtMapCoverage">Aggregating 16 regional summaries...</span>
+            <button type="button" id="districtMapReset" title="Reset map to Greater Accra">
+              <i class="fa-solid fa-location-crosshairs" aria-hidden="true"></i>
+              <span>Reset to Greater Accra</span>
+            </button>
+          </div>
         </div>
+
+        <div class="district-map-frame">
+          <div id="ghanaDistrictMap"
+               class="district-map-echarts"
+               role="img"
+               aria-label="Interactive choropleth atlas of Ghana's 16 regions and 261 districts. Use the selector or click a boundary to update the evidence card."
+               tabindex="0"></div>
+          <div id="districtMapLoading" class="district-map-loading">
+            <i class="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
+            <span>Preparing Ghana's regional and district boundaries</span>
+          </div>
+        </div>
+
+        <div id="districtMapLegend" class="district-map-legend" aria-label="Map legend"></div>
+        <p class="district-map-source">Rendered by the site's bespoke HI-EI ECharts engine from 16 dissolved regional boundaries, 261 district boundaries and seven canonical 261-row tables selected from a 53-file master-CSV inventory. The live card separates demographics and structural determinants; insurance and education; SDG, WASH, services and outcomes; nutrition and anaemia; maternal health; immunisation; and ranked structural vulnerability. Regional values are population-weighted summaries and describe geographic context, not individual risk.</p>
       </div>
+
+      <aside class="district-inspector" aria-labelledby="inspectorDistrictName">
+        <header>
+          <div class="district-inspector-heading">
+            <span class="district-map-kicker" id="inspectorKicker"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i> Regional evidence card</span>
+            <span class="district-signal-badge" id="inspectorSignal">Assessing regional signal</span>
+          </div>
+          <h4 id="inspectorDistrictName">Loading regional atlas</h4>
+          <p id="inspectorRegion">Aggregating district records by region</p>
+        </header>
+
+        <dl class="district-identity">
+          <div><dt id="inspectorPopulationLabel">Population</dt><dd id="inspectorPopulation">--</dd></div>
+          <div><dt id="inspectorClassLabel">Districts in region</dt><dd id="inspectorClass">--</dd></div>
+          <div><dt id="inspectorCoordinatesLabel">Atlas level</dt><dd id="inspectorCoordinates">Region overview</dd></div>
+        </dl>
+
+        <div class="district-inspector-tabs" role="tablist" aria-label="Geographic evidence view">
+          <button type="button" class="is-active" role="tab" aria-selected="true" data-district-view="social">Determinants</button>
+          <button type="button" role="tab" aria-selected="false" data-district-view="services">Services</button>
+          <button type="button" role="tab" aria-selected="false" data-district-view="outcomes">Outcomes</button>
+        </div>
+
+        <div id="districtInspectorPanel" class="district-inspector-panel" role="tabpanel" aria-live="polite"></div>
+
+        <div class="district-inspector-note">
+          <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+          <p id="inspectorNote">Regional summaries are population-weighted from district records and should not be interpreted as individual risk or causal effects.</p>
+        </div>
+
+        <div class="district-inspector-actions">
+          <a href="{{ '/map/' | relative_url }}">Open the full Field Map <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+          <button type="button" id="districtCopySummary"><i class="fa-regular fa-copy" aria-hidden="true"></i> Copy regional summary</button>
+        </div>
+      </aside>
     </div>
   </div>
 </section>
@@ -502,8 +562,8 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
     <div class="reveal flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
       <div>
         <div class="section__ghost-wrap">
-          <span class="section__ghost-num">05</span>
-          <h2 class="text-xs font-black uppercase tracking-[0.4em] text-emerald-500 mb-4">05 &mdash; Academic Repository</h2>
+          <span class="section__ghost-num">04</span>
+          <h2 class="text-xs font-black uppercase tracking-[0.4em] text-emerald-500 mb-4">04 &mdash; Academic Repository</h2>
           <h3 class="text-4xl sm:text-5xl font-black font-heading">Publications &amp; Preprints</h3>
         </div>
         <p class="mt-4 text-sm text-slate-600 dark:text-slate-400 max-w-3xl">A concise evidence shelf for Valentine Golden Ghanem's peer-reviewed publications, preprints, data repositories and model artifacts across HIV, NHIS inequities, infectious-disease forecasting and spatial epidemiology.</p>
@@ -544,8 +604,8 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
     <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8 reveal">
       <div>
         <div class="section__ghost-wrap">
-          <span class="section__ghost-num">06</span>
-          <h2 class="text-xs font-black uppercase tracking-[0.4em] text-mint mb-4">06 &mdash; Portfolio</h2>
+          <span class="section__ghost-num">05</span>
+          <h2 class="text-xs font-black uppercase tracking-[0.4em] text-mint mb-4">05 &mdash; Portfolio</h2>
           <h3 class="text-4xl sm:text-5xl font-black font-heading">Selected Projects &amp; Models</h3>
         </div>
         <p class="mt-4 text-sm text-slate-600 dark:text-slate-400 max-w-3xl">Dashboards, models, algorithms, datasets and clinical research records that show the working side of the publications: data pipelines, forecasting tools, GIS outputs and laboratory science projects.</p>
@@ -581,8 +641,8 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
     <div class="reveal mb-12 flex items-end justify-between flex-wrap gap-4">
       <div>
         <div class="section__ghost-wrap">
-          <span class="section__ghost-num">07</span>
-          <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-4">07 &mdash; Field &amp; Diagnostic Operations</h2>
+          <span class="section__ghost-num">06</span>
+          <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-4">06 &mdash; Field &amp; Diagnostic Operations</h2>
           <h3 class="text-4xl font-black font-heading">A Look Behind the Work</h3>
         </div>
         <p class="mt-4 text-sm text-slate-600 dark:text-slate-400 max-w-2xl">Portraits and field images from Valentine Golden Ghanem's clinical, institutional and public-health work. Preview cards preserve faces with top-aware framing; the full gallery opens uncropped views.</p>
