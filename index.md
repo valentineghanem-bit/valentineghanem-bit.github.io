@@ -444,62 +444,95 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   </div>
 </section>
 
-<section id="simulator" class="py-32 px-6 bg-slate-50/50 dark:bg-slate-900/60 border-y border-slate-200 dark:border-slate-800">
+<section id="simulator" class="published-signal-section py-32 px-6 bg-slate-50/50 dark:bg-slate-900/60 border-y border-slate-200 dark:border-slate-800">
   <div class="max-w-7xl mx-auto">
-    <div class="reveal text-center max-w-3xl mx-auto mb-16">
+    <div class="reveal text-center max-w-4xl mx-auto mb-12">
       <div class="section__ghost-wrap">
         <span class="section__ghost-num">03</span>
         <h2 class="text-xs font-black uppercase tracking-[0.4em] text-crimson mb-4">03 &mdash; Published Work Signal Lab</h2>
-        <h3 class="text-4xl sm:text-5xl font-black font-heading">Spatial Epidemiology Concept Explorer</h3>
+        <h3 class="text-4xl sm:text-5xl font-black font-heading">Research Portfolio Evidence Console</h3>
       </div>
-      <p class="text-slate-600 dark:text-slate-400 mt-4">A guided interaction based on themes from Valentine Golden Ghanem's published spatial and machine-learning work: clustering, structural risk, coverage, environmental pressure and response priority. It is an explanatory interface, not a clinical prediction tool.</p>
+      <p class="text-slate-600 dark:text-slate-400 mt-4">Valentine Golden Ghanem's research is presented as a connected record: paper, evidence, method, code, model and public artifact. The console keeps peer-reviewed articles, preprint records and software repositories distinct while showing how each contribution was built.</p>
+      <div class="published-signal-totals" aria-label="Research portfolio summary">
+        <span><b id="signalPeerReviewedTotal">3</b> peer-reviewed</span>
+        <span><b id="signalPreprintTotal">2</b> preprint records</span>
+        <span><b id="signalRepositoryTotal">20+</b> research repositories</span>
+      </div>
     </div>
-    <div class="grid lg:grid-cols-12 gap-8 reveal">
-      <div class="lg:col-span-5 glass-card p-8 rounded-3xl border">
-        <h4 class="text-xl font-bold font-heading mb-6 flex items-center gap-2"><i class="fa-solid fa-sliders text-cyan-500"></i> Surveillance Signal Controls</h4>
-        <div class="mb-6">
-          <div class="flex justify-between text-xs font-bold mb-2"><span>Transmission / Exposure Signal</span><span id="vectorVal" class="text-cyan-500">65%</span></div>
-          <input type="range" id="vectorInput" min="10" max="100" value="65" oninput="calculateOutbreakRisk()" class="w-full accent-cyan-500 cursor-pointer">
+
+    <div id="publishedWorkLab" class="published-signal-lab reveal" data-index-url="{{ '/assets/data/published-works-index.json' | relative_url }}">
+      <aside class="published-signal-rail" aria-labelledby="publishedWorkRailTitle">
+        <div class="published-signal-rail__header">
+          <span class="published-signal-kicker">Research record</span>
+          <h4 id="publishedWorkRailTitle">Published works and archives</h4>
         </div>
-        <div class="mb-6">
-          <div class="flex justify-between text-xs font-bold mb-2"><span>Structural Vulnerability Index</span><span id="sanitationVal" class="text-amber-500">45%</span></div>
-          <input type="range" id="sanitationInput" min="0" max="100" value="45" oninput="calculateOutbreakRisk()" class="w-full accent-amber-500 cursor-pointer">
+        <div id="publishedWorkList" class="published-signal-work-list" role="listbox" aria-label="Published work selector" aria-busy="true">
+          <div class="published-signal-loading">Loading verified records</div>
         </div>
-        <div class="mb-6">
-          <div class="flex justify-between text-xs font-bold mb-2"><span>Service Coverage / Protective Reach</span><span id="vaccineVal" class="text-emerald-500">55%</span></div>
-          <input type="range" id="vaccineInput" min="0" max="100" value="55" oninput="calculateOutbreakRisk()" class="w-full accent-emerald-500 cursor-pointer">
+      </aside>
+
+      <article class="published-signal-stage" aria-labelledby="signalActiveTitle">
+        <header class="published-signal-stage__header">
+          <div>
+            <div class="published-signal-meta">
+              <span id="signalActiveStatus" class="published-signal-status">Loading</span>
+              <span id="signalActiveVenue">Verified research record</span>
+            </div>
+            <h4 id="signalActiveTitle">Published Work Signal Lab</h4>
+          </div>
+          <span id="signalActiveYear" class="published-signal-year">2026</span>
+        </header>
+
+        <p id="signalActiveSynopsis" class="published-signal-synopsis">Connecting publications to the datasets, methods, code and dashboards that support them.</p>
+
+        <div class="published-signal-tabs" role="tablist" aria-label="Research record view">
+          <button type="button" class="published-signal-tab is-active" role="tab" aria-selected="true" data-signal-view="evidence"><i class="fa-solid fa-chart-simple" aria-hidden="true"></i><span>Evidence</span></button>
+          <button type="button" class="published-signal-tab" role="tab" aria-selected="false" data-signal-view="methods"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i><span>Methods</span></button>
+          <button type="button" class="published-signal-tab" role="tab" aria-selected="false" data-signal-view="artifacts"><i class="fa-brands fa-github" aria-hidden="true"></i><span>Artifacts</span></button>
         </div>
-        <div class="mb-6">
-          <div class="flex justify-between text-xs font-bold mb-2"><span>Seasonal / Environmental Pressure</span><span id="rainVal" class="text-violet-500">+120mm</span></div>
-          <input type="range" id="rainInput" min="0" max="300" value="120" oninput="calculateOutbreakRisk()" class="w-full accent-violet-500 cursor-pointer">
+
+        <div id="signalActivePanel" class="published-signal-panel" role="tabpanel" aria-live="polite" aria-busy="true">
+          <div class="published-signal-loading">Reading compact evidence index</div>
         </div>
-        <button onclick="resetSimulator()" class="w-full py-3 bg-slate-200 dark:bg-slate-800 text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-slate-300 transition-colors">Reset Baseline Parameters</button>
-      </div>
-      <div class="lg:col-span-7 glass-card p-8 rounded-3xl border flex flex-col justify-between">
+
+        <div class="published-signal-skill-block">
+          <span>Methods and tools</span>
+          <div id="signalActiveSkills" class="published-signal-skills"></div>
+        </div>
+      </article>
+
+      <aside class="published-signal-inspector" aria-labelledby="signalInspectorTitle">
         <div>
-          <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
-            <div>
-              <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Illustrative spatial clustering index</span>
-              <div id="moranIndexDisplay" class="text-5xl font-black font-heading text-cyan-500 mt-1">I = +0.72</div>
-            </div>
-            <div id="riskLevelBadge" class="px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider bg-red-500/20 text-red-500 border border-red-500/30">STRONG CLUSTERING SIGNAL</div>
-          </div>
-          <div class="mb-8">
-            <div class="flex justify-between text-xs font-bold text-slate-500 mb-2"><span>Outbreak Probability Score</span><span id="outbreakProbPercent">74%</span></div>
-            <div class="w-full bg-slate-200 dark:bg-slate-800 h-4 rounded-full overflow-hidden p-0.5">
-              <div id="outbreakProgressBar" class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-red-500 rounded-full transition-all duration-300" style="width: 74%;"></div>
-            </div>
-          </div>
-          <div class="p-5 bg-slate-100 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700">
-            <h5 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-2 flex items-center gap-2"><i class="fa-solid fa-shield-virus text-cyan-500"></i> Interpretation Note</h5>
-            <p id="interventionText" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">Interpretation: this interface explains how clustered signals can change as structural, coverage and environmental inputs shift. It is not a validated predictive model.</p>
-          </div>
+          <span class="published-signal-kicker">Record inspector</span>
+          <h4 id="signalInspectorTitle">Source and interpretation</h4>
         </div>
-        <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-xs text-slate-500 font-mono">
-          <span>*Concept explorer, not a validated predictive model</span>
-          <a href="{{ '/publications/' | relative_url }}" class="text-cyan-500 font-bold hover:underline">Read the real publications &rarr;</a>
+        <dl class="published-signal-inspector__facts">
+          <div><dt>Scholarly status</dt><dd id="signalInspectorType">Loading</dd></div>
+          <div><dt>Evidence source</dt><dd id="signalInspectorSource">Verified public record</dd></div>
+          <div><dt>Last checked</dt><dd id="signalInspectorDate">2026-07-26</dd></div>
+        </dl>
+        <div class="published-signal-caveat">
+          <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+          <p id="signalActiveCaveat">Status and limitations remain visible beside every record.</p>
         </div>
+        <div id="signalActionLinks" class="published-signal-actions"></div>
+        <button id="signalCopyCitation" type="button" class="published-signal-copy" disabled>
+          <i class="fa-regular fa-copy" aria-hidden="true"></i>
+          <span>Copy citation</span>
+        </button>
+      </aside>
+    </div>
+
+    <div class="published-repo-atlas reveal">
+      <div class="published-repo-atlas__header">
+        <div>
+          <span class="published-signal-kicker">Repository atlas</span>
+          <h4>Code-backed public health research</h4>
+          <p>Featured pipelines span spatial epidemiology, infectious disease, maternal and child health, health systems, forecasting and evidence synthesis.</p>
+        </div>
+        <a href="https://github.com/valentineghanem-bit" target="_blank" rel="noopener" class="published-repo-atlas__profile">Open GitHub profile <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
       </div>
+      <div id="signalRepoAtlas" class="published-repo-atlas__grid" aria-live="polite"></div>
     </div>
   </div>
 </section>

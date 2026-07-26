@@ -571,57 +571,284 @@
   };
 
 
-  // ---------- Outbreak risk simulator ----------
-  // A transparent, simplified illustrative weighting (not a validated
-  // clinical/epidemiological model) -- same simple formula the template
-  // shipped with, kept because the interactive mechanic itself (sliders ->
-  // computed score -> visual feedback) is a legitimate portfolio demo of
-  // the underlying spatial-autocorrelation concept, as long as it isn't
-  // presented as real predictive output.
-  window.calculateOutbreakRisk = function () {
-    var vecEl = document.getElementById('vectorInput');
-    if (!vecEl) return;
-    var vec = parseInt(vecEl.value, 10);
-    var san = parseInt(document.getElementById('sanitationInput').value, 10);
-    var vac = parseInt(document.getElementById('vaccineInput').value, 10);
-    var rain = parseInt(document.getElementById('rainInput').value, 10);
+  // ---------- Published Work Signal Lab ----------
+  function initPublishedWorkSignalLab() {
+    var root = document.getElementById('publishedWorkLab');
+    if (!root) return;
 
-    document.getElementById('vectorVal').textContent = vec + '%';
-    document.getElementById('sanitationVal').textContent = san + '%';
-    document.getElementById('vaccineVal').textContent = vac + '%';
-    document.getElementById('rainVal').textContent = '+' + rain + 'mm';
+    var els = {
+      list: document.getElementById('publishedWorkList'),
+      title: document.getElementById('signalActiveTitle'),
+      status: document.getElementById('signalActiveStatus'),
+      venue: document.getElementById('signalActiveVenue'),
+      year: document.getElementById('signalActiveYear'),
+      synopsis: document.getElementById('signalActiveSynopsis'),
+      panel: document.getElementById('signalActivePanel'),
+      skills: document.getElementById('signalActiveSkills'),
+      inspectorType: document.getElementById('signalInspectorType'),
+      inspectorSource: document.getElementById('signalInspectorSource'),
+      inspectorDate: document.getElementById('signalInspectorDate'),
+      caveat: document.getElementById('signalActiveCaveat'),
+      actions: document.getElementById('signalActionLinks'),
+      copy: document.getElementById('signalCopyCitation'),
+      repoAtlas: document.getElementById('signalRepoAtlas'),
+      peerTotal: document.getElementById('signalPeerReviewedTotal'),
+      preprintTotal: document.getElementById('signalPreprintTotal'),
+      repositoryTotal: document.getElementById('signalRepositoryTotal')
+    };
+    var state = { index: null, workIndex: 0, view: 'evidence', districtData: null };
 
-    var riskVal = Math.min(99, Math.max(10, Math.round((vec * 0.35) + (san * 0.3) + (rain * 0.2) - (vac * 0.4) + 20)));
-    var moranI = ((riskVal / 100) * 1.2 - 0.2).toFixed(2);
-
-    document.getElementById('moranIndexDisplay').textContent = 'I = ' + (moranI > 0 ? '+' : '') + moranI;
-    document.getElementById('outbreakProbPercent').textContent = riskVal + '%';
-    document.getElementById('outbreakProgressBar').style.width = riskVal + '%';
-
-    var badge = document.getElementById('riskLevelBadge');
-    var text = document.getElementById('interventionText');
-    if (riskVal > 70) {
-      badge.className = 'px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider bg-red-500/20 text-red-500 border border-red-500/30';
-      badge.textContent = 'STRONG CLUSTERING SIGNAL (EXPLAINER)';
-      text.textContent = 'Interpretation: this combination resembles a high-priority surveillance signal. A real programme would verify the data source, inspect neighbouring districts, and consider targeted sampling or outreach before action.';
-    } else if (riskVal > 40) {
-      badge.className = 'px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider bg-amber-500/20 text-amber-500 border border-amber-500/30';
-      badge.textContent = 'MODERATE CLUSTERING SIGNAL (EXPLAINER)';
-      text.textContent = 'Interpretation: the signal is mixed. The sensible next step is not a prediction claim, but a closer look at coverage, local vulnerability and the neighbouring district pattern.';
-    } else {
-      badge.className = 'px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-500 border border-emerald-500/30';
-      badge.textContent = 'LOW CLUSTERING SIGNAL (EXPLAINER)';
-      text.textContent = 'Interpretation: the selected conditions do not create a strong clustering pattern in this concept explorer. Real surveillance would still depend on verified data and field context.';
+    function escapeText(value) {
+      return String(value == null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     }
-  };
-  window.resetSimulator = function () {
-    document.getElementById('vectorInput').value = 65;
-    document.getElementById('sanitationInput').value = 45;
-    document.getElementById('vaccineInput').value = 55;
-    document.getElementById('rainInput').value = 120;
-    window.calculateOutbreakRisk();
-    showToast('Simulator parameters reset');
-  };
+
+    function safeUrl(value) {
+      try {
+        var parsed = new URL(String(value || ''), window.location.origin);
+        if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return '#';
+        return parsed.href;
+      } catch (error) {
+        return '#';
+      }
+    }
+
+    function isExternal(value) {
+      try { return new URL(value, window.location.origin).origin !== window.location.origin; }
+      catch (error) { return false; }
+    }
+
+    function artifactIcon(kind) {
+      var icons = {
+        article: 'fa-book-open',
+        'full text': 'fa-file-lines',
+        repository: 'fa-code-branch',
+        dashboard: 'fa-chart-line',
+        data: 'fa-database',
+        preprint: 'fa-file-pen',
+        profile: 'fa-id-badge'
+      };
+      return icons[kind] || 'fa-arrow-up-right-from-square';
+    }
+
+    function renderMetricGrid(work) {
+      var metrics = work.metrics || [];
+      var html = '<div class="published-signal-metrics">';
+      metrics.forEach(function (metric, index) {
+        html += '<article class="published-signal-metric" style="--metric-order:' + index + '">' +
+          '<strong>' + escapeText(metric.value) + '</strong>' +
+          '<span>' + escapeText(metric.label) + '</span>' +
+          '<small>' + escapeText(metric.note) + '</small>' +
+          '</article>';
+      });
+      html += '</div>';
+      if (work.data_url) {
+        html += '<div id="signalDistrictEvidence" class="published-signal-district-evidence" aria-busy="true">' +
+          '<div class="published-signal-loading">Loading the 261-district companion record</div></div>';
+      } else {
+        html += '<div class="published-signal-evidence-line" aria-label="Evidence path">' +
+          '<span>Question</span><i aria-hidden="true"></i><span>Evidence</span><i aria-hidden="true"></i>' +
+          '<span>Analysis</span><i aria-hidden="true"></i><span>Publication</span></div>';
+      }
+      els.panel.innerHTML = html;
+      if (work.data_url) renderDistrictCompanion(work.data_url);
+    }
+
+    function renderDistrictCompanion(dataUrl) {
+      var target = document.getElementById('signalDistrictEvidence');
+      if (!target) return;
+
+      function draw(data) {
+        if (!target || !data || !Array.isArray(data.records)) return;
+        var top = data.records.slice().sort(function (a, b) {
+          return Number(b.uninsurance_pct) - Number(a.uninsurance_pct);
+        }).slice(0, 5);
+        var maxValue = Math.max.apply(null, top.map(function (item) { return Number(item.uninsurance_pct); })) || 1;
+        var rows = top.map(function (item) {
+          var width = Math.max(8, Number(item.uninsurance_pct) / maxValue * 100);
+          return '<button type="button" class="published-signal-district-row" ' +
+            'title="' + escapeText(item.region + ': poverty ' + item.poverty_pct + '%, illiteracy ' + item.illiteracy_pct + '%, LISA ' + item.lisa) + '">' +
+            '<span class="published-signal-district-row__label"><b>' + escapeText(item.district) + '</b><small>' + escapeText(item.region) + '</small></span>' +
+            '<span class="published-signal-district-row__track"><i style="width:' + width.toFixed(1) + '%"></i></span>' +
+            '<strong>' + escapeText(Number(item.uninsurance_pct).toFixed(1)) + '%</strong></button>';
+        }).join('');
+        target.innerHTML = '<div class="published-signal-district-evidence__header">' +
+          '<div><b>Related 261-district NHIS pipeline</b><span>Highest uninsurance rates in the compact companion dataset</span></div>' +
+          '<span class="published-signal-source-chip">source-backed</span></div>' +
+          '<div class="published-signal-district-rows">' + rows + '</div>' +
+          '<p>' + escapeText(data.meta.caveat) + '</p>';
+        target.setAttribute('aria-busy', 'false');
+      }
+
+      if (state.districtData) { draw(state.districtData); return; }
+      fetch(safeUrl(dataUrl))
+        .then(function (response) {
+          if (!response.ok) throw new Error('District companion unavailable');
+          return response.json();
+        })
+        .then(function (data) { state.districtData = data; draw(data); })
+        .catch(function () {
+          target.innerHTML = '<div class="published-signal-error">The compact district companion could not be loaded. Article links and provenance remain available in the inspector.</div>';
+          target.setAttribute('aria-busy', 'false');
+        });
+    }
+
+    function renderMethods(work) {
+      var methods = work.methods || [];
+      els.panel.innerHTML = '<ol class="published-signal-methods">' + methods.map(function (method, index) {
+        return '<li style="--method-order:' + index + '"><span>' + String(index + 1).padStart(2, '0') + '</span>' +
+          '<div><b>' + escapeText(method.name) + '</b><p>' + escapeText(method.role) + '</p></div></li>';
+      }).join('') + '</ol>';
+    }
+
+    function renderArtifacts(work) {
+      var artifacts = work.artifacts || [];
+      els.panel.innerHTML = '<div class="published-signal-artifact-map">' + artifacts.map(function (artifact, index) {
+        var href = safeUrl(artifact.url);
+        var external = isExternal(href);
+        return '<a href="' + escapeText(href) + '" class="published-signal-artifact-node" style="--artifact-order:' + index + '"' +
+          (external ? ' target="_blank" rel="noopener"' : '') + '>' +
+          '<i class="fa-solid ' + artifactIcon(artifact.kind) + '" aria-hidden="true"></i>' +
+          '<span><small>' + escapeText(artifact.kind) + '</small><b>' + escapeText(artifact.label) + '</b></span>' +
+          '<i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>';
+      }).join('') + '</div>';
+    }
+
+    function renderPanel() {
+      var work = state.index.works[state.workIndex];
+      els.panel.setAttribute('aria-busy', 'false');
+      if (state.view === 'methods') renderMethods(work);
+      else if (state.view === 'artifacts') renderArtifacts(work);
+      else renderMetricGrid(work);
+    }
+
+    function renderSkills(work) {
+      els.skills.innerHTML = (work.skills || []).map(function (skill) {
+        return '<span>' + escapeText(skill) + '</span>';
+      }).join('');
+    }
+
+    function renderActions(work) {
+      var actions = (work.artifacts || []).slice(0, 4);
+      els.actions.innerHTML = actions.map(function (artifact) {
+        var href = safeUrl(artifact.url);
+        return '<a href="' + escapeText(href) + '"' + (isExternal(href) ? ' target="_blank" rel="noopener"' : '') + '>' +
+          '<i class="fa-solid ' + artifactIcon(artifact.kind) + '" aria-hidden="true"></i>' +
+          '<span>' + escapeText(artifact.label) + '</span></a>';
+      }).join('');
+    }
+
+    function selectWork(index, focusButton) {
+      if (!state.index || !state.index.works[index]) return;
+      state.workIndex = index;
+      var work = state.index.works[index];
+      els.title.textContent = work.title;
+      els.status.textContent = work.status;
+      els.status.setAttribute('data-status', work.status.toLowerCase());
+      els.venue.textContent = work.venue;
+      els.year.textContent = work.year;
+      els.synopsis.textContent = work.synopsis;
+      els.inspectorType.textContent = work.record_type;
+      els.inspectorSource.textContent = work.venue;
+      els.inspectorDate.textContent = state.index.verified_on;
+      els.caveat.textContent = work.caveat;
+      els.copy.disabled = false;
+      els.copy.setAttribute('data-citation', work.citation);
+      root.setAttribute('data-accent', work.accent || 'cyan');
+      renderSkills(work);
+      renderActions(work);
+      renderPanel();
+
+      var buttons = Array.prototype.slice.call(els.list.querySelectorAll('[data-work-index]'));
+      buttons.forEach(function (button, buttonIndex) {
+        var active = buttonIndex === index;
+        button.classList.toggle('is-active', active);
+        button.setAttribute('aria-selected', active ? 'true' : 'false');
+        button.tabIndex = active ? 0 : -1;
+      });
+      if (focusButton && buttons[index]) buttons[index].focus();
+    }
+
+    function renderWorkList() {
+      els.list.innerHTML = state.index.works.map(function (work, index) {
+        return '<button type="button" class="published-signal-work' + (index === 0 ? ' is-active' : '') + '" ' +
+          'role="option" aria-selected="' + (index === 0 ? 'true' : 'false') + '" tabindex="' + (index === 0 ? '0' : '-1') + '" data-work-index="' + index + '">' +
+          '<span class="published-signal-work__index">' + String(index + 1).padStart(2, '0') + '</span>' +
+          '<span class="published-signal-work__body"><small>' + escapeText(work.status + ' / ' + work.year) + '</small>' +
+          '<b>' + escapeText(work.short_title) + '</b></span>' +
+          '<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>';
+      }).join('');
+      els.list.setAttribute('aria-busy', 'false');
+      els.list.querySelectorAll('[data-work-index]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          selectWork(parseInt(button.getAttribute('data-work-index'), 10), false);
+        });
+      });
+      els.list.addEventListener('keydown', function (event) {
+        if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp' && event.key !== 'Home' && event.key !== 'End') return;
+        event.preventDefault();
+        var next = state.workIndex;
+        if (event.key === 'ArrowDown') next = (next + 1) % state.index.works.length;
+        if (event.key === 'ArrowUp') next = (next - 1 + state.index.works.length) % state.index.works.length;
+        if (event.key === 'Home') next = 0;
+        if (event.key === 'End') next = state.index.works.length - 1;
+        selectWork(next, true);
+      });
+    }
+
+    function renderRepositoryAtlas() {
+      els.repoAtlas.innerHTML = (state.index.repository_atlas || []).map(function (repo, index) {
+        return '<a href="' + escapeText(safeUrl(repo.url)) + '" target="_blank" rel="noopener" class="published-repo-item" style="--repo-order:' + index + '">' +
+          '<span>' + String(index + 1).padStart(2, '0') + '</span><div><small>' + escapeText(repo.domain) + '</small>' +
+          '<b>' + escapeText(repo.title) + '</b><p>' + escapeText(repo.method) + '</p></div>' +
+          '<i class="fa-brands fa-github" aria-hidden="true"></i></a>';
+      }).join('');
+    }
+
+    document.querySelectorAll('[data-signal-view]').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        state.view = tab.getAttribute('data-signal-view');
+        document.querySelectorAll('[data-signal-view]').forEach(function (candidate) {
+          var active = candidate === tab;
+          candidate.classList.toggle('is-active', active);
+          candidate.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        renderPanel();
+      });
+    });
+
+    els.copy.addEventListener('click', function () {
+      var citation = els.copy.getAttribute('data-citation');
+      if (!citation) return;
+      copyToClipboard(citation, 'Citation copied');
+    });
+
+    fetch(root.getAttribute('data-index-url'))
+      .then(function (response) {
+        if (!response.ok) throw new Error('Published work index unavailable');
+        return response.json();
+      })
+      .then(function (index) {
+        if (!index || !Array.isArray(index.works) || !index.works.length) throw new Error('Published work index is empty');
+        state.index = index;
+        els.peerTotal.textContent = index.portfolio_totals.peer_reviewed;
+        els.preprintTotal.textContent = index.portfolio_totals.preprint_records;
+        els.repositoryTotal.textContent = index.portfolio_totals.research_repository_label;
+        renderWorkList();
+        renderRepositoryAtlas();
+        selectWork(0, false);
+      })
+      .catch(function () {
+        els.list.innerHTML = '<div class="published-signal-error">The research index could not be loaded.</div>';
+        els.list.setAttribute('aria-busy', 'false');
+        els.panel.innerHTML = '<div class="published-signal-error">Publication links remain available on the Publications page.</div>';
+        els.panel.setAttribute('aria-busy', 'false');
+      });
+  }
 
   // ---------- Radar chart (real skills data) ----------
   function initRadarChart() {
@@ -1405,9 +1632,9 @@
     window.switchJourneyTab('education');
     renderPublications(DATA.publications || []);
     window.filterPortfolio('all');
+    initPublishedWorkSignalLab();
     initPlotlyMap();
     initRadarChart();
-    window.calculateOutbreakRisk();
     initMicroscopicInfectionCanvas();
     startTypewriter();
     if (window.v2Motion) window.v2Motion.attachMagnetic('.magnetic-btn');
