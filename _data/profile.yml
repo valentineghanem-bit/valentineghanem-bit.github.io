@@ -25,6 +25,11 @@ disambiguating_description: >
 short_description: >
   Official website of Valentine Golden Ghanem, a Ghanaian medical scientist,
   epidemiologist and public health researcher.
+about_hero_description: >
+  Valentine Golden Ghanem is a Ghanaian medical scientist, epidemiologist and public
+  health researcher. As Principal Biomedical Scientist at Cocoa Clinic, Ghana Cocoa
+  Board, he connects laboratory medicine, disease surveillance, spatial analytics and
+  machine learning to strengthen public-health decisions.
 cv_download_url: "/assets/files/valentine-golden-ghanem-resume.pdf"
 languages:
   - name: "English"

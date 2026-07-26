@@ -436,15 +436,7 @@ html[data-v2-theme="dim"] .v3-side-nav__link { color: #CBD5E1; }
   }
   .v3-side-nav.is-open { transform: translate3d(10px, 0, 0); }
   .v3-side-nav__panel { height: calc(100svh - 24px); }
-  .v3-side-nav__toggle {
-    top: 8px;
-    width: 60px;
-    height: 118px;
-    padding-inline: 8px;
-    grid-template-rows: 44px auto 18px;
-  }
-  .v3-side-nav__toggle img { width: 40px; height: 40px; }
-  .v3-side-nav__section small { opacity: 1; }
+  .v3-side-nav__toggle { top: 8px; }
   .v3-side-nav__backdrop.is-open {
     opacity: 1;
     visibility: visible;

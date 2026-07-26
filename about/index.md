@@ -17,9 +17,14 @@ extra_js: ["about-fx.js"]
       <div class="about-profile-hero__copy reveal">
         <p class="about-v3__breadcrumb"><a href="{{ '/' | relative_url }}">Home</a><span>/</span>About</p>
         <p class="about-v3__eyebrow">Medical science <b>&bull;</b> Epidemiology <b>&bull;</b> Public health</p>
-        <h1 id="aboutTitle">{{ site.data.profile.name }}</h1>
+        <span class="about-profile-hero__index" aria-hidden="true">00 / PROFILE</span>
+        <h1 id="aboutTitle"><span>Valentine</span><span>Golden Ghanem</span></h1>
         <p class="about-profile-hero__role">{{ site.data.profile.job_titles | join: " / " }}</p>
-        <p class="about-profile-hero__summary">{{ site.data.profile.description | strip_newlines }}</p>
+        <p class="about-profile-hero__summary">{{ site.data.profile.about_hero_description | strip_newlines }}</p>
+        <div class="about-profile-hero__actions" aria-label="About page actions">
+          <a href="#professional-remit"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i> Explore professional remit</a>
+          <a href="#professional-verification"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> View verified credentials</a>
+        </div>
         <div class="about-profile-hero__status" aria-label="Current professional scope">
           <span><i class="fa-solid fa-flask-vial" aria-hidden="true"></i> Principal Biomedical Scientist</span>
           <span><i class="fa-solid fa-earth-africa" aria-hidden="true"></i> Accra, Ghana</span>

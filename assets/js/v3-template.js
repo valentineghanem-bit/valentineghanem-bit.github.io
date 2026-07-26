@@ -765,15 +765,38 @@
   }
 
   // ---------- Modals ----------
+  var modalReturnFocus = null;
+
+  function showModal(modal) {
+    if (!modal) return;
+    modalReturnFocus = document.activeElement;
+    modal.removeAttribute('inert');
+    modal.setAttribute('aria-hidden', 'false');
+    modal.classList.remove('opacity-0', 'pointer-events-none');
+    window.setTimeout(function () {
+      var closeButton = modal.querySelector('[aria-label^="Close"]');
+      if (closeButton) closeButton.focus();
+    }, 30);
+  }
+
+  function hideModal(modal) {
+    if (!modal) return;
+    modal.setAttribute('aria-hidden', 'true');
+    modal.setAttribute('inert', '');
+    modal.classList.add('opacity-0', 'pointer-events-none');
+    if (modalReturnFocus && document.contains(modalReturnFocus)) modalReturnFocus.focus();
+    modalReturnFocus = null;
+  }
+
   window.openCvModal = function () {
     if (window.VGG_CV_DOWNLOAD_URL) {
       window.location.href = window.VGG_CV_DOWNLOAD_URL;
       return;
     }
-    document.getElementById('cvModal').classList.remove('opacity-0', 'pointer-events-none');
+    showModal(document.getElementById('cvModal'));
   };
   window.closeCvModal = function () {
-    document.getElementById('cvModal').classList.add('opacity-0', 'pointer-events-none');
+    hideModal(document.getElementById('cvModal'));
   };
   window.openLightbox = function (img, title, desc) {
     var imgEl = document.getElementById('lightboxImg');
@@ -782,11 +805,22 @@
     imgEl.alt = altBase + ', Valentine Golden Ghanem';
     document.getElementById('lightboxTitle').textContent = title;
     document.getElementById('lightboxDesc').textContent = desc;
-    document.getElementById('lightboxModal').classList.remove('opacity-0', 'pointer-events-none');
+    showModal(document.getElementById('lightboxModal'));
   };
   window.closeLightbox = function () {
-    document.getElementById('lightboxModal').classList.add('opacity-0', 'pointer-events-none');
+    hideModal(document.getElementById('lightboxModal'));
   };
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key !== 'Escape') return;
+    var lightbox = document.getElementById('lightboxModal');
+    var cvModal = document.getElementById('cvModal');
+    if (lightbox && lightbox.getAttribute('aria-hidden') === 'false') {
+      window.closeLightbox();
+    } else if (cvModal && cvModal.getAttribute('aria-hidden') === 'false') {
+      window.closeCvModal();
+    }
+  });
 
   function initOperationLightboxes() {
     document.querySelectorAll('[data-operation-lightbox]').forEach(function (button) {

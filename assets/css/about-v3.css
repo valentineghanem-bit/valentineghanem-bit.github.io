@@ -12,16 +12,28 @@
 
 .v3-scope .about-profile-hero {
   position: relative;
-  min-height: 780px;
+  min-height: 820px;
   display: grid;
   align-items: center;
-  padding: 72px 6vw 88px;
-  border-bottom: 1px solid var(--border-color);
+  padding: 68px 6vw 82px;
+  isolation: isolate;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.22);
   background:
-    linear-gradient(rgba(148, 163, 184, 0.09) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 163, 184, 0.07) 1px, transparent 1px),
-    linear-gradient(135deg, rgba(34, 211, 238, 0.06), transparent 36%, rgba(167, 139, 250, 0.06));
-  background-size: 32px 32px, 32px 32px, auto;
+    linear-gradient(104deg, #0b1120 0%, #0f172a 58%, #172033 100%);
+  color: #f8fafc;
+  overflow: hidden;
+}
+
+.v3-scope .about-profile-hero::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(52, 211, 153, 0.08), transparent 21%),
+    linear-gradient(112deg, transparent 62%, rgba(34, 211, 238, 0.08) 62%, transparent 76%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 24%);
 }
 
 .v3-scope .about-profile-hero::after {
@@ -29,17 +41,17 @@
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 42%;
+  width: 54%;
   height: 4px;
-  background: linear-gradient(90deg, var(--about-mint), var(--about-cyan), var(--about-violet), transparent);
+  background: linear-gradient(90deg, var(--about-mint), var(--about-cyan), var(--about-violet), var(--about-crimson), transparent);
 }
 
 .v3-scope .about-profile-hero__grid {
   width: min(1480px, 100%);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(420px, 5fr);
-  gap: 64px;
+  grid-template-columns: minmax(0, 1.05fr) minmax(500px, 0.95fr);
+  gap: 72px;
   align-items: center;
 }
 
@@ -48,7 +60,7 @@
   align-items: center;
   gap: 9px;
   margin: 0 0 42px;
-  color: var(--about-muted);
+  color: #94a3b8;
   font-family: "Fira Code", monospace;
   font-size: 0.72rem;
 }
@@ -63,6 +75,29 @@
 .v3-scope .about-v3__breadcrumb a:focus-visible {
   color: var(--about-cyan);
   outline: none;
+}
+
+.v3-scope .about-profile-hero__index {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  margin: 0 0 15px;
+  padding-left: 46px;
+  position: relative;
+  color: #94a3b8;
+  font-family: "Fira Code", monospace;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.v3-scope .about-profile-hero__index::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 34px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--about-mint), var(--about-cyan), var(--about-violet));
 }
 
 .v3-scope .about-v3__eyebrow {
@@ -85,13 +120,22 @@
 .v3-scope .about-profile-hero h1 {
   max-width: 12ch;
   margin: 0;
-  color: var(--text-main);
+  color: #f8fafc;
   font-family: "Space Grotesk", sans-serif;
-  font-size: 4.65rem;
+  font-size: 4.1rem;
   font-weight: 900;
   line-height: 0.98;
   letter-spacing: 0;
   text-wrap: balance;
+}
+
+.v3-scope .about-profile-hero h1 span { display: block; }
+
+.v3-scope .about-profile-hero h1 span:last-child {
+  color: transparent;
+  background: linear-gradient(90deg, #34d399 0%, #22d3ee 48%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
 .v3-scope .about-profile-hero__role {
@@ -107,7 +151,7 @@
 .v3-scope .about-profile-hero__summary {
   max-width: 68ch;
   margin: 24px 0 0;
-  color: var(--about-muted);
+  color: #cbd5e1;
   font-size: 1.05rem;
   line-height: 1.78;
 }
@@ -115,11 +159,46 @@
 html[data-v2-theme="dark"] .v3-scope .about-profile-hero__summary,
 html[data-v2-theme="dim"] .v3-scope .about-profile-hero__summary { color: #cbd5e1; }
 
+.v3-scope .about-profile-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.v3-scope .about-profile-hero__actions a {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 17px;
+  border: 1px solid rgba(148, 163, 184, 0.36);
+  border-radius: 6px;
+  color: #e2e8f0;
+  background: rgba(15, 23, 42, 0.66);
+  font-size: 0.73rem;
+  font-weight: 800;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.v3-scope .about-profile-hero__actions a:first-child {
+  color: #07111f;
+  border-color: transparent;
+  background: linear-gradient(90deg, var(--about-cyan), var(--about-mint));
+}
+
+.v3-scope .about-profile-hero__actions a:hover,
+.v3-scope .about-profile-hero__actions a:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--about-cyan);
+  outline: none;
+}
+
 .v3-scope .about-profile-hero__status {
   display: flex;
   flex-wrap: wrap;
   gap: 9px;
-  margin-top: 30px;
+  margin-top: 18px;
 }
 
 .v3-scope .about-profile-hero__status span {
@@ -130,8 +209,8 @@ html[data-v2-theme="dim"] .v3-scope .about-profile-hero__summary { color: #cbd5e
   padding: 9px 13px;
   border: 1px solid rgba(148, 163, 184, 0.3);
   border-radius: 6px;
-  background: color-mix(in srgb, var(--card-bg) 72%, transparent);
-  color: var(--text-main);
+  background: rgba(15, 23, 42, 0.58);
+  color: #e2e8f0;
   font-size: 0.72rem;
   font-weight: 750;
 }
@@ -141,22 +220,26 @@ html[data-v2-theme="dim"] .v3-scope .about-profile-hero__summary { color: #cbd5e
 .v3-scope .about-profile-hero__status span:nth-child(3) i { color: var(--about-violet); }
 
 .v3-scope .about-profile-hero__portrait {
-  width: min(100%, 560px);
+  width: min(100%, 600px);
   margin: 0 0 0 auto;
   min-width: 0;
+  position: relative;
 }
 
 .v3-scope .about-profile-hero__image {
   position: relative;
-  min-height: 560px;
+  min-height: 0;
   display: grid;
   place-items: end center;
-  padding: 18px 18px 0;
-  border: 1px solid rgba(148, 163, 184, 0.28);
+  padding: 54px 12px 0;
+  border: 1px solid rgba(148, 163, 184, 0.32);
   border-radius: 8px 8px 0 0;
   background:
-    linear-gradient(180deg, rgba(34, 211, 238, 0.05), transparent 48%),
-    color-mix(in srgb, var(--card-bg) 75%, transparent);
+    linear-gradient(165deg, rgba(34, 211, 238, 0.13), transparent 38%),
+    rgba(15, 23, 42, 0.72);
+  box-shadow:
+    0 30px 70px -36px rgba(2, 6, 23, 0.94),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
   overflow: hidden;
 }
 
@@ -166,7 +249,7 @@ html[data-v2-theme="dim"] .v3-scope .about-profile-hero__summary { color: #cbd5e
   top: 18px;
   left: 18px;
   z-index: 2;
-  color: var(--about-muted);
+  color: #94a3b8;
   font-family: "Fira Code", monospace;
   font-size: 0.58rem;
   font-weight: 800;
@@ -174,22 +257,21 @@ html[data-v2-theme="dim"] .v3-scope .about-profile-hero__summary { color: #cbd5e
 }
 
 .v3-scope .about-profile-hero__image img {
-  width: min(100%, 530px);
-  height: 530px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
   object-fit: contain;
   object-position: center bottom;
-  filter: drop-shadow(0 28px 44px rgba(15, 23, 42, 0.2));
+  filter: saturate(1.04) contrast(1.02) drop-shadow(0 28px 44px rgba(2, 6, 23, 0.42));
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
 }
 
-.v3-scope .about-profile-hero__ruler {
-  position: absolute;
-  right: 14px;
-  top: 18px;
-  bottom: 18px;
-  width: 10px;
-  opacity: 0.45;
-  background: repeating-linear-gradient(180deg, var(--about-cyan) 0 1px, transparent 1px 14px);
+.v3-scope .about-profile-hero__portrait:hover .about-profile-hero__image img {
+  transform: translateY(-4px) scale(1.012);
+  filter: saturate(1.08) contrast(1.03) drop-shadow(0 34px 52px rgba(2, 6, 23, 0.52));
 }
+
+.v3-scope .about-profile-hero__ruler { display: none; }
 
 .v3-scope .about-profile-hero__portrait figcaption {
   display: grid;
@@ -198,17 +280,18 @@ html[data-v2-theme="dim"] .v3-scope .about-profile-hero__summary { color: #cbd5e
   align-items: center;
   min-height: 68px;
   padding: 14px 16px;
-  border: 1px solid rgba(148, 163, 184, 0.28);
+  border: 1px solid rgba(148, 163, 184, 0.32);
   border-top: 0;
   border-radius: 0 0 8px 8px;
-  color: var(--about-muted);
+  color: #94a3b8;
+  background: rgba(15, 23, 42, 0.88);
   font-family: "Fira Code", monospace;
   font-size: 0.68rem;
   line-height: 1.45;
 }
 
 .v3-scope .about-profile-hero__portrait figcaption b {
-  color: var(--text-main);
+  color: #f8fafc;
   text-align: right;
 }
 
@@ -400,11 +483,7 @@ html[data-v2-theme="dim"] .v3-scope .about-profile-hero__summary { color: #cbd5e
 
 .v3-scope .about-matrix {
   color: #e2e8f0;
-  background:
-    linear-gradient(rgba(148, 163, 184, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 163, 184, 0.045) 1px, transparent 1px),
-    #0b1120;
-  background-size: 40px 40px;
+  background: #0b1120;
 }
 
 .v3-scope .about-matrix .about-v3__section-header h2 { color: #f8fafc; }
@@ -998,8 +1077,8 @@ html[data-v2-theme="dim"] .v3-scope .about-profile-hero__summary { color: #cbd5e
   .v3-scope .about-profile-hero__summary { font-size: 0.96rem; line-height: 1.68; }
   .v3-scope .about-profile-hero__status { display: grid; }
   .v3-scope .about-profile-hero__status span { width: 100%; }
-  .v3-scope .about-profile-hero__image { min-height: 420px; padding-inline: 6px; }
-  .v3-scope .about-profile-hero__image img { height: 410px; }
+  .v3-scope .about-profile-hero__image { min-height: 0; padding: 48px 6px 0; }
+  .v3-scope .about-profile-hero__image img { width: 100%; height: auto; }
   .v3-scope .about-profile-hero__portrait figcaption { grid-template-columns: 1fr; gap: 6px; }
   .v3-scope .about-profile-hero__portrait figcaption b { text-align: left; }
   .v3-scope .about-v3__section { padding: 70px 18px; }
