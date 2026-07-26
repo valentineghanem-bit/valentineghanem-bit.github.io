@@ -251,9 +251,9 @@
     return { values: values, thresholds: thresholds, colors: colors, pieces: pieces };
   }
 
-  function regionalSignal(fact) {
+  function relativeSignal(fact) {
     var metric = METRICS[activeMetric];
-    var values = regions.map(metric.read).filter(validNumber).sort(function (a, b) { return a - b; });
+    var values = currentRecords().map(metric.read).filter(validNumber).sort(function (a, b) { return a - b; });
     var value = metric.read(fact);
     var lower = quantile(values, 0.2);
     var upper = quantile(values, 0.8);
@@ -405,7 +405,7 @@
     byId('inspectorDistrictName').textContent = fact.name;
     byId('inspectorPopulation').textContent = formatNumber(fact.population, 0);
     if (activeGeography === 'regions') {
-      var regionalClassification = regionalSignal(fact);
+      var regionalClassification = relativeSignal(fact);
       if (inspector) inspector.classList.add(regionalClassification.className);
       if (signal) {
         signal.hidden = false;
@@ -426,7 +426,12 @@
       if (copyButton) copyButton.innerHTML =
         '<i class="fa-regular fa-copy" aria-hidden="true"></i> Copy regional summary';
     } else {
-      if (signal) signal.hidden = true;
+      var districtClassification = relativeSignal(fact);
+      if (inspector) inspector.classList.add(districtClassification.className);
+      if (signal) {
+        signal.hidden = false;
+        signal.textContent = districtClassification.label + ' \u00b7 ' + METRICS[activeMetric].label;
+      }
       byId('inspectorKicker').innerHTML =
         '<i class="fa-solid fa-crosshairs" aria-hidden="true"></i> District evidence card';
       byId('inspectorRegion').textContent = fact.region + ' \u00b7 ' + fact.district_class + ' assembly';
@@ -436,7 +441,9 @@
       byId('inspectorCoordinates').textContent =
         formatNumber(fact.coordinates.latitude, 4) + ', ' + formatNumber(fact.coordinates.longitude, 4);
       byId('inspectorNote').textContent =
-        'District-level indicators describe geographic context. They are not individual risk estimates and do not establish causal effects.';
+        districtClassification.label + ' is a descriptive comparison with the other 261 districts for ' +
+        METRICS[activeMetric].label +
+        '. It uses the upper or lower district quintile, not a formal spatial hotspot test. District indicators describe geographic context; they are not individual risk estimates and do not establish causal effects.';
       if (copyButton) copyButton.innerHTML =
         '<i class="fa-regular fa-copy" aria-hidden="true"></i> Copy district summary';
     }
