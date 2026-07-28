@@ -16,7 +16,7 @@
     var flyer = document.createElement('div');
     flyer.className = 'fan-lightbox-flyer';
     var img = document.createElement('img');
-    img.alt = '';
+    img.alt = 'Enlarged photograph of Valentine Golden Ghanem';
     flyer.appendChild(img);
     var caption = document.createElement('p');
     caption.className = 'fan-lightbox-caption';
@@ -66,7 +66,7 @@
       originRect = { left: r.left, top: r.top, width: r.width, height: r.height, radius: cs.borderRadius };
 
       img.src = srcImg.currentSrc || srcImg.src;
-      img.alt = srcImg.alt || '';
+      img.alt = srcImg.alt || 'Enlarged photograph of Valentine Golden Ghanem';
       img.style.objectFit = 'cover';
       caption.textContent = card.getAttribute('data-caption') || '';
 

@@ -99,7 +99,7 @@ conferences:
         caption: "Health insurance exhibition booth."
         contain: true
       - url: "/assets/img/community/gamls-congress-2021/equipments.jpg"
-        caption: "Laboratory analyzers on display at the congress."
+        caption: "Laboratory analysers on display at the congress."
         contain: true
       - url: "/assets/img/community/gamls-congress-2021/pamphlets.jpg"
         caption: "Congress programme and reference materials."
@@ -146,7 +146,7 @@ outreach:
     date: "16 July 2016"
     lat: 5.54
     lng: -0.24
-    description: "Delivered a guest address on substance abuse and health awareness to Junior High School students, emphasizing personal responsibility, peer pressure, and the science of addiction."
+    description: "Delivered a guest address on substance-use prevention and health awareness to junior high school students, with discussion of personal responsibility, peer pressure and the science of addiction."
     photos:
       - url: "/assets/img/community/youth-event-2016/talk-1.jpg"
         caption: "Addressing students on substance abuse awareness."

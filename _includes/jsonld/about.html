@@ -10,6 +10,7 @@
       "name": "About {{ site.data.profile.name }}",
       "headline": "{{ site.data.profile.name }} - Professional Profile",
       "description": {{ site.data.profile.disambiguating_description | strip_newlines | jsonify }},
+      "dateModified": {{ site.data.profile.profile_date_modified | jsonify }},
       "isPartOf": { "@id": "{{ site.url }}/#website" },
       "mainEntity": { "@id": "{{ site.url }}/#person" },
       "about": { "@id": "{{ site.url }}/#person" },

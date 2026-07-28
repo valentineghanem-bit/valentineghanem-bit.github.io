@@ -8,12 +8,12 @@ extra_js: ["press-fx.js"]
 ---
 {% include nav-v3.html %}
 {%- assign press_outlets = site.data.press | map: "outlet" | uniq -%}
-<section class="press-v2 pt-40 pb-24 px-6">
+<section class="press-v2 v3-page-canvas v3-page-canvas--press pt-40 pb-24 px-6" data-nav-marker="00" data-nav-label="Press" data-nav-colour="#FBBF24">
   <div class="max-w-[1800px] mx-auto">
     <p class="font-mono text-xs text-slate-400 mb-6"><a href="{{ '/' | relative_url }}" class="hover:text-cyan-500">Home</a> / Press</p>
     <h1 class="text-4xl sm:text-5xl md:text-6xl font-black font-heading tracking-tight text-slate-900 dark:text-white mb-5">Press &amp; recognition</h1>
     <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mb-10">
-      Media coverage and public engagements focusing on research, expert commentary, and contributions to public health and epidemiology. All entries link to the original publication.
+      Media coverage of research, professional commentary and contributions to public health and epidemiology. Each entry links to the original publication.
     </p>
 
     <div class="glass-card rounded-2xl border pt-4 pb-5 mb-16" aria-hidden="true">
@@ -40,7 +40,7 @@ extra_js: ["press-fx.js"]
     </ul>
 
     <h2 class="text-xs font-black uppercase tracking-[0.4em] text-amber-500 mb-2">Verified profiles</h2>
-    <p class="text-sm text-slate-600 dark:text-slate-300 mb-5">His identity and record are also independently verifiable via:</p>
+    <p class="text-sm text-slate-600 dark:text-slate-300 mb-5">Independent identity and research records are available through the following profiles:</p>
     <div class="link-row flex flex-wrap gap-2.5">
       <a href="https://www.wikidata.org/wiki/Q137962236" target="_blank" rel="noopener" class="px-4 py-2 rounded-full border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:border-amber-500 hover:text-amber-500 transition-colors">Wikidata</a>
       <a href="https://isni.org/isni/000000052967791X" target="_blank" rel="noopener" class="px-4 py-2 rounded-full border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:border-amber-500 hover:text-amber-500 transition-colors">ISNI</a>

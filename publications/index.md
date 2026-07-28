@@ -7,12 +7,12 @@ jsonld: publications
 extra_js: ["publications-fx.js"]
 ---
 {% include nav-v3.html %}
-<section class="publications-v2 pt-40 pb-24 px-6" data-pubs-root>
+<section class="publications-v2 v3-page-canvas v3-page-canvas--publications pt-40 pb-24 px-6" data-pubs-root data-nav-marker="00" data-nav-label="Research" data-nav-colour="#A78BFA">
   <div class="max-w-[1800px] mx-auto">
     <p class="font-mono text-xs text-slate-400 mb-6"><a href="{{ '/' | relative_url }}" class="hover:text-cyan-500">Home</a> / Publications</p>
     <h1 class="text-4xl sm:text-5xl md:text-6xl font-black font-heading tracking-tight text-slate-900 dark:text-white mb-5">Publications</h1>
     <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mb-10">
-      Published research, academic contributions and independent writings spanning public health, biomedical science, infectious disease epidemiology and data-driven healthcare insights.
+      Peer-reviewed articles, preprints and research records in public health, biomedical science, infectious-disease epidemiology and health-data analysis.
     </p>
 
     {% assign pub_years = site.data.publications | map: "year" | uniq | sort | reverse %}

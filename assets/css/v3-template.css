@@ -1990,6 +1990,87 @@ html:not([data-v2-theme="dark"]):not([data-v2-theme="dim"]) .v3-scope .graded-he
   .v3-scope .technical-stack__item { transition: none; }
 }
 
+/* Shared page canvas: Home's spectral palette, typographic hierarchy and
+   numbered-section language carried across the supporting pages. Each page
+   keeps its own layout and interaction model; only the visual grammar is
+   shared. */
+.v3-scope .v3-page-canvas {
+  --page-accent: #22D3EE;
+  --page-accent-2: #34D399;
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  background:
+    linear-gradient(116deg,
+      color-mix(in srgb, var(--page-accent) 8%, transparent) 0%,
+      transparent 28%,
+      transparent 68%,
+      color-mix(in srgb, var(--page-accent-2) 7%, transparent) 100%),
+    #F8FAFC;
+}
+.v3-scope .v3-page-canvas::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0 0 auto;
+  height: 4px;
+  background: linear-gradient(90deg, #34D399 0 20%, #22D3EE 20% 40%, #FBBF24 40% 60%, #A78BFA 60% 80%, #F87171 80% 100%);
+}
+.v3-scope .v3-page-canvas::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background:
+    linear-gradient(152deg, transparent 4%, color-mix(in srgb, var(--page-accent) 5%, transparent) 50%, transparent 96%),
+    linear-gradient(28deg, transparent 14%, color-mix(in srgb, var(--page-accent-2) 5%, transparent) 100%);
+}
+.v3-scope .v3-page-canvas > * {
+  position: relative;
+  z-index: 1;
+}
+.v3-scope .v3-page-canvas > .max-w-\[1800px\] > h1 {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+}
+.v3-scope .v3-page-canvas > .max-w-\[1800px\] > h1::after {
+  content: '';
+  display: block;
+  width: min(168px, 42%);
+  height: 4px;
+  margin-top: 16px;
+  background: linear-gradient(90deg, var(--page-accent), var(--page-accent-2));
+}
+.v3-scope .v3-page-canvas--community { --page-accent: #34D399; --page-accent-2: #22D3EE; }
+.v3-scope .v3-page-canvas--skills { --page-accent: #22D3EE; --page-accent-2: #A78BFA; }
+.v3-scope .v3-page-canvas--publications { --page-accent: #A78BFA; --page-accent-2: #F87171; }
+.v3-scope .v3-page-canvas--portfolio { --page-accent: #FBBF24; --page-accent-2: #34D399; }
+.v3-scope .v3-page-canvas--certificates { --page-accent: #F87171; --page-accent-2: #A78BFA; }
+.v3-scope .v3-page-canvas--press { --page-accent: #FBBF24; --page-accent-2: #F87171; }
+.v3-scope .v3-page-canvas--map { --page-accent: #22D3EE; --page-accent-2: #34D399; }
+.v3-scope .v3-page-canvas--gallery { --page-accent: #A78BFA; --page-accent-2: #22D3EE; }
+html[data-v2-theme="dark"] .v3-scope .v3-page-canvas,
+html[data-v2-theme="dim"] .v3-scope .v3-page-canvas {
+  background:
+    linear-gradient(116deg,
+      color-mix(in srgb, var(--page-accent) 10%, transparent) 0%,
+      transparent 30%,
+      transparent 66%,
+      color-mix(in srgb, var(--page-accent-2) 9%, transparent) 100%),
+    #0B1120;
+}
+@media (max-width: 640px) {
+  .v3-scope .v3-page-canvas > .max-w-\[1800px\] > h1::after {
+    margin-top: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .v3-scope .v3-page-canvas::after { opacity: 0.35; }
+}
+
 /* ============================================================
    Behavioural CSS for ported interactions (About/Skills/etc.) --
    the JS hooks (about-fx.js and friends) are kept as-is and still target

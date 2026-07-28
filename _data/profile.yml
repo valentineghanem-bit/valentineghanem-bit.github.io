@@ -15,21 +15,22 @@ job_titles:
 nationality: "Ghana"
 description: >
   Valentine Golden Ghanem is a Ghanaian medical scientist, epidemiologist and public
-  health researcher with over a decade of experience at the intersection of diagnostic
-  medicine and data-driven health systems. He serves as Principal Biomedical Scientist
-  at Cocoa Clinic, Ghana Cocoa Board. His work integrates laboratory medicine,
-  epidemiology, clinical data science, geospatial analytics and machine learning to
-  strengthen disease surveillance and reduce health inequities.
+  health researcher with over a decade of experience in diagnostic medicine and
+  data-informed health systems. He serves as Principal Biomedical Scientist at Cocoa
+  Clinic, Ghana Cocoa Board. His work combines laboratory medicine, epidemiology,
+  clinical data science, spatial analysis and machine learning to strengthen disease
+  surveillance and reduce health inequities.
 disambiguating_description: >
   Ghanaian medical scientist, epidemiologist and public health researcher based in Accra, Ghana.
 short_description: >
   Official website of Valentine Golden Ghanem, a Ghanaian medical scientist,
   epidemiologist and public health researcher.
+profile_date_modified: "2026-07-28"
 about_hero_description: >
   Valentine Golden Ghanem is a Ghanaian medical scientist, epidemiologist and public
   health researcher. As Principal Biomedical Scientist at Cocoa Clinic, Ghana Cocoa
-  Board, he connects laboratory medicine, disease surveillance, spatial analytics and
-  machine learning to strengthen public-health decisions.
+  Board, he connects laboratory medicine, disease surveillance, spatial analysis and
+  machine learning to strengthen public health decision-making.
 cv_download_url: "/assets/files/valentine-golden-ghanem-resume.pdf"
 languages:
   - name: "English"
@@ -75,23 +76,27 @@ credentials:
     status: "completed"
     year: 2025
     note: "Distinction"
+    focus: "Machine learning for infectious-disease analysis, with dissertation research on HIV/AIDS trends in Ghana."
   - name: "Master of Science in Public Health"
     category: "degree"
     institution: "University of Suffolk"
     status: "completed"
     year: 2026
     note: "Merit"
+    focus: "Communicable-disease epidemiology, health-systems strengthening and public health surveillance."
   - name: "Bachelor of Science in Medical Laboratory Science"
     category: "degree"
     institution: "University of Ghana"
     status: "completed"
     year: 2013
+    focus: "Medical laboratory science with a microbiology specialisation and clinical rotations across the principal diagnostic disciplines."
   - name: "Master of Laws in International Law"
     category: "education"
     level: "Postgraduate"
     institution: "Liverpool John Moores University"
     status: "in progress"
-    note: "Ongoing postgraduate legal studies; expected completion December 2026. Qualification not represented as completed."
+    note: "Degree in progress; expected completion: December 2026."
+    focus: "International law, corporate governance and human rights, including their relevance to global health regulation and ethics."
 alumni_of:
   - "University of East London"
   - "University of Suffolk"
@@ -125,27 +130,28 @@ licensure:
     reg_no: "MS 063958"
 certifications_in_progress:
   - name: "Epidemioloog A, Netherlands"
-    note: "Registration in progress; not represented as completed."
+    note: "Registration in progress."
   - name: "Certified in Public Health (CPH)"
-    note: "Examination preparation in progress; not represented as completed."
+    note: "Examination preparation in progress."
 religion: "Christianity"
 statement_of_purpose: >
-  My work connects diagnostic medicine with public-health systems. I translate
-  laboratory and field evidence into practical intelligence for surveillance,
-  service planning and earlier response, while keeping clinical realities visible
-  in every analytical decision.
+  My work connects diagnostic medicine with public health practice. I interpret
+  laboratory, clinical and field evidence to inform surveillance, service planning
+  and timely response, while preserving the clinical context of each analytical
+  decision.
 career_vision: >
-  I aim to lead work that brings biomedical science, epidemiology, data science
-  and policy into the same decision process. The objective is stronger disease
-  surveillance and more equitable health systems across Africa, especially where
-  resources and routine data are limited.
+  My long-term objective is to lead interdisciplinary programmes that integrate
+  biomedical science, epidemiology, data science and health policy within a coherent
+  decision framework. This work will focus on strengthening disease surveillance
+  and reducing inequities in African health systems, particularly where resources
+  and routine data are constrained.
 aim: >
-  To connect clinical diagnostic evidence with public-health action through
-  reproducible analysis, digital tools and decision systems designed for African
+  To connect diagnostic evidence with public health action through reproducible
+  analysis, digital tools and decision systems designed for African
   health settings.
 objectives:
-  - "Translate laboratory insights: establish robust mechanisms that convert raw, laboratory-derived diagnostic data into actionable, real-time insights for public health surveillance systems."
-  - "Deploy digital health & predictive tools: design, evaluate, or implement predictive modeling tools and digital health technologies optimized for early epidemic detection and response in resource-limited settings."
-  - "Harmonize policy and science: collaborate with policymakers and stakeholders to integrate biomedical data science into national and regional health policies."
-  - "Advance health equity: design targeted, data-driven interventions that address systemic health disparities across diverse African populations."
-  - "Bridge the clinician-researcher divide: maintain a dual role as clinician and academic researcher, using frontline clinical realities to inform rigorous, system-level public health research."
+  - "Translate laboratory evidence into timely, interpretable information for public health surveillance."
+  - "Design and evaluate digital health and predictive tools for epidemic detection and response in resource-constrained settings."
+  - "Work with policymakers and health-sector stakeholders to incorporate biomedical data science into national and regional policy."
+  - "Develop targeted interventions that address structural health inequities across African populations."
+  - "Connect frontline clinical practice with rigorous, system-level public health research."

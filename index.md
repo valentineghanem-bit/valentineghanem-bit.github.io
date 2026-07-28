@@ -367,7 +367,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       <div class="section__ghost-wrap">
         <span class="section__ghost-num">02</span>
         <h2 class="text-xs font-black uppercase tracking-[0.4em] text-amber-400 mb-4">02 &mdash; Expertise</h2>
-        <h3 class="text-4xl sm:text-5xl font-black font-heading">Multi-Disciplinary Technical Matrix</h3>
+        <h3 class="text-4xl sm:text-5xl font-black font-heading">Multidisciplinary Practice Matrix</h3>
       </div>
       <p class="text-slate-400 mt-3 text-sm">Relative emphasis across clinical practice, public-health work, spatial analytics and applied modelling. Not a measured proficiency score.</p>
     </div>
@@ -444,7 +444,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
             <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-lg">04</div>
             <h4 class="text-xl font-bold font-heading">Data Science, Modelling &amp; Decision Dashboards</h4>
           </div>
-          <p class="text-sm leading-relaxed text-slate-200 sm:pl-14">Applied modelling and dashboard design used to turn datasets into understandable, reproducible and inspectable health intelligence.</p>
+          <p class="text-sm leading-relaxed text-slate-200 sm:pl-14">Applied modelling and dashboard design that produce interpretable, reproducible and inspectable health evidence.</p>
           <div class="home-expertise-card__body sm:pl-14">
             <span><b>Modelling stack</b> Python, R, Random Forest, Ridge Regression, XGBoost, SVR and SHAP explainability.</span>
             <span><b>Research signal</b> HIV/AIDS incidence forecasting, spatial risk interpretation and clinical/public-health data synthesis.</span>
@@ -713,7 +713,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <dl>
           <div><dt>Diagnostic practice</dt><dd>Quality-controlled workflows, biosafety and traceable laboratory records.</dd></div>
           <div><dt>Field coordination</dt><dd>Screening, outreach and clear communication across clinical and community teams.</dd></div>
-          <div><dt>Data translation</dt><dd>Turning clinical and spatial signals into evidence that can be reviewed and acted upon.</dd></div>
+          <div><dt>Data interpretation</dt><dd>Clinical and spatial signals presented as evidence that can be reviewed and acted upon.</dd></div>
         </dl>
       </aside>
     </div>

@@ -126,7 +126,14 @@
           candidate.setAttribute('aria-pressed', active ? 'true' : 'false');
         });
         records.forEach(function (record) {
-          record.hidden = category !== 'all' && record.dataset.recordCategory !== category;
+          var visible = category === 'all' || record.dataset.recordCategory === category;
+          var trigger = record.querySelector('button');
+          var detail = record.querySelector('.about-record__detail');
+          record.hidden = !visible;
+          if (!visible && trigger && detail) {
+            trigger.setAttribute('aria-expanded', 'false');
+            detail.hidden = true;
+          }
         });
       });
     });

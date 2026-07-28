@@ -15,7 +15,7 @@ extra_js: ["gallery-morph.js", "fan-carousel.js"]
   {%- assign morph_pairs = morph_pairs | push: pair -%}
 {%- endfor -%}
 
-<section class="gallery-morph" aria-label="Photographic introduction">
+<section class="gallery-morph" aria-label="Photographic introduction" data-nav-marker="00" data-nav-label="Gallery" data-nav-colour="#A78BFA">
   <div class="gallery-morph__scroller">
     <div class="gallery-morph__stage">
       <div class="gallery-morph__intro">
@@ -37,7 +37,7 @@ extra_js: ["gallery-morph.js", "fan-carousel.js"]
   })();
 </script>
 
-<section class="gallery-v2 pt-24 pb-24 px-6">
+<section class="gallery-v2 v3-page-canvas v3-page-canvas--gallery pt-24 pb-24 px-6">
   <div class="max-w-[1800px] mx-auto">
     <p class="font-mono text-xs text-slate-400 mb-6"><a href="{{ '/' | relative_url }}" class="hover:text-cyan-500">Home</a> / Gallery</p>
     <h1 class="text-4xl sm:text-5xl md:text-6xl font-black font-heading tracking-tight text-slate-900 dark:text-white mb-5">Gallery</h1>

@@ -6,12 +6,12 @@ description: "Technical, analytical and leadership skills of Valentine Golden Gh
 extra_js: ["skills-network.js"]
 ---
 {% include nav-v3.html %}
-<section class="pt-40 pb-24 px-6" data-skills-root>
+<section class="v3-page-canvas v3-page-canvas--skills pt-40 pb-24 px-6" data-skills-root data-nav-marker="00" data-nav-label="Skills" data-nav-colour="#22D3EE">
   <div class="max-w-[1800px] mx-auto">
     <p class="font-mono text-xs text-slate-400 mb-6"><a href="{{ '/' | relative_url }}" class="hover:text-cyan-500">Home</a> / Skills</p>
     <h1 class="text-4xl sm:text-5xl md:text-6xl font-black font-heading tracking-tight text-slate-900 dark:text-white mb-5">Skills &amp; toolkit</h1>
     <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mb-10">
-      A working toolkit built across the laboratory bench, the field, and the analysis pipeline. Filter by category, by domain, or search directly for a tool, method or platform.
+      A practice-based inventory of the laboratory, epidemiological, spatial and computational methods used across clinical work and research.
     </p>
 
     <div class="relative h-72 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden bg-slate-900 mb-10" data-skills-network aria-hidden="true">

@@ -7,12 +7,12 @@ jsonld: portfolio
 extra_js: ["portfolio-fx.js"]
 ---
 {% include nav-v3.html %}
-<section class="portfolio-v2 pt-40 pb-24 px-6" data-portfolio-root>
+<section class="portfolio-v2 v3-page-canvas v3-page-canvas--portfolio pt-40 pb-24 px-6" data-portfolio-root data-nav-marker="00" data-nav-label="Portfolio" data-nav-colour="#FBBF24">
   <div class="max-w-[1800px] mx-auto">
     <p class="font-mono text-xs text-slate-400 mb-6"><a href="{{ '/' | relative_url }}" class="hover:text-cyan-500">Home</a> / Portfolio</p>
     <h1 class="text-4xl sm:text-5xl md:text-6xl font-black font-heading tracking-tight text-slate-900 dark:text-white mb-5">Portfolio</h1>
     <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mb-10">
-      A curated selection of major academic and professional projects at the intersection of laboratory science, data science and public health innovation.
+      Selected academic and professional projects in laboratory science, data science, spatial epidemiology and public health.
     </p>
 
     <div class="filter-chips flex flex-wrap gap-2.5 mb-14">

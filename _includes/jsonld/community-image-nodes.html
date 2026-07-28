@@ -1,0 +1,18 @@
+{%- for photo in community_photos -%}
+{
+  "@type": "ImageObject",
+  "@id": {{ photo.url | absolute_url | append: "#image" | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "contentUrl": {{ photo.url | absolute_url | jsonify }},
+  "name": {{ photo.caption | append: " - Valentine Golden Ghanem" | jsonify }},
+  "caption": {{ photo.caption | jsonify }},
+  "description": {{ photo.caption | append: " This image forms part of the documented community and field record of Valentine Golden Ghanem." | jsonify }},
+  "encodingFormat": "image/jpeg",
+  "about": { "@id": "{{ site.url }}/#person" },
+  "creator": { "@id": "{{ site.url }}/#person" },
+  "creditText": "Valentine Golden Ghanem",
+  "copyrightNotice": "Copyright {{ 'now' | date: '%Y' }} Valentine Golden Ghanem. All rights reserved.",
+  "license": {{ site.url | append: "/" | jsonify }},
+  "acquireLicensePage": {{ page.url | absolute_url | jsonify }}
+}{% unless forloop.last %},{% endunless %}
+{%- endfor -%}

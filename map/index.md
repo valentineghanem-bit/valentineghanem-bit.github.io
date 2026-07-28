@@ -11,12 +11,12 @@ extra_js: ["vendor/echarts.min.js", "field-map.js"]
 {%- for e in site.data.community_activities.medical_screening -%}{%- assign geo_events = geo_events | push: e -%}{%- endfor -%}
 {%- for e in site.data.community_activities.conferences -%}{%- assign geo_events = geo_events | push: e -%}{%- endfor -%}
 {%- for e in site.data.community_activities.outreach -%}{%- assign geo_events = geo_events | push: e -%}{%- endfor -%}
-<section class="map-v2 pt-40 pb-24 px-6">
+<section class="map-v2 v3-page-canvas v3-page-canvas--map pt-40 pb-24 px-6" data-nav-marker="00" data-nav-label="Map" data-nav-colour="#22D3EE">
   <div class="max-w-[1800px] mx-auto">
     <p class="font-mono text-xs text-slate-400 mb-6"><a href="{{ '/' | relative_url }}" class="hover:text-cyan-500">Home</a> / Field Map</p>
     <h1 class="text-4xl sm:text-5xl md:text-6xl font-black font-heading tracking-tight text-slate-900 dark:text-white mb-5">Surveillance field map</h1>
     <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mb-10">
-      Every medical screening, conference and community outreach activity on this site, plotted by its real coordinates against the real boundaries of Ghana's 261 administrative districts. Hover a pin for a preview, click through to its full record, scrub by year below, or scroll the list on the right &mdash; the map pans and zooms to follow it either way.
+      A coordinate-based record of the medical screenings, scientific meetings and community outreach activities documented on this site, shown against the boundaries of Ghana's 261 administrative districts.
     </p>
 
     <div class="lg:grid lg:grid-cols-[minmax(260px,420px)_minmax(0,1fr)] gap-8 lg:gap-14 items-start">

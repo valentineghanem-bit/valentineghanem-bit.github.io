@@ -1,18 +1,18 @@
 ---
 layout: v3
 permalink: /certificates/
-title: "Certificates & CPDs"
+title: "Certificates & CPD"
 description: "Academic qualifications, licensure, professional memberships and continuing professional development of Valentine Golden Ghanem."
 jsonld: certificates
 extra_js: ["certificates-fx.js"]
 ---
 {% include nav-v3.html %}
-<section class="certificates-v2 pt-40 pb-24 px-6">
+<section class="certificates-v2 v3-page-canvas v3-page-canvas--certificates pt-40 pb-24 px-6" data-nav-marker="00" data-nav-label="Credentials" data-nav-colour="#F87171">
   <div class="max-w-[1800px] mx-auto">
     <p class="font-mono text-xs text-slate-400 mb-6"><a href="{{ '/' | relative_url }}" class="hover:text-cyan-500">Home</a> / Certificates</p>
-    <h1 class="text-4xl sm:text-5xl md:text-6xl font-black font-heading tracking-tight text-slate-900 dark:text-white mb-5">Certificates &amp; CPDs</h1>
+    <h1 class="text-4xl sm:text-5xl md:text-6xl font-black font-heading tracking-tight text-slate-900 dark:text-white mb-5">Certificates &amp; CPD</h1>
     <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mb-10">
-      Formal academic qualifications, professional certifications and continuing professional development (CPD), reflecting a commitment to lifelong learning, laboratory excellence, data science innovation and public health leadership.
+      Academic qualifications, professional registrations, memberships and continuing professional development in laboratory medicine, data science and public health.
     </p>
 
     <nav class="flex flex-wrap gap-2 mb-16" aria-label="Section jump links">

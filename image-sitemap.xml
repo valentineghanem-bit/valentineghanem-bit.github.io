@@ -1,0 +1,63 @@
+---
+layout: null
+permalink: /image-sitemap.xml
+---
+{%- assign representative = site.data.images | where: "representative", true | first -%}
+{%- assign community_events = "" | split: "," -%}
+{%- for e in site.data.community_activities.medical_screening -%}{%- assign community_events = community_events | push: e -%}{%- endfor -%}
+{%- for e in site.data.community_activities.conferences -%}{%- assign community_events = community_events | push: e -%}{%- endfor -%}
+{%- for e in site.data.community_activities.outreach -%}{%- assign community_events = community_events | push: e -%}{%- endfor -%}
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>{{ site.url | append: "/" | xml_escape }}</loc>
+    <image:image>
+      <image:loc>{{ '/assets/img/gallery/portraits/hero-green-shirt-cutout.png' | absolute_url | replace: " ", "%20" | xml_escape }}</image:loc>
+      <image:title>Valentine Golden Ghanem, medical scientist and epidemiologist</image:title>
+      <image:caption>Portrait of Valentine Golden Ghanem, Principal Biomedical Scientist, epidemiologist and public health researcher.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>{{ '/assets/img/gallery/portraits/Valentine Golden Ghanem Portrait-18.webp' | absolute_url | replace: " ", "%20" | xml_escape }}</image:loc>
+      <image:title>Valentine Golden Ghanem professional portrait</image:title>
+      <image:caption>Professional portrait of Valentine Golden Ghanem.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>{{ '/about/' | absolute_url | xml_escape }}</loc>
+    <image:image>
+      <image:loc>{{ representative.content_url | replace: " ", "%20" | xml_escape }}</image:loc>
+      <image:title>{{ representative.name | xml_escape }}</image:title>
+      <image:caption>{{ representative.caption | xml_escape }}</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>{{ '/community/' | absolute_url | xml_escape }}</loc>
+    {%- for event in community_events -%}
+      {%- for photo in event.photos %}
+    <image:image>
+      <image:loc>{{ photo.url | absolute_url | replace: " ", "%20" | xml_escape }}</image:loc>
+      <image:title>{{ photo.caption | append: " - Valentine Golden Ghanem" | xml_escape }}</image:title>
+      <image:caption>{{ photo.caption | append: " Valentine Golden Ghanem." | xml_escape }}</image:caption>
+    </image:image>
+      {%- endfor -%}
+    {%- endfor %}
+  </url>
+  <url>
+    <loc>{{ '/gallery/' | absolute_url | xml_escape }}</loc>
+    {%- for photo in site.data.gallery_portraits %}
+    <image:image>
+      <image:loc>{{ photo.url | absolute_url | replace: " ", "%20" | xml_escape }}</image:loc>
+      <image:title>{{ photo.caption | append: " - Valentine Golden Ghanem" | xml_escape }}</image:title>
+      <image:caption>{{ photo.caption | append: " Valentine Golden Ghanem." | xml_escape }}</image:caption>
+    </image:image>
+    {%- endfor -%}
+    {%- for photo in site.data.gallery_photos %}
+    <image:image>
+      <image:loc>{{ photo.url | absolute_url | replace: " ", "%20" | xml_escape }}</image:loc>
+      <image:title>{{ photo.caption | append: " - Valentine Golden Ghanem" | xml_escape }}</image:title>
+      <image:caption>{{ photo.caption | append: " Valentine Golden Ghanem." | xml_escape }}</image:caption>
+    </image:image>
+    {%- endfor %}
+  </url>
+</urlset>

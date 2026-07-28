@@ -50,7 +50,7 @@
   citation: "Ghanem, V. G. (2025). Socio-Behavioral and Spatial Determinants of HIV/AIDS Incidence in Ghana: An Ecological Cross-Sectional Study with Explainable Machine Learning. Advances in Infectious Diseases, 15(4), 669-694."
   doi_url: "https://doi.org/10.4236/aid.2025.154050"
   status: "Peer-reviewed"
-  summary: "Combines regional epidemiological and socio-behavioral data with spatial clustering, Random Forest, XGBoost and SHAP to examine geographic differences in HIV incidence across Ghana."
+  summary: "Combines regional epidemiological and sociobehavioural data with spatial clustering, Random Forest, XGBoost and SHAP to examine geographic differences in HIV incidence across Ghana."
   methods:
     - "Spatial clustering"
     - "XGBoost"

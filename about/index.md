@@ -17,7 +17,6 @@ extra_js: ["about-fx.js"]
       <div class="about-profile-hero__copy reveal">
         <p class="about-v3__breadcrumb"><a href="{{ '/' | relative_url }}">Home</a><span>/</span>About</p>
         <p class="about-v3__eyebrow">Medical science <b>&bull;</b> Epidemiology <b>&bull;</b> Public health</p>
-        <span class="about-profile-hero__index" aria-hidden="true">00 / PROFILE</span>
         <h1 id="aboutTitle"><span>Valentine</span><span>Golden Ghanem</span></h1>
         <p class="about-profile-hero__role">{{ site.data.profile.job_titles | join: " / " }}</p>
         <p class="about-profile-hero__summary">{{ site.data.profile.about_hero_description | strip_newlines }}</p>
@@ -68,24 +67,24 @@ extra_js: ["about-fx.js"]
                   class="about-identity__tab is-active" style="--identity-colour:#22D3EE"
                   data-identity-number="01" data-identity-kicker="Clinical foundation"
                   data-identity-title="Diagnostic evidence"
-                  data-identity-copy="Clinical laboratory operations establish evidence that clinicians and public-health teams can trust."
-                  data-identity-output="Quality-assured results, operational oversight and clinically grounded interpretation.">
+                  data-identity-copy="Clinical laboratory services produce quality-assured evidence for clinical and public health decision-making."
+                  data-identity-output="Validated results, accountable laboratory operations and interpretation grounded in clinical practice.">
             <span>01</span><i class="fa-solid fa-flask-vial" aria-hidden="true"></i><strong>Evidence</strong>
           </button>
           <button id="identity-step-population" type="button" role="tab" aria-selected="false" aria-controls="identityInspector" tabindex="-1"
                   class="about-identity__tab" style="--identity-colour:#34D399"
                   data-identity-number="02" data-identity-kicker="Population lens"
                   data-identity-title="Epidemiology and surveillance"
-                  data-identity-copy="Field and surveillance data place individual results within communities, services and exposure patterns."
-                  data-identity-output="Patterns that clarify who is affected, where gaps persist and what deserves attention.">
+                  data-identity-copy="Epidemiological and field data place clinical findings within patterns of population exposure, service access and disease distribution."
+                  data-identity-output="Population evidence that identifies affected groups, persistent service gaps and priorities for response.">
             <span>02</span><i class="fa-solid fa-people-group" aria-hidden="true"></i><strong>Population</strong>
           </button>
           <button id="identity-step-decisions" type="button" role="tab" aria-selected="false" aria-controls="identityInspector" tabindex="-1"
                   class="about-identity__tab" style="--identity-colour:#A78BFA"
                   data-identity-number="03" data-identity-kicker="Decision layer"
                   data-identity-title="Spatial and data science"
-                  data-identity-copy="GIS, statistical modelling and interactive tools turn population patterns into inspectable decision support."
-                  data-identity-output="Reproducible maps, models and dashboards designed for action, scrutiny and reuse.">
+                  data-identity-copy="Spatial analysis, statistical modelling and interactive systems support the interpretation of population-level patterns."
+                  data-identity-output="Reproducible maps, models and dashboards whose assumptions and findings can be examined and reused.">
             <span>03</span><i class="fa-solid fa-chart-line" aria-hidden="true"></i><strong>Decisions</strong>
           </button>
         </div>
@@ -97,10 +96,10 @@ extra_js: ["about-fx.js"]
             <span data-identity-number>01</span>
             <h3 data-identity-title>Diagnostic evidence</h3>
           </div>
-          <p data-identity-copy>Clinical laboratory operations establish evidence that clinicians and public-health teams can trust.</p>
+          <p data-identity-copy>Clinical laboratory services produce quality-assured evidence for clinical and public health decision-making.</p>
           <div class="about-identity__output">
             <span>Professional output</span>
-            <p data-identity-output>Quality-assured results, operational oversight and clinically grounded interpretation.</p>
+            <p data-identity-output>Validated results, accountable laboratory operations and interpretation grounded in clinical practice.</p>
           </div>
         </article>
 
@@ -115,7 +114,7 @@ extra_js: ["about-fx.js"]
       </div>
 
       <div class="about-identity__vision reveal">
-        <span>Career direction</span>
+        <span>Professional objective</span>
         <p>{{ site.data.profile.career_vision }}</p>
       </div>
     </div>
@@ -126,8 +125,8 @@ extra_js: ["about-fx.js"]
       <header class="about-v3__section-header reveal">
         <span class="about-v3__ghost" aria-hidden="true">02</span>
         <p>02 - Expertise</p>
-        <h2 id="aboutMatrixTitle">Multi-Disciplinary Practice Matrix</h2>
-        <span>Five connected domains, each tied to methods, professional evidence and a practical output.</span>
+        <h2 id="aboutMatrixTitle">Multidisciplinary Practice Matrix</h2>
+        <span>Five professional domains, each linked to established methods, documented experience and corresponding outputs.</span>
       </header>
 
       <div class="about-matrix__workspace reveal" data-about-matrix>
@@ -189,41 +188,77 @@ extra_js: ["about-fx.js"]
       <header class="about-v3__section-header reveal">
         <span class="about-v3__ghost" aria-hidden="true">03</span>
         <p>03 - Professional verification</p>
-        <h2 id="aboutVerificationTitle">Registrations, memberships and scholarly identifiers</h2>
+        <h2 id="aboutVerificationTitle">Registrations, memberships and researcher identifiers</h2>
+        <span>Professional status is presented with the relevant jurisdiction, organisation and reference number. Credentials still in progress are identified separately.</span>
       </header>
 
-      <div class="about-verification__ledger reveal">
-        {% for licence in site.data.profile.licensure %}
-        <article class="about-verification__entry">
-          <span class="about-verification__state">Registered</span>
-          <p>{{ licence.jurisdiction }}</p>
-          <h3>{{ licence.credential }}</h3>
-          <strong>{{ licence.body }} ({{ licence.abbreviation }})</strong>
-          <code>{{ licence.reg_no }}</code>
-        </article>
-        {% endfor %}
-        {% for membership in site.data.profile.memberships %}
-        <article class="about-verification__entry">
-          <span class="about-verification__state">Current membership</span>
-          <p>{{ membership.abbreviation }}</p>
-          <h3>{% if membership.role %}{{ membership.role }}, {% endif %}{{ membership.name }}</h3>
-          {% if membership.note %}<strong>{{ membership.note }}</strong>{% endif %}
-          <code>{{ membership.reg_no }}</code>
-        </article>
-        {% endfor %}
-        {% for pending in site.data.profile.certifications_in_progress %}
-        <article class="about-verification__entry about-verification__entry--pending">
-          <span class="about-verification__state">In progress</span>
-          <p>Pending credential</p>
-          <h3>{{ pending.name }}</h3>
-          <strong>{{ pending.note }}</strong>
-          <code>Not represented as completed</code>
-        </article>
-        {% endfor %}
+      <div class="about-verification__summary reveal" aria-label="Professional verification summary">
+        <span><strong>{{ site.data.profile.licensure | size }}</strong> professional registrations</span>
+        <span><strong>{{ site.data.profile.memberships | size }}</strong> professional memberships</span>
+        <span><strong>{{ site.data.profile.certifications_in_progress | size }}</strong> credentials in progress</span>
       </div>
 
-      <div class="about-identifiers reveal" aria-label="Scholarly identifiers">
-        <p>Research identity</p>
+      <div class="about-verification__groups reveal">
+        <section class="about-verification__group about-verification__group--licensure" aria-labelledby="licensureHeading">
+          <header>
+            <p>Licensure</p>
+            <h3 id="licensureHeading">Medical scientist registrations</h3>
+            <span>Active professional registration in Ghana and Ireland.</span>
+          </header>
+          <div>
+            {% for licence in site.data.profile.licensure %}
+            <article class="about-verification__entry">
+              <span class="about-verification__state">Registered</span>
+              <p>{{ licence.jurisdiction }}</p>
+              <h4>{{ licence.credential }}</h4>
+              <strong>{{ licence.body }} ({{ licence.abbreviation }})</strong>
+              <code>{{ licence.reg_no }}</code>
+            </article>
+            {% endfor %}
+          </div>
+        </section>
+
+        <section class="about-verification__group about-verification__group--membership" aria-labelledby="membershipHeading">
+          <header>
+            <p>Professional bodies</p>
+            <h3 id="membershipHeading">Fellowship and professional memberships</h3>
+            <span>Public health, laboratory medicine and epidemiology organisations.</span>
+          </header>
+          <div>
+            {% for membership in site.data.profile.memberships %}
+            <article class="about-verification__entry">
+              <p>{{ membership.abbreviation }}</p>
+              <h4>{% if membership.role %}{{ membership.role }}, {% endif %}{{ membership.name }}</h4>
+              {% if membership.note %}<strong>{{ membership.note }}</strong>{% endif %}
+              <code>{{ membership.reg_no }}</code>
+            </article>
+            {% endfor %}
+          </div>
+        </section>
+
+        <section class="about-verification__group about-verification__group--pending" aria-labelledby="pendingHeading">
+          <header>
+            <p>Status disclosure</p>
+            <h3 id="pendingHeading">Credentials in progress</h3>
+            <span>These credentials are not presented as completed or awarded.</span>
+          </header>
+          <div>
+            {% for pending in site.data.profile.certifications_in_progress %}
+            <article class="about-verification__entry">
+              <span class="about-verification__state">In progress</span>
+              <h4>{{ pending.name }}</h4>
+              <strong>{{ pending.note }}</strong>
+            </article>
+            {% endfor %}
+          </div>
+        </section>
+      </div>
+
+      <div class="about-identifiers reveal" aria-label="Researcher profiles and identifiers">
+        <header>
+          <p>Research identity</p>
+          <h3>Researcher profiles and persistent identifiers</h3>
+        </header>
         <div>
           {% for ident in site.data.profile.identifiers %}
           <a href="{{ ident.url }}" target="_blank" rel="noopener">
@@ -240,7 +275,8 @@ extra_js: ["about-fx.js"]
       <header class="about-v3__section-header reveal">
         <span class="about-v3__ghost" aria-hidden="true">04</span>
         <p>04 - Academic formation</p>
-        <h2 id="aboutEducationTitle">Education across laboratory science, public health, data and law</h2>
+        <h2 id="aboutEducationTitle">Academic formation across biomedical science, public health, data science and law</h2>
+        <span>Completed and current degree programmes are identified separately, with the principal academic focus stated for each record.</span>
       </header>
 
       <div class="about-education__grid reveal">
@@ -252,10 +288,11 @@ extra_js: ["about-fx.js"]
           </header>
           <h3>{{ credential.name }}</h3>
           <strong>{{ credential.institution }}</strong>
-          <div>
+          {% if credential.focus %}<p>{{ credential.focus }}</p>{% endif %}
+          <footer>
             {% if credential.year %}<span>{{ credential.year }}</span>{% endif %}
             {% if credential.note %}<span>{{ credential.note }}</span>{% endif %}
-          </div>
+          </footer>
         </article>
         {% endfor %}
       </div>
@@ -267,8 +304,8 @@ extra_js: ["about-fx.js"]
       <header class="about-v3__section-header reveal">
         <span class="about-v3__ghost" aria-hidden="true">05</span>
         <p>05 - Career record</p>
-        <h2 id="aboutRecordTitle">Clinical leadership and field practice</h2>
-        <span>Filter the record, then open an entry for its professional context.</span>
+        <h2 id="aboutRecordTitle">Clinical appointments and public health fieldwork</h2>
+        <span>A chronological record of laboratory leadership, diagnostic practice and community screening in Ghana.</span>
       </header>
 
       <div class="about-record__filters reveal" role="group" aria-label="Filter career record">
@@ -281,12 +318,15 @@ extra_js: ["about-fx.js"]
         {% for record in site.data.timeline %}
         {% if record.category == "practice" or record.category == "field" %}
         <article class="about-record__item" data-record-category="{{ record.category }}">
-          <button type="button" aria-expanded="false">
-            <span>{{ record.dates }}</span>
+          <button type="button" aria-expanded="false" aria-controls="career-detail-{{ forloop.index }}">
+            <span class="about-record__meta">
+              <b>{{ record.dates }}</b>
+              <small>{% if record.category == "practice" %}Clinical appointment{% else %}Field practice{% endif %}</small>
+            </span>
             <strong>{{ record.title }}</strong>
             <i class="fa-solid fa-plus" aria-hidden="true"></i>
           </button>
-          <div class="about-record__detail" hidden>
+          <div id="career-detail-{{ forloop.index }}" class="about-record__detail" hidden>
             <p>{{ record.description }}</p>
           </div>
         </article>

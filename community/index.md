@@ -2,17 +2,17 @@
 layout: v3
 permalink: /community/
 title: "Community"
-description: "Community outreach, medical screening programs and public engagement by Valentine Golden Ghanem in Ghana."
+description: "Community outreach, medical screening programmes and public engagement by Valentine Golden Ghanem in Ghana."
 jsonld: community
 extra_js: ["community-fx.js"]
 ---
 {% include nav-v3.html %}
-<section class="community-v2 pt-40 pb-24 px-6">
+<section class="community-v2 v3-page-canvas v3-page-canvas--community pt-40 pb-24 px-6" data-nav-marker="00" data-nav-label="Community" data-nav-colour="#34D399">
   <div class="max-w-[1800px] mx-auto">
     <p class="font-mono text-xs text-slate-400 mb-6"><a href="{{ '/' | relative_url }}" class="hover:text-cyan-500">Home</a> / Community</p>
     <h1 class="text-4xl sm:text-5xl md:text-6xl font-black font-heading tracking-tight text-slate-900 dark:text-white mb-5">Community &amp; outreach</h1>
     <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mb-14">
-      Medical screening, conferences and public engagement beyond the laboratory bench.
+      Clinical screening, scientific meetings and public engagement undertaken beyond routine laboratory practice.
     </p>
 
     <div class="lg:grid lg:grid-cols-[236px_minmax(0,1fr)] gap-6 lg:gap-14 items-start">

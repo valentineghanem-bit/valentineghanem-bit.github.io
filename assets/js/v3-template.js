@@ -1401,7 +1401,7 @@
       '<button type="button" class="lightbox__close" aria-label="Close">&times;</button>' +
       '<button type="button" class="lightbox__arrow lightbox__arrow--prev" aria-label="Previous photo">&#8249;</button>' +
       '<button type="button" class="lightbox__arrow lightbox__arrow--next" aria-label="Next photo">&#8250;</button>' +
-      '<figure class="lightbox__figure"><img class="lightbox__img" alt=""><figcaption class="lightbox__caption"></figcaption></figure>';
+      '<figure class="lightbox__figure"><img class="lightbox__img" alt="Enlarged photograph of Valentine Golden Ghanem"><figcaption class="lightbox__caption"></figcaption></figure>';
     document.body.appendChild(overlay);
     var imgEl = overlay.querySelector('.lightbox__img');
     var captionEl = overlay.querySelector('.lightbox__caption');
@@ -1417,7 +1417,7 @@
     function render() {
       var img = group[index];
       imgEl.src = img.currentSrc || img.src;
-      imgEl.alt = img.alt || '';
+      imgEl.alt = img.alt || 'Enlarged photograph of Valentine Golden Ghanem';
       var figure = img.closest('figure');
       var capEl = figure ? figure.querySelector('figcaption') : null;
       captionEl.textContent = capEl ? capEl.textContent : (img.alt || '');

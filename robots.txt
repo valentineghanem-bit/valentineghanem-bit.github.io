@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.valentineghanem.com/sitemap.xml
+Sitemap: https://www.valentineghanem.com/image-sitemap.xml

@@ -2,6 +2,14 @@
 {%- for e in site.data.community_activities.medical_screening -%}{%- if e.video -%}{%- assign video_events = video_events | push: e -%}{%- endif -%}{%- endfor -%}
 {%- for e in site.data.community_activities.conferences -%}{%- if e.video -%}{%- assign video_events = video_events | push: e -%}{%- endif -%}{%- endfor -%}
 {%- for e in site.data.community_activities.outreach -%}{%- if e.video -%}{%- assign video_events = video_events | push: e -%}{%- endif -%}{%- endfor -%}
+{%- assign community_events = "" | split: "," -%}
+{%- for e in site.data.community_activities.medical_screening -%}{%- assign community_events = community_events | push: e -%}{%- endfor -%}
+{%- for e in site.data.community_activities.conferences -%}{%- assign community_events = community_events | push: e -%}{%- endfor -%}
+{%- for e in site.data.community_activities.outreach -%}{%- assign community_events = community_events | push: e -%}{%- endfor -%}
+{%- assign community_photos = "" | split: "," -%}
+{%- for e in community_events -%}
+  {%- for photo in e.photos -%}{%- assign community_photos = community_photos | push: photo -%}{%- endfor -%}
+{%- endfor -%}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -14,10 +22,27 @@
       "description": {{ page.description | default: site.data.profile.short_description | strip_newlines | jsonify }},
       "isPartOf": { "@id": "{{ site.url }}/#website" },
       "about": { "@id": "{{ site.url }}/#person" },
+      "mainEntity": { "@id": "{{ page.url | absolute_url }}#community-record" },
       "inLanguage": "en"
+    },
+    {
+      "@type": "CollectionPage",
+      "@id": "{{ page.url | absolute_url }}#community-record",
+      "url": {{ page.url | absolute_url | jsonify }},
+      "name": "Community and field record of Valentine Golden Ghanem",
+      "about": { "@id": "{{ site.url }}/#person" },
+      "mainEntityOfPage": { "@id": "{{ page.url | absolute_url }}#webpage" },
+      "associatedMedia": [
+        {%- for photo in community_photos -%}
+        { "@id": {{ photo.url | absolute_url | append: "#image" | jsonify }} }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
     },
     {% include jsonld/person-node.html %},
     {% include jsonld/organization-node.html %}
+    {%- if community_photos.size > 0 -%},
+    {% include jsonld/community-image-nodes.html %}
+    {%- endif -%}
     {%- if video_events.size > 0 -%},
     {% for v in video_events %}
     {

@@ -387,7 +387,7 @@ document.addEventListener('DOMContentLoaded', function () {
       '<button type="button" class="lightbox__close" aria-label="Close">&times;</button>' +
       '<button type="button" class="lightbox__arrow lightbox__arrow--prev" aria-label="Previous photo">&#8249;</button>' +
       '<button type="button" class="lightbox__arrow lightbox__arrow--next" aria-label="Next photo">&#8250;</button>' +
-      '<figure class="lightbox__figure"><img class="lightbox__img" alt=""><figcaption class="lightbox__caption"></figcaption></figure>';
+      '<figure class="lightbox__figure"><img class="lightbox__img" alt="Enlarged photograph of Valentine Golden Ghanem"><figcaption class="lightbox__caption"></figcaption></figure>';
     document.body.appendChild(lbOverlay);
 
     var lbImgEl = lbOverlay.querySelector('.lightbox__img');
@@ -407,7 +407,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function lbRender() {
       var img = lbGroup[lbIndex];
       lbImgEl.src = img.currentSrc || img.src;
-      lbImgEl.alt = img.alt || '';
+      lbImgEl.alt = img.alt || 'Enlarged photograph of Valentine Golden Ghanem';
       var caption = img.closest('figure');
       var capEl = caption ? caption.querySelector('figcaption') : null;
       lbCaptionEl.textContent = capEl ? capEl.textContent : (img.alt || '');
