@@ -5,6 +5,55 @@
   if (!root) return;
   var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  function initialiseIdentityPathway() {
+    var pathway = root.querySelector('[data-identity-pathway]');
+    if (!pathway) return;
+    var tabs = Array.prototype.slice.call(pathway.querySelectorAll('[role="tab"]'));
+    var inspector = pathway.querySelector('[role="tabpanel"]');
+    var number = inspector.querySelector('[data-identity-number]');
+    var kicker = inspector.querySelector('[data-identity-kicker]');
+    var title = inspector.querySelector('[data-identity-title]');
+    var copy = inspector.querySelector('[data-identity-copy]');
+    var output = inspector.querySelector('[data-identity-output]');
+    if (!tabs.length || !inspector) return;
+
+    function activate(tab, focus) {
+      tabs.forEach(function (candidate) {
+        var selected = candidate === tab;
+        candidate.classList.toggle('is-active', selected);
+        candidate.setAttribute('aria-selected', selected ? 'true' : 'false');
+        candidate.tabIndex = selected ? 0 : -1;
+      });
+      inspector.style.setProperty('--identity-colour', tab.style.getPropertyValue('--identity-colour'));
+      inspector.setAttribute('aria-labelledby', tab.id);
+      number.textContent = tab.dataset.identityNumber;
+      kicker.textContent = tab.dataset.identityKicker;
+      title.textContent = tab.dataset.identityTitle;
+      copy.textContent = tab.dataset.identityCopy;
+      output.textContent = tab.dataset.identityOutput;
+      if (!reducedMotion) {
+        inspector.classList.remove('is-switching');
+        inspector.getBoundingClientRect();
+        inspector.classList.add('is-switching');
+      }
+      if (focus) tab.focus();
+    }
+
+    tabs.forEach(function (tab, index) {
+      tab.addEventListener('click', function () { activate(tab, false); });
+      tab.addEventListener('keydown', function (event) {
+        var next = index;
+        if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (index + 1) % tabs.length;
+        else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (index - 1 + tabs.length) % tabs.length;
+        else if (event.key === 'Home') next = 0;
+        else if (event.key === 'End') next = tabs.length - 1;
+        else return;
+        event.preventDefault();
+        activate(tabs[next], true);
+      });
+    });
+  }
+
   function initialiseMatrix() {
     var workspace = root.querySelector('[data-about-matrix]');
     if (!workspace) return;
@@ -102,6 +151,7 @@
     });
   }
 
+  initialiseIdentityPathway();
   initialiseMatrix();
   initialiseCareerRecord();
 })();

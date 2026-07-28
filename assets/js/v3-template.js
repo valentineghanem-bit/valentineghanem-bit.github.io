@@ -448,14 +448,32 @@
     var sectionMarkers = Array.prototype.slice.call(document.querySelectorAll('[data-nav-marker]'));
     var markerTicking = false;
 
+    function setPeek(peek) {
+      nav.classList.toggle('is-peek', peek);
+      toggle.dataset.stage = peek ? 'identified' : 'compact';
+      if (!nav.classList.contains('is-open')) {
+        toggle.setAttribute('aria-label', peek ? 'Open site navigation' : 'Identify current section');
+      }
+    }
+
     function setOpen(open, pin) {
       window.clearTimeout(closeTimer);
       if (typeof pin === 'boolean') pinned = pin;
       nav.classList.toggle('is-open', open);
+      if (open) setPeek(true);
       panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+      if (open) panel.removeAttribute('inert');
+      else panel.setAttribute('inert', '');
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       toggle.setAttribute('aria-label', open ? 'Close site navigation' : 'Open site navigation');
       if (backdrop) backdrop.classList.toggle('is-open', open && mobileQuery.matches);
+      if (!open && pin === false) setPeek(false);
+      if (open) {
+        window.setTimeout(function () {
+          var activeLink = panel.querySelector('.active-link, a, button');
+          if (activeLink) activeLink.focus();
+        }, 240);
+      }
     }
 
     function scheduleClose() {
@@ -483,15 +501,13 @@
     toggle.addEventListener('click', function () {
       if (nav.classList.contains('is-open') && pinned) {
         setOpen(false, false);
+      } else if (!nav.classList.contains('is-peek')) {
+        setPeek(true);
       } else {
         setOpen(true, true);
       }
     });
-    nav.addEventListener('pointerenter', function () {
-      if (!mobileQuery.matches) setOpen(true);
-    });
     nav.addEventListener('pointerleave', scheduleClose);
-    nav.addEventListener('focusin', function () { setOpen(true); });
     nav.addEventListener('focusout', scheduleClose);
     nav.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', function () {
@@ -513,6 +529,7 @@
       }
     }, { passive: true });
     syncSectionMarker();
+    setPeek(false);
     window.toggleSideNavV3 = function () {
       var willOpen = !nav.classList.contains('is-open');
       setOpen(willOpen, willOpen);

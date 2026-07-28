@@ -12,7 +12,7 @@ extra_js: ["about-fx.js"]
 {%- assign first_domain = site.data.about_expertise | first -%}
 
 <main class="about-v3" id="main-content">
-  <section class="about-profile-hero" aria-labelledby="aboutTitle" data-nav-marker="00" data-nav-label="Profile" data-nav-colour="#22D3EE">
+  <section class="about-profile-hero" aria-labelledby="aboutTitle" data-nav-marker="00" data-nav-label="Top" data-nav-colour="#22D3EE">
     <div class="about-profile-hero__grid">
       <div class="about-profile-hero__copy reveal">
         <p class="about-v3__breadcrumb"><a href="{{ '/' | relative_url }}">Home</a><span>/</span>About</p>
@@ -28,7 +28,7 @@ extra_js: ["about-fx.js"]
         <div class="about-profile-hero__status" aria-label="Current professional scope">
           <span><i class="fa-solid fa-flask-vial" aria-hidden="true"></i> Principal Biomedical Scientist</span>
           <span><i class="fa-solid fa-earth-africa" aria-hidden="true"></i> Accra, Ghana</span>
-          <span><i class="fa-solid fa-id-card-clip" aria-hidden="true"></i> Ghana and Ireland registrations</span>
+          <span><i class="fa-solid fa-id-card-clip" aria-hidden="true"></i> Ghana, Ireland and Netherlands</span>
         </div>
       </div>
 
@@ -51,41 +51,73 @@ extra_js: ["about-fx.js"]
     </div>
   </section>
 
-  <section id="professional-remit" class="about-v3__section about-remit" aria-labelledby="aboutRemitTitle" data-nav-marker="01" data-nav-label="Remit" data-nav-colour="#34D399">
+  <section id="professional-remit" class="about-v3__section about-identity" aria-labelledby="aboutRemitTitle" data-nav-marker="01" data-nav-label="Identity" data-nav-colour="#34D399">
     <div class="about-v3__inner">
-      <header class="about-v3__section-header reveal">
+      <header class="about-identity__header reveal">
         <span class="about-v3__ghost" aria-hidden="true">01</span>
-        <p>01 - Professional remit</p>
-        <h2 id="aboutRemitTitle">Clinical evidence, population insight and decision systems</h2>
+        <div>
+          <p>01 - Professional identity</p>
+          <h2 id="aboutRemitTitle">Laboratory precision, interpreted at population scale</h2>
+        </div>
+        <p>{{ site.data.profile.statement_of_purpose }}</p>
       </header>
 
-      <div class="about-remit__layout">
-        <div class="about-remit__statement reveal">
-          <p>{{ site.data.profile.statement_of_purpose }}</p>
+      <div class="about-identity__pathway reveal" data-identity-pathway>
+        <div class="about-identity__tabs" role="tablist" aria-label="Professional identity pathway">
+          <button id="identity-step-evidence" type="button" role="tab" aria-selected="true" aria-controls="identityInspector" tabindex="0"
+                  class="about-identity__tab is-active" style="--identity-colour:#22D3EE"
+                  data-identity-number="01" data-identity-kicker="Clinical foundation"
+                  data-identity-title="Diagnostic evidence"
+                  data-identity-copy="Clinical laboratory operations establish evidence that clinicians and public-health teams can trust."
+                  data-identity-output="Quality-assured results, operational oversight and clinically grounded interpretation.">
+            <span>01</span><i class="fa-solid fa-flask-vial" aria-hidden="true"></i><strong>Evidence</strong>
+          </button>
+          <button id="identity-step-population" type="button" role="tab" aria-selected="false" aria-controls="identityInspector" tabindex="-1"
+                  class="about-identity__tab" style="--identity-colour:#34D399"
+                  data-identity-number="02" data-identity-kicker="Population lens"
+                  data-identity-title="Epidemiology and surveillance"
+                  data-identity-copy="Field and surveillance data place individual results within communities, services and exposure patterns."
+                  data-identity-output="Patterns that clarify who is affected, where gaps persist and what deserves attention.">
+            <span>02</span><i class="fa-solid fa-people-group" aria-hidden="true"></i><strong>Population</strong>
+          </button>
+          <button id="identity-step-decisions" type="button" role="tab" aria-selected="false" aria-controls="identityInspector" tabindex="-1"
+                  class="about-identity__tab" style="--identity-colour:#A78BFA"
+                  data-identity-number="03" data-identity-kicker="Decision layer"
+                  data-identity-title="Spatial and data science"
+                  data-identity-copy="GIS, statistical modelling and interactive tools turn population patterns into inspectable decision support."
+                  data-identity-output="Reproducible maps, models and dashboards designed for action, scrutiny and reuse.">
+            <span>03</span><i class="fa-solid fa-chart-line" aria-hidden="true"></i><strong>Decisions</strong>
+          </button>
+        </div>
+
+        <article id="identityInspector" class="about-identity__inspector" role="tabpanel" aria-labelledby="identity-step-evidence" tabindex="0" style="--identity-colour:#22D3EE">
+          <div class="about-identity__signal" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          <p data-identity-kicker>Clinical foundation</p>
+          <div class="about-identity__inspector-title">
+            <span data-identity-number>01</span>
+            <h3 data-identity-title>Diagnostic evidence</h3>
+          </div>
+          <p data-identity-copy>Clinical laboratory operations establish evidence that clinicians and public-health teams can trust.</p>
+          <div class="about-identity__output">
+            <span>Professional output</span>
+            <p data-identity-output>Quality-assured results, operational oversight and clinically grounded interpretation.</p>
+          </div>
+        </article>
+
+        <aside class="about-identity__context">
+          <p>Operating principle</p>
           <blockquote>{{ site.data.profile.aim }}</blockquote>
-          <div class="about-remit__languages">
+          <div class="about-identity__languages">
             <span>Working languages</span>
             {% for lang in site.data.profile.languages %}<b>{{ lang.name }}</b>{% endfor %}
           </div>
-        </div>
-
-        <ol class="about-remit__sequence reveal" aria-label="Professional operating model">
-          <li style="--remit-colour:#22D3EE">
-            <span>01</span>
-            <div><h3>Diagnostic reliability</h3><p>Laboratory operations, quality systems and clinical context establish the evidence base.</p></div>
-          </li>
-          <li style="--remit-colour:#34D399">
-            <span>02</span>
-            <div><h3>Population interpretation</h3><p>Epidemiology, surveillance and field experience explain how that evidence behaves across people and places.</p></div>
-          </li>
-          <li style="--remit-colour:#A78BFA">
-            <span>03</span>
-            <div><h3>Decision infrastructure</h3><p>Spatial analysis, modelling and interactive tools make the findings inspectable and useful.</p></div>
-          </li>
-        </ol>
+        </aside>
       </div>
 
-      <p class="about-remit__vision reveal">{{ site.data.profile.career_vision }}</p>
+      <div class="about-identity__vision reveal">
+        <span>Career direction</span>
+        <p>{{ site.data.profile.career_vision }}</p>
+      </div>
     </div>
   </section>
 

@@ -4,7 +4,7 @@
 <div id="toast-container" class="fixed bottom-6 right-6 z-[10000] flex flex-col gap-3 pointer-events-none"></div>
 
 <nav id="site-nav" class="v3-side-nav" aria-label="Primary navigation">
-  <div id="sideNavPanel" class="v3-side-nav__panel glass-card" aria-hidden="true">
+  <div id="sideNavPanel" class="v3-side-nav__panel glass-card" aria-hidden="true" inert>
     <header class="v3-side-nav__identity">
       <a href="{{ '/' | relative_url }}" onclick="scrollToTopV3(event)" class="v3-side-nav__brand" aria-label="Return to the top of Valentine Ghanem website">
         <img src="{{ '/assets/img/brand/vgg-master-emblem-theme-transparent.png' | relative_url }}" alt="Valentine Golden Ghanem faceted G site logo">
@@ -72,7 +72,7 @@
     </footer>
   </div>
 
-  <button id="sideNavToggle" type="button" class="v3-side-nav__toggle" aria-controls="sideNavPanel" aria-expanded="false" aria-label="Open site navigation">
+  <button id="sideNavToggle" type="button" class="v3-side-nav__toggle" data-stage="compact" aria-controls="sideNavPanel" aria-expanded="false" aria-label="Identify current section">
     <span class="v3-side-nav__toggle-shine" aria-hidden="true"></span>
     <img src="{{ '/assets/img/brand/vgg-master-emblem-theme-transparent.png' | relative_url }}" alt="">
     <span class="v3-side-nav__section" aria-hidden="true">
