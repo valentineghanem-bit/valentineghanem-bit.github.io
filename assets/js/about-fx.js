@@ -158,7 +158,101 @@
     });
   }
 
+  function initialiseVerificationWorkspace() {
+    var workspace = root.querySelector('[data-verification-workspace]');
+    if (!workspace) return;
+    var filters = Array.prototype.slice.call(workspace.querySelectorAll('[data-verify-filter]'));
+    var groups = Array.prototype.slice.call(workspace.querySelectorAll('[data-verify-group]'));
+    if (!filters.length || !groups.length) return;
+
+    function activate(filter, focus) {
+      var selected = filter.dataset.verifyFilter;
+      filters.forEach(function (candidate) {
+        var active = candidate === filter;
+        candidate.classList.toggle('is-active', active);
+        candidate.setAttribute('aria-pressed', active ? 'true' : 'false');
+        candidate.tabIndex = active ? 0 : -1;
+      });
+      groups.forEach(function (group) {
+        group.hidden = selected !== 'all' && group.dataset.verifyGroup !== selected;
+      });
+      if (focus) filter.focus();
+    }
+
+    filters.forEach(function (filter, index) {
+      filter.addEventListener('click', function () { activate(filter, false); });
+      filter.addEventListener('keydown', function (event) {
+        var next = index;
+        if (event.key === 'ArrowDown' || event.key === 'ArrowRight') next = (index + 1) % filters.length;
+        else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') next = (index - 1 + filters.length) % filters.length;
+        else if (event.key === 'Home') next = 0;
+        else if (event.key === 'End') next = filters.length - 1;
+        else return;
+        event.preventDefault();
+        activate(filters[next], true);
+      });
+    });
+  }
+
+  function initialiseEducationPathway() {
+    var pathway = root.querySelector('[data-education-pathway]');
+    if (!pathway) return;
+    var tabs = Array.prototype.slice.call(pathway.querySelectorAll('[role="tab"]'));
+    var inspector = pathway.querySelector('[role="tabpanel"]');
+    if (!tabs.length || !inspector) return;
+    var number = inspector.querySelector('[data-education-number]');
+    var status = inspector.querySelector('[data-education-status]');
+    var title = inspector.querySelector('[data-education-title]');
+    var institution = inspector.querySelector('[data-education-institution]');
+    var focus = inspector.querySelector('[data-education-focus]');
+    var meta = inspector.querySelector('[data-education-meta]');
+
+    function activate(tab, focusTab) {
+      tabs.forEach(function (candidate) {
+        var selected = candidate === tab;
+        candidate.classList.toggle('is-active', selected);
+        candidate.setAttribute('aria-selected', selected ? 'true' : 'false');
+        candidate.tabIndex = selected ? 0 : -1;
+      });
+      inspector.style.setProperty('--education-colour', tab.style.getPropertyValue('--education-colour'));
+      inspector.setAttribute('aria-labelledby', tab.id);
+      number.textContent = tab.dataset.educationNumber;
+      status.textContent = tab.dataset.educationStatus;
+      title.textContent = tab.dataset.educationTitle;
+      institution.textContent = tab.dataset.educationInstitution;
+      focus.textContent = tab.dataset.educationFocus;
+      meta.replaceChildren();
+      [tab.dataset.educationYear, tab.dataset.educationNote].filter(Boolean).forEach(function (value) {
+        var item = document.createElement('span');
+        item.textContent = value;
+        meta.appendChild(item);
+      });
+      if (!reducedMotion) {
+        inspector.classList.remove('is-switching');
+        inspector.getBoundingClientRect();
+        inspector.classList.add('is-switching');
+      }
+      if (focusTab) tab.focus();
+    }
+
+    tabs.forEach(function (tab, index) {
+      tab.addEventListener('click', function () { activate(tab, false); });
+      tab.addEventListener('keydown', function (event) {
+        var next = index;
+        if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (index + 1) % tabs.length;
+        else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (index - 1 + tabs.length) % tabs.length;
+        else if (event.key === 'Home') next = 0;
+        else if (event.key === 'End') next = tabs.length - 1;
+        else return;
+        event.preventDefault();
+        activate(tabs[next], true);
+      });
+    });
+  }
+
   initialiseIdentityPathway();
   initialiseMatrix();
+  initialiseVerificationWorkspace();
+  initialiseEducationPathway();
   initialiseCareerRecord();
 })();

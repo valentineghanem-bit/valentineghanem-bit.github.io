@@ -1,0 +1,102 @@
+{%- assign event = include.event -%}
+<details class="community-record event-card"
+         id="community-event-{{ include.index }}"
+         data-community-record="{{ include.filter }}"
+         data-community-year="{{ event.date_iso | slice: 0, 4 }}"
+         style="--record-accent: {{ include.accent }};"
+         {% if include.open %}open{% endif %}>
+  <summary class="community-record__summary">
+    <span class="community-record__year">{{ event.date_iso | slice: 0, 4 }}</span>
+    <span class="community-record__title-block">
+      <span class="community-record__category">
+        <i class="{{ include.icon }}" aria-hidden="true"></i>
+        {{ include.category }}
+      </span>
+      <span class="community-record__title">{{ event.title }}</span>
+      <span class="community-record__location">
+        <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+        {{ event.location }}
+      </span>
+    </span>
+    <span class="community-record__toggle" aria-hidden="true">
+      <i class="fa-solid fa-plus"></i>
+    </span>
+  </summary>
+
+  <div class="community-record__body">
+    <dl class="community-record__facts">
+      <div>
+        <dt>Date</dt>
+        <dd><time datetime="{{ event.date_iso }}">{{ event.date }}</time></dd>
+      </div>
+      <div>
+        <dt>Institution</dt>
+        <dd>{{ event.provider }}</dd>
+      </div>
+      <div>
+        <dt>Format</dt>
+        <dd>{{ event.format }}</dd>
+      </div>
+      <div>
+        <dt>Coordinates</dt>
+        <dd>{{ event.lat }}, {{ event.lng }}</dd>
+      </div>
+      <a class="community-record__map-link"
+         href="{{ '/map/' | relative_url }}#geo-event-{{ include.index }}">
+        <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+        Locate on field map
+      </a>
+    </dl>
+
+    <div class="community-record__evidence">
+      <p class="community-record__description">{{ event.description }}</p>
+
+      {% if event.photos %}
+      <div class="event-media event-media--accordion" aria-label="Photographic record of {{ event.title | escape }}">
+        {% for photo in event.photos limit:6 %}
+        <figure class="event-media__item{% if photo.contain %} event-media__item--contain{% endif %}"
+                {% if photo.contain %}style="background-image:url('{{ photo.url | relative_url }}');"{% endif %}>
+          <img src="{{ photo.url | relative_url }}"
+               alt="{{ photo.caption }}, Valentine Golden Ghanem"
+               loading="lazy"
+               tabindex="0"
+               role="button"
+               aria-label="Enlarge {{ photo.caption | escape }} featuring Valentine Golden Ghanem">
+          <figcaption class="event-media__caption">{{ photo.caption }}</figcaption>
+        </figure>
+        {% endfor %}
+      </div>
+
+      {% if event.photos.size > 6 %}
+      <details class="event-media__more">
+        <summary>View {{ event.photos.size | minus: 6 }} additional photographs</summary>
+        <div class="event-media event-media--expanded">
+          {% for photo in event.photos offset:6 %}
+          <figure class="event-media__item{% if photo.contain %} event-media__item--contain{% endif %}"
+                  {% if photo.contain %}style="background-image:url('{{ photo.url | relative_url }}');"{% endif %}>
+            <img src="{{ photo.url | relative_url }}"
+                 alt="{{ photo.caption }}, Valentine Golden Ghanem"
+                 loading="lazy"
+                 tabindex="0"
+                 role="button"
+                 aria-label="Enlarge {{ photo.caption | escape }} featuring Valentine Golden Ghanem">
+            <figcaption class="event-media__caption">{{ photo.caption }}</figcaption>
+          </figure>
+          {% endfor %}
+        </div>
+      </details>
+      {% endif %}
+      {% endif %}
+
+      {% if event.video %}
+      <div class="event-media__video{% if event.video_landscape %} event-media__video--landscape{% endif %}">
+        <video src="{{ event.video | relative_url }}"
+               {% if event.photos.first.url %}poster="{{ event.photos.first.url | relative_url }}"{% endif %}
+               controls
+               preload="metadata"
+               aria-label="{{ event.title | escape }} video featuring Valentine Golden Ghanem"></video>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</details>

@@ -10,6 +10,7 @@ extra_js: ["about-fx.js"]
 {% include nav-v3.html %}
 {%- assign rep_img = site.data.images | where: "representative", true | first -%}
 {%- assign first_domain = site.data.about_expertise | first -%}
+{%- assign first_credential = site.data.profile.credentials | first -%}
 
 <main class="about-v3" id="main-content">
   <section class="about-profile-hero" aria-labelledby="aboutTitle" data-nav-marker="00" data-nav-label="Top" data-nav-colour="#22D3EE">
@@ -192,79 +193,95 @@ extra_js: ["about-fx.js"]
         <span>Professional status is presented with the relevant jurisdiction, organisation and reference number. Credentials still in progress are identified separately.</span>
       </header>
 
-      <div class="about-verification__summary reveal" aria-label="Professional verification summary">
-        <span><strong>{{ site.data.profile.licensure | size }}</strong> professional registrations</span>
-        <span><strong>{{ site.data.profile.memberships | size }}</strong> professional memberships</span>
-        <span><strong>{{ site.data.profile.certifications_in_progress | size }}</strong> credentials in progress</span>
-      </div>
-
-      <div class="about-verification__groups reveal">
-        <section class="about-verification__group about-verification__group--licensure" aria-labelledby="licensureHeading">
-          <header>
-            <p>Licensure</p>
-            <h3 id="licensureHeading">Medical scientist registrations</h3>
-            <span>Active professional registration in Ghana and Ireland.</span>
-          </header>
-          <div>
-            {% for licence in site.data.profile.licensure %}
-            <article class="about-verification__entry">
-              <span class="about-verification__state">Registered</span>
-              <p>{{ licence.jurisdiction }}</p>
-              <h4>{{ licence.credential }}</h4>
-              <strong>{{ licence.body }} ({{ licence.abbreviation }})</strong>
-              <code>{{ licence.reg_no }}</code>
-            </article>
-            {% endfor %}
+      <div class="about-home-panel about-verification__workspace reveal" data-verification-workspace>
+        <aside class="home-identity-rail about-verification__rail">
+          <p class="about-home-panel__eyebrow">Verified professional record</p>
+          <h3>Registration, membership and research identity presented with status.</h3>
+          <p>Each record names the responsible organisation, jurisdiction and reference number. Pending credentials remain clearly separated from completed registration.</p>
+          <div class="about-verification__summary" aria-label="Professional verification summary">
+            <span><strong>{{ site.data.profile.licensure | size }}</strong> registrations</span>
+            <span><strong>{{ site.data.profile.memberships | size }}</strong> memberships</span>
+            <span><strong>{{ site.data.profile.certifications_in_progress | size }}</strong> in progress</span>
           </div>
-        </section>
-
-        <section class="about-verification__group about-verification__group--membership" aria-labelledby="membershipHeading">
-          <header>
-            <p>Professional bodies</p>
-            <h3 id="membershipHeading">Fellowship and professional memberships</h3>
-            <span>Public health, laboratory medicine and epidemiology organisations.</span>
-          </header>
-          <div>
-            {% for membership in site.data.profile.memberships %}
-            <article class="about-verification__entry">
-              <p>{{ membership.abbreviation }}</p>
-              <h4>{% if membership.role %}{{ membership.role }}, {% endif %}{{ membership.name }}</h4>
-              {% if membership.note %}<strong>{{ membership.note }}</strong>{% endif %}
-              <code>{{ membership.reg_no }}</code>
-            </article>
-            {% endfor %}
+          <div class="about-home-panel__controls" role="group" aria-label="Filter professional verification records">
+            <button type="button" class="is-active" data-verify-filter="all" aria-pressed="true">All evidence</button>
+            <button type="button" data-verify-filter="licensure" aria-pressed="false">Registrations</button>
+            <button type="button" data-verify-filter="membership" aria-pressed="false">Memberships</button>
+            <button type="button" data-verify-filter="pending" aria-pressed="false">In progress</button>
+            <button type="button" data-verify-filter="identifiers" aria-pressed="false">Identifiers</button>
           </div>
-        </section>
+        </aside>
 
-        <section class="about-verification__group about-verification__group--pending" aria-labelledby="pendingHeading">
-          <header>
-            <p>Status disclosure</p>
-            <h3 id="pendingHeading">Credentials in progress</h3>
-            <span>These credentials are not presented as completed or awarded.</span>
-          </header>
-          <div>
-            {% for pending in site.data.profile.certifications_in_progress %}
-            <article class="about-verification__entry">
-              <span class="about-verification__state">In progress</span>
-              <h4>{{ pending.name }}</h4>
-              <strong>{{ pending.note }}</strong>
-            </article>
-            {% endfor %}
+        <div class="about-verification__content">
+          <div class="about-verification__groups">
+            <section class="about-verification__group about-verification__group--licensure" data-verify-group="licensure" aria-labelledby="licensureHeading">
+              <header>
+                <p>Licensure</p>
+                <h3 id="licensureHeading">Medical scientist registrations</h3>
+                <span>Active professional registration in Ghana and Ireland.</span>
+              </header>
+              <div>
+                {% for licence in site.data.profile.licensure %}
+                <article class="about-verification__entry home-journey-card" style="--journey-accent: var(--about-cyan);">
+                  <span class="about-verification__state">Registered</span>
+                  <p>{{ licence.jurisdiction }}</p>
+                  <h4>{{ licence.credential }}</h4>
+                  <strong>{{ licence.body }} ({{ licence.abbreviation }})</strong>
+                  <code>{{ licence.reg_no }}</code>
+                </article>
+                {% endfor %}
+              </div>
+            </section>
+
+            <section class="about-verification__group about-verification__group--membership" data-verify-group="membership" aria-labelledby="membershipHeading">
+              <header>
+                <p>Professional bodies</p>
+                <h3 id="membershipHeading">Fellowship and professional memberships</h3>
+                <span>Public health, laboratory medicine and epidemiology organisations.</span>
+              </header>
+              <div>
+                {% for membership in site.data.profile.memberships %}
+                <article class="about-verification__entry home-journey-card" style="--journey-accent: var(--about-mint);">
+                  <p>{{ membership.abbreviation }}</p>
+                  <h4>{% if membership.role %}{{ membership.role }}, {% endif %}{{ membership.name }}</h4>
+                  {% if membership.note %}<strong>{{ membership.note }}</strong>{% endif %}
+                  <code>{{ membership.reg_no }}</code>
+                </article>
+                {% endfor %}
+              </div>
+            </section>
+
+            <section class="about-verification__group about-verification__group--pending" data-verify-group="pending" aria-labelledby="pendingHeading">
+              <header>
+                <p>Status disclosure</p>
+                <h3 id="pendingHeading">Credentials in progress</h3>
+                <span>These credentials are not presented as completed or awarded.</span>
+              </header>
+              <div>
+                {% for pending in site.data.profile.certifications_in_progress %}
+                <article class="about-verification__entry home-journey-card" style="--journey-accent: var(--about-amber);">
+                  <span class="about-verification__state">In progress</span>
+                  <h4>{{ pending.name }}</h4>
+                  <strong>{{ pending.note }}</strong>
+                </article>
+                {% endfor %}
+              </div>
+            </section>
           </div>
-        </section>
-      </div>
 
-      <div class="about-identifiers reveal" aria-label="Researcher profiles and identifiers">
-        <header>
-          <p>Research identity</p>
-          <h3>Researcher profiles and persistent identifiers</h3>
-        </header>
-        <div>
-          {% for ident in site.data.profile.identifiers %}
-          <a href="{{ ident.url }}" target="_blank" rel="noopener">
-            <span>{{ ident.property_id }}</span><code>{{ ident.value }}</code><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
-          </a>
-          {% endfor %}
+          <section class="about-identifiers" data-verify-group="identifiers" aria-label="Researcher profiles and identifiers">
+            <header>
+              <p>Research identity</p>
+              <h3>Researcher profiles and persistent identifiers</h3>
+            </header>
+            <div>
+              {% for ident in site.data.profile.identifiers %}
+              <a href="{{ ident.url }}" target="_blank" rel="noopener">
+                <span>{{ ident.property_id }}</span><code>{{ ident.value }}</code><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+              </a>
+              {% endfor %}
+            </div>
+          </section>
         </div>
       </div>
     </div>
@@ -279,22 +296,52 @@ extra_js: ["about-fx.js"]
         <span>Completed and current degree programmes are identified separately, with the principal academic focus stated for each record.</span>
       </header>
 
-      <div class="about-education__grid reveal">
-        {% for credential in site.data.profile.credentials %}
-        <article class="about-education__record{% if credential.status == 'in progress' %} is-current{% endif %}">
-          <header>
-            <span>{{ forloop.index | prepend: "0" | slice: -2, 2 }}</span>
-            <p>{% if credential.status == "in progress" %}In progress{% else %}Completed{% endif %}</p>
-          </header>
-          <h3>{{ credential.name }}</h3>
-          <strong>{{ credential.institution }}</strong>
-          {% if credential.focus %}<p>{{ credential.focus }}</p>{% endif %}
-          <footer>
-            {% if credential.year %}<span>{{ credential.year }}</span>{% endif %}
-            {% if credential.note %}<span>{{ credential.note }}</span>{% endif %}
+      <div class="about-home-panel about-education__workspace reveal" data-education-pathway>
+        <article class="home-identity-rail about-education__inspector" role="tabpanel" id="education-inspector" aria-labelledby="education-tab-1" style="--education-colour: var(--about-cyan);">
+          <p class="about-home-panel__eyebrow" data-education-status>{% if first_credential.status == "in progress" %}In progress{% else %}Completed qualification{% endif %}</p>
+          <span class="about-education__inspector-number" data-education-number>01</span>
+          <h3 data-education-title>{{ first_credential.name }}</h3>
+          <strong data-education-institution>{{ first_credential.institution }}</strong>
+          <p data-education-focus>{{ first_credential.focus }}</p>
+          <footer data-education-meta>
+            {% if first_credential.year %}<span>{{ first_credential.year }}</span>{% endif %}
+            {% if first_credential.note %}<span>{{ first_credential.note }}</span>{% endif %}
           </footer>
         </article>
-        {% endfor %}
+
+        <div class="about-education__grid" role="tablist" aria-label="Academic qualifications">
+          {% for credential in site.data.profile.credentials %}
+          {%- case forloop.index -%}
+            {%- when 1 -%}{%- assign education_colour = "var(--about-cyan)" -%}
+            {%- when 2 -%}{%- assign education_colour = "var(--about-mint)" -%}
+            {%- when 3 -%}{%- assign education_colour = "var(--about-amber)" -%}
+            {%- else -%}{%- assign education_colour = "var(--about-violet)" -%}
+          {%- endcase -%}
+          <button type="button"
+                  class="about-education__record home-journey-card{% if credential.status == 'in progress' %} is-current{% endif %}{% if forloop.first %} is-active{% endif %}"
+                  id="education-tab-{{ forloop.index }}"
+                  role="tab"
+                  aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                  aria-controls="education-inspector"
+                  tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+                  style="--education-colour: {{ education_colour }}; --journey-accent: {{ education_colour }};"
+                  data-education-number="{{ forloop.index | prepend: '0' | slice: -2, 2 }}"
+                  data-education-status="{% if credential.status == 'in progress' %}In progress{% else %}Completed qualification{% endif %}"
+                  data-education-title="{{ credential.name | escape }}"
+                  data-education-institution="{{ credential.institution | escape }}"
+                  data-education-focus="{{ credential.focus | escape }}"
+                  data-education-year="{{ credential.year }}"
+                  data-education-note="{{ credential.note | escape }}">
+            <header>
+              <span>{{ forloop.index | prepend: "0" | slice: -2, 2 }}</span>
+              <p>{% if credential.status == "in progress" %}In progress{% else %}Completed{% endif %}</p>
+            </header>
+            <h3>{{ credential.name }}</h3>
+            <strong>{{ credential.institution }}</strong>
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </button>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </section>

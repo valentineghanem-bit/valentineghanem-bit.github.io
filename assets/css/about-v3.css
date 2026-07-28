@@ -1477,3 +1477,373 @@ html[data-v2-theme="dim"] .v3-scope .about-profile-hero__summary { color: #cbd5e
   .v3-scope .about-education__record:hover { transform: none; }
   .v3-scope .about-matrix__inspector.is-switching { animation: none; }
 }
+
+/* Home 01 coherence layer for About 03-04. The spectral surface, ruled
+   texture, evidence rail and interactive selection states intentionally
+   echo the Home identity instrument while preserving About-specific data. */
+.v3-scope .about-home-panel {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1.72fr);
+  gap: 24px;
+  padding: 22px;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 8px;
+  background:
+    linear-gradient(120deg, rgba(34, 211, 238, 0.09), transparent 30%, transparent 68%, rgba(167, 139, 250, 0.1)),
+    repeating-linear-gradient(90deg, rgba(15, 23, 42, 0.025) 0 1px, transparent 1px 24px),
+    color-mix(in srgb, var(--card-bg) 74%, transparent);
+  box-shadow: 0 22px 50px -38px rgba(15, 23, 42, 0.46);
+}
+
+html[data-v2-theme="dark"] .v3-scope .about-home-panel,
+html[data-v2-theme="dim"] .v3-scope .about-home-panel {
+  background:
+    linear-gradient(120deg, rgba(34, 211, 238, 0.1), transparent 30%, transparent 68%, rgba(167, 139, 250, 0.1)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 24px),
+    rgba(15, 23, 42, 0.74);
+}
+
+.v3-scope .about-home-panel::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--about-cyan), var(--about-mint), var(--about-amber), var(--about-violet), var(--about-crimson));
+}
+
+.v3-scope .about-home-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.v3-scope .about-home-panel .home-identity-rail {
+  border-radius: 8px;
+}
+
+.v3-scope .about-home-panel .home-identity-rail::after {
+  display: none;
+}
+
+.v3-scope .about-home-panel__eyebrow {
+  margin: 0 0 18px;
+  color: var(--about-cyan);
+  font-family: "Fira Code", monospace;
+  font-size: 0.64rem;
+  font-weight: 900;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.v3-scope .about-verification__rail,
+.v3-scope .about-education__inspector {
+  align-self: start;
+  min-width: 0;
+  padding: 28px;
+}
+
+.v3-scope .about-verification__rail > h3,
+.v3-scope .about-education__inspector > h3 {
+  margin: 0;
+  color: var(--text-main);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.75rem;
+  font-weight: 850;
+  line-height: 1.2;
+}
+
+.v3-scope .about-verification__rail > p:not(.about-home-panel__eyebrow),
+.v3-scope .about-education__inspector > p:not(.about-home-panel__eyebrow) {
+  margin: 16px 0 0;
+  color: var(--about-muted);
+  font-size: 0.86rem;
+  line-height: 1.7;
+}
+
+.v3-scope .about-verification__rail .about-verification__summary {
+  grid-template-columns: 1fr;
+  margin: 24px 0;
+  border: 0;
+}
+
+.v3-scope .about-verification__rail .about-verification__summary span {
+  min-height: 54px;
+  padding: 10px 0;
+  border-right: 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.24);
+}
+
+.v3-scope .about-verification__rail .about-verification__summary strong {
+  min-width: 34px;
+  font-size: 1.45rem;
+}
+
+.v3-scope .about-home-panel__controls {
+  display: grid;
+  gap: 8px;
+}
+
+.v3-scope .about-home-panel__controls button {
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid rgba(148, 163, 184, 0.26);
+  border-radius: 6px;
+  color: var(--about-muted);
+  background: color-mix(in srgb, var(--card-bg) 58%, transparent);
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-align: left;
+  cursor: pointer;
+  transition: color 180ms ease, border-color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.v3-scope .about-home-panel__controls button:hover {
+  color: var(--text-main);
+  border-color: var(--about-cyan);
+  transform: translateX(4px);
+}
+
+.v3-scope .about-home-panel__controls button:focus-visible {
+  outline: 3px solid var(--about-amber);
+  outline-offset: 2px;
+}
+
+.v3-scope .about-home-panel__controls button.is-active {
+  color: #071018;
+  border-color: var(--about-mint);
+  background: var(--about-mint);
+}
+
+.v3-scope .about-verification__content {
+  min-width: 0;
+}
+
+.v3-scope .about-verification__content [data-verify-group][hidden] {
+  display: none;
+}
+
+.v3-scope .about-verification__workspace .about-verification__group,
+.v3-scope .about-verification__workspace .about-identifiers {
+  grid-template-columns: minmax(190px, 0.3fr) minmax(0, 1fr);
+  gap: 24px;
+  padding: 26px 0;
+}
+
+.v3-scope .about-verification__workspace .about-verification__group:first-child {
+  border-top: 0;
+}
+
+.v3-scope .about-verification__workspace .about-identifiers {
+  margin-top: 0;
+}
+
+.v3-scope .about-verification__entry.home-journey-card {
+  min-height: 178px;
+  border-radius: 7px;
+}
+
+.v3-scope .about-education__workspace {
+  grid-template-columns: minmax(300px, 0.82fr) minmax(0, 1.6fr);
+  align-items: stretch;
+}
+
+.v3-scope .about-education__inspector {
+  position: sticky;
+  top: 32px;
+  min-height: 100%;
+  border-left: 3px solid var(--education-colour);
+  transition: border-color 220ms ease;
+}
+
+.v3-scope .about-education__inspector-number {
+  display: block;
+  margin: 34px 0 14px;
+  color: color-mix(in srgb, var(--education-colour) 36%, rgba(148, 163, 184, 0.36));
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 4rem;
+  font-weight: 900;
+  line-height: 0.8;
+}
+
+.v3-scope .about-education__inspector > strong {
+  display: block;
+  margin-top: 12px;
+  color: var(--education-colour);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.v3-scope .about-education__inspector footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 24px;
+}
+
+.v3-scope .about-education__inspector footer span {
+  padding: 6px 8px;
+  border-radius: 4px;
+  color: var(--about-muted);
+  background: color-mix(in srgb, var(--education-colour) 10%, transparent);
+  font-family: "Fira Code", monospace;
+  font-size: 0.64rem;
+}
+
+.v3-scope .about-education__grid {
+  align-content: start;
+}
+
+.v3-scope button.about-education__record {
+  width: 100%;
+  min-height: 218px;
+  padding: 22px;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.v3-scope button.about-education__record > p,
+.v3-scope button.about-education__record > footer {
+  display: none;
+}
+
+.v3-scope button.about-education__record > h3 {
+  margin-top: 18px;
+  font-size: 1.1rem;
+}
+
+.v3-scope button.about-education__record > strong {
+  padding-right: 30px;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.v3-scope button.about-education__record > i {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  color: var(--education-colour);
+  transition: transform 180ms ease;
+}
+
+.v3-scope button.about-education__record:hover > i,
+.v3-scope button.about-education__record.is-active > i {
+  transform: translateX(4px);
+}
+
+.v3-scope button.about-education__record.is-active {
+  border-color: var(--education-colour);
+  box-shadow: 0 16px 34px -26px color-mix(in srgb, var(--education-colour) 70%, rgba(15, 23, 42, 0.5));
+}
+
+.v3-scope button.about-education__record:focus-visible {
+  outline: 3px solid var(--education-colour);
+  outline-offset: 3px;
+}
+
+.v3-scope .about-education__inspector.is-switching > * {
+  animation: about-education-switch 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes about-education-switch {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 1080px) {
+  .v3-scope .about-home-panel,
+  .v3-scope .about-education__workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .v3-scope .about-education__inspector {
+    position: static;
+    min-height: 360px;
+  }
+}
+
+/* About keeps its own composition while following the shared editorial cadence. */
+.v3-scope .about-v3__section-header > p {
+  margin: 0 0 14px;
+  font-size: var(--section-kicker-size, 0.75rem);
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.v3-scope .about-v3__section-header h2 {
+  font-size: var(--section-title-size, 3rem);
+  font-weight: 800;
+  line-height: 1.08;
+}
+
+.v3-scope .about-v3__section-header > span:not(.about-v3__ghost) {
+  max-width: 72ch;
+  margin-top: 18px;
+  font-size: var(--section-caption-size, 1rem);
+  line-height: 1.7;
+}
+
+.v3-scope .about-identity__header > div > p {
+  margin: 0 0 14px;
+  font-size: var(--section-kicker-size, 0.75rem);
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.v3-scope .about-identity__header h2 {
+  font-size: var(--section-title-size, 3rem);
+  font-weight: 800;
+  line-height: 1.08;
+}
+
+.v3-scope .about-identity__header > p {
+  font-size: var(--section-caption-size, 1rem);
+  line-height: 1.7;
+}
+
+@media (max-width: 720px) {
+  .v3-scope .about-v3__section-header h2,
+  .v3-scope .about-identity__header h2 {
+    font-size: var(--section-title-size, 2.25rem);
+  }
+}
+
+@media (max-width: 680px) {
+  .v3-scope .about-home-panel {
+    gap: 18px;
+    padding: 12px;
+  }
+
+  .v3-scope .about-verification__rail,
+  .v3-scope .about-education__inspector {
+    padding: 22px;
+  }
+
+  .v3-scope .about-verification__workspace .about-verification__group,
+  .v3-scope .about-verification__workspace .about-identifiers {
+    grid-template-columns: 1fr;
+  }
+
+  .v3-scope .about-verification__workspace .about-verification__group--membership > div,
+  .v3-scope .about-verification__workspace .about-identifiers > div,
+  .v3-scope .about-education__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v3-scope .about-home-panel__controls button,
+  .v3-scope .about-education__inspector,
+  .v3-scope button.about-education__record > i {
+    transition: none;
+  }
+
+  .v3-scope .about-education__inspector.is-switching > * {
+    animation: none;
+  }
+}

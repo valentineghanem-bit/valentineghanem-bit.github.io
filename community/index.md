@@ -2,143 +2,158 @@
 layout: v3
 permalink: /community/
 title: "Community"
-description: "Community outreach, medical screening programmes and public engagement by Valentine Golden Ghanem in Ghana."
+browser_title: "Community Health Practice | Valentine Ghanem"
+description: "A documented record of community screening, professional learning and public-health engagement by Valentine Golden Ghanem across Ghana."
 jsonld: community
+extra_css: ["community-v2.css"]
 extra_js: ["community-fx.js"]
 ---
 {% include nav-v3.html %}
-<section class="community-v2 v3-page-canvas v3-page-canvas--community pt-40 pb-24 px-6" data-nav-marker="00" data-nav-label="Community" data-nav-colour="#34D399">
-  <div class="max-w-[1800px] mx-auto">
-    <p class="font-mono text-xs text-slate-400 mb-6"><a href="{{ '/' | relative_url }}" class="hover:text-cyan-500">Home</a> / Community</p>
-    <h1 class="text-4xl sm:text-5xl md:text-6xl font-black font-heading tracking-tight text-slate-900 dark:text-white mb-5">Community &amp; outreach</h1>
-    <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mb-14">
-      Clinical screening, scientific meetings and public engagement undertaken beyond routine laboratory practice.
-    </p>
 
-    <div class="lg:grid lg:grid-cols-[236px_minmax(0,1fr)] gap-6 lg:gap-14 items-start">
-      <aside class="community-sidebar lg:sticky lg:top-28 flex flex-col gap-6 mb-10 lg:mb-0">
-        <p class="pull-quote v2-spotlight v2-corner-frame rounded-2xl p-5 font-heading text-base leading-relaxed text-slate-800 dark:text-slate-100 italic">
-          &ldquo;Screening services delivered to over 5,000 individuals in underserved populations.&rdquo;
+<main class="community-v2 v3-page-canvas v3-page-canvas--community">
+  <section class="community-hero"
+           id="community-top"
+           data-nav-marker="00"
+           data-nav-label="Community"
+           data-nav-colour="#34D399"
+           aria-labelledby="community-title">
+    <div class="community-shell community-hero__layout">
+      <div class="community-hero__copy">
+        <p class="community-breadcrumb"><a href="{{ '/' | relative_url }}">Home</a> / Community</p>
+        <p class="community-eyebrow">Field practice / Ghana / 2016-2024</p>
+        <h1 id="community-title">Public health, <span>practised with communities.</span></h1>
+        <p class="community-hero__summary">
+          Valentine Golden Ghanem's community record brings together field screening,
+          diagnostic education and professional learning undertaken across Ghana.
+          Each entry is tied to a date, place and original media.
         </p>
-        <nav class="community-nav flex flex-col gap-2" aria-label="Section jump links">
-          <a href="#medical-screening" class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 font-mono text-[0.7rem] uppercase tracking-wide text-slate-500 dark:text-slate-400 hover:text-mint hover:border-mint transition-colors">01 Medical screening</a>
-          <a href="#conferences" class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 font-mono text-[0.7rem] uppercase tracking-wide text-slate-500 dark:text-slate-400 hover:text-mint hover:border-mint transition-colors">02 Conferences &amp; seminars</a>
-          <a href="#outreach" class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 font-mono text-[0.7rem] uppercase tracking-wide text-slate-500 dark:text-slate-400 hover:text-mint hover:border-mint transition-colors">03 Community outreach</a>
-        </nav>
-      </aside>
+        <div class="community-hero__actions">
+          <a class="community-action community-action--primary" href="#community-evidence">
+            <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
+            Explore field record
+          </a>
+          <a class="community-action community-action--secondary" href="{{ '/map/' | relative_url }}">
+            <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+            Open field map
+          </a>
+        </div>
+        <dl class="community-hero__metrics" aria-label="Community record summary">
+          <div><dt>7</dt><dd>documented activities</dd></div>
+          <div><dt>40</dt><dd>field photographs</dd></div>
+          <div><dt>2</dt><dd>video records</dd></div>
+        </dl>
+      </div>
 
-      <div class="community-main min-w-0">
-        {%- assign geo_i = 0 -%}
-        <div class="section__ghost-wrap">
-          <span class="section__ghost-num">01</span>
-          <h2 class="text-xs font-black uppercase tracking-[0.4em] text-mint mb-2" id="medical-screening">01</h2>
-          <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">Medical screening</h3>
-        </div>
-        <div class="event-grid mb-6">
-          {% for e in site.data.community_activities.medical_screening %}
-          <article class="event-card v2-spotlight rounded-2xl p-6 md:p-7" id="community-event-{{ geo_i }}">
-          {%- assign geo_i = geo_i | plus: 1 -%}
-            <div class="event-card__head mb-1.5">
-              <p class="font-bold font-heading text-lg text-slate-900 dark:text-white">🩺 {{ e.title }}</p>
-            </div>
-            <span class="block font-mono text-xs text-slate-400 mb-3">{{ e.provider }} &middot; {{ e.date }} &middot; {{ e.location }}</span>
-            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{{ e.description }}</p>
-            {% if e.photos %}
-            <div class="event-media event-media--accordion">
-              {% for p in e.photos limit:6 %}
-              <figure class="event-media__item{% if p.contain %} event-media__item--contain{% endif %}"{% if p.contain %} style="background-image:url('{{ p.url | relative_url }}');"{% endif %}><img src="{{ p.url | relative_url }}" alt="{{ p.caption }}, Valentine Golden Ghanem" loading="lazy">{% if p.caption %}<figcaption class="event-media__caption">{{ p.caption }}</figcaption>{% endif %}</figure>
-              {% endfor %}
-              {% if e.photos.size > 6 %}
-              <details class="event-media__more group mt-1.5">
-                <summary class="group-open:hidden">+{{ e.photos.size | minus: 6 }} more photos</summary>
-                <div class="event-media">
-                  {% for p in e.photos offset:6 %}
-                  <figure class="event-media__item{% if p.contain %} event-media__item--contain{% endif %}"{% if p.contain %} style="background-image:url('{{ p.url | relative_url }}');"{% endif %}><img src="{{ p.url | relative_url }}" alt="{{ p.caption }}, Valentine Golden Ghanem" loading="lazy">{% if p.caption %}<figcaption class="event-media__caption">{{ p.caption }}</figcaption>{% endif %}</figure>
-                  {% endfor %}
-                </div>
-              </details>
-              {% endif %}
-            </div>
-            {% endif %}
-            {% if e.video %}
-            <div class="event-media__video{% if e.video_landscape %} event-media__video--landscape{% endif %}"><video src="{{ e.video | relative_url }}"{% if e.photos.first.url %} poster="{{ e.photos.first.url | relative_url }}"{% endif %} controls preload="metadata" aria-label="{{ e.title | escape }}, Valentine Golden Ghanem"></video></div>
-            {% endif %}
-          </article>
-          {% endfor %}
-        </div>
-
-        <div class="section__ghost-wrap mt-16">
-          <span class="section__ghost-num">02</span>
-          <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-2" id="conferences">02</h2>
-          <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">Conferences &amp; seminars</h3>
-        </div>
-        <div class="event-grid mb-6">
-          {% for e in site.data.community_activities.conferences %}
-          <article class="event-card v2-spotlight rounded-2xl p-6 md:p-7" id="community-event-{{ geo_i }}">
-          {%- assign geo_i = geo_i | plus: 1 -%}
-            <div class="event-card__head mb-1.5">
-              <p class="font-bold font-heading text-lg text-slate-900 dark:text-white">🧬 {{ e.title }}</p>
-            </div>
-            <span class="block font-mono text-xs text-slate-400 mb-3">{{ e.provider }} &middot; {{ e.date }}</span>
-            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{{ e.description }}</p>
-            {% if e.photos %}
-            <div class="event-media event-media--accordion">
-              {% for p in e.photos limit:6 %}
-              <figure class="event-media__item{% if p.contain %} event-media__item--contain{% endif %}"{% if p.contain %} style="background-image:url('{{ p.url | relative_url }}');"{% endif %}><img src="{{ p.url | relative_url }}" alt="{{ p.caption }}, Valentine Golden Ghanem" loading="lazy">{% if p.caption %}<figcaption class="event-media__caption">{{ p.caption }}</figcaption>{% endif %}</figure>
-              {% endfor %}
-              {% if e.photos.size > 6 %}
-              <details class="event-media__more group mt-1.5">
-                <summary class="group-open:hidden">+{{ e.photos.size | minus: 6 }} more photos</summary>
-                <div class="event-media">
-                  {% for p in e.photos offset:6 %}
-                  <figure class="event-media__item{% if p.contain %} event-media__item--contain{% endif %}"{% if p.contain %} style="background-image:url('{{ p.url | relative_url }}');"{% endif %}><img src="{{ p.url | relative_url }}" alt="{{ p.caption }}, Valentine Golden Ghanem" loading="lazy">{% if p.caption %}<figcaption class="event-media__caption">{{ p.caption }}</figcaption>{% endif %}</figure>
-                  {% endfor %}
-                </div>
-              </details>
-              {% endif %}
-            </div>
-            {% endif %}
-          </article>
-          {% endfor %}
-        </div>
-
-        <div class="section__ghost-wrap mt-16">
-          <span class="section__ghost-num">03</span>
-          <h2 class="text-xs font-black uppercase tracking-[0.4em] text-amber-500 mb-2" id="outreach">03</h2>
-          <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">Community outreach</h3>
-        </div>
-        <div class="event-grid mb-6">
-          {% for e in site.data.community_activities.outreach %}
-          <article class="event-card v2-spotlight rounded-2xl p-6 md:p-7" id="community-event-{{ geo_i }}">
-          {%- assign geo_i = geo_i | plus: 1 -%}
-            <div class="event-card__head mb-1.5">
-              <p class="font-bold font-heading text-lg text-slate-900 dark:text-white">⚕️ {{ e.title }}</p>
-            </div>
-            <span class="block font-mono text-xs text-slate-400 mb-3">{{ e.provider }} &middot; {{ e.date }}</span>
-            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{{ e.description }}</p>
-            {% if e.photos %}
-            <div class="event-media event-media--accordion">
-              {% for p in e.photos limit:6 %}
-              <figure class="event-media__item{% if p.contain %} event-media__item--contain{% endif %}"{% if p.contain %} style="background-image:url('{{ p.url | relative_url }}');"{% endif %}><img src="{{ p.url | relative_url }}" alt="{{ p.caption }}, Valentine Golden Ghanem" loading="lazy">{% if p.caption %}<figcaption class="event-media__caption">{{ p.caption }}</figcaption>{% endif %}</figure>
-              {% endfor %}
-              {% if e.photos.size > 6 %}
-              <details class="event-media__more group mt-1.5">
-                <summary class="group-open:hidden">+{{ e.photos.size | minus: 6 }} more photos</summary>
-                <div class="event-media">
-                  {% for p in e.photos offset:6 %}
-                  <figure class="event-media__item{% if p.contain %} event-media__item--contain{% endif %}"{% if p.contain %} style="background-image:url('{{ p.url | relative_url }}');"{% endif %}><img src="{{ p.url | relative_url }}" alt="{{ p.caption }}, Valentine Golden Ghanem" loading="lazy">{% if p.caption %}<figcaption class="event-media__caption">{{ p.caption }}</figcaption>{% endif %}</figure>
-                  {% endfor %}
-                </div>
-              </details>
-              {% endif %}
-            </div>
-            {% endif %}
-          </article>
-          {% endfor %}
-        </div>
+      <div class="community-hero__media" aria-label="Selected field photographs">
+        <figure class="community-hero__photo community-hero__photo--primary">
+          <img src="{{ '/assets/img/community/kofikrom-2023/screening-exercise.jpg' | relative_url }}"
+               alt="Community medical screening at Kofikrom documented in the field record of Valentine Golden Ghanem"
+               fetchpriority="high">
+          <figcaption><span>Kofikrom</span><strong>Field screening / 2023</strong></figcaption>
+        </figure>
+        <figure class="community-hero__photo community-hero__photo--secondary">
+          <img src="{{ '/assets/img/community/agona-swedru-2024/group-pic.jpg' | relative_url }}"
+               alt="Valentine Golden Ghanem with the Cocoa Clinic screening team at Agona Swedru"
+               loading="eager">
+          <figcaption><span>Agona Swedru</span><strong>Screening team / 2024</strong></figcaption>
+        </figure>
+        <figure class="community-hero__photo community-hero__photo--tertiary">
+          <img src="{{ '/assets/img/community/gamls-congress-2021/group-picture.jpg' | relative_url }}"
+               alt="Valentine Golden Ghanem with delegates at the GAMLS scientific conference in Bolgatanga"
+               loading="eager">
+          <figcaption><span>Bolgatanga</span><strong>Scientific congress / 2021</strong></figcaption>
+        </figure>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+
+  <section class="community-index"
+           id="community-evidence"
+           aria-labelledby="community-index-title">
+    <div class="community-shell community-index__layout">
+      <div>
+        <p class="community-eyebrow">Evidence index</p>
+        <h2 id="community-index-title">Browse the documented record</h2>
+      </div>
+      <div class="community-filter" role="group" aria-label="Filter community records by practice area">
+        <button type="button" data-community-filter="all" aria-pressed="true">All <span>7</span></button>
+        <button type="button" data-community-filter="screening" aria-pressed="false">Screening <span>3</span></button>
+        <button type="button" data-community-filter="learning" aria-pressed="false">Professional learning <span>2</span></button>
+        <button type="button" data-community-filter="engagement" aria-pressed="false">Public engagement <span>2</span></button>
+      </div>
+      <p class="community-filter__status" data-community-status aria-live="polite">Showing all 7 activities.</p>
+    </div>
+  </section>
+
+  {%- assign event_index = 0 -%}
+  <section class="community-section community-section--screening"
+           id="medical-screening"
+           data-community-section="screening"
+           data-nav-marker="01"
+           data-nav-label="Screening"
+           data-nav-colour="#34D399"
+           aria-labelledby="screening-title">
+    <div class="community-shell community-section__layout">
+      <header class="community-section__header">
+        <span class="community-section__number" aria-hidden="true">01</span>
+        <p class="community-eyebrow">Screening and field diagnostics</p>
+        <h2 id="screening-title">Clinical evidence in community settings</h2>
+        <p>Three field programmes document diagnostic assessment and preventive-health support for cocoa-farming and workplace communities.</p>
+      </header>
+      <div class="community-ledger">
+        {% for event in site.data.community_activities.medical_screening %}
+          {% include community-event.html event=event index=event_index filter="screening" category="Medical screening" accent="#34D399" icon="fa-solid fa-stethoscope" open=forloop.first %}
+          {%- assign event_index = event_index | plus: 1 -%}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="community-section community-section--learning"
+           id="conferences"
+           data-community-section="learning"
+           data-nav-marker="02"
+           data-nav-label="Learning"
+           data-nav-colour="#FBBF24"
+           aria-labelledby="learning-title">
+    <div class="community-shell community-section__layout">
+      <header class="community-section__header">
+        <span class="community-section__number" aria-hidden="true">02</span>
+        <p class="community-eyebrow">Professional learning and diagnostic practice</p>
+        <h2 id="learning-title">Standards, microscopy and infectious-disease response</h2>
+        <p>Congress participation and technical training connect continuing professional development with laboratory quality and national disease-control practice.</p>
+      </header>
+      <div class="community-ledger">
+        {% for event in site.data.community_activities.conferences %}
+          {% include community-event.html event=event index=event_index filter="learning" category="Professional learning" accent="#FBBF24" icon="fa-solid fa-microscope" open=forloop.first %}
+          {%- assign event_index = event_index | plus: 1 -%}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="community-section community-section--engagement"
+           id="outreach"
+           data-community-section="engagement"
+           data-nav-marker="03"
+           data-nav-label="Engagement"
+           data-nav-colour="#A78BFA"
+           aria-labelledby="engagement-title">
+    <div class="community-shell community-section__layout">
+      <header class="community-section__header">
+        <span class="community-section__number" aria-hidden="true">03</span>
+        <p class="community-eyebrow">Health education and public engagement</p>
+        <h2 id="engagement-title">Health knowledge beyond formal clinical encounters</h2>
+        <p>Public screening and youth education show a broader commitment to prevention, communication and community participation.</p>
+      </header>
+      <div class="community-ledger">
+        {% for event in site.data.community_activities.outreach %}
+          {% include community-event.html event=event index=event_index filter="engagement" category="Public engagement" accent="#A78BFA" icon="fa-solid fa-people-group" open=forloop.first %}
+          {%- assign event_index = event_index | plus: 1 -%}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</main>
 
 {% include footer-v3.html %}

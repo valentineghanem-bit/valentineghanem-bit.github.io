@@ -2067,6 +2067,7 @@ html[data-v2-theme="dim"] .v3-scope .v3-page-canvas {
     margin-top: 12px;
   }
 }
+
 @media (prefers-reduced-motion: reduce) {
   .v3-scope .v3-page-canvas::after { opacity: 0.35; }
 }
@@ -2318,6 +2319,89 @@ html[data-v2-theme="dark"] .filter-chip.is-active, html[data-v2-theme="dim"] .fi
 @media (prefers-reduced-motion: reduce) {
   .v3-scope .event-card { transition: box-shadow 0.18s ease; }
   .lightbox, .lightbox__img { transition: opacity 0.2s ease; }
+}
+
+/* Shared editorial hierarchy. Page compositions may align this system
+   differently, but numeral, kicker, title and descriptor now keep one
+   typographic relationship across Home and every supporting page. */
+.v3-scope {
+  --section-number-size: 8rem;
+  --section-kicker-size: 0.75rem;
+  --section-title-size: 3rem;
+  --section-caption-size: 1rem;
+}
+
+.v3-scope .section__ghost-wrap {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+}
+
+.v3-scope .section__ghost-wrap .section__ghost-num {
+  position: absolute;
+  z-index: -1;
+  top: -42px;
+  left: -18px;
+  color: rgba(100, 116, 139, 0.1);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: var(--section-number-size);
+  font-weight: 700;
+  line-height: 0.85;
+  letter-spacing: 0;
+  user-select: none;
+}
+
+.v3-scope .section__ghost-wrap > h2 {
+  margin: 0 0 14px;
+  font-family: "Fira Code", monospace;
+  font-size: var(--section-kicker-size);
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.v3-scope .section__ghost-wrap > h3 {
+  margin: 0;
+  color: var(--text-main, #0f172a);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: var(--section-title-size);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+html[data-v2-theme="dark"] .v3-scope .section__ghost-wrap > h3,
+html[data-v2-theme="dim"] .v3-scope .section__ghost-wrap > h3 {
+  color: #f8fafc;
+}
+
+.v3-scope .section__ghost-wrap + p {
+  max-width: 72ch;
+  margin-top: 18px;
+  color: #64748b;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: var(--section-caption-size);
+  line-height: 1.7;
+}
+
+html[data-v2-theme="dark"] .v3-scope .section__ghost-wrap + p,
+html[data-v2-theme="dim"] .v3-scope .section__ghost-wrap + p {
+  color: #94a3b8;
+}
+
+@media (max-width: 720px) {
+  .v3-scope {
+    --section-number-size: 5.5rem;
+    --section-title-size: 2.25rem;
+    --section-caption-size: 0.94rem;
+  }
+
+  .v3-scope .section__ghost-wrap .section__ghost-num {
+    top: -26px;
+    left: -8px;
+  }
 }
 
 /* Publications: feed-item reveal + PUB-## record-ID badge -- reads like a
@@ -4011,5 +4095,45 @@ html[data-v2-theme="dim"] .v3-scope .operations-strip small { color: #CBD5E1; }
   .v3-scope .operations-strip > button,
   .v3-scope .site-footer__home-button {
     transition: none;
+  }
+}
+
+/* Final shared editorial cadence. Page structures remain distinct; only the
+   relationship between section numeral, kicker, title and descriptor is fixed. */
+.v3-scope .section__ghost-wrap > h2,
+.v3-scope .home-section-heading h2 {
+  margin: 0 0 14px;
+  font-family: "Fira Code", monospace;
+  font-size: var(--section-kicker-size, 0.75rem);
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.v3-scope .section__ghost-wrap > h3,
+.v3-scope .home-section-heading h3 {
+  margin: 0;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: var(--section-title-size, 3rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.v3-scope .section__ghost-wrap + p,
+.v3-scope .home-section-heading p {
+  max-width: 72ch;
+  margin-top: 18px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: var(--section-caption-size, 1rem);
+  line-height: 1.7;
+}
+
+@media (max-width: 720px) {
+  .v3-scope .section__ghost-wrap > h3,
+  .v3-scope .home-section-heading h3 {
+    font-size: var(--section-title-size, 2.25rem);
   }
 }
