@@ -199,12 +199,15 @@ html[data-v2-theme="dim"] .community-v2 {
 }
 
 .community-hero__metrics dt {
-  color: var(--community-amber);
   font-family: "Space Grotesk", sans-serif;
   font-size: 2rem;
   font-weight: 700;
   line-height: 1;
 }
+
+.community-hero__metrics div:nth-child(1) dt { color: var(--community-amber); }
+.community-hero__metrics div:nth-child(2) dt { color: var(--community-mint); }
+.community-hero__metrics div:nth-child(3) dt { color: var(--community-violet); }
 
 .community-hero__metrics dd {
   margin: 8px 0 0;

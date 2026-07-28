@@ -28,7 +28,7 @@
   ],
   "memberOf": [
     {%- for m in p.memberships -%}
-    { "@type": "Organization", "name": {{ m.name | jsonify }}, "alternateName": {{ m.abbreviation | jsonify }}{% if m.reg_no %}, "identifier": {{ m.reg_no | jsonify }}{% endif %} }{% unless forloop.last %},{% endunless %}
+    { "@type": "Organization", "name": {{ m.name | jsonify }}, "alternateName": {{ m.abbreviation | jsonify }}{% if m.reg_no %}, "identifier": {{ m.reg_no | jsonify }}{% endif %}{% if m.country %}, "address": { "@type": "PostalAddress", "addressCountry": {{ m.country | jsonify }} }{% endif %} }{% unless forloop.last %},{% endunless %}
     {%- endfor -%}
   ],
   "alumniOf": [
@@ -43,7 +43,7 @@
     {%- endfor -%}
     {%- for m in p.memberships -%}
     {%- capture mem_name -%}{{ m.name }}{% if m.role %} ({{ m.role }}){% endif %}{%- endcapture -%}
-    { "@type": "EducationalOccupationalCredential", "name": {{ mem_name | jsonify }}, "credentialCategory": "membership", "recognizedBy": { "@type": "Organization", "name": {{ m.name | jsonify }}, "alternateName": {{ m.abbreviation | jsonify }} }{% if m.reg_no %}, "identifier": {{ m.reg_no | jsonify }}{% endif %} },
+    { "@type": "EducationalOccupationalCredential", "name": {{ mem_name | jsonify }}, "credentialCategory": "membership", "recognizedBy": { "@type": "Organization", "name": {{ m.name | jsonify }}, "alternateName": {{ m.abbreviation | jsonify }}{% if m.country %}, "address": { "@type": "PostalAddress", "addressCountry": {{ m.country | jsonify }} }{% endif %} }{% if m.reg_no %}, "identifier": {{ m.reg_no | jsonify }}{% endif %} },
     {%- endfor -%}
     {%- for l in p.licensure -%}
     { "@type": "EducationalOccupationalCredential", "name": {{ l.credential | jsonify }}, "credentialCategory": "license", "recognizedBy": { "@type": "Organization", "name": {{ l.body | jsonify }}, "alternateName": {{ l.abbreviation | jsonify }} }{% if l.reg_no %}, "identifier": {{ l.reg_no | jsonify }}{% endif %}, "spatialCoverage": { "@type": "Country", "name": {{ l.jurisdiction | jsonify }} } }{% unless forloop.last %},{% endunless %}
@@ -51,7 +51,7 @@
     {%- if p.certifications_in_progress and p.certifications_in_progress.size > 0 -%},{%- endif -%}
     {%- for c in p.certifications_in_progress -%}
     {%- capture prog_name -%}{{ c.name }} - in progress{%- endcapture -%}
-    { "@type": "EducationalOccupationalCredential", "name": {{ prog_name | jsonify }}, "credentialCategory": "certification", "description": {{ c.note | jsonify }} }{% unless forloop.last %},{% endunless %}
+    { "@type": "EducationalOccupationalCredential", "name": {{ prog_name | jsonify }}, "credentialCategory": "certification", "description": {{ c.note | jsonify }}{% if c.body %}, "recognizedBy": { "@type": "Organization", "name": {{ c.body | jsonify }}{% if c.abbreviation %}, "alternateName": {{ c.abbreviation | jsonify }}{% endif %}{% if c.country %}, "address": { "@type": "PostalAddress", "addressCountry": {{ c.country | jsonify }} }{% endif %} }{% endif %} }{% unless forloop.last %},{% endunless %}
     {%- endfor -%}
   ],
   "subjectOf": [

@@ -3,7 +3,6 @@ layout: v3
 permalink: /skills/
 title: "Skills"
 description: "Technical, analytical and leadership skills of Valentine Golden Ghanem across public health, data science and biomedical science."
-extra_js: ["skills-network.js"]
 ---
 {% include nav-v3.html %}
 <section class="v3-page-canvas v3-page-canvas--skills pt-40 pb-24 px-6" data-skills-root data-nav-marker="00" data-nav-label="Skills" data-nav-colour="#22D3EE">
@@ -13,11 +12,6 @@ extra_js: ["skills-network.js"]
     <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mb-10">
       A practice-based inventory of the laboratory, epidemiological, spatial and computational methods used across clinical work and research.
     </p>
-
-    <div class="relative h-72 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden bg-slate-900 mb-10" data-skills-network aria-hidden="true">
-      <canvas class="skills-v2__network-canvas absolute inset-0 w-full h-full"></canvas>
-    </div>
-    <script type="application/json" id="skills-network-data">{{ site.data.profile.knows_about | jsonify }}</script>
 
     <div class="glass-card rounded-2xl border p-5 mb-10 flex flex-wrap items-end gap-5">
       <div class="flex flex-col gap-1.5">
@@ -91,16 +85,6 @@ extra_js: ["skills-network.js"]
     </div>
     {% endfor %}
 
-    <div class="section__ghost-wrap mt-16">
-      <span class="section__ghost-num">04</span>
-      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-2">04</h2>
-      <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">R&eacute;sum&eacute;</h3>
-    </div>
-    <details class="glass-card rounded-2xl border p-6">
-      <summary class="cursor-pointer font-semibold text-slate-700 dark:text-slate-200">View embedded r&eacute;sum&eacute; (PDF)</summary>
-      <iframe src="{{ '/assets/files/valentine-golden-ghanem-resume.pdf' | relative_url }}" title="Valentine Golden Ghanem &mdash; R&eacute;sum&eacute;" loading="lazy" class="w-full h-[600px] mt-4 rounded-xl border border-slate-200 dark:border-slate-700"></iframe>
-    </details>
-    <p class="mt-3"><a href="{{ '/assets/files/valentine-golden-ghanem-resume.pdf' | relative_url }}" target="_blank" rel="noopener" class="text-cyan-500 hover:underline text-sm font-semibold">Open r&eacute;sum&eacute; in a new tab &#8599;</a></p>
   </div>
 </section>
 

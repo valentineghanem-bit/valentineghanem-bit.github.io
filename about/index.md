@@ -9,7 +9,6 @@ extra_js: ["about-fx.js"]
 ---
 {% include nav-v3.html %}
 {%- assign rep_img = site.data.images | where: "representative", true | first -%}
-{%- assign first_domain = site.data.about_expertise | first -%}
 {%- assign first_credential = site.data.profile.credentials | first -%}
 
 <main class="about-v3" id="main-content">
@@ -121,74 +120,11 @@ extra_js: ["about-fx.js"]
     </div>
   </section>
 
-  <section id="practice-matrix" class="about-v3__section about-matrix" aria-labelledby="aboutMatrixTitle" data-nav-marker="02" data-nav-label="Expertise" data-nav-colour="#A78BFA">
+  <section id="professional-verification" class="about-v3__section about-verification" aria-labelledby="aboutVerificationTitle" data-nav-marker="02" data-nav-label="Verified" data-nav-colour="#FBBF24">
     <div class="about-v3__inner">
       <header class="about-v3__section-header reveal">
         <span class="about-v3__ghost" aria-hidden="true">02</span>
-        <p>02 - Expertise</p>
-        <h2 id="aboutMatrixTitle">Multidisciplinary Practice Matrix</h2>
-        <span>Five professional domains, each linked to established methods, documented experience and corresponding outputs.</span>
-      </header>
-
-      <div class="about-matrix__workspace reveal" data-about-matrix>
-        <div class="about-matrix__tabs" role="tablist" aria-label="Professional expertise domains">
-          {% for domain in site.data.about_expertise %}
-          <button type="button"
-                  id="about-domain-{{ domain.id }}"
-                  role="tab"
-                  aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
-                  aria-controls="aboutMatrixInspector"
-                  tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
-                  class="about-matrix__tab{% if forloop.first %} is-active{% endif %}"
-                  style="--domain-colour:{{ domain.colour }}"
-                  data-domain-id="{{ domain.id }}"
-                  data-domain-number="{{ domain.number }}"
-                  data-domain-title="{{ domain.title | escape }}"
-                  data-domain-remit="{{ domain.remit | escape }}"
-                  data-domain-methods="{{ domain.methods | join: '||' | escape }}"
-                  data-domain-evidence="{{ domain.evidence | escape }}"
-                  data-domain-output="{{ domain.output | escape }}">
-            <span>{{ domain.number }}</span>
-            <strong>{{ domain.title }}</strong>
-            <small>{{ domain.short }}</small>
-            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-          </button>
-          {% endfor %}
-        </div>
-
-        <article id="aboutMatrixInspector" class="about-matrix__inspector" role="tabpanel" aria-labelledby="about-domain-{{ first_domain.id }}" style="--domain-colour:{{ first_domain.colour }}">
-          <header>
-            <span data-matrix-number>{{ first_domain.number }}</span>
-            <div>
-              <p>Active practice domain</p>
-              <h3 data-matrix-title>{{ first_domain.title }}</h3>
-            </div>
-          </header>
-          <p class="about-matrix__remit" data-matrix-remit>{{ first_domain.remit }}</p>
-          <div class="about-matrix__methods" data-matrix-methods aria-label="Methods">
-            {% for method in first_domain.methods %}<span>{{ method }}</span>{% endfor %}
-          </div>
-          <div class="about-matrix__evidence">
-            <section>
-              <p>Professional evidence</p>
-              <span data-matrix-evidence>{{ first_domain.evidence }}</span>
-            </section>
-            <section>
-              <p>Practical output</p>
-              <span data-matrix-output>{{ first_domain.output }}</span>
-            </section>
-          </div>
-          <div class="about-matrix__signal" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section id="professional-verification" class="about-v3__section about-verification" aria-labelledby="aboutVerificationTitle" data-nav-marker="03" data-nav-label="Verified" data-nav-colour="#FBBF24">
-    <div class="about-v3__inner">
-      <header class="about-v3__section-header reveal">
-        <span class="about-v3__ghost" aria-hidden="true">03</span>
-        <p>03 - Professional verification</p>
+        <p>02 - Professional verification</p>
         <h2 id="aboutVerificationTitle">Registrations, memberships and researcher identifiers</h2>
         <span>Professional status is presented with the relevant jurisdiction, organisation and reference number. Credentials still in progress are identified separately.</span>
       </header>
@@ -210,6 +146,11 @@ extra_js: ["about-fx.js"]
             <button type="button" data-verify-filter="pending" aria-pressed="false">In progress</button>
             <button type="button" data-verify-filter="identifiers" aria-pressed="false">Identifiers</button>
           </div>
+          <a class="about-verification__archive-link" href="{{ '/certificates/' | relative_url }}">
+            <i class="fa-solid fa-file-shield" aria-hidden="true"></i>
+            <span>Open CPD evidence archive</span>
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </a>
         </aside>
 
         <div class="about-verification__content">
@@ -242,7 +183,10 @@ extra_js: ["about-fx.js"]
               <div>
                 {% for membership in site.data.profile.memberships %}
                 <article class="about-verification__entry home-journey-card" style="--journey-accent: var(--about-mint);">
-                  <p>{{ membership.abbreviation }}</p>
+                  <div class="about-verification__meta">
+                    <p>{{ membership.abbreviation }}</p>
+                    <span><i class="fa-solid fa-location-dot" aria-hidden="true"></i>{{ membership.country }}</span>
+                  </div>
                   <h4>{% if membership.role %}{{ membership.role }}, {% endif %}{{ membership.name }}</h4>
                   {% if membership.note %}<strong>{{ membership.note }}</strong>{% endif %}
                   <code>{{ membership.reg_no }}</code>
@@ -260,8 +204,12 @@ extra_js: ["about-fx.js"]
               <div>
                 {% for pending in site.data.profile.certifications_in_progress %}
                 <article class="about-verification__entry home-journey-card" style="--journey-accent: var(--about-amber);">
-                  <span class="about-verification__state">In progress</span>
+                  <div class="about-verification__meta">
+                    <span class="about-verification__state">In progress</span>
+                    <span><i class="fa-solid fa-location-dot" aria-hidden="true"></i>{{ pending.country }}</span>
+                  </div>
                   <h4>{{ pending.name }}</h4>
+                  {% if pending.body %}<strong>{{ pending.body }}{% if pending.abbreviation %} ({{ pending.abbreviation }}){% endif %}</strong>{% endif %}
                   <strong>{{ pending.note }}</strong>
                 </article>
                 {% endfor %}
@@ -287,11 +235,11 @@ extra_js: ["about-fx.js"]
     </div>
   </section>
 
-  <section id="academic-formation" class="about-v3__section about-education" aria-labelledby="aboutEducationTitle" data-nav-marker="04" data-nav-label="Education" data-nav-colour="#F87171">
+  <section id="academic-formation" class="about-v3__section about-education" aria-labelledby="aboutEducationTitle" data-nav-marker="03" data-nav-label="Education" data-nav-colour="#F87171">
     <div class="about-v3__inner">
       <header class="about-v3__section-header reveal">
-        <span class="about-v3__ghost" aria-hidden="true">04</span>
-        <p>04 - Academic formation</p>
+        <span class="about-v3__ghost" aria-hidden="true">03</span>
+        <p>03 - Academic formation</p>
         <h2 id="aboutEducationTitle">Academic formation across biomedical science, public health, data science and law</h2>
         <span>Completed and current degree programmes are identified separately, with the principal academic focus stated for each record.</span>
       </header>
@@ -346,11 +294,11 @@ extra_js: ["about-fx.js"]
     </div>
   </section>
 
-  <section id="career-record" class="about-v3__section about-record" aria-labelledby="aboutRecordTitle" data-nav-marker="05" data-nav-label="Career" data-nav-colour="#22D3EE">
+  <section id="career-record" class="about-v3__section about-record" aria-labelledby="aboutRecordTitle" data-nav-marker="04" data-nav-label="Career" data-nav-colour="#22D3EE">
     <div class="about-v3__inner">
       <header class="about-v3__section-header reveal">
-        <span class="about-v3__ghost" aria-hidden="true">05</span>
-        <p>05 - Career record</p>
+        <span class="about-v3__ghost" aria-hidden="true">04</span>
+        <p>04 - Career record</p>
         <h2 id="aboutRecordTitle">Clinical appointments and public health fieldwork</h2>
         <span>A chronological record of laboratory leadership, diagnostic practice and community screening in Ghana.</span>
       </header>

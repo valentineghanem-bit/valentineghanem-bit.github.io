@@ -39,13 +39,15 @@ extra_js: ["press-fx.js"]
       {% endfor %}
     </ul>
 
-    <h2 class="text-xs font-black uppercase tracking-[0.4em] text-amber-500 mb-2">Verified profiles</h2>
-    <p class="text-sm text-slate-600 dark:text-slate-300 mb-5">Independent identity and research records are available through the following profiles:</p>
-    <div class="link-row flex flex-wrap gap-2.5">
-      <a href="https://www.wikidata.org/wiki/Q137962236" target="_blank" rel="noopener" class="px-4 py-2 rounded-full border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:border-amber-500 hover:text-amber-500 transition-colors">Wikidata</a>
-      <a href="https://isni.org/isni/000000052967791X" target="_blank" rel="noopener" class="px-4 py-2 rounded-full border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:border-amber-500 hover:text-amber-500 transition-colors">ISNI</a>
-      <a href="https://commons.wikimedia.org/wiki/Category:Valentine_Golden_Ghanem" target="_blank" rel="noopener" class="px-4 py-2 rounded-full border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:border-amber-500 hover:text-amber-500 transition-colors">Wikimedia Commons</a>
-    </div>
+    <aside class="glass-card rounded-xl border p-5 flex flex-wrap items-center justify-between gap-4">
+      <div>
+        <p class="font-mono text-[0.65rem] uppercase text-amber-500 mb-1">Identity records</p>
+        <p class="text-sm text-slate-600 dark:text-slate-300">Researcher identifiers and professional registrations are maintained on the About page.</p>
+      </div>
+      <a href="{{ '/about/#professional-verification' | relative_url }}" class="min-h-[44px] inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:border-amber-500 hover:text-amber-500 transition-colors">
+        View verified record <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    </aside>
   </div>
 </section>
 

@@ -1478,8 +1478,8 @@ html[data-v2-theme="dim"] .v3-scope .about-profile-hero__summary { color: #cbd5e
   .v3-scope .about-matrix__inspector.is-switching { animation: none; }
 }
 
-/* Home 01 coherence layer for About 03-04. The spectral surface, ruled
-   texture, evidence rail and interactive selection states intentionally
+/* Home 01 coherence layer for About 03-04. The spectral surface,
+   evidence rail and interactive selection states intentionally
    echo the Home identity instrument while preserving About-specific data. */
 .v3-scope .about-home-panel {
   position: relative;
@@ -1492,7 +1492,6 @@ html[data-v2-theme="dim"] .v3-scope .about-profile-hero__summary { color: #cbd5e
   border-radius: 8px;
   background:
     linear-gradient(120deg, rgba(34, 211, 238, 0.09), transparent 30%, transparent 68%, rgba(167, 139, 250, 0.1)),
-    repeating-linear-gradient(90deg, rgba(15, 23, 42, 0.025) 0 1px, transparent 1px 24px),
     color-mix(in srgb, var(--card-bg) 74%, transparent);
   box-shadow: 0 22px 50px -38px rgba(15, 23, 42, 0.46);
 }
@@ -1501,8 +1500,73 @@ html[data-v2-theme="dark"] .v3-scope .about-home-panel,
 html[data-v2-theme="dim"] .v3-scope .about-home-panel {
   background:
     linear-gradient(120deg, rgba(34, 211, 238, 0.1), transparent 30%, transparent 68%, rgba(167, 139, 250, 0.1)),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 24px),
     rgba(15, 23, 42, 0.74);
+}
+
+.v3-scope .about-verification__meta {
+  min-height: 28px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.v3-scope .about-verification__meta > p {
+  margin: 4px 0 0;
+  color: var(--verify-colour);
+  font-family: "Fira Code", monospace;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.v3-scope .about-verification__meta > span:not(.about-verification__state) {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--about-muted);
+  font-family: "Fira Code", monospace;
+  font-size: 0.57rem;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: right;
+}
+
+.v3-scope .about-verification__meta > span i {
+  color: var(--verify-colour);
+}
+
+.v3-scope .about-verification__meta + h4 {
+  margin-top: 14px;
+}
+
+.v3-scope .about-verification__archive-link {
+  min-height: 46px;
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) 16px;
+  gap: 10px;
+  align-items: center;
+  margin-top: 18px;
+  padding: 10px 12px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 6px;
+  color: var(--text-main);
+  background: color-mix(in srgb, var(--about-amber) 7%, transparent);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.v3-scope .about-verification__archive-link i {
+  color: var(--about-amber);
+}
+
+.v3-scope .about-verification__archive-link:hover,
+.v3-scope .about-verification__archive-link:focus-visible {
+  border-color: var(--about-amber);
+  background: color-mix(in srgb, var(--about-amber) 13%, transparent);
+  transform: translateY(-1px);
 }
 
 .v3-scope .about-home-panel::before {

@@ -134,8 +134,8 @@
         {% for c in site.data.profile.credentials %}{% if c.category == "degree" %}<p>&bull; <strong>{{ c.name }}</strong> &mdash; {{ c.institution }}{% if c.note %}, {{ c.note }}{% endif %}</p>{% endif %}{% endfor %}
       </div>
       <div>
-        <h4 class="font-bold text-white text-sm mb-2 border-l-2 border-amber-500 pl-2">Key Licensures &amp; Fellowships</h4>
-        {% for m in site.data.profile.memberships %}<p>&bull; {{ m.name }}{% if m.role %} ({{ m.role }}){% endif %} &mdash; {{ m.abbreviation }} {{ m.reg_no }}</p>{% endfor %}
+        <h4 class="font-bold text-white text-sm mb-2 border-l-2 border-amber-500 pl-2">Registrations and professional memberships</h4>
+        {% for m in site.data.profile.memberships %}<p>&bull; {{ m.name }}{% if m.role %} ({{ m.role }}){% endif %} &mdash; {{ m.country }} &middot; {{ m.abbreviation }} {{ m.reg_no }}</p>{% endfor %}
       </div>
     </div>
     <div class="mt-8 pt-6 border-t border-slate-800 flex justify-between items-center">
