@@ -28,6 +28,12 @@ extra_js: ["portfolio-fx.js"]
            data-nav-label="Systems"
            data-nav-colour="#FBBF24"
            aria-labelledby="portfolioHeroTitle">
+    <img class="portfolio-hero__background"
+         src="{{ '/assets/img/gallery/portraits/cocoa-clinic-locations-map.jpg' | relative_url }}"
+         alt="Valentine Golden Ghanem at a desk with public health policy and health systems research books"
+         width="1536"
+         height="1024"
+         fetchpriority="high">
     <div class="portfolio-v3__inner portfolio-hero__inner">
       <div class="portfolio-hero__copy">
         <p class="portfolio-v3__breadcrumb"><a href="{{ '/' | relative_url }}">Home</a> / Portfolio</p>

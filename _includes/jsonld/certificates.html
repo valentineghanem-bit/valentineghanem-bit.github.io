@@ -1,0 +1,59 @@
+{%- assign cpd_count = 0 -%}
+{%- for year_group in site.data.cpd -%}
+  {%- assign cpd_count = cpd_count | plus: year_group.entries.size -%}
+{%- endfor -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "{{ page.url | absolute_url }}#webpage",
+      "url": {{ page.url | absolute_url | jsonify }},
+      "name": "Continuing professional development archive of Valentine Golden Ghanem",
+      "description": {{ page.description | strip_newlines | jsonify }},
+      "isPartOf": { "@id": "{{ site.url }}/#website" },
+      "about": { "@id": "{{ site.url }}/#person" },
+      "mainEntity": { "@id": "{{ page.url | absolute_url }}#cpd-list" },
+      "inLanguage": "en"
+    },
+    {
+      "@type": "ItemList",
+      "@id": "{{ page.url | absolute_url }}#cpd-list",
+      "name": "Continuing professional development records of Valentine Golden Ghanem",
+      "numberOfItems": {{ cpd_count }},
+      "itemListOrder": "https://schema.org/ItemListOrderDescending",
+      "itemListElement": [
+        {%- assign record_position = 0 -%}
+        {%- for year_group in site.data.cpd -%}
+          {%- for record in year_group.entries -%}
+            {%- assign record_position = record_position | plus: 1 -%}
+        {
+          "@type": "ListItem",
+          "position": {{ record_position }},
+          "item": {
+            "@type": "EducationalOccupationalCredential",
+            "@id": "{% if record.certificate_url %}{{ record.certificate_url | absolute_url }}#credential{% else %}{{ page.url | absolute_url }}#cpd-{{ year_group.year }}-{{ forloop.index }}{% endif %}",
+            "name": {{ record.title | jsonify }},
+            "description": {{ record.topics | default: record.provider | jsonify }},
+            "credentialCategory": "Continuing professional development record",
+            "dateCreated": {{ year_group.year | append: "" | jsonify }},
+            "recognizedBy": {
+              "@type": "Organization",
+              "name": {{ record.issuing_body | jsonify }}
+            },
+            "about": { "@id": "{{ site.url }}/#person" },
+            "educationalLevel": "Continuing professional development",
+            "learningResourceType": {{ record.delivery_mode | jsonify }}{% if record.certificate_url %},
+            "url": {{ record.certificate_url | absolute_url | jsonify }}{% endif %}
+          }
+        }{% unless record_position == cpd_count %},{% endunless %}
+          {%- endfor -%}
+        {%- endfor -%}
+      ]
+    },
+    {% include jsonld/person-node.html %},
+    {% include jsonld/organization-node.html %}
+  ]
+}
+</script>
