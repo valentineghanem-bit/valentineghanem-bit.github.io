@@ -39,7 +39,7 @@
     "Biomedical Science": {
       accent: "#F87171",
       title: "Biomedical-science",
-      summary: "Clinical diagnostic practice, laboratory quality systems, instrument verification and evidence-led service coordination.",
+      summary: "Cross-disciplinary diagnostic practice spanning clinical chemistry, haematology, immunoassay, microscopy, bacteriology, molecular diagnostics, histopathology and laboratory quality systems.",
       route: "/about/#career-record",
       routeLabel: "Review clinical-practice record"
     }
@@ -198,12 +198,13 @@
   var categoryButtons = Array.prototype.slice.call(
     root.querySelectorAll(".skills-registry__filters [data-registry-category]")
   );
+  var laboratoryGroup = root.querySelector("#skillsLaboratoryGroup");
   var registrySearch = root.querySelector("#skillsRegistrySearch");
   var registryReset = root.querySelector("[data-registry-reset]");
   var registryStatus = root.querySelector("[data-registry-status]");
   var registryEmpty = root.querySelector("[data-registry-empty]");
   var registryInspector = root.querySelector(".skills-registry__inspector");
-  var registryState = { rail: "all", category: "all", query: "" };
+  var registryState = { rail: "all", category: "all", group: "all", query: "" };
 
   var registryRoutes = {
     code: { url: "/portfolio/", label: "Inspect related project evidence" },
@@ -227,7 +228,7 @@
     text(registryInspector.querySelector("[data-registry-inspector-name]"), item.dataset.registryName);
     text(
       registryInspector.querySelector("[data-registry-inspector-category]"),
-      item.dataset.registryCategory.replace("-", " ") + " / " + (item.dataset.registryRail === "tools" ? "tool or platform" : "method or system")
+      item.dataset.registryGroup + " / " + item.dataset.registryScope
     );
     text(registryInspector.querySelector("[data-registry-inspector-detail]"), item.dataset.registryDetail);
 
@@ -245,9 +246,15 @@
     var visibleItems = registryItems.filter(function (item) {
       var railMatch = registryState.rail === "all" || item.dataset.registryRail === registryState.rail;
       var categoryMatch = registryState.category === "all" || item.dataset.registryCategory === registryState.category;
-      var textValue = (item.dataset.registryName + " " + item.dataset.registryDetail).toLowerCase();
+      var groupMatch = registryState.group === "all" || item.dataset.registryGroup === registryState.group;
+      var textValue = (
+        item.dataset.registryName + " " +
+        item.dataset.registryDetail + " " +
+        item.dataset.registryGroup + " " +
+        item.dataset.registryScope
+      ).toLowerCase();
       var queryMatch = !query || textValue.indexOf(query) !== -1;
-      var visible = railMatch && categoryMatch && queryMatch;
+      var visible = railMatch && categoryMatch && groupMatch && queryMatch;
       item.hidden = !visible;
       return visible;
     });
@@ -275,12 +282,29 @@
   categoryButtons.forEach(function (button) {
     button.addEventListener("click", function () {
       registryState.category = button.dataset.registryCategory;
+      if (registryState.category !== "laboratory") {
+        registryState.group = "all";
+        if (laboratoryGroup) laboratoryGroup.value = "all";
+      }
       categoryButtons.forEach(function (candidate) {
         candidate.setAttribute("aria-pressed", candidate === button ? "true" : "false");
       });
       applyRegistryFilters();
     });
   });
+
+  if (laboratoryGroup) {
+    laboratoryGroup.addEventListener("change", function () {
+      registryState.group = laboratoryGroup.value;
+      if (registryState.group !== "all") {
+        registryState.category = "laboratory";
+        categoryButtons.forEach(function (button) {
+          button.setAttribute("aria-pressed", button.dataset.registryCategory === "laboratory" ? "true" : "false");
+        });
+      }
+      applyRegistryFilters();
+    });
+  }
 
   if (registrySearch) {
     registrySearch.addEventListener("input", function () {
@@ -291,11 +315,12 @@
 
   if (registryReset) {
     registryReset.addEventListener("click", function () {
-      registryState = { rail: "all", category: "all", query: "" };
+      registryState = { rail: "all", category: "all", group: "all", query: "" };
       if (registrySearch) {
         registrySearch.value = "";
         registrySearch.focus();
       }
+      if (laboratoryGroup) laboratoryGroup.value = "all";
       railButtons.forEach(function (button) {
         button.setAttribute("aria-pressed", button.dataset.registryRail === "all" ? "true" : "false");
       });

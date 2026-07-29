@@ -2,7 +2,7 @@
 layout: v3
 permalink: /skills/
 title: "Skills, Methods and Technical Practice"
-description: "Applied public-health, data-science and biomedical-science skills of Valentine Golden Ghanem, supported by documented methods, platforms and professional evidence."
+description: "Applied public-health, data-science and cross-disciplinary medical-laboratory practice of Valentine Golden Ghanem, supported by documented methods, platforms and professional evidence."
 jsonld: skills
 extra_css: ["skills-v2.css"]
 extra_js: ["skills-v4.js"]
@@ -33,10 +33,10 @@ extra_js: ["skills-v4.js"]
         <p class="skills-v4__eyebrow">Applied practice / evidence / methods</p>
         <h1 id="skillsHeroTitle">Skills, methods and <span>technical practice.</span></h1>
         <p class="skills-hero__lede">
-          Valentine Golden Ghanem works across clinical laboratory science,
+          Valentine Golden Ghanem works across medical laboratory science,
           public-health epidemiology and reproducible data analysis. This record
-          documents the methods used, the professional setting in which they are
-          applied and the evidence routes that support them.
+          covers routine and specialist laboratory workflows, analytical methods,
+          professional applications and the evidence routes that support them.
         </p>
         <div class="skills-hero__actions">
           <a href="#practice-architecture">
@@ -74,7 +74,7 @@ extra_js: ["skills-v4.js"]
           </button>
           <button type="button" data-hero-domain="Biomedical Science" style="--domain-accent:#F87171">
             <span class="skills-hero__lane-mark"><i class="fa-solid fa-flask-vial" aria-hidden="true"></i></span>
-            <span><strong>Biomedical Science</strong><small>Diagnostics, quality systems and laboratory leadership</small></span>
+            <span><strong>Biomedical Science</strong><small>Chemistry, haematology, immunoassay, microscopy, microbiology and quality systems</small></span>
             <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
           </button>
         </div>
@@ -202,7 +202,7 @@ extra_js: ["skills-v4.js"]
           <label for="skillsRegistrySearch">Search the registry</label>
           <div>
             <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-            <input type="search" id="skillsRegistrySearch" placeholder="Search Python, Moran's I, GeneXpert..." autocomplete="off">
+            <input type="search" id="skillsRegistrySearch" placeholder="Search Python, microscopy, immunoassay..." autocomplete="off">
             <button type="button" data-registry-reset aria-label="Clear registry search" title="Clear search">
               <i class="fa-solid fa-xmark" aria-hidden="true"></i>
             </button>
@@ -219,10 +219,27 @@ extra_js: ["skills-v4.js"]
           <button type="button" data-registry-category="spatial" aria-pressed="false">Spatial</button>
           <button type="button" data-registry-category="modelling" aria-pressed="false">Models</button>
           <button type="button" data-registry-category="public-health" aria-pressed="false">Epidemiology</button>
-          <button type="button" data-registry-category="laboratory" aria-pressed="false">Laboratory</button>
+          <button type="button" data-registry-category="laboratory" aria-pressed="false">Laboratory disciplines</button>
+        </div>
+        {% assign laboratory_items = site.data.technical_stack | where: "category", "laboratory" %}
+        {% assign laboratory_groups = laboratory_items | group_by: "group" | sort: "name" %}
+        <div class="skills-registry__discipline">
+          <label for="skillsLaboratoryGroup">Laboratory discipline</label>
+          <select id="skillsLaboratoryGroup">
+            <option value="all">All laboratory disciplines</option>
+            {% for group in laboratory_groups %}
+              {% if group.name != "" %}<option value="{{ group.name | escape }}">{{ group.name }}</option>{% endif %}
+            {% endfor %}
+          </select>
         </div>
         <p class="skills-registry__status" data-registry-status aria-live="polite">{{ site.data.technical_stack.size }} records shown</p>
       </div>
+
+      <p class="skills-registry__disclosure">
+        Laboratory records distinguish applied platform practice, documented
+        operational methods, quality leadership, and academic or continuing
+        professional development foundations. Inventory counts are not proficiency scores.
+      </p>
 
       <div class="skills-registry__workspace">
         <div class="skills-registry__list" data-registry-list>
@@ -234,11 +251,13 @@ extra_js: ["skills-v4.js"]
                   data-registry-detail="{{ item.detail | escape }}"
                   data-registry-category="{{ item.category }}"
                   data-registry-rail="{{ item.rail }}"
+                  data-registry-group="{{ item.group | default: item.category | escape }}"
+                  data-registry-scope="{{ item.scope | default: item.rail | escape }}"
                   aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">
             <span class="skills-registry__mark" aria-hidden="true">
               {% if item.icon %}<i class="{{ item.icon }}"></i>{% else %}{{ item.mark }}{% endif %}
             </span>
-            <span><strong>{{ item.name }}</strong><small>{{ item.category | replace: "-", " " }}</small></span>
+            <span><strong>{{ item.name }}</strong><small>{{ item.group | default: item.category | replace: "-", " " }}</small></span>
             <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
           </button>
           {% endfor %}
@@ -256,6 +275,24 @@ extra_js: ["skills-v4.js"]
         </aside>
       </div>
       <p class="skills-registry__empty" data-registry-empty hidden>No registry records match the current search and filters.</p>
+
+      <aside class="skills-registry__standards" aria-labelledby="skillsStandardsTitle">
+        <div>
+          <p>Standards basis</p>
+          <h3 id="skillsStandardsTitle">Laboratory practice is organised by the complete path of workflow.</h3>
+        </div>
+        <p>
+          The registry follows the pre-examination, examination and post-examination
+          sequence used in laboratory quality management. Microscopy records include
+          specimen preparation, optical examination, morphology, reporting and quality
+          control rather than treating microscopy as one isolated technique.
+        </p>
+        <nav aria-label="Laboratory practice references">
+          <a href="https://www.who.int/publications/i/item/9789241548274" rel="noopener noreferrer">WHO laboratory quality handbook</a>
+          <a href="https://clsi.org/resources/insights-blog/implementing-a-quality-management-system-in-the-laboratory/" rel="noopener noreferrer">CLSI quality-system essentials</a>
+          <a href="https://www.cdc.gov/lab-quality/php/ppmp/index.html" rel="noopener noreferrer">CDC microscopy guidance</a>
+        </nav>
+      </aside>
     </div>
   </section>
 

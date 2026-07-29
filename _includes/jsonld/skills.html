@@ -26,7 +26,19 @@
           "name": {{ item.name | jsonify }},
           "description": {{ item.detail | jsonify }},
           "termCode": {{ item.category | jsonify }},
-          "inDefinedTermSet": { "@id": "{{ page.url | absolute_url }}#methods" }
+          "inDefinedTermSet": { "@id": "{{ page.url | absolute_url }}#methods" }{% if item.group or item.scope %},
+          "additionalProperty": [
+            {% if item.group %}{
+              "@type": "PropertyValue",
+              "name": "Discipline",
+              "value": {{ item.group | jsonify }}
+            }{% if item.scope %},{% endif %}{% endif %}
+            {% if item.scope %}{
+              "@type": "PropertyValue",
+              "name": "Evidence scope",
+              "value": {{ item.scope | jsonify }}
+            }{% endif %}
+          ]{% endif %}
         }{% unless forloop.last %},{% endunless %}
         {%- endfor -%}
       ]
