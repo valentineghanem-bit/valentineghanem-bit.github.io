@@ -1,0 +1,72 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "{{ page.url | absolute_url }}#webpage",
+      "url": {{ page.url | absolute_url | jsonify }},
+      "name": "Press and media coverage of Valentine Golden Ghanem",
+      "description": {{ page.description | strip_newlines | jsonify }},
+      "isPartOf": { "@id": "{{ site.url }}/#website" },
+      "about": { "@id": "{{ site.url }}/#person" },
+      "primaryImageOfPage": { "@id": "{{ page.url | absolute_url }}#hero-image" },
+      "mainEntity": { "@id": "{{ page.url | absolute_url }}#press-list" },
+      "inLanguage": "en"
+    },
+    {
+      "@type": "ImageObject",
+      "@id": "{{ page.url | absolute_url }}#hero-image",
+      "contentUrl": "{{ '/assets/img/gallery/portraits/studio-tuxedo-portrait.jpg' | absolute_url }}",
+      "url": "{{ '/assets/img/gallery/portraits/studio-tuxedo-portrait.jpg' | absolute_url }}",
+      "caption": "Valentine Golden Ghanem at an event venue",
+      "description": "Portrait of Valentine Golden Ghanem at an event venue.",
+      "width": 1086,
+      "height": 1448,
+      "representativeOfPage": true,
+      "creditText": "Valentine Golden Ghanem",
+      "copyrightHolder": { "@id": "{{ site.url }}/#person" }
+    },
+    {
+      "@type": "ItemList",
+      "@id": "{{ page.url | absolute_url }}#press-list",
+      "name": "Publisher records concerning Valentine Golden Ghanem",
+      "numberOfItems": {{ site.data.press.size }},
+      "itemListOrder": "https://schema.org/ItemListOrderDescending",
+      "itemListElement": [
+        {%- for article in site.data.press -%}
+        {
+          "@type": "ListItem",
+          "position": {{ forloop.index }},
+          "item": { "@id": {{ article.url | append: "#article" | jsonify }} }
+        }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    },
+    {%- for article in site.data.press %}
+    {
+      "@type": "NewsArticle",
+      "@id": {{ article.url | append: "#article" | jsonify }},
+      "url": {{ article.url | jsonify }},
+      "mainEntityOfPage": {{ article.url | jsonify }},
+      "headline": {{ article.headline | jsonify }},
+      "description": {{ article.summary | jsonify }},
+      "datePublished": {{ article.date_iso | jsonify }},
+      "articleSection": {{ article.type | jsonify }},
+      "keywords": [{{ article.subject | jsonify }}, "Valentine Golden Ghanem"],
+      "about": { "@id": "{{ site.url }}/#person" },
+      "publisher": {
+        "@type": "Organization",
+        "name": {{ article.outlet | jsonify }}
+      }{% if article.byline %},
+      "author": {
+        "@type": "Person",
+        "name": {{ article.byline | jsonify }}
+      }{% endif %}
+    }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%},
+    {% include jsonld/person-node.html %},
+    {% include jsonld/organization-node.html %}
+  ]
+}
+</script>

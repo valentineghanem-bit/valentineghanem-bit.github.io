@@ -44,6 +44,14 @@ permalink: /image-sitemap.xml
     {%- endfor %}
   </url>
   <url>
+    <loc>{{ '/press/' | absolute_url | xml_escape }}</loc>
+    <image:image>
+      <image:loc>{{ '/assets/img/gallery/portraits/studio-tuxedo-portrait.jpg' | absolute_url | replace: " ", "%20" | xml_escape }}</image:loc>
+      <image:title>Valentine Golden Ghanem at an event venue</image:title>
+      <image:caption>Portrait of Valentine Golden Ghanem at an event venue.</image:caption>
+    </image:image>
+  </url>
+  <url>
     <loc>{{ '/gallery/' | absolute_url | xml_escape }}</loc>
     {%- for photo in site.data.gallery_portraits %}
     <image:image>
