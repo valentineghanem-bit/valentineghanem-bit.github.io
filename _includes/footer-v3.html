@@ -1,4 +1,5 @@
 <footer id="contact" class="bg-slate-900 text-white relative overflow-hidden">
+  {% unless page.url == "/skills/" %}
   <section id="methods-toolchain" class="technical-stack" data-technical-stack aria-labelledby="technicalStackTitle">
     <div class="technical-stack__header">
       <div>
@@ -56,6 +57,7 @@
       <span data-stack-inspector-detail>Disease modelling, spatial analysis, reproducible pipelines and dashboard engineering.</span>
     </div>
   </section>
+  {% endunless %}
   <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center py-14 px-6">
     <div class="reveal">
       <h2 class="text-4xl sm:text-5xl font-black font-heading mb-5 leading-tight">

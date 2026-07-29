@@ -25,7 +25,7 @@ extra_js: ["portfolio-fx.js"]
     <div data-portfolio-section="capstone">
       <div class="section__ghost-wrap">
         <span class="section__ghost-num">01</span>
-        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-2">01</h2>
+        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-2">01 - Capstone practice</h2>
         <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">Capstone projects</h3>
       </div>
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-16">
@@ -45,7 +45,7 @@ extra_js: ["portfolio-fx.js"]
     <div data-portfolio-section="dataviz">
       <div class="section__ghost-wrap">
         <span class="section__ghost-num">02</span>
-        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-2">02</h2>
+        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-2">02 - Data visualisation</h2>
         <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">Data visualisations</h3>
       </div>
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-16">
@@ -65,7 +65,7 @@ extra_js: ["portfolio-fx.js"]
     <div data-portfolio-section="research">
       <div class="section__ghost-wrap">
         <span class="section__ghost-num">03</span>
-        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-amber-500 mb-2">03</h2>
+        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-amber-500 mb-2">03 - Research systems</h2>
         <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">Research projects</h3>
       </div>
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">

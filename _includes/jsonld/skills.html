@@ -1,0 +1,38 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "{{ page.url | absolute_url }}#webpage",
+      "url": {{ page.url | absolute_url | jsonify }},
+      "name": "Skills, methods and technical practice of Valentine Golden Ghanem",
+      "description": {{ page.description | strip_newlines | jsonify }},
+      "isPartOf": { "@id": "{{ site.url }}/#website" },
+      "about": { "@id": "{{ site.url }}/#person" },
+      "mainEntity": { "@id": "{{ page.url | absolute_url }}#methods" },
+      "inLanguage": "en"
+    },
+    {
+      "@type": "DefinedTermSet",
+      "@id": "{{ page.url | absolute_url }}#methods",
+      "name": "Applied methods, platforms and laboratory systems used by Valentine Golden Ghanem",
+      "url": {{ page.url | absolute_url | jsonify }},
+      "hasDefinedTerm": [
+        {%- for item in site.data.technical_stack -%}
+        {
+          "@type": "DefinedTerm",
+          "@id": "{{ page.url | absolute_url }}#method-{{ item.name | slugify }}",
+          "name": {{ item.name | jsonify }},
+          "description": {{ item.detail | jsonify }},
+          "termCode": {{ item.category | jsonify }},
+          "inDefinedTermSet": { "@id": "{{ page.url | absolute_url }}#methods" }
+        }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    },
+    {% include jsonld/person-node.html %},
+    {% include jsonld/organization-node.html %}
+  ]
+}
+</script>

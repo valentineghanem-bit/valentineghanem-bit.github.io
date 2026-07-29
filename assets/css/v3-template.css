@@ -4108,3 +4108,89 @@ html[data-v2-theme="dim"] .v3-scope .operations-strip small { color: #CBD5E1; }
     font-size: var(--section-title-size, 2.25rem);
   }
 }
+
+/* Canonical numbered-section heading. This is the site-wide editorial
+   relationship established on About: ghost numeral, descriptive kicker,
+   title and concise descriptor. Page layouts remain otherwise independent. */
+.v3-scope .section__ghost-wrap {
+  position: relative;
+  isolation: isolate;
+  min-height: 170px;
+  padding: 30px 0 0 74px;
+  text-align: left;
+}
+
+.v3-scope .section__ghost-wrap .section__ghost-num {
+  position: absolute;
+  z-index: 0;
+  top: -26px;
+  left: 0;
+  transform: none;
+  color: rgba(100, 116, 139, 0.1);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: var(--section-number-size, 8rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0;
+  opacity: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.v3-scope .section__ghost-wrap > *:not(.section__ghost-num) {
+  position: relative;
+  z-index: 1;
+}
+
+.v3-scope .section__ghost-wrap > h2 {
+  margin: 0 0 14px;
+}
+
+.v3-scope .section__ghost-wrap > h3 {
+  max-width: 22ch;
+}
+
+.v3-scope .section__ghost-wrap + p {
+  max-width: 72ch;
+  margin-top: -42px;
+  padding-left: 74px;
+  text-align: left;
+}
+
+.v3-scope #about > div > .reveal:first-child,
+.v3-scope .home-expertise-section__header,
+.v3-scope .district-intelligence-section > div > .reveal:first-child {
+  max-width: 1040px;
+  margin-right: 0;
+  margin-left: 0;
+  text-align: left;
+}
+
+.v3-scope #research .section__ghost-wrap > h3 {
+  color: #f8fafc;
+}
+
+html[data-v2-theme="dark"] .v3-scope .section__ghost-wrap .section__ghost-num,
+html[data-v2-theme="dim"] .v3-scope .section__ghost-wrap .section__ghost-num,
+.v3-scope #research .section__ghost-wrap .section__ghost-num {
+  color: rgba(203, 213, 225, 0.12);
+  opacity: 1;
+}
+
+@media (max-width: 720px) {
+  .v3-scope .section__ghost-wrap {
+    min-height: 132px;
+    padding: 24px 0 0 38px;
+  }
+
+  .v3-scope .section__ghost-wrap .section__ghost-num {
+    top: -14px;
+    left: 0;
+    font-size: var(--section-number-size, 5.5rem);
+  }
+
+  .v3-scope .section__ghost-wrap + p {
+    margin-top: -24px;
+    padding-left: 38px;
+  }
+}

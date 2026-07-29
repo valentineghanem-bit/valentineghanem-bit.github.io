@@ -41,7 +41,7 @@ extra_js: ["publications-fx.js"]
 
     <div class="section__ghost-wrap">
       <span class="section__ghost-num">01</span>
-      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-2">01</h2>
+      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-2">01 - Scholarly record</h2>
       <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">Publications, preprints and research records</h3>
     </div>
     <p class="filter-empty hidden text-center py-10 text-slate-400 font-mono text-sm">No publications match that search.</p>
@@ -65,7 +65,7 @@ extra_js: ["publications-fx.js"]
 
     <div class="section__ghost-wrap">
       <span class="section__ghost-num">02</span>
-      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-2">02</h2>
+      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-2">02 - Academic service</h2>
       <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">Academic positions</h3>
     </div>
     <ul class="grid gap-5 mb-20 list-none p-0">
@@ -83,7 +83,7 @@ extra_js: ["publications-fx.js"]
 
     <div class="section__ghost-wrap">
       <span class="section__ghost-num">03</span>
-      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-amber-500 mb-2">03</h2>
+      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-amber-500 mb-2">03 - Research profiles</h2>
       <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">Browse the full record</h3>
     </div>
     <div class="link-row flex flex-wrap gap-2.5">

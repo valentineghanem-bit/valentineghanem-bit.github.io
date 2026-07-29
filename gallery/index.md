@@ -47,7 +47,7 @@ extra_js: ["gallery-morph.js", "fan-carousel.js"]
 
     <div class="section__ghost-wrap">
       <span class="section__ghost-num">01</span>
-      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-2">01</h2>
+      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-2">01 - Professional portraits</h2>
       <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">Portraits &amp; professional photography</h3>
     </div>
     <div class="fan-carousel" data-autoplay="5500">
@@ -70,7 +70,7 @@ extra_js: ["gallery-morph.js", "fan-carousel.js"]
 
     <div class="section__ghost-wrap mt-10">
       <span class="section__ghost-num">02</span>
-      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-2">02</h2>
+      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-2">02 - Field record</h2>
       <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">Community &amp; field work</h3>
     </div>
     <div class="fan-carousel" data-autoplay="6000">

@@ -1,91 +1,276 @@
 ---
 layout: v3
 permalink: /skills/
-title: "Skills"
-description: "Technical, analytical and leadership skills of Valentine Golden Ghanem across public health, data science and biomedical science."
+title: "Skills, Methods and Technical Practice"
+description: "Applied public-health, data-science and biomedical-science skills of Valentine Golden Ghanem, supported by documented methods, platforms and professional evidence."
+jsonld: skills
+extra_css: ["skills-v2.css"]
+extra_js: ["skills-v4.js"]
 ---
 {% include nav-v3.html %}
-<section class="v3-page-canvas v3-page-canvas--skills pt-40 pb-24 px-6" data-skills-root data-nav-marker="00" data-nav-label="Skills" data-nav-colour="#22D3EE">
-  <div class="max-w-[1800px] mx-auto">
-    <p class="font-mono text-xs text-slate-400 mb-6"><a href="{{ '/' | relative_url }}" class="hover:text-cyan-500">Home</a> / Skills</p>
-    <h1 class="text-4xl sm:text-5xl md:text-6xl font-black font-heading tracking-tight text-slate-900 dark:text-white mb-5">Skills &amp; toolkit</h1>
-    <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mb-10">
-      A practice-based inventory of the laboratory, epidemiological, spatial and computational methods used across clinical work and research.
-    </p>
+{%- assign practice_count = 0 -%}
+{%- for section in site.data.skills -%}
+  {%- for group in section.groups -%}
+    {%- assign practice_count = practice_count | plus: group.items.size -%}
+  {%- endfor -%}
+{%- endfor -%}
 
-    <div class="glass-card rounded-2xl border p-5 mb-10 flex flex-wrap items-end gap-5">
-      <div class="flex flex-col gap-1.5">
-        <label for="skills-category" class="text-[11px] font-mono uppercase tracking-wide text-slate-400">Category</label>
-        <select id="skills-category" class="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-slate-700 dark:text-slate-200 focus:outline-none focus:border-cyan-500">
-          <option value="all">All categories</option>
-          {% for section in site.data.skills %}<option value="{{ section.category }}">{{ section.category }}</option>{% endfor %}
-        </select>
-      </div>
-      <div class="flex flex-col gap-1.5">
-        <label for="skills-domain" class="text-[11px] font-mono uppercase tracking-wide text-slate-400">Domain</label>
-        <select id="skills-domain" class="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-slate-700 dark:text-slate-200 focus:outline-none focus:border-cyan-500">
-          <option value="all">All domains</option>
-          {% for g in site.data.skills[0].groups %}<option value="{{ g.name }}">{{ g.icon }} {{ g.name }}</option>{% endfor %}
-        </select>
-      </div>
-      <div class="flex flex-col gap-1.5 flex-1 min-w-[180px]">
-        <label for="skills-search" class="text-[11px] font-mono uppercase tracking-wide text-slate-400">Search</label>
-        <input type="search" id="skills-search" placeholder="e.g. Python, GeneXpert, SOP&hellip;" class="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-slate-700 dark:text-slate-200 focus:outline-none focus:border-cyan-500 w-full">
-      </div>
-      <button type="button" class="filter-toolbar__reset px-4 py-2 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold uppercase tracking-wide">Reset</button>
-    </div>
-
-    <div class="overflow-x-auto mb-4 glass-card rounded-2xl border p-4">
-      <p class="font-mono text-xs text-slate-400 mb-3">Toolkit at a glance &mdash; item count by domain and category</p>
-      <table class="w-full text-sm border-collapse">
-        <thead>
-          <tr class="border-b border-slate-200 dark:border-slate-700">
-            <th class="text-left py-2 pr-4"></th>
-            {% for section in site.data.skills %}<th class="text-left py-2 px-3 font-mono text-xs uppercase text-slate-400">{{ section.category }}</th>{% endfor %}
-          </tr>
-        </thead>
-        <tbody>
-          {% for g in site.data.skills[0].groups %}
-          <tr class="border-b border-slate-100 dark:border-slate-800">
-            <th class="text-left py-2 pr-4 font-semibold text-slate-700 dark:text-slate-200 whitespace-nowrap">{{ g.icon }} {{ g.name }}</th>
-            {% for section in site.data.skills %}
-            {% assign match = section.groups | where: "name", g.name | first %}
-            {% assign n = match.items.size %}
-            {% assign heatClass = "bg-slate-100 dark:bg-slate-800 text-slate-500" %}
-            {% if n >= 5 %}{% assign heatClass = "bg-cyan-500 text-white" %}{% elsif n >= 2 %}{% assign heatClass = "bg-cyan-500/20 text-cyan-700 dark:text-cyan-300" %}{% endif %}
-            <td class="p-1.5"><button type="button" class="skills-matrix__cell w-10 h-10 rounded-lg font-bold text-sm transition-transform hover:scale-110 {{ heatClass }}" data-category="{{ section.category }}" data-domain="{{ g.name }}">{{ n }}</button></td>
-            {% endfor %}
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-
-    <p class="filter-empty hidden text-center py-10 text-slate-400 font-mono text-sm">No skills match that combination &mdash; try Reset.</p>
-
-    {%- assign skills_section_colors = "cyan,amber,crimson,mint" | split: "," -%}
-    {% for section in site.data.skills %}
-    {%- assign sec_color = skills_section_colors[forloop.index0] -%}
-    <div class="skills-section mt-14" data-category="{{ section.category }}">
-      <div class="section__ghost-wrap">
-        <span class="section__ghost-num">0{{ forloop.index }}</span>
-        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-{{ sec_color }}{% if sec_color != 'mint' and sec_color != 'crimson' %}-500{% endif %} mb-2">0{{ forloop.index }}</h2>
-        <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">{{ section.category }}</h3>
-      </div>
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {% for g in section.groups %}
-        <div class="card v2-bento-tint relative overflow-hidden glass-card rounded-2xl border p-6" data-domain="{{ g.name }}">
-          <h4 class="font-bold font-heading text-lg text-slate-900 dark:text-white mb-3">{{ g.icon }} {{ g.name }}</h4>
-          <ul class="card__list space-y-2 text-sm text-slate-600 dark:text-slate-300 list-disc pl-4">
-            {% for item in g.items %}<li>{{ item }}</li>{% endfor %}
-          </ul>
+<main class="skills-v4" id="main-content" data-skills-v4>
+  <section class="skills-hero"
+           data-nav-marker="00"
+           data-nav-label="Top"
+           data-nav-colour="#22D3EE"
+           aria-labelledby="skillsHeroTitle">
+    <div class="skills-hero__inner">
+      <div class="skills-hero__copy">
+        <p class="skills-v4__breadcrumb"><a href="{{ '/' | relative_url }}">Home</a> / Skills</p>
+        <p class="skills-v4__eyebrow">Applied practice / evidence / methods</p>
+        <h1 id="skillsHeroTitle">Skills, methods and <span>technical practice.</span></h1>
+        <p class="skills-hero__lede">
+          Valentine Golden Ghanem works across clinical laboratory science,
+          public-health epidemiology and reproducible data analysis. This record
+          documents the methods used, the professional setting in which they are
+          applied and the evidence routes that support them.
+        </p>
+        <div class="skills-hero__actions">
+          <a href="#practice-architecture">
+            <i class="fa-solid fa-route" aria-hidden="true"></i>
+            Explore practice architecture
+          </a>
+          <a href="#methods-registry" class="skills-hero__action--secondary">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            Search methods registry
+          </a>
         </div>
-        {% endfor %}
+        <dl class="skills-hero__metrics" aria-label="Skills evidence summary">
+          <div><dt>3</dt><dd>practice domains</dd></div>
+          <div><dt>9</dt><dd>evidence cells</dd></div>
+          <div><dt>{{ practice_count }}</dt><dd>practice statements</dd></div>
+          <div><dt>{{ site.data.technical_stack.size }}</dt><dd>methods and platforms</dd></div>
+        </dl>
+      </div>
+
+      <aside class="skills-hero__lattice" aria-label="Select a practice domain">
+        <header>
+          <p>Practice domains</p>
+          <span>Evidence flows from method to interpretation and professional action.</span>
+        </header>
+        <div class="skills-hero__lanes">
+          <button type="button" data-hero-domain="Public Health" style="--domain-accent:#34D399">
+            <span class="skills-hero__lane-mark"><i class="fa-solid fa-people-group" aria-hidden="true"></i></span>
+            <span><strong>Public Health</strong><small>Surveillance, screening and programme interpretation</small></span>
+            <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
+          </button>
+          <button type="button" data-hero-domain="Data Science" style="--domain-accent:#A78BFA">
+            <span class="skills-hero__lane-mark"><i class="fa-solid fa-code" aria-hidden="true"></i></span>
+            <span><strong>Data Science</strong><small>Modelling, spatial analysis and reproducible systems</small></span>
+            <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
+          </button>
+          <button type="button" data-hero-domain="Biomedical Science" style="--domain-accent:#F87171">
+            <span class="skills-hero__lane-mark"><i class="fa-solid fa-flask-vial" aria-hidden="true"></i></span>
+            <span><strong>Biomedical Science</strong><small>Diagnostics, quality systems and laboratory leadership</small></span>
+            <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
+          </button>
+        </div>
+        <p class="skills-hero__disclosure">
+          Counts describe documented inventory items. They are not proficiency scores.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <section id="practice-architecture"
+           class="skills-practice"
+           data-nav-marker="01"
+           data-nav-label="Practice"
+           data-nav-colour="#34D399"
+           aria-labelledby="skillsPracticeTitle">
+    <div class="skills-v4__inner">
+      <header class="skills-v4__section-header">
+        <span class="skills-v4__ghost" aria-hidden="true">01</span>
+        <p>01 - Practice architecture</p>
+        <h2 id="skillsPracticeTitle">Three domains connected by an evidence pathway</h2>
+        <span>
+          Select a domain and stage to inspect the documented practice behind it.
+          The pathway describes how work is applied; it does not rank ability.
+        </span>
+      </header>
+
+      <div class="skills-practice__workspace">
+        <div class="skills-practice__domains" role="tablist" aria-label="Practice domains">
+          <button type="button" id="skills-domain-public-health" role="tab" aria-selected="true" aria-controls="skillsPracticeInspector" tabindex="0" data-practice-domain="Public Health" style="--domain-accent:#34D399">
+            <span>01</span><strong>Public Health</strong><small>Population evidence</small>
+          </button>
+          <button type="button" id="skills-domain-data-science" role="tab" aria-selected="false" aria-controls="skillsPracticeInspector" tabindex="-1" data-practice-domain="Data Science" style="--domain-accent:#A78BFA">
+            <span>02</span><strong>Data Science</strong><small>Analytical systems</small>
+          </button>
+          <button type="button" id="skills-domain-biomedical-science" role="tab" aria-selected="false" aria-controls="skillsPracticeInspector" tabindex="-1" data-practice-domain="Biomedical Science" style="--domain-accent:#F87171">
+            <span>03</span><strong>Biomedical Science</strong><small>Diagnostic evidence</small>
+          </button>
+        </div>
+
+        <div class="skills-practice__path" aria-label="Practice stages">
+          <div class="skills-practice__path-line" aria-hidden="true"><i></i></div>
+          <button type="button" data-practice-stage="Technical" aria-pressed="true">
+            <span>01</span><strong>Technical</strong><small>Methods and systems</small>
+          </button>
+          <button type="button" data-practice-stage="Analytical" aria-pressed="false">
+            <span>02</span><strong>Analytical</strong><small>Interpretation and validation</small>
+          </button>
+          <button type="button" data-practice-stage="Leadership" aria-pressed="false">
+            <span>03</span><strong>Leadership</strong><small>Coordination and application</small>
+          </button>
+        </div>
+
+        <article id="skillsPracticeInspector"
+                 class="skills-practice__inspector"
+                 role="tabpanel"
+                 aria-labelledby="skills-domain-public-health"
+                 aria-live="polite">
+          <header>
+            <p data-practice-kicker>Public Health / Technical</p>
+            <span data-practice-count>3 documented statements</span>
+          </header>
+          <h3 data-practice-title>Public-health technical practice</h3>
+          <p data-practice-summary>
+            Laboratory-informed surveillance, community screening and interpretation
+            of diagnostic evidence for population-health reporting.
+          </p>
+          <ul data-practice-items>
+            {% assign initial_group = site.data.skills[0].groups | where: "name", "Public Health" | first %}
+            {% for item in initial_group.items %}<li>{{ item }}</li>{% endfor %}
+          </ul>
+          <a href="{{ '/community/' | relative_url }}" data-practice-route>
+            View field-practice evidence <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </article>
+      </div>
+
+      <div class="skills-matrix-v4" aria-labelledby="skillsMatrixTitle">
+        <div class="skills-matrix-v4__intro">
+          <p>Evidence matrix</p>
+          <h3 id="skillsMatrixTitle">Open any domain-stage intersection</h3>
+          <span>Each number is the count of documented statements in that cell.</span>
+        </div>
+        <div class="skills-matrix-v4__table" role="group" aria-label="Skills evidence matrix">
+          <div class="skills-matrix-v4__corner" aria-hidden="true">Stage / Domain</div>
+          {% for domain_group in site.data.skills[0].groups %}
+          <div class="skills-matrix-v4__column">{{ domain_group.name }}</div>
+          {% endfor %}
+          {% for section in site.data.skills %}
+          <div class="skills-matrix-v4__row">{{ section.category }}</div>
+            {% for domain_group in section.groups %}
+            <button type="button"
+                    data-matrix-domain="{{ domain_group.name }}"
+                    data-matrix-stage="{{ section.category }}"
+                    aria-label="{{ domain_group.name }}, {{ section.category }}: {{ domain_group.items.size }} documented statements">
+              <strong>{{ domain_group.items.size }}</strong>
+              <span>Open evidence</span>
+            </button>
+            {% endfor %}
+          {% endfor %}
+        </div>
       </div>
     </div>
-    {% endfor %}
+  </section>
 
-  </div>
-</section>
+  <section id="methods-registry"
+           class="skills-registry"
+           data-nav-marker="02"
+           data-nav-label="Methods"
+           data-nav-colour="#A78BFA"
+           aria-labelledby="skillsRegistryTitle">
+    <div class="skills-v4__inner">
+      <header class="skills-v4__section-header skills-v4__section-header--light">
+        <span class="skills-v4__ghost" aria-hidden="true">02</span>
+        <p>02 - Methods registry</p>
+        <h2 id="skillsRegistryTitle">Methods, platforms and analytical systems</h2>
+        <span>
+          Search the complete technical inventory. Selecting a record explains
+          its role in Valentine Golden Ghanem's work and points to related evidence.
+        </span>
+      </header>
+
+      <div class="skills-registry__controls">
+        <div class="skills-registry__search">
+          <label for="skillsRegistrySearch">Search the registry</label>
+          <div>
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <input type="search" id="skillsRegistrySearch" placeholder="Search Python, Moran's I, GeneXpert..." autocomplete="off">
+            <button type="button" data-registry-reset aria-label="Clear registry search" title="Clear search">
+              <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="skills-registry__segments" role="group" aria-label="Registry type">
+          <button type="button" data-registry-rail="all" aria-pressed="true">All</button>
+          <button type="button" data-registry-rail="tools" aria-pressed="false">Tools</button>
+          <button type="button" data-registry-rail="methods" aria-pressed="false">Methods</button>
+        </div>
+        <div class="skills-registry__filters" role="group" aria-label="Registry category">
+          <button type="button" data-registry-category="all" aria-pressed="true">All fields</button>
+          <button type="button" data-registry-category="code" aria-pressed="false">Code</button>
+          <button type="button" data-registry-category="spatial" aria-pressed="false">Spatial</button>
+          <button type="button" data-registry-category="modelling" aria-pressed="false">Models</button>
+          <button type="button" data-registry-category="public-health" aria-pressed="false">Epidemiology</button>
+          <button type="button" data-registry-category="laboratory" aria-pressed="false">Laboratory</button>
+        </div>
+        <p class="skills-registry__status" data-registry-status aria-live="polite">{{ site.data.technical_stack.size }} records shown</p>
+      </div>
+
+      <div class="skills-registry__workspace">
+        <div class="skills-registry__list" data-registry-list>
+          {% for item in site.data.technical_stack %}
+          <button type="button"
+                  class="skills-registry__item{% if forloop.first %} is-active{% endif %}"
+                  data-registry-item
+                  data-registry-name="{{ item.name | escape }}"
+                  data-registry-detail="{{ item.detail | escape }}"
+                  data-registry-category="{{ item.category }}"
+                  data-registry-rail="{{ item.rail }}"
+                  aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">
+            <span class="skills-registry__mark" aria-hidden="true">
+              {% if item.icon %}<i class="{{ item.icon }}"></i>{% else %}{{ item.mark }}{% endif %}
+            </span>
+            <span><strong>{{ item.name }}</strong><small>{{ item.category | replace: "-", " " }}</small></span>
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </button>
+          {% endfor %}
+        </div>
+
+        <aside class="skills-registry__inspector" aria-live="polite">
+          <p>Selected registry record</p>
+          <span class="skills-registry__inspector-mark" data-registry-inspector-mark aria-hidden="true"><i class="fa-brands fa-python"></i></span>
+          <h3 data-registry-inspector-name>Python</h3>
+          <span data-registry-inspector-category>Code / Tool</span>
+          <p data-registry-inspector-detail>Disease modelling, spatial analysis, reproducible pipelines and dashboard engineering.</p>
+          <a href="{{ '/portfolio/' | relative_url }}" data-registry-route>
+            Inspect related project evidence <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </aside>
+      </div>
+      <p class="skills-registry__empty" data-registry-empty hidden>No registry records match the current search and filters.</p>
+    </div>
+  </section>
+
+  <script type="application/json" id="skillsPracticeData">
+  [
+    {% for domain_group in site.data.skills[0].groups %}
+    {
+      "name": {{ domain_group.name | jsonify }},
+      "stages": [
+        {% for section in site.data.skills %}
+        {% assign matched_group = section.groups | where: "name", domain_group.name | first %}
+        {
+          "category": {{ section.category | jsonify }},
+          "items": {{ matched_group.items | jsonify }}
+        }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ]
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
+  </script>
+</main>
 
 {% include footer-v3.html %}

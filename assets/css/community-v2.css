@@ -399,17 +399,27 @@ html[data-v2-theme="dim"] .community-v2 {
   position: sticky;
   top: 40px;
   min-width: 0;
+  min-height: 170px;
+  padding: 30px 0 0 74px;
 }
 
 .community-section__number {
-  display: block;
-  height: 105px;
+  position: absolute;
+  top: -26px;
+  left: 0;
+  z-index: 0;
   color: rgba(100, 116, 139, 0.1);
   font-family: "Space Grotesk", sans-serif;
   font-size: 8rem;
-  font-weight: 700;
-  line-height: 0.82;
+  font-weight: 800;
+  line-height: 1;
   user-select: none;
+  pointer-events: none;
+}
+
+.community-section__header > *:not(.community-section__number) {
+  position: relative;
+  z-index: 1;
 }
 
 .community-section--screening .community-eyebrow {
@@ -954,6 +964,16 @@ html[data-v2-theme="dim"] .community-section--engagement .community-eyebrow {
 }
 
 @media (max-width: 720px) {
+  .community-section__header {
+    min-height: 132px;
+    padding: 24px 0 0 38px;
+  }
+
+  .community-section__number {
+    top: -14px;
+    font-size: 5.5rem;
+  }
+
   .community-section__header h2 {
     font-size: var(--section-title-size, 2.25rem);
   }

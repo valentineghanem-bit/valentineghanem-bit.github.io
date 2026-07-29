@@ -258,7 +258,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
 </section>
 
 <section id="sub-hero" class="py-24 px-6 bg-slate-50/50 dark:bg-slate-900/40 border-y border-slate-200 dark:border-slate-800 relative" data-nav-marker="00" data-nav-label="Profile" data-nav-colour="#34D399">
-  <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+  <div class="max-w-[1600px] mx-auto grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
     <div class="lg:col-span-7 reveal">
       <div class="inline-flex items-center gap-2 text-xs font-mono font-bold text-red-500 tracking-widest uppercase mb-4">
         <i class="fa-solid fa-microscope"></i>
@@ -318,7 +318,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
 </section>
 
 <section id="about" class="py-32 px-6 relative" data-nav-marker="01" data-nav-label="Identity" data-nav-colour="#22D3EE">
-  <div class="max-w-7xl mx-auto">
+  <div class="max-w-[1600px] mx-auto">
     <div class="reveal text-center max-w-3xl mx-auto mb-16">
       <div class="section__ghost-wrap">
         <span class="section__ghost-num">01</span>
@@ -362,7 +362,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
 
 <section id="research" class="home-expertise-section py-32 bg-slate-900 text-white relative overflow-hidden" data-nav-marker="02" data-nav-label="Expertise" data-nav-colour="#FBBF24">
   <div class="blob w-[500px] h-[500px] bg-amber-500/10 top-0 right-0 pointer-events-none"></div>
-  <div class="home-expertise-section__inner max-w-7xl mx-auto px-6">
+  <div class="home-expertise-section__inner max-w-[1600px] mx-auto px-6">
     <div class="home-expertise-section__header text-center mb-20 reveal">
       <div class="section__ghost-wrap">
         <span class="section__ghost-num">02</span>
@@ -457,7 +457,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
 </section>
 
 <section id="fieldmap" class="district-intelligence-section py-32 px-6 relative" data-nav-marker="03" data-nav-label="Atlas" data-nav-colour="#A78BFA">
-  <div class="max-w-7xl mx-auto">
+  <div class="max-w-[1600px] mx-auto">
     <div class="reveal text-center max-w-4xl mx-auto mb-12">
       <div class="section__ghost-wrap">
         <span class="section__ghost-num">03</span>
@@ -569,7 +569,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
 </section>
 
 <section id="publications" class="home-academic-section py-32 px-6 border-t" data-nav-marker="04" data-nav-label="Research" data-nav-colour="#F87171">
-  <div class="max-w-7xl mx-auto">
+  <div class="max-w-[1600px] mx-auto">
     <header class="home-section-heading reveal">
       <div class="section__ghost-wrap">
         <span class="section__ghost-num">04</span>
@@ -635,7 +635,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
 </section>
 
 <section id="portfolio" class="home-portfolio-section py-32 px-6" data-nav-marker="05" data-nav-label="Portfolio" data-nav-colour="#34D399">
-  <div class="max-w-7xl mx-auto">
+  <div class="max-w-[1600px] mx-auto">
     <header class="home-section-heading home-section-heading--split reveal">
       <div>
         <div class="section__ghost-wrap">
@@ -682,7 +682,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
 {% assign operation_biosafety = site.data.gallery_portraits[10] %}
 {% assign operation_data = site.data.gallery_portraits[13] %}
 <section id="gallery" class="home-operations-section py-32 px-6 border-t" data-nav-marker="06" data-nav-label="Fieldwork" data-nav-colour="#22D3EE">
-  <div class="max-w-7xl mx-auto">
+  <div class="max-w-[1600px] mx-auto">
     <header class="home-section-heading home-section-heading--split reveal">
       <div>
         <div class="section__ghost-wrap">
