@@ -23,29 +23,29 @@ extra_js: ["press-fx.js"]
     <div class="press-hero__veil" aria-hidden="true"></div>
     <div class="press-shell press-hero__content">
       <p class="press-breadcrumb"><a href="{{ '/' | relative_url }}">Home</a><span aria-hidden="true">/</span>Press</p>
-      <p class="press-hero__eyebrow">Media / research / public health</p>
+      <p class="press-hero__eyebrow">Research coverage / professional profiles / commentary</p>
       <h1 id="press-title">Research and practice in the <span>public record.</span></h1>
       <p class="press-hero__lede">
-        A publisher-hosted archive of Valentine Golden Ghanem's research, clinical practice and public-health commentary. Every entry links to its original source.
+        This archive brings together reporting and commentary on Valentine Golden Ghanem's research, clinical practice and public-health work. Each entry opens on the publisher's website.
       </p>
       <div class="press-hero__actions">
         <a class="press-button press-button--primary" href="#coverage-register">
           <i class="fa-solid fa-newspaper" aria-hidden="true"></i>
-          Browse media record
+          Browse coverage
         </a>
         <a class="press-button press-button--secondary" href="{{ '/publications/' | relative_url }}">
           <i class="fa-solid fa-book-open" aria-hidden="true"></i>
-          View primary research
+          View publications
         </a>
       </div>
       <dl class="press-hero__metrics" aria-label="Press archive summary">
-        <div><dt>{{ site.data.press.size }}</dt><dd>publisher records</dd></div>
-        <div><dt>{{ press_outlets.size }}</dt><dd>publishing outlets</dd></div>
-        <div><dt>3</dt><dd>record types</dd></div>
+        <div><dt>{{ site.data.press.size }}</dt><dd>published features</dd></div>
+        <div><dt>{{ press_outlets.size }}</dt><dd>media outlets</dd></div>
+        <div><dt>3</dt><dd>coverage types</dd></div>
       </dl>
     </div>
     <div class="press-hero__source">
-      <span>Portrait</span>
+      <span>Public profile</span>
       <strong>Valentine Golden Ghanem</strong>
       <small>Event venue</small>
     </div>
@@ -62,9 +62,9 @@ extra_js: ["press-fx.js"]
       <header class="press-section-heading">
         <span class="press-section-heading__number" aria-hidden="true">01</span>
         <div>
-          <p class="press-section-heading__kicker">Source register</p>
+          <p class="press-section-heading__kicker">Media archive</p>
           <h2 id="coverage-title">Coverage, commentary and profiles</h2>
-          <p>Seven publisher records, indexed by source, subject and coverage type.</p>
+          <p>Browse seven articles by outlet, subject or coverage type.</p>
         </div>
       </header>
 

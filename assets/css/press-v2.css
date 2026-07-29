@@ -176,8 +176,19 @@
 }
 
 .press-hero__metrics dt {
-  color: var(--press-amber);
   font: 700 2rem/1 "Space Grotesk", sans-serif;
+}
+
+.press-hero__metrics div:nth-child(1) dt {
+  color: var(--press-crimson);
+}
+
+.press-hero__metrics div:nth-child(2) dt {
+  color: var(--press-mint);
+}
+
+.press-hero__metrics div:nth-child(3) dt {
+  color: #a78bfa;
 }
 
 .press-hero__metrics dd {
