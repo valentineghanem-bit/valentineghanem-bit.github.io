@@ -1,33 +1,258 @@
-capstone_projects:
-  - title: "Technology Trends and Demographic Insights from Stack Overflow Developer Survey"
-    context: "IBM Data Analyst Professional Certificate Capstone (2024)"
-    summary: "Exploratory analysis of developer technology preferences and global demographic patterns, with dashboards produced in Python, IBM Watson Studio and IBM Cognos Analytics."
+repositories:
+  - title: "Antenatal Care Access and Fertility Inequities in Ghana"
+    repo: "anc-fertility-ghana-inequities"
+    domain: "maternal-child"
+    domain_label: "Maternal & child health"
+    scale: "National and subnational, 1988-2022"
+    summary: "Longitudinal and spatial analysis of antenatal-care access, fertility change and reproductive-health inequities in Ghana."
+    methods: ["Spatial analysis", "Longitudinal trends", "Inequality analysis"]
+    dashboard_path: "dashboard/ANC_Fertility_Dashboard_Ghana.html"
+    poster_path: "poster/ANC_Fertility_Poster_Ghana.html"
+    featured: true
+
+  - title: "Spatial Epidemiology of HIV in Ghana"
+    repo: "hiv-spatial-epidemiology-ghana"
+    domain: "infectious-disease"
+    domain_label: "Infectious disease"
+    scale: "261 districts"
+    summary: "District-level HIV prevalence analysis using bivariate local spatial association, spatial regression and machine-learning interpretation."
+    methods: ["Bivariate LISA", "Spatial lag regression", "Random Forest"]
+    dashboard_path: "dashboard/HIV_Spatial_Ghana_Dashboard.html"
+    poster_path: "poster/HIV_Spatial_Ghana_Poster.html"
+    featured: true
+
+  - title: "HIV-TB Co-infection Risk Mapping"
+    repo: "hiv-tb-ml-ghana-261districts"
+    domain: "infectious-disease"
+    domain_label: "Infectious disease"
+    scale: "261 districts"
+    summary: "Maps the distribution and determinants of HIV-TB co-infection and evaluates ensemble machine-learning classification."
+    methods: ["Spatial clustering", "Ensemble ML", "Risk stratification"]
+    dashboard_path: "dashboard/HIV_TB_Ghana_Dashboard.html"
+    poster_path: "poster/HIV_TB_Ghana_261_Districts_Poster.html"
+    featured: true
+
+  - title: "Vitamin D Status and Deficiency Determinants in Ghana"
+    repo: "vitamin-d-ghana-review"
+    domain: "evidence-synthesis"
+    domain_label: "Evidence synthesis"
+    scale: "National literature"
+    summary: "Structured narrative evidence review of vitamin D status, deficiency patterns and reported determinants in Ghana."
+    methods: ["Narrative review", "Evidence synthesis", "Clinical epidemiology"]
+
+  - title: "Malaria Geospatial Clustering and Risk Prediction"
+    repo: "malaria-geospatial-ml-ghana"
+    domain: "infectious-disease"
+    domain_label: "Infectious disease"
+    scale: "261 districts"
+    summary: "Geospatial clustering and machine-learning assessment of malaria risk across Ghanaian districts."
+    methods: ["LISA", "Hotspot analysis", "Machine learning"]
+    dashboard_path: "dashboard/Ghana_Malaria_260District_Dashboard.html"
+    poster_path: "poster/Ghana_Malaria_260District_Poster.html"
+
+  - title: "STI-HIV Syndemic Patterns in Ghana"
+    repo: "sti-hiv-syndemic-ghana-261districts"
+    domain: "infectious-disease"
+    domain_label: "Infectious disease"
+    scale: "District-level, 2022"
+    summary: "Geospatial co-clustering of STI and HIV burden with behavioural and structural determinants."
+    methods: ["Co-clustering", "Spatial epidemiology", "Determinant analysis"]
+    dashboard_path: "dashboard/STI_HIV_Syndemic_Dashboard.html"
+    poster_path: "poster/STI_HIV_Syndemic_Poster.html"
+
+  - title: "Child Mortality Across Ghana's Districts"
+    repo: "ghana-child-mortality-261-districts"
+    domain: "maternal-child"
+    domain_label: "Maternal & child health"
+    scale: "261 districts"
+    summary: "Subnational spatial distribution and ensemble machine-learning predictors of neonatal and under-five mortality."
+    methods: ["Small-area estimation", "Ensemble ML", "Spatial inequality"]
+    dashboard_path: "dashboard/Ghana_ChildMortality_261District_Dashboard.html"
+    poster_path: "poster/Ghana_ChildMortality_261District_Poster.html"
+
+  - title: "WASH Determinants of Child Health"
+    repo: "wash-child-health-ghana-261districts"
+    domain: "maternal-child"
+    domain_label: "Maternal & child health"
+    scale: "261 districts"
+    summary: "Spatial machine-learning and mediation analysis of WASH conditions, childhood diarrhoea and under-five mortality."
+    methods: ["Spatial ML", "Mediation analysis", "Bootstrap inference"]
+    dashboard_path: "dashboard/WASH_Ghana_Dashboard.html"
+    poster_path: "poster/WASH_Ghana_Poster.html"
+
+  - title: "Nutrition, Anaemia and Growth Determinants"
+    repo: "nutrition-sae-ghana-261districts"
+    domain: "maternal-child"
+    domain_label: "Maternal & child health"
+    scale: "261 districts"
+    summary: "Bayesian small-area estimation of stunting, anaemia, infant-feeding inadequacy and diarrhoea."
+    methods: ["Bayesian SAE", "Spatial ML", "Nutrition epidemiology"]
+    dashboard_path: "dashboard/Nutrition_Dashboard.html"
+    poster_path: "poster/Nutrition_Poster.html"
+
+  - title: "NHIS Out-of-Pocket Expenditure"
+    repo: "nhis-oop-ghana-261districts"
+    domain: "health-systems"
+    domain_label: "Health systems & equity"
+    scale: "261 districts"
+    summary: "Spatial distribution and machine-learning analysis of out-of-pocket health expenditure and structural determinants."
+    methods: ["Spatial analysis", "Machine learning", "Health financing"]
+    dashboard_path: "dashboard/NHIS_OOP_Ghana_Dashboard.html"
+    poster_path: "poster/NHIS_OOP_Ghana_Poster.html"
+
+  - title: "NHIS Uninsurance and Health Equity"
+    repo: "ghana-health-insurance-analysis"
+    domain: "health-systems"
+    domain_label: "Health systems & equity"
+    scale: "261 districts"
+    summary: "District-level spatial and machine-learning analysis of health-insurance exclusion and related equity conditions."
+    methods: ["Spatial ML", "Decision trees", "Equity analysis"]
+    dashboard_path: "dashboard/NHIS_OOP_Ghana_Dashboard.html"
+    poster_path: "poster/NHIS_OOP_Ghana_Poster.html"
+    featured: true
+
+  - title: "SDG-3 Health Progress and District Disparity"
+    repo: "sdg-health-progress-ghana-261-districts"
+    domain: "health-systems"
+    domain_label: "Health systems & equity"
+    scale: "261 districts, 2000-2030"
+    summary: "Spatial analysis of district health progress, structural disparity and trajectories toward SDG 3."
+    methods: ["LISA", "Getis-Ord Gi*", "GWR", "XGBoost", "SHAP"]
+    dashboard_path: "dashboard/SDG_HealthProgress_Ghana_Dashboard.html"
+    poster_path: "poster/SDG_HealthProgress_Ghana_Poster.html"
+    featured: true
+
+  - title: "Maternal and Reproductive Health Inequities"
+    repo: "maternal-reproductive-health-ghana-261-districts"
+    domain: "maternal-child"
+    domain_label: "Maternal & child health"
+    scale: "261 districts"
+    summary: "Spatial inequities and machine-learning risk stratification of maternal and reproductive-health outcomes."
+    methods: ["Spatial inequality", "Risk stratification", "HI-EI dashboard"]
+    dashboard_path: "dashboard/Maternal_Reproductive_Health_Ghana_Dashboard.html"
+    poster_path: "poster/Maternal_Reproductive_Health_Ghana_Poster.html"
+
+  - title: "Fertility Transition and Adolescent Reproductive Health"
+    repo: "ghana-fertility-transition-forecasting"
+    domain: "maternal-child"
+    domain_label: "Maternal & child health"
+    scale: "16 regions, 1988-2030"
+    summary: "Regional fertility trajectories and probabilistic forecasting of subnational change and adolescent reproductive health."
+    methods: ["Time-series forecasting", "Probabilistic intervals", "Regional trajectories"]
+    dashboard_path: "dashboard/Ghana_Fertility_Transition_Dashboard.html"
+    poster_path: "poster/Ghana_Fertility_Transition_Poster.html"
+
+  - title: "Gender Equity, Literacy and Multi-Domain Health"
+    repo: "gender-equity-literacy-health-ghana"
+    domain: "health-systems"
+    domain_label: "Health systems & equity"
+    scale: "16 regions and 261 districts"
+    summary: "Examines associations among gender equity, literacy and multiple health outcomes using spatial machine learning and mediation analysis."
+    methods: ["Spatial ML", "Mediation analysis", "Health equity"]
+    dashboard_path: "dashboard/HI-EI_Dashboard.html"
+    poster_path: "poster/A0_Poster.html"
+
+  - title: "Subnational Immunisation Coverage Gaps"
+    repo: "ghana-immunisation-coverage-261-districts"
+    domain: "maternal-child"
+    domain_label: "Maternal & child health"
+    scale: "261 districts"
+    summary: "District-level immunisation coverage gaps and structural determinants using DHS and census evidence."
+    methods: ["Coverage analysis", "Spatial inequality", "Structural determinants"]
+    dashboard_path: "dashboard/HI-EI_Dashboard.html"
+    poster_path: "poster/A0_Poster.html"
+
+  - title: "NTD, WASH and Poverty Nexus"
+    repo: "ntd-wash-poverty-nexus-ghana"
+    domain: "infectious-disease"
+    domain_label: "Infectious disease"
+    scale: "261 districts, 2021-2022"
+    summary: "Spatial epidemiology of neglected tropical diseases in relation to WASH and poverty conditions."
+    methods: ["Spatial epidemiology", "WASH analysis", "Poverty stratification"]
+    dashboard_path: "dashboard/NTD_WASH_Poverty_Ghana_Dashboard.html"
+    poster_path: "poster/NTD_WASH_Poverty_Ghana_Poster.html"
+
+  - title: "Tuberculosis Trends, Treatment Gaps and Forecasting"
+    repo: "tb-trends-lstm-forecasting-ghana"
+    domain: "infectious-disease"
+    domain_label: "Infectious disease"
+    scale: "National trends and district context"
+    summary: "Trend analysis, treatment-gap assessment and LSTM forecasting with district-level structural risk stratification."
+    methods: ["LSTM", "Trend analysis", "Treatment cascade"]
+    dashboard_path: "dashboard/TB_Trends_Ghana_Dashboard.html"
+    poster_path: "poster/TB_Trends_Ghana_Poster.html"
+
+  - title: "Hepatitis, HIV and TB Cascade Vulnerability"
+    repo: "hepatitis-hiv-tb-cascade-vulnerability-ghana"
+    domain: "infectious-disease"
+    domain_label: "Infectious disease"
+    scale: "National trends and district context"
+    summary: "Treatment-cascade trends and district structural health-system-access vulnerability across hepatitis, HIV and TB."
+    methods: ["Cascade analysis", "Vulnerability mapping", "Trend synthesis"]
+    dashboard_path: "dashboard/Hepatitis_HIV_TB_Ghana_Dashboard.html"
+    poster_path: "poster/Hepatitis_HIV_TB_Ghana_Poster.html"
+
+  - title: "Spatial NCD Burden and Determinants"
+    repo: "spatial-ncd-burden-ghana"
+    domain: "forecasting-ncd"
+    domain_label: "Forecasting & NCDs"
+    scale: "National trends and 261 districts"
+    summary: "National noncommunicable-disease trends with district structural risk and vulnerability mapping."
+    methods: ["Trend analysis", "Spatial vulnerability", "NCD epidemiology"]
+    dashboard_path: "dashboard/NCD_Spatial_Burden_Ghana_Dashboard.html"
+    poster_path: "poster/NCD_Spatial_Burden_Ghana_Poster.html"
+
+  - title: "Alcohol, NCD Mortality and Suicidality"
+    repo: "alcohol-ncd-suicidality-ghana"
+    domain: "forecasting-ncd"
+    domain_label: "Forecasting & NCDs"
+    scale: "National trends and district classification"
+    summary: "Trend-divergence analysis and two-dimensional district vulnerability classification for alcohol, suicide and NCD mortality."
+    methods: ["Trend divergence", "Vulnerability classification", "NCD epidemiology"]
+    dashboard_path: "dashboard/Alcohol_NCD_Suicidality_Ghana_Dashboard.html"
+    poster_path: "poster/Alcohol_NCD_Suicidality_Ghana_Poster.html"
+
+  - title: "Health and Demographic Indicator Forecasting"
+    repo: "disease-burden-forecasting-ghana"
+    domain: "forecasting-ncd"
+    domain_label: "Forecasting & NCDs"
+    scale: "National indicators to 2030"
+    summary: "Forecasts national health and demographic indicators while documenting source provenance and sensitivity to limited time-series coverage."
+    methods: ["Forecasting", "Source provenance", "Sensitivity analysis"]
+    dashboard_path: "dashboard/Ghana_BurdenForecasting2030_Dashboard.html"
+    poster_path: "poster/Ghana_BurdenForecasting2030_Poster.html"
+
+  - title: "Health-System Performance and Geographic Equity"
+    repo: "ghana-health-systems-spatial-261districts"
+    domain: "health-systems"
+    domain_label: "Health systems & equity"
+    scale: "261 districts"
+    summary: "Spatial assessment of health-system performance, service access and geographic equity across Ghana."
+    methods: ["Service-access analysis", "Spatial equity", "District comparison"]
+
+practice_archive:
+  - title: "Technology Trends and Demographic Insights from the Stack Overflow Developer Survey"
+    context: "IBM Data Analyst Professional Certificate capstone, 2024"
+    summary: "Exploratory analysis of developer technologies and respondent demographics, conducted in Python, IBM Watson Studio and IBM Cognos Analytics."
+    category: "Data analysis"
     links:
-      - label: "Download full capstone report"
+      - label: "Download capstone report"
         url: "/assets/files/capstone-report.pdf"
-data_visualisations:
-  - title: "HIV Incidence Forecasting Dashboard (2025)"
-    summary: "Interactive Streamlit dashboard presenting regional HIV forecasts derived from machine-learning models."
-    doi_url: "https://doi.org/10.5281/zenodo.15292209"
+
+  - title: "Analysis and Prediction of Infectious Disease Trends in Ghana"
+    context: "MSc Data Science dissertation, University of East London, 2025"
+    summary: "Comparative forecasting of HIV/AIDS incidence using Random Forest, Ridge Regression, XGBoost and support-vector regression."
+    category: "Machine learning"
     links:
-      - label: "Launch dashboard (Streamlit)"
-        url: "https://dashboardapppy-3ryuuaxnlmrsrrkqoxpcfw.streamlit.app/"
-      - label: "Code & model files (GitHub)"
-        url: "https://github.com/vghanem/ghana_disease_dashboard"
-research_projects:
-  - title: "Analysis and Prediction of Infectious Disease Trends in Ghana: A Machine Learning Approach, with Emphasis on HIV/AIDS"
-    context: "MSc Research Dissertation (2025) — University of East London"
-    summary: "Epidemiological forecasting study applying Random Forest, Ridge Regression, XGBoost and support-vector regression to HIV/AIDS incidence in Ghana."
-    links:
-      - label: "View abstract / executive summary"
+      - label: "Read dissertation"
         url: "/assets/files/data-science-dissertation.pdf"
-      - label: "Access full dataset & scripts"
+      - label: "Open archived dataset and scripts"
         url: "https://doi.org/10.5281/zenodo.15292209"
-      - label: "View dashboard"
-        url: "https://dashboardapppy-3ryuuaxnlmrsrrkqoxpcfw.streamlit.app/"
-  - title: "Isolation and Determination of Antimicrobial Resistance Patterns in Surgical Theater Sinks, Korle-Bu Teaching Hospital"
-    context: "BSc Undergraduate Research Project (2013) — University of Ghana"
-    summary: "Microbiological analysis of nosocomial pathogens isolated from hospital sinks, including their antimicrobial-resistance patterns."
+
+  - title: "Antimicrobial Resistance Patterns in Surgical Theatre Sinks"
+    context: "BSc Medical Laboratory Science research, University of Ghana, 2013"
+    summary: "Laboratory study of nosocomial bacteria isolated from surgical-theatre sinks and their antimicrobial-susceptibility patterns."
+    category: "Clinical microbiology"
     links:
-      - label: "Download full research paper (PDF)"
+      - label: "Read research paper"
         url: "/assets/files/bsc-research-project.pdf"

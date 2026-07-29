@@ -59,7 +59,7 @@ extra_js: ["skills-v4.js"]
       <aside class="skills-hero__lattice" aria-label="Select a practice domain">
         <header>
           <p>Practice domains</p>
-          <span>Evidence flows from method to interpretation and professional action.</span>
+          <span>Methods are linked to interpretation and professional application.</span>
         </header>
         <div class="skills-hero__lanes">
           <button type="button" data-hero-domain="Public Health" style="--domain-accent:#34D399">
@@ -95,7 +95,7 @@ extra_js: ["skills-v4.js"]
       <header class="skills-v4__section-header">
         <span class="skills-v4__ghost" aria-hidden="true">01</span>
         <p>01 - Practice architecture</p>
-        <h2 id="skillsPracticeTitle">Three domains connected by an evidence pathway</h2>
+        <h2 id="skillsPracticeTitle">Three domains of applied professional practice</h2>
         <span>
           Select a domain and stage to inspect the documented practice behind it.
           The pathway describes how work is applied; it does not rank ability.
@@ -155,7 +155,7 @@ extra_js: ["skills-v4.js"]
       <div class="skills-matrix-v4" aria-labelledby="skillsMatrixTitle">
         <div class="skills-matrix-v4__intro">
           <p>Evidence matrix</p>
-          <h3 id="skillsMatrixTitle">Open any domain-stage intersection</h3>
+          <h3 id="skillsMatrixTitle">Select a practice domain and evidence stage</h3>
           <span>Each number is the count of documented statements in that cell.</span>
         </div>
         <div class="skills-matrix-v4__table" role="group" aria-label="Skills evidence matrix">

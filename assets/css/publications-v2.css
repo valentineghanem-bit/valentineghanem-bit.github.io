@@ -41,9 +41,9 @@
   height: 100%;
   display: block;
   object-fit: cover;
-  object-position: 58% center;
+  object-position: 58% top;
   filter: saturate(0.82) contrast(1.06);
-  transform: scale(1.01);
+  transform: none;
 }
 
 .v3-scope .publications-hero::before {
@@ -1189,7 +1189,7 @@ html[data-v2-theme="dim"] .v3-scope .publication-service-card nav a {
   }
 
   .v3-scope .publications-hero__background {
-    object-position: 60% center;
+    object-position: 60% top;
   }
 
   .v3-scope .publications-hero::before {

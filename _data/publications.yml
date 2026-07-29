@@ -29,7 +29,7 @@
     - "Longitudinal analysis"
     - "Spatial ML"
     - "1988-2022"
-  caveat: "Preprint posted on July 18, 2026; not yet certified by peer review."
+  caveat: "Preprint posted on July 18, 2026; it has not undergone peer review."
   links:
     - label: "Code repository"
       url: "https://github.com/valentineghanem-bit/anc-fertility-ghana-inequities"
@@ -99,7 +99,7 @@
   citation: "Ghanem, V. G. (2025). Analysis and Prediction of Infectious Disease Trends in Ghana: A Machine Learning Approach, with Emphasis on HIV/AIDS [Data and software repository]. Zenodo."
   doi_url: "https://doi.org/10.5281/zenodo.15616846"
   status: "Data and software record"
-  summary: "A citable data and software deposit containing the code, model files and dashboard associated with machine-learning analysis of infectious-disease trends in Ghana."
+  summary: "A citable archive of the code, model files and dashboard used in the machine-learning analysis of infectious-disease trends in Ghana."
   methods:
     - "Reproducible code"
     - "Model files"

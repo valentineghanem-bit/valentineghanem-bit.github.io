@@ -23,9 +23,9 @@ extra_js: ["community-fx.js"]
         <p class="community-eyebrow">Field practice / Ghana / 2016-2024</p>
         <h1 id="community-title">Public health, <span>practised with communities.</span></h1>
         <p class="community-hero__summary">
-          Valentine Golden Ghanem's community record brings together field screening,
+          Valentine Golden Ghanem's community record documents field screening,
           diagnostic education and professional learning undertaken across Ghana.
-          Each entry is tied to a date, place and original media.
+          Each entry is linked to a date, location and original photograph or video.
         </p>
         <div class="community-hero__actions">
           <a class="community-action community-action--primary" href="#community-evidence">
@@ -144,7 +144,7 @@ extra_js: ["community-fx.js"]
         <span class="community-section__number" aria-hidden="true">03</span>
         <p class="community-eyebrow">Health education and public engagement</p>
         <h2 id="engagement-title">Health knowledge beyond formal clinical encounters</h2>
-        <p>Public screening and youth education show a broader commitment to prevention, communication and community participation.</p>
+        <p>These records document preventive screening, health communication and youth engagement outside formal clinical settings.</p>
       </header>
       <div class="community-ledger">
         {% for event in site.data.community_activities.outreach %}

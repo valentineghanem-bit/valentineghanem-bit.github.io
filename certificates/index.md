@@ -41,8 +41,8 @@ extra_js: ["certificates-fx.js"]
 
     <aside class="glass-card rounded-lg border p-5 mb-14 flex flex-wrap items-center justify-between gap-4">
       <p class="text-sm text-slate-600 dark:text-slate-300 max-w-3xl">
-        Degrees, professional registrations, memberships and credentials in progress are
-        maintained once, in the verified professional record.
+        Degrees, professional registrations, memberships and credentials in progress
+        are listed in the verified professional record.
       </p>
       <a href="{{ '/about/#professional-verification' | relative_url }}"
          class="min-h-[44px] inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:border-crimson hover:text-crimson transition-colors">

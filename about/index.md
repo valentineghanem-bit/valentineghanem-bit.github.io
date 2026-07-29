@@ -132,7 +132,7 @@ extra_js: ["about-fx.js"]
       <div class="about-home-panel about-verification__workspace reveal" data-verification-workspace>
         <aside class="home-identity-rail about-verification__rail">
           <p class="about-home-panel__eyebrow">Verified professional record</p>
-          <h3>Registration, membership and research identity presented with status.</h3>
+          <h3>Professional standing and current credential status</h3>
           <p>Each record names the responsible organisation, jurisdiction and reference number. Pending credentials remain clearly separated from completed registration.</p>
           <div class="about-verification__summary" aria-label="Professional verification summary">
             <span><strong>{{ site.data.profile.licensure | size }}</strong> registrations</span>

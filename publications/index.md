@@ -37,9 +37,9 @@ extra_js: ["publications-v5.js"]
         <p class="publications-eyebrow">Scholarly record / evidence / reproducibility</p>
         <h1 id="publicationsHeroTitle">Publications, preprints <span>and reproducible research.</span></h1>
         <p class="publications-hero__summary">
-          Valentine Golden Ghanem's academic record spans health equity, infectious-disease
-          epidemiology, spatial analysis and machine learning. Publication status, methods,
-          limitations and connected technical artifacts remain explicit throughout.
+          Valentine Golden Ghanem's academic record covers health equity, infectious-disease
+          epidemiology, spatial analysis and machine learning. Each entry states its
+          publication status, methods, limitations and associated analytical outputs.
         </p>
         <div class="publications-hero__actions">
           <a href="#scholarly-record">
@@ -54,8 +54,8 @@ extra_js: ["publications-v5.js"]
         <dl class="publications-hero__metrics" aria-label="Scholarly record summary">
           <div><dt>{{ peer_reviewed.size }}</dt><dd>peer-reviewed articles</dd></div>
           <div><dt>{{ preprints.size }}</dt><dd>preprints</dd></div>
-          <div><dt>{{ repositories.size }}</dt><dd>data and software record</dd></div>
-          <div><dt>{{ connected_count }}</dt><dd>artifact-connected records</dd></div>
+          <div><dt>{{ repositories.size }}</dt><dd>data and software deposit</dd></div>
+          <div><dt>{{ connected_count }}</dt><dd>records with linked outputs</dd></div>
         </dl>
       </div>
     </div>
@@ -71,11 +71,11 @@ extra_js: ["publications-v5.js"]
       <header class="publications-section__header">
         <span class="publications-section__number" aria-hidden="true">01</span>
         <p>01 - Scholarly record</p>
-        <h2 id="scholarlyRecordTitle">A status-aware academic evidence ledger</h2>
+        <h2 id="scholarlyRecordTitle">Peer-reviewed articles, preprints and research deposits</h2>
         <span>
-          Search the complete record, then inspect the evidence, methods and technical
-          connections attached to each output. Preprints and repository deposits remain
-          clearly separated from peer-reviewed articles.
+          Search by title, journal or method, then review the evidence, methods and
+          supporting material for each record. Preprints and repository deposits are
+          identified separately from peer-reviewed articles.
         </span>
       </header>
 
@@ -201,10 +201,11 @@ extra_js: ["publications-v5.js"]
       <header class="publications-section__header publications-section__header--dark">
         <span class="publications-section__number" aria-hidden="true">02</span>
         <p>02 - Research connections</p>
-        <h2 id="researchConnectionsTitle">From scholarly output to reproducible artifact</h2>
+        <h2 id="researchConnectionsTitle">Links between publications and reproducible outputs</h2>
         <span>
-          These connections show where code, dashboards, models or archived software
-          accompany the academic record. They do not create an additional publication.
+          Where available, each record links to its code, dashboard, model or archived
+          software. These materials accompany the research and are not counted as
+          separate publications.
         </span>
       </header>
 
@@ -222,7 +223,7 @@ extra_js: ["publications-v5.js"]
                 </div>
               </header>
               <div class="publication-connection__flow" aria-label="Research connection">
-                <div><i class="fa-solid fa-book-open" aria-hidden="true"></i><span>Scholarly record</span></div>
+                <div><i class="fa-solid fa-book-open" aria-hidden="true"></i><span>Research record</span></div>
                 <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                 <div><i class="fa-solid fa-diagram-project" aria-hidden="true"></i><span>{{ pub.methods | join: ", " }}</span></div>
                 <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
@@ -294,7 +295,7 @@ extra_js: ["publications-v5.js"]
       <header class="publications-section__header publications-section__header--dark">
         <span class="publications-section__number" aria-hidden="true">04</span>
         <p>04 - Researcher identifiers</p>
-        <h2 id="researchIdentifiersTitle">Find the scholarly record at source</h2>
+        <h2 id="researchIdentifiersTitle">Verify the scholarly record at source</h2>
         <span>
           Persistent identifiers and external research profiles support author
           disambiguation, citation discovery and independent verification.
@@ -306,6 +307,7 @@ extra_js: ["publications-v5.js"]
         <a href="https://www.webofscience.com/wos/author/record/NRA-8276-2025" target="_blank" rel="noopener" style="--profile-accent:#FBBF24"><i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i><span><strong>Web of Science</strong><small>Researcher record NRA-8276-2025</small></span></a>
         <a href="https://www.semanticscholar.org/author/Valentine-Golden-Ghanem/2368956236" target="_blank" rel="noopener" style="--profile-accent:#A78BFA"><i class="fa-solid fa-book-open-reader" aria-hidden="true"></i><span><strong>Semantic Scholar</strong><small>Author and topic index</small></span></a>
         <a href="https://www.researchgate.net/profile/Valentine-Ghanem" target="_blank" rel="noopener" style="--profile-accent:#F87171"><i class="fa-brands fa-researchgate" aria-hidden="true"></i><span><strong>ResearchGate</strong><small>Research profile</small></span></a>
+        <a href="https://sciprofiles.com/profile/valentineghanem" target="_blank" rel="noopener" style="--profile-accent:#34D399"><i class="fa-solid fa-id-card-clip" aria-hidden="true"></i><span><strong>SciProfiles</strong><small>Author profile and publication record</small></span></a>
         <a href="https://www.lens.org/lens/profile/692738672/scholar" target="_blank" rel="noopener" style="--profile-accent:#63D2FF"><i class="fa-solid fa-database" aria-hidden="true"></i><span><strong>Lens</strong><small>Scholarly works profile</small></span></a>
         <a href="https://papers.ssrn.com/Sol3/Cf_Dev/AbsByAuth.cfm?per_id=10047916" target="_blank" rel="noopener" style="--profile-accent:#FFE87A"><i class="fa-solid fa-file-lines" aria-hidden="true"></i><span><strong>SSRN</strong><small>Author abstract page</small></span></a>
       </nav>

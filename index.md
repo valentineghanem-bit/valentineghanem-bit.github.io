@@ -115,7 +115,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
           score: 86,
           domain: "Applied modelling",
           engine: "HI-EI Component 05",
-          interpretation: "Machine learning is used as a structured modelling layer, not as a black-box claim, with interpretability kept visible.",
+          interpretation: "Machine-learning models are presented with their assumptions and interpretation, rather than as unexplained predictions.",
           evidence: "Random Forest, Ridge Regression, XGBoost, SVR, SHAP explainability and reproducible Python/R workflows.",
           output: "Forecasting and risk-stratification artifacts that can be inspected, explained and compared against public-health context."
         },
@@ -215,6 +215,9 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <a href="{{ site.data.profile.identifiers[4].url }}" target="_blank" rel="noopener" class="px-3 py-1 bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 rounded-full hover:bg-amber-500/20 transition-colors flex items-center gap-1.5">
           <i class="fa-solid fa-magnifying-glass"></i> Web of Science
         </a>
+        <a href="{{ site.data.profile.identifiers[5].url }}" target="_blank" rel="noopener" class="px-3 py-1 bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20 rounded-full hover:bg-violet-500/20 transition-colors flex items-center gap-1.5">
+          <i class="fa-solid fa-id-card-clip"></i> SciProfiles
+        </a>
       </div>
     </div>
 
@@ -265,10 +268,10 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <span>FIELD EPIDEMIOLOGY &amp; CLINICAL LABORATORY LEADERSHIP</span>
       </div>
       <h2 class="text-4xl sm:text-5xl font-black font-heading tracking-tight text-slate-900 dark:text-white leading-tight mb-6">
-        Bridging Laboratory Diagnostics with <span class="text-cyan-500">Spatial Epidemiology.</span>
+        Laboratory diagnostics interpreted through <span class="text-cyan-500">spatial epidemiology.</span>
       </h2>
       <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
-        Currently serving as <strong class="text-slate-900 dark:text-white">{{ site.data.profile.job_titles[0] }} at {{ site.data.organization.cocoa_clinic.name }} ({{ site.data.organization.cocoa_clinic.parent_organization.alternate_name }})</strong>, Valentine leads diagnostic laboratory operations while applying spatial statistics and machine learning to HIV/AIDS surveillance and health-insurance access across Ghana's 261 districts.
+        As <strong class="text-slate-900 dark:text-white">{{ site.data.profile.job_titles[0] }} at {{ site.data.organization.cocoa_clinic.name }} ({{ site.data.organization.cocoa_clinic.parent_organization.alternate_name }})</strong>, Valentine leads diagnostic laboratory operations and applies spatial statistics and machine learning to HIV/AIDS surveillance and health-insurance access across Ghana's 261 districts.
       </p>
       <div class="relative pl-6 py-2 my-8 border-l-4 border-cyan-500 bg-cyan-500/5 rounded-r-2xl">
         <p class="text-lg sm:text-xl font-serif italic text-slate-800 dark:text-slate-200 leading-snug">
@@ -325,7 +328,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-4">01 &mdash; Identity &amp; Evolution</h2>
         <h3 class="text-4xl sm:text-5xl font-black font-heading">Dual Precision: Clinical Lab + Data Science</h3>
       </div>
-      <p class="text-slate-600 dark:text-slate-400 mt-4 text-base">Combining rigorous wet-lab diagnostic accuracy with spatial epidemiology and machine learning to strengthen disease surveillance. Full detail on the <a href="{{ '/about/' | relative_url }}" class="text-cyan-500 hover:underline">About page</a>.</p>
+      <p class="text-slate-600 dark:text-slate-400 mt-4 text-base">Valentine Golden Ghanem combines quality-assured laboratory practice with spatial epidemiology and machine learning to strengthen disease surveillance. Further detail is available on the <a href="{{ '/about/' | relative_url }}" class="text-cyan-500 hover:underline">About page</a>.</p>
     </div>
     <div class="reveal glass-card home-identity-panel rounded-[32px] p-6 sm:p-10 border">
       <div class="grid lg:grid-cols-[0.9fr_1.35fr] gap-8 items-stretch">
@@ -333,7 +336,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
           <div class="relative z-10">
             <p class="font-mono text-[10px] uppercase tracking-[0.34em] text-cyan-500 font-black mb-5">Clinical science. Public health intelligence.</p>
             <h4 class="text-2xl sm:text-3xl font-black font-heading text-slate-950 dark:text-white leading-tight">A medical scientist translating laboratory evidence into population action.</h4>
-            <p class="mt-4 text-sm leading-relaxed text-slate-600 dark:text-slate-300">Valentine Golden Ghanem connects clinical laboratory leadership, field epidemiology, Ghana district analytics, and applied data science. His portfolio sits where diagnostic quality, infectious-disease surveillance, spatial intelligence, and machine-learning models meet practical public-health decisions.</p>
+            <p class="mt-4 text-sm leading-relaxed text-slate-600 dark:text-slate-300">Valentine Golden Ghanem's work spans clinical laboratory leadership, field epidemiology, Ghana district analysis and applied data science. He applies diagnostic quality, infectious-disease surveillance, spatial analysis and machine-learning models to practical public-health decisions.</p>
             <div class="mt-7 grid gap-3">
               <div class="home-identity-chip" data-accent="cyan"><i class="fa-solid fa-vial-virus"></i><span>Clinical laboratory leadership</span></div>
               <div class="home-identity-chip" data-accent="emerald"><i class="fa-solid fa-people-group"></i><span>Public health epidemiology and surveillance</span></div>
@@ -369,7 +372,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <h2 class="text-xs font-black uppercase tracking-[0.4em] text-amber-400 mb-4">02 &mdash; Expertise</h2>
         <h3 class="text-4xl sm:text-5xl font-black font-heading">Multidisciplinary Practice Matrix</h3>
       </div>
-      <p class="text-slate-400 mt-3 text-sm">Relative emphasis across clinical practice, public-health work, spatial analytics and applied modelling. Not a measured proficiency score.</p>
+      <p class="text-slate-400 mt-3 text-sm">Relative emphasis across clinical practice, public-health work, spatial analytics and applied modelling. These values are not proficiency scores.</p>
     </div>
     <div class="home-expertise-layout grid lg:grid-cols-12 gap-12 items-start">
       <div class="home-expertise-radar-column lg:col-span-6 reveal">
@@ -399,7 +402,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
             <p class="home-radar-inspector__note"><b>Evidence base:</b> <span id="radarInspectorEvidence">Clinical chemistry, haematology, microbiology-aware diagnostics, GeneXpert and real-time PCR workflows.</span></p>
             <p class="home-radar-inspector__note"><b>Output:</b> <span id="radarInspectorOutput">Reliable laboratory evidence that can move into surveillance, programme decisions and quality-improvement cycles.</span></p>
           </div>
-          <p class="mt-4 text-[11px] leading-relaxed text-slate-400 font-mono">Relative emphasis only. The radar visualises the shape of Valentine Golden Ghanem's current portfolio; it is not a scored proficiency test.</p>
+          <p class="mt-4 text-[11px] leading-relaxed text-slate-400 font-mono">The radar shows relative emphasis across Valentine Golden Ghanem's current work. It is not a proficiency score.</p>
         </div>
       </div>
       <div class="home-expertise-cards lg:col-span-6 reveal grid sm:grid-cols-2 gap-5">

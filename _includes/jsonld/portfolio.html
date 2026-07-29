@@ -1,7 +1,3 @@
-{%- assign portfolio_items = "" | split: "," -%}
-{%- for item in site.data.portfolio.capstone_projects -%}{%- assign portfolio_items = portfolio_items | push: item -%}{%- endfor -%}
-{%- for item in site.data.portfolio.data_visualisations -%}{%- assign portfolio_items = portfolio_items | push: item -%}{%- endfor -%}
-{%- for item in site.data.portfolio.research_projects -%}{%- assign portfolio_items = portfolio_items | push: item -%}{%- endfor -%}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -14,44 +10,81 @@
       "description": {{ page.description | strip_newlines | jsonify }},
       "isPartOf": { "@id": "{{ site.url }}/#website" },
       "about": { "@id": "{{ site.url }}/#person" },
-      "mainEntity": { "@id": "{{ page.url | absolute_url }}#project-list" },
+      "mainEntity": { "@id": "{{ page.url | absolute_url }}#repository-list" },
       "inLanguage": "en"
     },
     {
       "@type": "ItemList",
-      "@id": "{{ page.url | absolute_url }}#project-list",
-      "name": "Selected projects and analytical systems by Valentine Golden Ghanem",
-      "numberOfItems": {{ portfolio_items.size }},
+      "@id": "{{ page.url | absolute_url }}#repository-list",
+      "name": "Public research repositories and analytical systems by Valentine Golden Ghanem",
+      "numberOfItems": {{ site.data.portfolio.repositories.size }},
       "itemListOrder": "https://schema.org/ItemListOrderAscending",
       "itemListElement": [
-        {%- for item in portfolio_items -%}
+        {%- for item in site.data.portfolio.repositories -%}
         {
           "@type": "ListItem",
           "position": {{ forloop.index }},
-          "item": { "@id": "{{ page.url | absolute_url }}#project-{{ item.title | slugify }}" }
+          "item": { "@id": "https://github.com/valentineghanem-bit/{{ item.repo }}#software" }
         }{% unless forloop.last %},{% endunless %}
         {%- endfor -%}
       ]
     },
-    {%- for item in portfolio_items %}
+    {%- for item in site.data.portfolio.repositories %}
     {
-      "@type": "CreativeWork",
-      "@id": "{{ page.url | absolute_url }}#project-{{ item.title | slugify }}",
+      "@type": "SoftwareSourceCode",
+      "@id": "https://github.com/valentineghanem-bit/{{ item.repo }}#software",
+      "url": "https://github.com/valentineghanem-bit/{{ item.repo }}",
+      "codeRepository": "https://github.com/valentineghanem-bit/{{ item.repo }}",
       "name": {{ item.title | jsonify }},
       "description": {{ item.summary | jsonify }},
       "creator": { "@id": "{{ site.url }}/#person" },
       "author": { "@id": "{{ site.url }}/#person" },
-      "mainEntityOfPage": { "@id": "{{ page.url | absolute_url }}#webpage" }{% if item.context %},
-      "genre": {{ item.context | jsonify }}{% endif %}{% if item.doi_url %},
-      "identifier": {{ item.doi_url | jsonify }}{% endif %}{% if item.links and item.links.size > 0 %},
-      "url": {{ item.links.first.url | jsonify }},
-      "sameAs": [
-        {%- for link in item.links -%}
-        {{ link.url | jsonify }}{% unless forloop.last %},{% endunless %}
-        {%- endfor -%}
+      "applicationCategory": "Epidemiology research software",
+      "keywords": {{ item.methods | jsonify }},
+      "spatialCoverage": {{ item.scale | jsonify }},
+      "mainEntityOfPage": { "@id": "{{ page.url | absolute_url }}#webpage" }{% if item.dashboard_path or item.poster_path %},
+      "hasPart": [
+        {% if item.dashboard_path %}
+        {
+          "@type": "WebApplication",
+          "name": {{ item.title | append: " interactive dashboard" | jsonify }},
+          "url": "https://htmlpreview.github.io/?https://github.com/valentineghanem-bit/{{ item.repo }}/blob/main/{{ item.dashboard_path }}",
+          "creator": { "@id": "{{ site.url }}/#person" }
+        }{% if item.poster_path %},{% endif %}
+        {% endif %}
+        {% if item.poster_path %}
+        {
+          "@type": "CreativeWork",
+          "name": {{ item.title | append: " research poster" | jsonify }},
+          "url": "https://htmlpreview.github.io/?https://github.com/valentineghanem-bit/{{ item.repo }}/blob/main/{{ item.poster_path }}",
+          "creator": { "@id": "{{ site.url }}/#person" }
+        }
+        {% endif %}
       ]{% endif %}
     }{% unless forloop.last %},{% endunless %}
     {%- endfor -%},
+    {
+      "@type": "ItemList",
+      "@id": "{{ page.url | absolute_url }}#practice-archive",
+      "name": "Applied project and laboratory research archive of Valentine Golden Ghanem",
+      "numberOfItems": {{ site.data.portfolio.practice_archive.size }},
+      "itemListElement": [
+        {%- for item in site.data.portfolio.practice_archive -%}
+        {
+          "@type": "ListItem",
+          "position": {{ forloop.index }},
+          "item": {
+            "@type": "CreativeWork",
+            "@id": "{{ page.url | absolute_url }}#archive-{{ item.title | slugify }}",
+            "name": {{ item.title | jsonify }},
+            "description": {{ item.summary | jsonify }},
+            "genre": {{ item.category | jsonify }},
+            "creator": { "@id": "{{ site.url }}/#person" }
+          }
+        }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    },
     {% include jsonld/person-node.html %},
     {% include jsonld/organization-node.html %}
   ]

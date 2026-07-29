@@ -1,87 +1,234 @@
 ---
 layout: v3
 permalink: /portfolio/
-title: "Portfolio"
-description: "Applied academic and professional projects by Valentine Golden Ghanem in biomedical research, public health data analytics, dashboard development and machine learning."
+title: "Research Systems and Applied Projects"
+description: "Research repositories, dashboards, models, analytical pipelines and applied projects by Valentine Golden Ghanem."
 jsonld: portfolio
+extra_css: ["portfolio-v2.css"]
 extra_js: ["portfolio-fx.js"]
 ---
 {% include nav-v3.html %}
-<section class="portfolio-v2 v3-page-canvas v3-page-canvas--portfolio pt-40 pb-24 px-6" data-portfolio-root data-nav-marker="00" data-nav-label="Portfolio" data-nav-colour="#FBBF24">
-  <div class="max-w-[1800px] mx-auto">
-    <p class="font-mono text-xs text-slate-400 mb-6"><a href="{{ '/' | relative_url }}" class="hover:text-cyan-500">Home</a> / Portfolio</p>
-    <h1 class="text-4xl sm:text-5xl md:text-6xl font-black font-heading tracking-tight text-slate-900 dark:text-white mb-5">Portfolio</h1>
-    <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mb-10">
-      Selected academic and professional projects in laboratory science, data science, spatial epidemiology and public health.
-    </p>
+{% assign repositories = site.data.portfolio.repositories %}
+{% assign dashboard_count = 0 %}
+{% assign poster_count = 0 %}
+{% for project in repositories %}
+  {% if project.dashboard_path %}{% assign dashboard_count = dashboard_count | plus: 1 %}{% endif %}
+  {% if project.poster_path %}{% assign poster_count = poster_count | plus: 1 %}{% endif %}
+{% endfor %}
+{% assign infectious_count = repositories | where: "domain", "infectious-disease" | size %}
+{% assign maternal_count = repositories | where: "domain", "maternal-child" | size %}
+{% assign systems_count = repositories | where: "domain", "health-systems" | size %}
+{% assign ncd_count = repositories | where: "domain", "forecasting-ncd" | size %}
+{% assign synthesis_count = repositories | where: "domain", "evidence-synthesis" | size %}
+{% assign initial_project = repositories | first %}
 
-    <div class="filter-chips flex flex-wrap gap-2.5 mb-14">
-      <button type="button" class="filter-chip is-active px-5 py-2 rounded-full border border-slate-200 dark:border-slate-700 text-xs font-bold uppercase tracking-wide text-slate-600 dark:text-slate-300 transition-colors" data-filter="all">All projects</button>
-      <button type="button" class="filter-chip px-5 py-2 rounded-full border border-slate-200 dark:border-slate-700 text-xs font-bold uppercase tracking-wide text-slate-600 dark:text-slate-300 transition-colors" data-filter="capstone">Capstone</button>
-      <button type="button" class="filter-chip px-5 py-2 rounded-full border border-slate-200 dark:border-slate-700 text-xs font-bold uppercase tracking-wide text-slate-600 dark:text-slate-300 transition-colors" data-filter="dataviz">Data visualisations</button>
-      <button type="button" class="filter-chip px-5 py-2 rounded-full border border-slate-200 dark:border-slate-700 text-xs font-bold uppercase tracking-wide text-slate-600 dark:text-slate-300 transition-colors" data-filter="research">Research</button>
-    </div>
-
-    <div data-portfolio-section="capstone">
-      <div class="section__ghost-wrap">
-        <span class="section__ghost-num">01</span>
-        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-2">01 - Capstone practice</h2>
-        <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">Capstone projects</h3>
-      </div>
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-16">
-        {% for p in site.data.portfolio.capstone_projects %}
-        <div class="card v2-spotlight v2-bento-tint relative overflow-hidden rounded-2xl p-6">
-          <h4 class="font-bold font-heading text-lg text-slate-900 dark:text-white mb-2">{{ p.title }}</h4>
-          <p class="text-xs font-mono text-slate-400 mb-3">{{ p.context }}</p>
-          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{{ p.summary }}</p>
-          <div class="link-row flex flex-wrap gap-2.5 mt-4">
-            {% for l in p.links %}<a href="{{ l.url }}" target="_blank" rel="noopener" class="px-3.5 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:border-cyan-500 hover:text-cyan-500 transition-colors">{{ l.label }}</a>{% endfor %}
-          </div>
+<main class="portfolio-v3" id="main-content" data-portfolio-v3>
+  <section class="portfolio-hero"
+           data-nav-marker="00"
+           data-nav-label="Systems"
+           data-nav-colour="#FBBF24"
+           aria-labelledby="portfolioHeroTitle">
+    <div class="portfolio-v3__inner portfolio-hero__inner">
+      <div class="portfolio-hero__copy">
+        <p class="portfolio-v3__breadcrumb"><a href="{{ '/' | relative_url }}">Home</a> / Portfolio</p>
+      <p class="portfolio-v3__eyebrow">Repositories / dashboards / models / reproducible analysis</p>
+      <h1 id="portfolioHeroTitle">Research repositories built for <span>inspection and reuse.</span></h1>
+        <p class="portfolio-hero__lede">
+          Valentine Golden Ghanem's portfolio documents the progression from an
+          epidemiological question to its dataset, reproducible analysis, spatial
+          methods, model, dashboard and public code repository. Peer-reviewed
+          articles and preprints are catalogued separately in the
+          <a href="{{ '/publications/' | relative_url }}">academic repository</a>.
+        </p>
+        <div class="portfolio-hero__actions">
+          <a href="#repository-observatory">
+            <i class="fa-brands fa-github" aria-hidden="true"></i>
+            Inspect repositories
+          </a>
+          <a href="#practice-archive" class="portfolio-hero__action--secondary">
+            <i class="fa-solid fa-box-archive" aria-hidden="true"></i>
+            View additional research
+          </a>
         </div>
+        <dl class="portfolio-hero__metrics" aria-label="Portfolio artifact summary">
+          <div><dt>{{ repositories.size }}</dt><dd>research repositories</dd></div>
+          <div><dt>{{ dashboard_count }}</dt><dd>interactive dashboards</dd></div>
+          <div><dt>{{ poster_count }}</dt><dd>research posters</dd></div>
+          <div><dt>{{ site.data.portfolio.practice_archive.size }}</dt><dd>additional research records</dd></div>
+        </dl>
+      </div>
+
+      <aside class="portfolio-hero__domains" aria-labelledby="portfolioDomainsTitle">
+        <header>
+          <p>Research domains</p>
+          <h2 id="portfolioDomainsTitle">Browse the portfolio by health question.</h2>
+        </header>
+        <div>
+          <button type="button" data-portfolio-domain-jump="infectious-disease" style="--domain-accent:#F87171">
+            <span>01</span><strong>Infectious disease</strong><small>{{ infectious_count }} repositories</small><i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </button>
+          <button type="button" data-portfolio-domain-jump="maternal-child" style="--domain-accent:#34D399">
+            <span>02</span><strong>Maternal &amp; child health</strong><small>{{ maternal_count }} repositories</small><i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </button>
+          <button type="button" data-portfolio-domain-jump="health-systems" style="--domain-accent:#22D3EE">
+            <span>03</span><strong>Health systems &amp; equity</strong><small>{{ systems_count }} repositories</small><i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </button>
+          <button type="button" data-portfolio-domain-jump="forecasting-ncd" style="--domain-accent:#FBBF24">
+            <span>04</span><strong>Forecasting &amp; NCDs</strong><small>{{ ncd_count }} repositories</small><i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </button>
+          <button type="button" data-portfolio-domain-jump="evidence-synthesis" style="--domain-accent:#A78BFA">
+            <span>05</span><strong>Evidence synthesis</strong><small>{{ synthesis_count }} repositor{% if synthesis_count == 1 %}y{% else %}ies{% endif %}</small><i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </button>
+        </div>
+        <p>Counts refer to public repositories, not publications.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section id="repository-observatory"
+           class="portfolio-observatory"
+           data-nav-marker="01"
+           data-nav-label="Repositories"
+           data-nav-colour="#34D399"
+           aria-labelledby="portfolioObservatoryTitle">
+    <div class="portfolio-v3__inner">
+      <header class="portfolio-v3__section-header">
+        <span aria-hidden="true">01</span>
+        <p>01 - Public repository index</p>
+        <h2 id="portfolioObservatoryTitle">Repositories, models and decision-support outputs</h2>
+        <em>
+          Search the public research-repository inventory. Select a record to review
+          its methods and open the repository, dashboard or poster.
+        </em>
+      </header>
+
+      <div class="portfolio-observatory__controls">
+        <label for="portfolioSearch">Search repositories</label>
+        <div class="portfolio-observatory__search">
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          <input id="portfolioSearch" type="search" placeholder="Search HIV, LISA, forecasting, equity..." autocomplete="off">
+          <button type="button" data-portfolio-reset aria-label="Clear portfolio search" title="Clear search">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="portfolio-observatory__filters" role="group" aria-label="Project domain">
+          <button type="button" data-portfolio-domain="all" aria-pressed="true">All domains</button>
+          <button type="button" data-portfolio-domain="infectious-disease" aria-pressed="false">Infectious disease</button>
+          <button type="button" data-portfolio-domain="maternal-child" aria-pressed="false">Maternal &amp; child</button>
+          <button type="button" data-portfolio-domain="health-systems" aria-pressed="false">Systems &amp; equity</button>
+          <button type="button" data-portfolio-domain="forecasting-ncd" aria-pressed="false">Forecasting &amp; NCDs</button>
+          <button type="button" data-portfolio-domain="evidence-synthesis" aria-pressed="false">Evidence synthesis</button>
+        </div>
+        <div class="portfolio-observatory__artifacts" role="group" aria-label="Available artifact">
+          <button type="button" data-portfolio-artifact="all" aria-pressed="true">All artifacts</button>
+          <button type="button" data-portfolio-artifact="dashboard" aria-pressed="false">Dashboard</button>
+          <button type="button" data-portfolio-artifact="poster" aria-pressed="false">Poster</button>
+          <button type="button" data-portfolio-artifact="repository" aria-pressed="false">Repository</button>
+        </div>
+        <p data-portfolio-status aria-live="polite">{{ repositories.size }} repositories shown</p>
+      </div>
+
+      <div class="portfolio-observatory__workspace">
+        <div class="portfolio-observatory__ledger" role="list" aria-label="Research repositories">
+          {% for project in repositories %}
+          <button type="button"
+                  role="listitem"
+                  class="portfolio-project{% if forloop.first %} is-active{% endif %}"
+                  data-portfolio-project
+                  data-project-title="{{ project.title | escape }}"
+                  data-project-repo="{{ project.repo }}"
+                  data-project-domain="{{ project.domain }}"
+                  data-project-domain-label="{{ project.domain_label | escape }}"
+                  data-project-scale="{{ project.scale | escape }}"
+                  data-project-summary="{{ project.summary | escape }}"
+                  data-project-methods="{{ project.methods | join: ' | ' | escape }}"
+                  data-project-dashboard="{{ project.dashboard_path | default: '' }}"
+                  data-project-poster="{{ project.poster_path | default: '' }}"
+                  aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">
+            <span class="portfolio-project__index">{{ forloop.index | prepend: "0" | slice: -2, 2 }}</span>
+            <span class="portfolio-project__body">
+              <strong>{{ project.title }}</strong>
+              <small>{{ project.domain_label }} / {{ project.scale }}</small>
+            </span>
+            <span class="portfolio-project__artifacts" aria-label="Available artifacts">
+              <i class="fa-brands fa-github" title="Repository"></i>
+              {% if project.dashboard_path %}<i class="fa-solid fa-chart-line" title="Dashboard"></i>{% endif %}
+              {% if project.poster_path %}<i class="fa-regular fa-image" title="Poster"></i>{% endif %}
+            </span>
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </button>
+          {% endfor %}
+        </div>
+
+        <aside class="portfolio-inspector" aria-live="polite" aria-labelledby="portfolioInspectorTitle">
+          <p>Selected repository</p>
+          <div class="portfolio-inspector__number" data-project-number>01</div>
+          <span data-project-domain-label>{{ initial_project.domain_label }}</span>
+          <h3 id="portfolioInspectorTitle" data-project-title>{{ initial_project.title }}</h3>
+          <p data-project-summary>{{ initial_project.summary }}</p>
+          <dl>
+            <div><dt>Geographic or analytical scale</dt><dd data-project-scale>{{ initial_project.scale }}</dd></div>
+            <div><dt>Methods</dt><dd data-project-methods>{{ initial_project.methods | join: " / " }}</dd></div>
+            <div><dt>Repository</dt><dd data-project-repo>{{ initial_project.repo }}</dd></div>
+          </dl>
+          <div class="portfolio-inspector__actions">
+            <a href="https://github.com/valentineghanem-bit/{{ initial_project.repo }}" data-project-repository target="_blank" rel="noopener noreferrer">
+              <i class="fa-brands fa-github" aria-hidden="true"></i> Open repository
+            </a>
+            <a href="https://htmlpreview.github.io/?https://github.com/valentineghanem-bit/{{ initial_project.repo }}/blob/main/{{ initial_project.dashboard_path }}"
+               data-project-dashboard target="_blank" rel="noopener noreferrer">
+              <i class="fa-solid fa-chart-line" aria-hidden="true"></i> Launch dashboard
+            </a>
+            <a href="https://htmlpreview.github.io/?https://github.com/valentineghanem-bit/{{ initial_project.repo }}/blob/main/{{ initial_project.poster_path }}"
+               data-project-poster target="_blank" rel="noopener noreferrer">
+              <i class="fa-regular fa-image" aria-hidden="true"></i> View research poster
+            </a>
+          </div>
+          <p class="portfolio-inspector__note">
+            Code and visual outputs should be read alongside the methods, limitations
+            and interpretation reported in the associated scholarly record.
+          </p>
+        </aside>
+      </div>
+      <p class="portfolio-observatory__empty" data-portfolio-empty hidden>No repositories match the current search and filters.</p>
+    </div>
+  </section>
+
+  <section id="practice-archive"
+           class="portfolio-archive"
+           data-nav-marker="02"
+           data-nav-label="Archive"
+           data-nav-colour="#A78BFA"
+           aria-labelledby="portfolioArchiveTitle">
+    <div class="portfolio-v3__inner">
+      <header class="portfolio-v3__section-header portfolio-v3__section-header--dark">
+        <span aria-hidden="true">02</span>
+        <p>02 - Additional research</p>
+        <h2 id="portfolioArchiveTitle">Capstone and laboratory research</h2>
+        <em>
+          These projects predate the current repository structure or fall outside
+          the Ghana district-research series. They remain part of the professional record.
+        </em>
+      </header>
+      <div class="portfolio-archive__grid">
+        {% for project in site.data.portfolio.practice_archive %}
+        <article>
+          <p>{{ project.category }}</p>
+          <h3>{{ project.title }}</h3>
+          <span>{{ project.context }}</span>
+          <p>{{ project.summary }}</p>
+          <div>
+            {% for link in project.links %}
+            <a href="{{ link.url }}" {% if link.url contains "http" %}target="_blank" rel="noopener noreferrer"{% endif %}>
+              {{ link.label }} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </a>
+            {% endfor %}
+          </div>
+        </article>
         {% endfor %}
       </div>
     </div>
-
-    <div data-portfolio-section="dataviz">
-      <div class="section__ghost-wrap">
-        <span class="section__ghost-num">02</span>
-        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-2">02 - Data visualisation</h2>
-        <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">Data visualisations</h3>
-      </div>
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-16">
-        {% for p in site.data.portfolio.data_visualisations %}
-        <div class="card v2-spotlight v2-bento-tint relative overflow-hidden rounded-2xl p-6">
-          <h4 class="font-bold font-heading text-lg text-slate-900 dark:text-white mb-3">{{ p.title }}</h4>
-          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{{ p.summary }}</p>
-          <div class="link-row flex flex-wrap gap-2.5 mt-4">
-            {% if p.doi_url %}<a href="{{ p.doi_url }}" target="_blank" rel="noopener" class="px-3.5 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:border-violet-500 hover:text-violet-500 transition-colors">DOI</a>{% endif %}
-            {% for l in p.links %}<a href="{{ l.url }}" target="_blank" rel="noopener" class="px-3.5 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:border-violet-500 hover:text-violet-500 transition-colors">{{ l.label }}</a>{% endfor %}
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-
-    <div data-portfolio-section="research">
-      <div class="section__ghost-wrap">
-        <span class="section__ghost-num">03</span>
-        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-amber-500 mb-2">03 - Research systems</h2>
-        <h3 class="text-2xl font-black font-heading text-slate-900 dark:text-white mb-6">Research projects</h3>
-      </div>
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {% for p in site.data.portfolio.research_projects %}
-        <div class="card v2-spotlight v2-bento-tint relative overflow-hidden rounded-2xl p-6">
-          <h4 class="font-bold font-heading text-lg text-slate-900 dark:text-white mb-2">{{ p.title }}</h4>
-          <p class="text-xs font-mono text-slate-400 mb-3">{{ p.context }}</p>
-          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{{ p.summary }}</p>
-          <div class="link-row flex flex-wrap gap-2.5 mt-4">
-            {% for l in p.links %}<a href="{{ l.url }}" target="_blank" rel="noopener" class="px-3.5 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:border-amber-500 hover:text-amber-500 transition-colors">{{ l.label }}</a>{% endfor %}
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
+</main>
 
 {% include footer-v3.html %}
