@@ -11,6 +11,11 @@
     - "CART"
     - "261 districts"
   caveat: "District-level ecological analysis; associations do not establish individual-level causation."
+  links:
+    - label: "Code repository"
+      url: "https://github.com/valentineghanem-bit/ghana-health-insurance-analysis"
+    - label: "Interactive dashboard"
+      url: "https://htmlpreview.github.io/?https://github.com/valentineghanem-bit/ghana-health-insurance-analysis/blob/main/dashboard/NHIS_OOP_Ghana_Dashboard.html"
 
 - title: "Spatial Machine Learning and Longitudinal Analysis of Skilled Antenatal Care Access and Fertility-Related Inequities in Ghana (1988-2022)"
   journal: "medRxiv"
@@ -28,6 +33,10 @@
   links:
     - label: "Code repository"
       url: "https://github.com/valentineghanem-bit/anc-fertility-ghana-inequities"
+    - label: "Interactive dashboard"
+      url: "https://htmlpreview.github.io/?https://github.com/valentineghanem-bit/anc-fertility-ghana-inequities/blob/main/dashboard/ANC_Fertility_Dashboard_Ghana.html"
+    - label: "Archived software"
+      url: "https://doi.org/10.5281/zenodo.21340350"
 
 - title: "HIV Prognosis in Sub-Saharan Africa: A Narrative Review of Mortality Trends, Structural Determinants, and Policy Implications"
   journal: "International Journal of Medical and Health Research"
@@ -56,6 +65,13 @@
     - "XGBoost"
     - "SHAP"
   caveat: "Ecological regional analysis; model outputs support interpretation and do not predict individual HIV risk."
+  links:
+    - label: "Code repository"
+      url: "https://github.com/valentineghanem-bit/hiv-spatial-epidemiology-ghana"
+    - label: "Interactive dashboard"
+      url: "https://htmlpreview.github.io/?https://github.com/valentineghanem-bit/hiv-spatial-epidemiology-ghana/blob/main/dashboard/HIV_Spatial_Ghana_Dashboard.html"
+    - label: "Archived software"
+      url: "https://doi.org/10.5281/zenodo.21341247"
 
 - title: "Forecasting HIV/AIDS Incidence in Ghana: A Retrospective Observational Study Using Ensemble Machine Learning Models"
   journal: "Research Square"
@@ -70,6 +86,11 @@
     - "Time series"
     - "SHAP"
   caveat: "Preprint under peer review; forecasts depend on historical regional data quality and require continuing validation."
+  links:
+    - label: "Code and model files"
+      url: "https://github.com/vghanem/ghana_disease_dashboard"
+    - label: "Launch dashboard"
+      url: "https://dashboardapppy-3ryuuaxnlmrsrrkqoxpcfw.streamlit.app/"
 
 - title: "Analysis and Prediction of Infectious Disease Trends in Ghana: A Machine Learning Approach, with Emphasis on HIV/AIDS"
   journal: "Zenodo data and software repository"

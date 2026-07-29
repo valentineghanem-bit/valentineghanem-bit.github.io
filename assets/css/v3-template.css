@@ -4109,14 +4109,13 @@ html[data-v2-theme="dim"] .v3-scope .operations-strip small { color: #CBD5E1; }
   }
 }
 
-/* Canonical numbered-section heading. This is the site-wide editorial
-   relationship established on About: ghost numeral, descriptive kicker,
-   title and concise descriptor. Page layouts remain otherwise independent. */
+/* Canonical numbered-section heading. Titles and descriptors remain in normal
+   flow at every line count; page layouts remain otherwise independent. */
 .v3-scope .section__ghost-wrap {
   position: relative;
   isolation: isolate;
-  min-height: 170px;
-  padding: 30px 0 0 74px;
+  min-height: 0;
+  padding: 30px 0 12px 74px;
   text-align: left;
 }
 
@@ -4152,9 +4151,13 @@ html[data-v2-theme="dim"] .v3-scope .operations-strip small { color: #CBD5E1; }
 
 .v3-scope .section__ghost-wrap + p {
   max-width: 72ch;
-  margin-top: -42px;
+  margin-top: 18px;
   padding-left: 74px;
   text-align: left;
+}
+
+.v3-scope .home-section-heading > .section__ghost-wrap + p {
+  margin-top: 0;
 }
 
 .v3-scope #about > div > .reveal:first-child,
@@ -4179,8 +4182,8 @@ html[data-v2-theme="dim"] .v3-scope .section__ghost-wrap .section__ghost-num,
 
 @media (max-width: 720px) {
   .v3-scope .section__ghost-wrap {
-    min-height: 132px;
-    padding: 24px 0 0 38px;
+    min-height: 0;
+    padding: 24px 0 10px 38px;
   }
 
   .v3-scope .section__ghost-wrap .section__ghost-num {
@@ -4190,7 +4193,11 @@ html[data-v2-theme="dim"] .v3-scope .section__ghost-wrap .section__ghost-num,
   }
 
   .v3-scope .section__ghost-wrap + p {
-    margin-top: -24px;
+    margin-top: 14px;
     padding-left: 38px;
+  }
+
+  .v3-scope .home-section-heading > .section__ghost-wrap + p {
+    margin-top: 0;
   }
 }

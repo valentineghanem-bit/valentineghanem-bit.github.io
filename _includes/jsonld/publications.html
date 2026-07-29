@@ -45,11 +45,20 @@
       "citation": {{ pub.citation | jsonify }},
       "creativeWorkStatus": {{ pub.status | jsonify }},
       "keywords": {{ pub.methods | jsonify }},
+      {% if pub.record_type == "repository" %}
+      "includedInDataCatalog": { "@type": "DataCatalog", "name": {{ pub.journal | jsonify }} },
+      {% else %}
       "isPartOf": { "@type": "Periodical", "name": {{ pub.journal | jsonify }} },
+      {% endif %}
       "mainEntityOfPage": { "@id": "{{ page.url | absolute_url }}#webpage" }{% if pub.links and pub.links.size > 0 %},
-      "sameAs": [
+      "hasPart": [
         {%- for link in pub.links -%}
-        {{ link.url | jsonify }}{% unless forloop.last %},{% endunless %}
+        {
+          "@type": {% if link.label contains "dashboard" or link.label contains "Dashboard" %}"WebApplication"{% else %}"SoftwareSourceCode"{% endif %},
+          "name": {{ link.label | jsonify }},
+          "url": {{ link.url | jsonify }},
+          "creator": { "@id": "{{ site.url }}/#person" }
+        }{% unless forloop.last %},{% endunless %}
         {%- endfor -%}
       ]{% endif %}
     }{% unless forloop.last %},{% endunless %}

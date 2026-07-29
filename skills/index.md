@@ -21,6 +21,12 @@ extra_js: ["skills-v4.js"]
            data-nav-label="Top"
            data-nav-colour="#22D3EE"
            aria-labelledby="skillsHeroTitle">
+    <img class="skills-hero__background"
+         src="{{ '/assets/img/gallery/portraits/outdoor-portrait-green-pattern.jpg' | relative_url }}"
+         alt="Valentine Golden Ghanem reviewing laboratory information on a tablet beside a clinical analyser"
+         width="1448"
+         height="1086"
+         fetchpriority="high">
     <div class="skills-hero__inner">
       <div class="skills-hero__copy">
         <p class="skills-v4__breadcrumb"><a href="{{ '/' | relative_url }}">Home</a> / Skills</p>
