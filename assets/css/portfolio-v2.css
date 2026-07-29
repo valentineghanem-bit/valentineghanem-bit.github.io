@@ -746,6 +746,36 @@
   outline: 0;
 }
 
+@media (min-width: 1101px) {
+  .v3-scope .portfolio-hero__inner {
+    grid-template-columns: minmax(0, 1.2fr) minmax(420px, 0.8fr);
+    gap: 48px;
+  }
+
+  .v3-scope .portfolio-hero__background {
+    object-position: 56% 28%;
+  }
+
+  .v3-scope .portfolio-hero__domains {
+    width: min(100%, 520px);
+    justify-self: end;
+    transform: translateY(72px);
+  }
+
+  .v3-scope .portfolio-hero__domains header {
+    padding: 18px 20px 14px;
+  }
+
+  .v3-scope .portfolio-hero__domains button {
+    min-height: 64px;
+    padding: 8px 16px;
+  }
+
+  .v3-scope .portfolio-hero__domains > p {
+    padding: 10px 16px;
+  }
+}
+
 @media (max-width: 1100px) {
   .v3-scope .portfolio-hero {
     min-height: 0;

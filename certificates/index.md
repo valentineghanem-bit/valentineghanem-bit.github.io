@@ -28,18 +28,18 @@ jsonld: "certificates"
            data-nav-colour="#F87171"
            aria-labelledby="certificatesHeroTitle">
     <a class="certificates-hero__document"
-       href="{{ '/assets/files/cpd/2021-annual-congress.pdf' | relative_url }}"
+       href="{{ '/assets/files/cpd/2026-gamls-greater-accra-categories-abc.pdf' | relative_url }}"
        target="_blank"
        rel="noopener"
-       aria-label="Open the 2021 GAMLS Annual National Congress certificate awarded to Valentine Golden Ghanem">
-      <img src="{{ '/assets/img/certificates/annual-congress-2021-certificate.webp' | relative_url }}"
-           alt="Certificate of participation awarded to Valentine Golden Ghanem for the 2021 GAMLS Annual National Congress and Scientific Conference"
-           width="1300"
-           height="732"
+       aria-label="Open the 2026 GAMLS Greater Accra continuing professional development certificate awarded to Valentine Golden Ghanem">
+      <img src="{{ '/assets/img/certificates/gamls-greater-accra-2026-cpd-certificate.webp' | relative_url }}"
+           alt="Twenty-three-point 2026 continuing professional development certificate awarded to Valentine Golden Ghanem by the Ghana Association of Medical Laboratory Scientists, Greater Accra Region"
+           width="1400"
+           height="788"
            fetchpriority="high">
       <span class="certificates-hero__document-caption">
         <b>Source document</b>
-        <span>GAMLS Annual National Congress / 2021 / 10 CPD credits</span>
+        <span>GAMLS Greater Accra / 2026 / 23 CPD points</span>
       </span>
     </a>
 
@@ -50,7 +50,7 @@ jsonld: "certificates"
         <h1 id="certificatesHeroTitle">Continuing professional <span>development.</span></h1>
         <p class="certificates-hero__summary">
           Valentine Golden Ghanem's archive records congresses, technical training
-          and accredited professional learning completed from 2020 to 2025. Each
+          and accredited professional learning completed from 2020 to 2026. Each
           entry identifies its provider, subject, date and available certificate.
         </p>
         <div class="certificates-hero__actions">
@@ -59,7 +59,7 @@ jsonld: "certificates"
             Browse {{ cpd_count }} records
           </a>
           <a class="certificates-action--secondary"
-             href="{{ '/assets/files/cpd/2021-annual-congress.pdf' | relative_url }}"
+             href="{{ '/assets/files/cpd/2026-gamls-greater-accra-categories-abc.pdf' | relative_url }}"
              target="_blank"
              rel="noopener">
             <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
@@ -101,8 +101,8 @@ jsonld: "certificates"
         <p class="certificates-section-kicker" id="cpd">01 - Evidence archive</p>
         <h2 id="cpdArchiveTitle">CPD records and source certificates</h2>
         <p class="certificates-section-summary">
-          Search by subject, provider or year. Source certificates are distinguished
-          from records whose supporting file has not yet been verified.
+          Search by subject, provider or year. Every record includes a concise
+          training brief and a linked source certificate.
         </p>
       </div>
 
@@ -123,14 +123,6 @@ jsonld: "certificates"
             <select id="cpd-year">
               <option value="all">All years</option>
               {% for yr in site.data.cpd %}<option value="{{ yr.year }}">{{ yr.year }}</option>{% endfor %}
-            </select>
-          </div>
-          <div class="cpd-control">
-            <label for="cpd-source">Evidence</label>
-            <select id="cpd-source">
-              <option value="all">All records</option>
-              <option value="available">Source available</option>
-              <option value="pending">Verification pending</option>
             </select>
           </div>
           <button class="cpd-register__reset" type="reset">
@@ -159,7 +151,7 @@ jsonld: "certificates"
             {% for e in yr.entries %}
                 {%- assign record_position = record_position | plus: 1 -%}
                 {%- capture record_id -%}cpd-record-{{ yr.year }}-{{ forloop.index }}{%- endcapture -%}
-                {%- capture record_search -%}{{ e.title }} {{ e.provider }} {{ e.issuing_body }} {{ e.topics }}{%- endcapture -%}
+                {%- capture record_search -%}{{ e.title }} {{ e.provider }} {{ e.issuing_body }} {{ e.brief }} {{ e.topics }}{%- endcapture -%}
                 <li data-cpd-record
                     data-year="{{ yr.year }}"
                     data-source="{% if e.certificate_url %}available{% else %}pending{% endif %}"
@@ -176,7 +168,8 @@ jsonld: "certificates"
                         <span>{{ e.delivery_mode }}</span>
                       </span>
                       <strong>{{ e.title }}</strong>
-                      <span>{{ e.issuing_body }}</span>
+                      <span class="cpd-record__issuer">{{ e.issuing_body }}</span>
+                      <span class="cpd-record__brief">{{ e.brief }}</span>
                     </span>
                     <span class="cpd-record__source cpd-record__source--{% if e.certificate_url %}available{% else %}pending{% endif %}">
                       <i class="fa-solid {% if e.certificate_url %}fa-file-circle-check{% else %}fa-clock{% endif %}" aria-hidden="true"></i>
@@ -221,9 +214,14 @@ jsonld: "certificates"
                     </div>
                   </dl>
 
+                  <div class="cpd-detail__brief">
+                    <p>Training brief</p>
+                    <p>{{ e.brief }}</p>
+                  </div>
+
                   {% if e.topics %}
                   <div class="cpd-detail__topics">
-                    <p>Documented subject matter</p>
+                    <p>Programme coverage</p>
                     <p>{{ e.topics }}</p>
                   </div>
                   {% endif %}
@@ -261,9 +259,9 @@ jsonld: "certificates"
           <div>
             <strong>Archive provenance</strong>
             <p>
-              Fifteen records link to locally preserved certificate files. The 2025
-              entry remains indexed, but its source file is withheld until it can be
-              matched to the correct certificate.
+              All {{ cpd_count }} indexed records link to locally preserved source
+              certificates. The 2025 and 2026 entries were verified against the
+              supplied GAMLS Greater Accra certificates.
             </p>
           </div>
         </aside>

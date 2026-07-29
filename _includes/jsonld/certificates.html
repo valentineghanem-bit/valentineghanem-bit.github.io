@@ -35,7 +35,7 @@
             "@type": "EducationalOccupationalCredential",
             "@id": "{% if record.certificate_url %}{{ record.certificate_url | absolute_url }}#credential{% else %}{{ page.url | absolute_url }}#cpd-{{ year_group.year }}-{{ forloop.index }}{% endif %}",
             "name": {{ record.title | jsonify }},
-            "description": {{ record.topics | default: record.provider | jsonify }},
+            "description": {{ record.brief | default: record.topics | default: record.provider | jsonify }},
             "credentialCategory": "Continuing professional development record",
             "dateCreated": {{ year_group.year | append: "" | jsonify }},
             "recognizedBy": {
@@ -45,7 +45,8 @@
             "about": { "@id": "{{ site.url }}/#person" },
             "educationalLevel": "Continuing professional development",
             "learningResourceType": {{ record.delivery_mode | jsonify }}{% if record.certificate_url %},
-            "url": {{ record.certificate_url | absolute_url | jsonify }}{% endif %}
+            "url": {{ record.certificate_url | absolute_url | jsonify }}{% endif %}{% if record.external_url %},
+            "sameAs": {{ record.external_url | jsonify }}{% endif %}
           }
         }{% unless record_position == cpd_count %},{% endunless %}
           {%- endfor -%}
