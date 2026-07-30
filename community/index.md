@@ -34,7 +34,7 @@ extra_js: ["community-fx.js"]
           </a>
           <a class="community-action community-action--secondary" href="{{ '/map/' | relative_url }}">
             <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
-            Open field map
+            Open health atlas
           </a>
         </div>
         <dl class="community-hero__metrics" aria-label="Community record summary">

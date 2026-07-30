@@ -1,0 +1,977 @@
+.map9 {
+  --map9-dark: #07101f;
+  --map9-ink: #0f172a;
+  --map9-muted: #64748b;
+  --map9-line: #d7e0eb;
+  --map9-mint: #34d399;
+  --map9-cyan: #22d3ee;
+  --map9-yellow: #fbbf24;
+  --map9-violet: #9766e1;
+  --map9-crimson: #ff5964;
+  overflow: clip;
+  background: #f8fafc;
+  color: var(--map9-ink);
+}
+
+.map9-shell {
+  width: min(1680px, calc(100% - 64px));
+  margin-inline: auto;
+}
+
+.map9-hero {
+  position: relative;
+  min-height: min(900px, 100svh);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  color: #f8fafc;
+  background: var(--map9-dark);
+}
+
+.map9-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 4;
+  height: 4px;
+  background: linear-gradient(90deg, var(--map9-mint), var(--map9-cyan), var(--map9-yellow), var(--map9-crimson), var(--map9-violet));
+}
+
+.map9-hero__image {
+  position: absolute;
+  inset: 0 0 0 auto;
+  z-index: -3;
+  width: 58%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 37% 42%;
+  filter: saturate(.86) contrast(1.04);
+}
+
+.map9-hero__veil {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(90deg, #07101f 0%, rgba(7, 16, 31, .98) 39%, rgba(7, 16, 31, .78) 58%, rgba(7, 16, 31, .34) 82%, rgba(7, 16, 31, .46) 100%),
+    linear-gradient(0deg, rgba(7, 16, 31, .76), transparent 48%);
+}
+
+.map9-hero__content {
+  position: relative;
+  z-index: 2;
+  padding-block: 104px 76px;
+}
+
+.map9-breadcrumb {
+  display: flex;
+  gap: 10px;
+  margin: 0 0 44px;
+  color: #94a3b8;
+  font: 600 .72rem/1.2 "Fira Code", monospace;
+}
+
+.map9-breadcrumb a {
+  color: var(--map9-cyan);
+  text-decoration: none;
+}
+
+.map9-hero__eyebrow,
+.map9-heading__kicker,
+.map9-micro {
+  margin: 0;
+  color: var(--map9-mint);
+  font: 700 .7rem/1.5 "Fira Code", monospace;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.map9-hero h1 {
+  max-width: 920px;
+  margin: 22px 0 0;
+  font: 700 clamp(3.6rem, 5.6vw, 6.1rem)/.97 "Space Grotesk", sans-serif;
+  letter-spacing: 0;
+}
+
+.map9-hero h1 span {
+  color: transparent;
+  background: linear-gradient(90deg, var(--map9-mint), var(--map9-cyan), #60a5fa);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.map9-hero__lede {
+  max-width: 720px;
+  margin: 24px 0 0;
+  color: #cbd5e1;
+  font-size: clamp(1rem, 1.35vw, 1.18rem);
+  line-height: 1.75;
+}
+
+.map9-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.map9-button {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 20px;
+  border: 1px solid rgba(255, 255, 255, .26);
+  border-radius: 6px;
+  color: #f8fafc;
+  font: 800 .76rem/1 "Plus Jakarta Sans", sans-serif;
+  text-decoration: none;
+  transition: transform .2s ease, border-color .2s ease, background .2s ease;
+}
+
+.map9-button--primary {
+  border-color: var(--map9-mint);
+  background: var(--map9-mint);
+  color: #07101f;
+}
+
+.map9-button:hover,
+.map9-button:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--map9-cyan);
+}
+
+.map9-button:focus-visible,
+.map9-ranking button:focus-visible {
+  outline: 3px solid var(--map9-cyan);
+  outline-offset: 3px;
+}
+
+.map9-hero__metrics {
+  max-width: 920px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 30px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(148, 163, 184, .32);
+}
+
+.map9-hero__metrics div {
+  min-width: 0;
+  padding-right: 24px;
+  margin-right: 24px;
+  border-right: 1px solid rgba(148, 163, 184, .28);
+}
+
+.map9-hero__metrics div:last-child {
+  margin-right: 0;
+  border-right: 0;
+}
+
+.map9-hero__metrics dt {
+  font: 700 2rem/1 "Space Grotesk", sans-serif;
+}
+
+.map9-hero__metrics div:nth-child(1) dt { color: var(--map9-crimson); }
+.map9-hero__metrics div:nth-child(2) dt { color: var(--map9-mint); }
+.map9-hero__metrics div:nth-child(3) dt { color: var(--map9-yellow); }
+.map9-hero__metrics div:nth-child(4) dt { color: #a78bfa; }
+
+.map9-hero__metrics dd {
+  margin: 7px 0 0;
+  color: #94a3b8;
+  font: 600 .64rem/1.4 "Fira Code", monospace;
+  text-transform: uppercase;
+}
+
+.map9-hero__caption {
+  position: absolute;
+  right: 32px;
+  bottom: 28px;
+  z-index: 3;
+  display: grid;
+  justify-items: end;
+  color: #fff;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, .7);
+}
+
+.map9-hero__caption span,
+.map9-hero__caption small {
+  color: #cbd5e1;
+  font: 600 .62rem/1.5 "Fira Code", monospace;
+  text-transform: uppercase;
+}
+
+.map9-hero__caption strong { font-size: .9rem; }
+
+.map9-heading {
+  position: relative;
+  max-width: 960px;
+  min-height: 140px;
+  display: flex;
+  align-items: flex-start;
+  padding: 28px 0 0 76px;
+}
+
+.map9-heading__number {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: rgba(100, 116, 139, .1);
+  font: 700 clamp(6.8rem, 10vw, 10rem)/.75 "Space Grotesk", sans-serif;
+  pointer-events: none;
+}
+
+.map9-heading > div {
+  position: relative;
+  z-index: 1;
+}
+
+.map9-heading__kicker {
+  color: #087f9a;
+}
+
+.map9-heading h2 {
+  max-width: 900px;
+  margin: 14px 0 0;
+  color: var(--map9-ink);
+  font: 700 clamp(2.35rem, 4vw, 3.5rem)/1.04 "Space Grotesk", sans-serif;
+  letter-spacing: 0;
+}
+
+.map9-heading p:last-child {
+  max-width: 820px;
+  margin: 18px 0 0;
+  color: var(--map9-muted);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.map9-atlas {
+  padding: 112px 0 120px;
+  background: #f8fafc;
+}
+
+.map9-atlas .map9-heading {
+  margin-bottom: 42px;
+}
+
+.v3-scope .map9-explorer {
+  grid-template-columns: minmax(0, 1.82fr) minmax(360px, .78fr);
+}
+
+.v3-scope .map9-explorer .district-map-panel {
+  padding: 28px;
+}
+
+.v3-scope .map9-explorer .district-map-frame {
+  min-height: 680px;
+  background: #f8fafc;
+}
+
+.v3-scope .map9-explorer .district-map-echarts {
+  height: 680px;
+}
+
+.v3-scope .map9-explorer .district-inspector {
+  padding: 30px;
+}
+
+.v3-scope .map9-explorer .district-inspector header h3 {
+  margin-top: 12px;
+  color: var(--district-ink);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(1.55rem, 2.3vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.08;
+}
+
+.v3-scope .map9-explorer .district-inspector.is-middle,
+.v3-scope .map9-explorer .district-inspector.is-coldspot {
+  background: #fff;
+  box-shadow: none;
+}
+
+.v3-scope .map9-explorer .district-inspector.is-middle .district-signal-badge,
+.v3-scope .map9-explorer .district-inspector.is-coldspot .district-signal-badge {
+  border-color: rgba(100, 116, 139, .28);
+  background: rgba(248, 250, 252, .9);
+  color: #475569;
+}
+
+.map9-field {
+  padding: 112px 0 128px;
+  color: #f8fafc;
+  background: #0b1424;
+}
+
+.map9-field .map9-heading { max-width: 1120px; }
+
+.map9-field__workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(360px, .55fr);
+  gap: 32px;
+  margin-top: 48px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(148, 163, 184, .24);
+}
+
+.map9-field__map-column { min-width: 0; }
+
+.map9-field__map-frame {
+  min-height: 660px;
+  border: 1px solid rgba(148, 163, 184, .28);
+  border-radius: 6px;
+  background: #101a2d;
+  box-shadow: 0 28px 70px -48px rgba(0, 0, 0, .8);
+}
+
+.v3-scope .map9-field__map-frame .geo-map-echarts {
+  height: 660px;
+  max-height: none;
+}
+
+.map9-field__map-note {
+  margin: 12px 0 0;
+  color: #94a3b8;
+  font: 600 .66rem/1.65 "Fira Code", monospace;
+}
+
+.map9-field__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  margin-top: 24px;
+}
+
+.map9-field__filters .geo-legend__item {
+  min-height: 44px;
+  padding: 0 2px;
+  color: #cbd5e1;
+  font: 650 .7rem/1.4 "Fira Code", monospace;
+}
+
+.map9-field__filters button[aria-pressed="true"] {
+  color: #fff;
+}
+
+.map9-field__timeline {
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(148, 163, 184, .2);
+}
+
+.map9-field__timeline > p {
+  margin: 0 0 18px;
+  color: #94a3b8;
+  font: 700 .66rem/1.4 "Fira Code", monospace;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.map9-field__timeline [data-geo-timeline] {
+  display: grid;
+  gap: 28px;
+}
+
+.map9-field__timeline .geo-timeline__track {
+  margin: 0 12px;
+}
+
+.map9-field__timeline .geo-timeline__reset {
+  min-height: 44px;
+  justify-self: start;
+  margin-top: 0;
+  padding-inline: 16px;
+}
+
+.map9-field-card {
+  align-self: start;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, .25);
+  border-radius: 6px;
+  background: #111b2e;
+  box-shadow: 0 28px 70px -48px rgba(0, 0, 0, .8);
+}
+
+.map9-field-card figure {
+  position: relative;
+  height: 300px;
+  margin: 0;
+  overflow: hidden;
+  background: #07101f;
+}
+
+.map9-field-card figure::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(7, 16, 31, .72), transparent 52%);
+  pointer-events: none;
+}
+
+.map9-field-card figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+  transition: transform .5s cubic-bezier(.2, .7, .2, 1);
+}
+
+.map9-field-card:hover figure img { transform: scale(1.025); }
+
+.map9-field-card figcaption {
+  position: absolute;
+  left: 20px;
+  bottom: 18px;
+  z-index: 1;
+  color: #fff;
+  font: 700 .65rem/1.4 "Fira Code", monospace;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.map9-field-card__body { padding: 26px; }
+
+.map9-field-card__body h3 {
+  margin: 10px 0 0;
+  color: #f8fafc;
+  font: 700 clamp(1.45rem, 2.4vw, 2.1rem)/1.08 "Space Grotesk", sans-serif;
+}
+
+.map9-field-card__meta {
+  margin: 12px 0 0;
+  color: var(--map9-cyan);
+  font: 650 .68rem/1.55 "Fira Code", monospace;
+}
+
+.map9-field-card__body > p:not(.map9-micro):not(.map9-field-card__meta) {
+  margin: 18px 0 0;
+  color: #cbd5e1;
+  font-size: .86rem;
+  line-height: 1.75;
+}
+
+.map9-field-card__body > a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+  color: var(--map9-mint);
+  font: 750 .72rem/1.4 "Plus Jakarta Sans", sans-serif;
+  text-decoration: none;
+}
+
+.map9-field-card__body > a:hover,
+.map9-field-card__body > a:focus-visible { color: var(--map9-cyan); }
+
+.map9-field-card__records {
+  padding: 22px 18px 18px;
+  border-top: 1px solid rgba(148, 163, 184, .2);
+}
+
+.map9-field-card__records > span {
+  display: block;
+  margin: 0 6px 12px;
+  color: #94a3b8;
+  font: 700 .62rem/1.4 "Fira Code", monospace;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.map9-field-card__records > div {
+  max-height: 320px;
+  display: grid;
+  gap: 6px;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+
+.map9-field-card__records button {
+  width: 100%;
+  min-height: 54px;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 2px 10px;
+  align-items: center;
+  padding: 9px 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: #cbd5e1;
+  text-align: left;
+  cursor: pointer;
+}
+
+.map9-field-card__records button[hidden] {
+  display: none !important;
+}
+
+.map9-field-card__records button:hover,
+.map9-field-card__records button:focus-visible,
+.map9-field-card__records button.is-active {
+  border-color: rgba(34, 211, 238, .42);
+  background: rgba(34, 211, 238, .07);
+}
+
+.map9-field-card__records button:focus-visible {
+  outline: 3px solid var(--map9-cyan);
+  outline-offset: 2px;
+}
+
+.map9-field-card__records button > span {
+  grid-row: 1 / span 2;
+  color: var(--map9-crimson);
+  font: 700 .65rem/1 "Fira Code", monospace;
+}
+
+.map9-field-card__records button strong {
+  overflow: hidden;
+  color: #f8fafc;
+  font-size: .74rem;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.map9-field-card__records button small {
+  overflow: hidden;
+  color: #94a3b8;
+  font: 600 .58rem/1.3 "Fira Code", monospace;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.map9-comparison {
+  padding: 112px 0 128px;
+  color: #f8fafc;
+  background: var(--map9-dark);
+}
+
+.map9-heading--dark .map9-heading__number {
+  color: rgba(148, 163, 184, .1);
+}
+
+.map9-heading--dark .map9-heading__kicker {
+  color: var(--map9-yellow);
+}
+
+.map9-heading--dark h2 { color: #f8fafc; }
+.map9-heading--dark p:last-child { color: #94a3b8; }
+
+.map9-comparison__workspace {
+  display: grid;
+  grid-template-columns: minmax(310px, .7fr) minmax(0, 1.3fr);
+  gap: 64px;
+  margin-top: 48px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(148, 163, 184, .24);
+}
+
+.map9-selected {
+  align-self: start;
+  padding: 8px 0 8px 28px;
+  border-left: 4px solid var(--map9-violet);
+}
+
+.map9-selected h3,
+.map9-ranking h3 {
+  margin: 12px 0 0;
+  color: #f8fafc;
+  font: 700 clamp(1.7rem, 3vw, 2.5rem)/1.08 "Space Grotesk", sans-serif;
+}
+
+.map9-selected > p:nth-of-type(2) {
+  margin: 10px 0 0;
+  color: #94a3b8;
+}
+
+.map9-selected > strong {
+  display: block;
+  margin-top: 28px;
+  color: var(--map9-cyan);
+  font: 700 clamp(3.5rem, 7vw, 6rem)/.9 "Space Grotesk", sans-serif;
+}
+
+.map9-range { margin-top: 34px; }
+
+.map9-range__track {
+  position: relative;
+  display: block;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--map9-mint), var(--map9-cyan), var(--map9-yellow), var(--map9-violet), var(--map9-crimson));
+}
+
+.map9-range__track i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  border: 4px solid #fff;
+  border-radius: 50%;
+  background: var(--map9-dark);
+  box-shadow: 0 0 0 2px rgba(7, 16, 31, .6);
+  transform: translate(-50%, -50%);
+  transition: left .32s ease;
+}
+
+.map9-range > div {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 10px;
+  margin-top: 10px;
+  color: #94a3b8;
+  font: 600 .65rem/1.4 "Fira Code", monospace;
+}
+
+.map9-range > div span:last-child { text-align: right; }
+.map9-range > div b { color: #f8fafc; }
+
+.map9-selected__note {
+  margin-top: 28px;
+  color: #94a3b8;
+  font-size: .82rem;
+  line-height: 1.7;
+}
+
+.map9-ranking__header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(148, 163, 184, .24);
+}
+
+.map9-ranking__header > span {
+  color: var(--map9-cyan);
+  font: 700 .68rem/1.4 "Fira Code", monospace;
+  text-transform: uppercase;
+}
+
+.map9-ranking ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.map9-ranking li {
+  border-bottom: 1px solid rgba(148, 163, 184, .18);
+}
+
+.map9-ranking li.is-active {
+  box-shadow: inset 3px 0 0 var(--map9-yellow);
+  background: rgba(251, 191, 36, .05);
+}
+
+.map9-ranking button {
+  width: 100%;
+  min-height: 72px;
+  display: grid;
+  grid-template-columns: 32px minmax(150px, .75fr) minmax(120px, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 14px;
+  color: #cbd5e1;
+  text-align: left;
+  transition: background .18s ease, color .18s ease;
+}
+
+.map9-ranking button:hover {
+  background: rgba(99, 210, 255, .06);
+  color: #fff;
+}
+
+.map9-ranking__position {
+  color: #64748b;
+  font: 700 .67rem/1 "Fira Code", monospace;
+}
+
+.map9-ranking__label {
+  display: grid;
+  gap: 3px;
+}
+
+.map9-ranking__label strong { font-size: .82rem; }
+.map9-ranking__label small { color: #64748b; font-size: .67rem; }
+
+.map9-ranking__bar {
+  display: block;
+  height: 5px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #1e293b;
+}
+
+.map9-ranking__bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--map9-cyan), var(--map9-violet));
+}
+
+.map9-ranking button > b {
+  color: #f8fafc;
+  font: 700 .76rem/1 "Fira Code", monospace;
+}
+
+.map9-ranking__loading {
+  padding: 32px 0;
+  color: #94a3b8;
+  font: 600 .72rem/1.5 "Fira Code", monospace;
+}
+
+.map9-provenance {
+  padding: 120px 0 132px;
+  background: #fff;
+}
+
+.map9-provenance__layout {
+  display: grid;
+  grid-template-columns: minmax(0, .82fr) minmax(520px, 1.18fr);
+  gap: 88px;
+  align-items: start;
+}
+
+.map9-provenance__summary > p {
+  max-width: 670px;
+  margin: 26px 0 0;
+  color: var(--map9-muted);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.map9-provenance__summary dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 38px 0 0;
+  padding: 24px 0;
+  border-top: 1px solid var(--map9-line);
+  border-bottom: 1px solid var(--map9-line);
+}
+
+.map9-provenance__summary dl div {
+  padding-right: 20px;
+  margin-right: 20px;
+  border-right: 1px solid var(--map9-line);
+}
+
+.map9-provenance__summary dl div:last-child {
+  margin-right: 0;
+  border-right: 0;
+}
+
+.map9-provenance__summary dt {
+  color: var(--map9-violet);
+  font: 700 2.2rem/1 "Space Grotesk", sans-serif;
+}
+
+.map9-provenance__summary dd {
+  margin: 8px 0 0;
+  color: var(--map9-muted);
+  font: 600 .64rem/1.45 "Fira Code", monospace;
+  text-transform: uppercase;
+}
+
+.map9-provenance__caveat {
+  padding-left: 18px;
+  border-left: 3px solid var(--map9-yellow);
+  font-size: .8rem !important;
+}
+
+.map9-domain-register {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--map9-line);
+}
+
+.map9-domain-register li {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 20px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--map9-line);
+}
+
+.map9-domain-register li > span {
+  color: var(--map9-violet);
+  font: 700 .7rem/1.5 "Fira Code", monospace;
+}
+
+.map9-domain-register strong {
+  color: var(--map9-ink);
+  font-size: .94rem;
+}
+
+.map9-domain-register p {
+  margin: 5px 0 0;
+  color: var(--map9-muted);
+  font-size: .78rem;
+  line-height: 1.55;
+}
+
+html[data-v2-theme="dark"] .map9-atlas,
+html[data-v2-theme="dim"] .map9-atlas,
+html[data-v2-theme="dark"] .map9-provenance,
+html[data-v2-theme="dim"] .map9-provenance {
+  --map9-ink: #f8fafc;
+  --map9-muted: #94a3b8;
+  --map9-line: rgba(148, 163, 184, .24);
+  background: #0f172a;
+}
+
+html[data-v2-theme="dark"] .map9-provenance,
+html[data-v2-theme="dim"] .map9-provenance {
+  background: #111827;
+}
+
+html[data-v2-theme="dark"] .v3-scope .map9-explorer .district-inspector.is-middle,
+html[data-v2-theme="dim"] .v3-scope .map9-explorer .district-inspector.is-middle,
+html[data-v2-theme="dark"] .v3-scope .map9-explorer .district-inspector.is-coldspot,
+html[data-v2-theme="dim"] .v3-scope .map9-explorer .district-inspector.is-coldspot {
+  background: #111827;
+}
+
+html[data-v2-theme="dark"] .map9-domain-register strong,
+html[data-v2-theme="dim"] .map9-domain-register strong {
+  color: #f8fafc;
+}
+
+@media (max-width: 1180px) {
+  .v3-scope .map9-explorer { grid-template-columns: 1fr; }
+  .v3-scope .map9-explorer .district-map-panel {
+    border-right: 0;
+    border-bottom: 1px solid var(--district-line);
+  }
+  .map9-provenance__layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .map9-field__workspace {
+    grid-template-columns: 1fr;
+  }
+  .map9-field-card {
+    display: grid;
+    grid-template-columns: minmax(280px, .8fr) minmax(0, 1.2fr);
+  }
+  .map9-field-card figure { height: 100%; min-height: 380px; }
+  .map9-field-card__records {
+    grid-column: 1 / -1;
+  }
+  .map9-field-card__records > div {
+    max-height: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .map9-hero__image { width: 100%; }
+  .map9-hero__veil {
+    background: linear-gradient(0deg, rgba(7, 16, 31, .98) 0%, rgba(7, 16, 31, .86) 64%, rgba(7, 16, 31, .56) 100%);
+  }
+  .map9-hero__content { padding-block: 124px 170px; }
+  .map9-hero h1 { max-width: 760px; }
+  .map9-hero__caption { display: none; }
+  .map9-comparison__workspace {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .map9-field-card {
+    display: block;
+  }
+  .map9-field-card figure { height: 340px; min-height: 0; }
+}
+
+@media (max-width: 760px) {
+  .map9-shell { width: min(100% - 28px, 1680px); }
+  .map9-hero { min-height: 790px; align-items: flex-start; }
+  .map9-hero__image { object-position: 47% 50%; }
+  .map9-hero__content { padding: 64px 0 28px 40px; }
+  .map9-breadcrumb { margin-bottom: 24px; }
+  .map9-hero h1 {
+    margin-top: 16px;
+    font-size: clamp(2.65rem, 11.5vw, 3.2rem);
+    line-height: .98;
+  }
+  .map9-hero__lede { margin-top: 20px; font-size: .88rem; line-height: 1.58; }
+  .map9-hero__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 22px;
+  }
+  .map9-button { width: 100%; min-height: 44px; padding-inline: 8px; font-size: .68rem; }
+  .map9-hero__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 0;
+    margin-top: 22px;
+    padding-top: 16px;
+  }
+  .map9-hero__metrics div:nth-child(2) { margin-right: 0; border-right: 0; }
+  .map9-heading {
+    min-height: 118px;
+    padding: 24px 0 0 40px;
+  }
+  .map9-heading__number { font-size: 7rem; }
+  .map9-heading h2 { font-size: 2.25rem; }
+  .map9-atlas,
+  .map9-field,
+  .map9-comparison,
+  .map9-provenance { padding-block: 88px; }
+  .v3-scope .map9-explorer .district-map-panel,
+  .v3-scope .map9-explorer .district-inspector { padding: 16px; }
+  .v3-scope .map9-explorer .district-map-frame { min-height: 500px; }
+  .v3-scope .map9-explorer .district-map-echarts { height: 500px; }
+  .map9-comparison__workspace { margin-top: 34px; }
+  .map9-field__workspace {
+    gap: 24px;
+    margin-top: 34px;
+    padding-top: 28px;
+  }
+  .map9-field__map-frame { min-height: 500px; }
+  .v3-scope .map9-field__map-frame .geo-map-echarts { height: 500px; }
+  .map9-field__filters { gap: 4px 14px; }
+  .map9-field__filters .geo-legend__item { font-size: .62rem; }
+  .map9-field__timeline [data-geo-timeline] { gap: 32px; }
+  .map9-field__timeline .geo-timeline__track { margin-inline: 6px; }
+  .map9-field__timeline .geo-timeline__year {
+    min-width: 44px;
+    min-height: 44px;
+    font-size: .62rem;
+    padding-inline: 1px;
+  }
+  .map9-field .geo-zoom__btn {
+    width: 44px;
+    height: 44px;
+  }
+  .map9-field-card figure { height: 300px; }
+  .map9-field-card__records > div { grid-template-columns: 1fr; }
+  .map9-ranking button {
+    grid-template-columns: 30px minmax(0, 1fr) auto;
+    gap: 10px;
+  }
+  .map9-ranking__bar { display: none; }
+  .map9-provenance__summary dl { grid-template-columns: 1fr; gap: 18px; }
+  .map9-provenance__summary dl div {
+    margin: 0;
+    padding: 0 0 18px;
+    border-right: 0;
+    border-bottom: 1px solid var(--map9-line);
+  }
+  .map9-provenance__summary dl div:last-child { padding-bottom: 0; border-bottom: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map9-button,
+  .map9-range__track i,
+  .map9-ranking button,
+  .map9-field-card figure img { transition: none; }
+  .map9-field-card:hover figure img { transform: none; }
+  html { scroll-behavior: auto; }
+}

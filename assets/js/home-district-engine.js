@@ -291,10 +291,12 @@
     var scale = metricScale(activeMetric);
     var theme = document.documentElement.getAttribute('data-v2-theme');
     var isDark = theme === 'dark' || theme === 'dim';
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     renderLegend(scale);
     return {
-      animationDuration: 420,
-      animationDurationUpdate: 340,
+      animation: !reduceMotion,
+      animationDuration: reduceMotion ? 0 : 420,
+      animationDurationUpdate: reduceMotion ? 0 : 340,
       animationEasing: 'cubicOut',
       backgroundColor: 'transparent',
       tooltip: {
@@ -458,6 +460,33 @@
     }
     mapElement.setAttribute('aria-label', 'Interactive map of Ghana ' + activeGeography +
       '. Selected ' + (activeGeography === 'regions' ? 'region: ' : 'district: ') + fact.name + '.');
+    window.dispatchEvent(new CustomEvent('vgg:atlas-selection', {
+      detail: {
+        geography: activeGeography,
+        selected: {
+          id: fact.id,
+          name: fact.name,
+          region: fact.region,
+          population: fact.population,
+          isRegion: !!fact.is_region
+        },
+        metric: {
+          key: activeMetric,
+          label: METRICS[activeMetric].label,
+          suffix: METRICS[activeMetric].suffix,
+          positive: METRICS[activeMetric].positive,
+          value: METRICS[activeMetric].read(fact)
+        },
+        items: currentRecords().map(function (record) {
+          return {
+            id: record.id,
+            name: record.name,
+            region: record.region,
+            value: METRICS[activeMetric].read(record)
+          };
+        })
+      }
+    }));
     if (announce && window.showToast) window.showToast('Loaded ' + fact.name + ' geographic indicators');
   }
 
@@ -533,17 +562,37 @@
       });
     });
 
-    document.querySelectorAll('[data-district-view]').forEach(function (button) {
+    var viewButtons = Array.from(document.querySelectorAll('[data-district-view]'));
+    function selectEvidenceView(button, focus) {
+      activeView = button.getAttribute('data-district-view');
+      viewButtons.forEach(function (candidate) {
+        var active = candidate === button;
+        candidate.classList.toggle('is-active', active);
+        candidate.setAttribute('aria-selected', active ? 'true' : 'false');
+        candidate.setAttribute('tabindex', active ? '0' : '-1');
+      });
+      renderIndicators();
+      if (focus) button.focus();
+    }
+
+    viewButtons.forEach(function (button, index) {
       button.addEventListener('click', function () {
-        activeView = button.getAttribute('data-district-view');
-        document.querySelectorAll('[data-district-view]').forEach(function (candidate) {
-          var active = candidate === button;
-          candidate.classList.toggle('is-active', active);
-          candidate.setAttribute('aria-selected', active ? 'true' : 'false');
-        });
-        renderIndicators();
+        selectEvidenceView(button, false);
+      });
+      button.addEventListener('keydown', function (event) {
+        var targetIndex = index;
+        if (event.key === 'ArrowRight') targetIndex = (index + 1) % viewButtons.length;
+        else if (event.key === 'ArrowLeft') targetIndex = (index - 1 + viewButtons.length) % viewButtons.length;
+        else if (event.key === 'Home') targetIndex = 0;
+        else if (event.key === 'End') targetIndex = viewButtons.length - 1;
+        else return;
+        event.preventDefault();
+        selectEvidenceView(viewButtons[targetIndex], true);
       });
     });
+    selectEvidenceView(viewButtons.find(function (button) {
+      return button.getAttribute('data-district-view') === activeView;
+    }), false);
 
     byId('districtCopySummary').addEventListener('click', function () {
       if (!activeFact) return;
@@ -556,11 +605,9 @@
 
     byId('districtMapReset').addEventListener('click', function () {
       activeView = 'social';
-      document.querySelectorAll('[data-district-view]').forEach(function (button) {
-        var active = button.getAttribute('data-district-view') === activeView;
-        button.classList.toggle('is-active', active);
-        button.setAttribute('aria-selected', active ? 'true' : 'false');
-      });
+      selectEvidenceView(viewButtons.find(function (button) {
+        return button.getAttribute('data-district-view') === activeView;
+      }), false);
       setMetric('health');
       setGeography('regions', 'Greater Accra', true);
     });
@@ -626,6 +673,9 @@
     var factPayload = payload[2];
     facts = (factPayload.districts || factPayload).slice().sort(function (a, b) {
       return a.name.localeCompare(b.name);
+    });
+    facts.forEach(function (fact) {
+      fact.name = String(fact.name || fact.id).replace(/\s+/g, ' ').trim();
     });
     facts.forEach(function (fact) { factById[fact.id] = fact; });
     regions = buildRegionSummaries();

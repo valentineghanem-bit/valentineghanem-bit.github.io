@@ -1,0 +1,115 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "{{ page.url | absolute_url }}#webpage",
+      "url": {{ page.url | absolute_url | jsonify }},
+      "name": "Ghana Health Atlas | Valentine Golden Ghanem",
+      "description": {{ page.description | strip_newlines | jsonify }},
+      "isPartOf": { "@id": "{{ site.url }}/#website" },
+      "about": [
+        { "@id": "{{ site.url }}/#person" },
+        { "@id": "{{ page.url | absolute_url }}#dataset" }
+      ],
+      "subjectOf": { "@id": "{{ site.url }}/community/#community-record" },
+      "primaryImageOfPage": { "@id": "{{ page.url | absolute_url }}#hero-image" },
+      "mainEntity": { "@id": "{{ page.url | absolute_url }}#atlas-application" },
+      "inLanguage": "en"
+    },
+    {
+      "@type": "ImageObject",
+      "@id": "{{ page.url | absolute_url }}#hero-image",
+      "contentUrl": "{{ '/assets/img/community/goaso-2024/with-ceo.jpg' | absolute_url }}",
+      "url": "{{ '/assets/img/community/goaso-2024/with-ceo.jpg' | absolute_url }}",
+      "caption": "Valentine Golden Ghanem with the Cocoa Clinic medical team and cocoa-sector community members during the 2024 Goaso health screening.",
+      "description": "Field photograph of Valentine Golden Ghanem during a health-screening outreach for cocoa farmers in Goaso, Ghana.",
+      "width": 1080,
+      "height": 1350,
+      "representativeOfPage": true,
+      "creditText": "Valentine Golden Ghanem",
+      "copyrightHolder": { "@id": "{{ site.url }}/#person" }
+    },
+    {
+      "@type": "Dataset",
+      "@id": "{{ page.url | absolute_url }}#dataset",
+      "name": "Ghana district health and structural-determinants atlas",
+      "description": "A portfolio exploration dataset joining seven canonical 261-row tables across population context, social determinants, WASH, health services, selected outcomes, nutrition, maternal health, immunisation and structural vulnerability.",
+      "url": {{ page.url | absolute_url | jsonify }},
+      "creator": { "@id": "{{ site.url }}/#person" },
+      "spatialCoverage": {
+        "@type": "Place",
+        "name": "Ghana",
+        "geo": {
+          "@type": "GeoShape",
+          "box": "4.7388 -3.2621 11.1748 1.2002"
+        }
+      },
+      "measurementTechnique": [
+        "District-level data integration",
+        "Population-weighted regional aggregation",
+        "Choropleth mapping",
+        "Quintile-based descriptive comparison"
+      ],
+      "variableMeasured": [
+        "Population",
+        "Poverty incidence",
+        "Adult illiteracy",
+        "Health-insurance coverage",
+        "Improved water",
+        "Improved sanitation",
+        "Health-service coverage",
+        "Selected health outcomes",
+        "Nutrition and anaemia",
+        "Maternal health",
+        "Immunisation",
+        "Structural vulnerability"
+      ],
+      "temporalCoverage": "2019/2026",
+      "distribution": [
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/json",
+          "contentUrl": "{{ '/assets/data/ghana-district-facts.json' | absolute_url }}"
+        },
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/geo+json",
+          "contentUrl": "{{ '/assets/data/ghana-districts.geojson' | absolute_url }}"
+        },
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/geo+json",
+          "contentUrl": "{{ '/assets/data/ghana-regions.geojson' | absolute_url }}"
+        }
+      ],
+      "license": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "{{ page.url | absolute_url }}#atlas-application",
+      "name": "Ghana Health Intelligence Atlas",
+      "url": "{{ page.url | absolute_url }}#national-atlas",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Any modern web browser",
+      "browserRequirements": "JavaScript and SVG support",
+      "isAccessibleForFree": true,
+      "author": { "@id": "{{ site.url }}/#person" },
+      "about": { "@id": "{{ page.url | absolute_url }}#dataset" },
+      "featureList": [
+        "16-region and 261-district map views",
+        "Five comparative indicators",
+        "Permanent geographic evidence card",
+        "Determinants, services and outcomes tabs",
+        "Seven geolocated field records with image previews",
+        "Activity-type and year filters",
+        "Synchronized national ranking",
+        "Greater Accra reset"
+      ]
+    },
+    {% include jsonld/person-node.html %},
+    {% include jsonld/organization-node.html %}
+  ]
+}
+</script>

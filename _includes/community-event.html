@@ -42,9 +42,9 @@
         <dd>{{ event.lat }}, {{ event.lng }}</dd>
       </div>
       <a class="community-record__map-link"
-         href="{{ '/map/' | relative_url }}#geo-event-{{ include.index }}">
+         href="{{ '/map/' | relative_url }}?record={{ include.index }}#field-evidence">
         <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
-        Locate on field map
+        Locate this field record
       </a>
     </dl>
 

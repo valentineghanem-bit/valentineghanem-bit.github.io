@@ -52,6 +52,14 @@ permalink: /image-sitemap.xml
     </image:image>
   </url>
   <url>
+    <loc>{{ '/map/' | absolute_url | xml_escape }}</loc>
+    <image:image>
+      <image:loc>{{ '/assets/img/community/goaso-2024/with-ceo.jpg' | absolute_url | replace: " ", "%20" | xml_escape }}</image:loc>
+      <image:title>Valentine Golden Ghanem at the 2024 Goaso medical screening</image:title>
+      <image:caption>Valentine Golden Ghanem with the Cocoa Clinic medical team and cocoa-sector community members during the 2024 Goaso health screening.</image:caption>
+    </image:image>
+  </url>
+  <url>
     <loc>{{ '/gallery/' | absolute_url | xml_escape }}</loc>
     {%- for photo in site.data.gallery_portraits %}
     <image:image>

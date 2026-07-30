@@ -15,6 +15,15 @@
   var CATS = ['screening', 'conference', 'outreach'];
   var CAT_LABELS = { screening: 'Medical screening', conference: 'Conference or seminar', outreach: 'Community outreach' };
 
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
   // Every date string in community_activities.yml ends in a 4-digit year
   // ("6 November 2024", "13-16 October 2021", ...) -- the last whitespace
   // token is reliably the year regardless of day-range formatting.
@@ -31,11 +40,16 @@
     (raw[cat] || []).forEach(function (e) {
       var photo = (e.photos && e.photos[0] && e.photos[0].url) || null;
       events.push({
+        index: runningIndex,
         category: cat,
         lat: e.lat,
         lng: e.lng,
         title: e.title,
         meta: e.location || e.provider || '',
+        location: e.location || '',
+        provider: e.provider || '',
+        date: e.date || '',
+        description: e.description || '',
         photo: photo,
         year: yearOf(e.date),
         href: '/community/#community-event-' + runningIndex
@@ -142,6 +156,41 @@
 
   var chart = null;
   var activeYear = null;
+  var activeEventIndex = 0;
+
+  function updateFieldInspector(eventRecord) {
+    var inspector = document.querySelector('[data-map9-field-inspector]');
+    if (!inspector || !eventRecord) return;
+    activeEventIndex = eventRecord.index;
+    var image = inspector.querySelector('[data-map9-field-image]');
+    var category = inspector.querySelector('[data-map9-field-category]');
+    var coordinate = inspector.querySelector('[data-map9-field-coordinate]');
+    var title = inspector.querySelector('[data-map9-field-title]');
+    var meta = inspector.querySelector('[data-map9-field-meta]');
+    var description = inspector.querySelector('[data-map9-field-description]');
+    var link = inspector.querySelector('[data-map9-field-link]');
+    if (image && eventRecord.photo) {
+      image.src = eventRecord.photo;
+      image.alt = 'Valentine Golden Ghanem at ' + eventRecord.title;
+    }
+    if (category) {
+      category.textContent = CAT_LABELS[eventRecord.category] + ' / ' + (eventRecord.year || 'Field record');
+    }
+    if (coordinate) {
+      coordinate.textContent =
+        Math.abs(Number(eventRecord.lat)).toFixed(2) + '\u00b0 ' + (Number(eventRecord.lat) >= 0 ? 'N' : 'S') +
+        ' / ' + Math.abs(Number(eventRecord.lng)).toFixed(2) + '\u00b0 ' + (Number(eventRecord.lng) >= 0 ? 'E' : 'W');
+    }
+    if (title) title.textContent = eventRecord.title;
+    if (meta) meta.textContent = [eventRecord.location, eventRecord.date].filter(Boolean).join(' / ');
+    if (description) description.textContent = eventRecord.description;
+    if (link) link.href = eventRecord.href;
+    document.querySelectorAll('[data-map9-field-record]').forEach(function (button) {
+      var active = Number(button.getAttribute('data-map9-field-record')) === eventRecord.index;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+  }
 
   function themeAndRedraw() {
     if (!chart) return;
@@ -169,7 +218,11 @@
 
       chart.on('click', function (params) {
         if (params.componentType === 'series' && params.data && params.data.event) {
-          window.location.href = params.data.event.href;
+          if (document.querySelector('[data-map9-field-inspector]')) {
+            updateFieldInspector(params.data.event);
+          } else {
+            window.location.href = params.data.event.href;
+          }
         }
       });
 
@@ -253,6 +306,15 @@
       // ---- Legend / category filter (custom HTML buttons drive echarts' legend model) ----
       var legendItems = Array.prototype.slice.call(document.querySelectorAll('[data-geo-filter]'));
       var activeFilters = [];
+      function refreshFieldRecordVisibility() {
+        document.querySelectorAll('[data-map9-field-record]').forEach(function (button) {
+          var category = button.getAttribute('data-category');
+          var year = button.getAttribute('data-year');
+          var categoryMatch = !activeFilters.length || activeFilters.indexOf(category) !== -1;
+          var yearMatch = !activeYear || activeYear === year;
+          button.hidden = !(categoryMatch && yearMatch);
+        });
+      }
       function applyFilter() {
         var any = activeFilters.length > 0;
         CATS.forEach(function (cat) {
@@ -261,8 +323,11 @@
         });
         legendItems.forEach(function (item) {
           var cat = item.getAttribute('data-geo-filter');
-          item.classList.toggle('is-dimmed', any && activeFilters.indexOf(cat) === -1);
+          var active = activeFilters.indexOf(cat) !== -1;
+          item.classList.toggle('is-dimmed', any && !active);
+          item.setAttribute('aria-pressed', active ? 'true' : 'false');
         });
+        refreshFieldRecordVisibility();
       }
       legendItems.forEach(function (item) {
         item.addEventListener('click', function () {
@@ -283,6 +348,91 @@
         var zoom = Math.max(currentZoom(), 2.4);
         chart.setOption({ geo: { center: [e.lng, e.lat], zoom: zoom } }, false);
       }
+
+      function selectFieldRecord(idx, focusButton) {
+        var eventRecord = events[idx];
+        if (!eventRecord) return;
+        updateFieldInspector(eventRecord);
+        panToEvent(idx);
+        var withinCategory = events.filter(function (candidate) {
+          return candidate.category === eventRecord.category &&
+            (!activeYear || candidate.year === activeYear);
+        });
+        var dataIndex = withinCategory.indexOf(eventRecord);
+        chart.dispatchAction({ type: 'downplay' });
+        if (dataIndex >= 0) {
+          chart.dispatchAction({
+            type: 'highlight',
+            seriesId: eventRecord.category,
+            dataIndex: dataIndex
+          });
+          chart.dispatchAction({
+            type: 'showTip',
+            seriesId: eventRecord.category,
+            dataIndex: dataIndex
+          });
+        }
+        if (focusButton) {
+          var activeButton = document.querySelector('[data-map9-field-record="' + idx + '"]');
+          if (activeButton) activeButton.focus();
+        }
+      }
+
+      var fieldRecordList = document.querySelector('[data-map9-field-list]');
+      var requestedRecordIndex = null;
+      try {
+        var recordParams = new URLSearchParams(window.location.search);
+        if (recordParams.has('record')) {
+          var parsedRecordIndex = Number(recordParams.get('record'));
+          if (Number.isInteger(parsedRecordIndex) && parsedRecordIndex >= 0 && parsedRecordIndex < events.length) {
+            requestedRecordIndex = parsedRecordIndex;
+          }
+        }
+      } catch (_) {
+        requestedRecordIndex = null;
+      }
+      if (fieldRecordList) {
+        events.forEach(function (eventRecord) {
+          var button = document.createElement('button');
+          button.type = 'button';
+          button.setAttribute('data-map9-field-record', eventRecord.index);
+          button.setAttribute('data-category', eventRecord.category);
+          button.setAttribute('data-year', eventRecord.year || '');
+          button.setAttribute('aria-pressed', eventRecord.index === activeEventIndex ? 'true' : 'false');
+          button.innerHTML =
+            '<span>' + String(eventRecord.index + 1).padStart(2, '0') + '</span>' +
+            '<strong>' + escapeHtml(eventRecord.title) + '</strong>' +
+            '<small>' + escapeHtml(eventRecord.location) + '</small>';
+          if (eventRecord.index === activeEventIndex) button.classList.add('is-active');
+          button.addEventListener('click', function () {
+            selectFieldRecord(eventRecord.index, false);
+          });
+          button.addEventListener('keydown', function (keyboardEvent) {
+            if (keyboardEvent.key !== 'ArrowDown' && keyboardEvent.key !== 'ArrowUp' &&
+                keyboardEvent.key !== 'Home' && keyboardEvent.key !== 'End') return;
+            keyboardEvent.preventDefault();
+            var visibleButtons = Array.prototype.slice.call(
+              fieldRecordList.querySelectorAll('[data-map9-field-record]:not([hidden])')
+            );
+            var currentIndex = visibleButtons.indexOf(button);
+            var nextIndex = currentIndex;
+            if (keyboardEvent.key === 'ArrowDown') nextIndex = (currentIndex + 1) % visibleButtons.length;
+            if (keyboardEvent.key === 'ArrowUp') nextIndex = (currentIndex - 1 + visibleButtons.length) % visibleButtons.length;
+            if (keyboardEvent.key === 'Home') nextIndex = 0;
+            if (keyboardEvent.key === 'End') nextIndex = visibleButtons.length - 1;
+            if (visibleButtons[nextIndex]) {
+              selectFieldRecord(Number(visibleButtons[nextIndex].getAttribute('data-map9-field-record')), true);
+            }
+          });
+          fieldRecordList.appendChild(button);
+        });
+      }
+      if (requestedRecordIndex !== null) {
+        selectFieldRecord(requestedRecordIndex, false);
+      } else {
+        updateFieldInspector(events[0]);
+      }
+
       if (geoCards.length && 'IntersectionObserver' in window) {
         var activeIdx = -1;
         function setActive(idx) {
@@ -343,6 +493,7 @@
             geoCards.forEach(function (card) {
               card.classList.toggle('is-dimmed', !!next && card.getAttribute('data-year') !== next);
             });
+            refreshFieldRecordVisibility();
             var zoom = currentZoom(), center = chart.getOption().geo[0].center;
             chart.setOption(buildOption(zoom, center, activeYear), true);
             if (next) {
@@ -363,6 +514,7 @@
           Array.prototype.forEach.call(track.children, function (b) { b.classList.remove('is-active'); b.setAttribute('aria-pressed', 'false'); });
           geoCards.forEach(function (card) { card.classList.remove('is-dimmed'); });
           chart.setOption(buildOption(), true);
+          refreshFieldRecordVisibility();
         });
         timelineRoot.appendChild(resetBtn);
       }

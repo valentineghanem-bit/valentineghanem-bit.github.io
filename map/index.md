@@ -1,78 +1,317 @@
 ---
 layout: v3
 permalink: /map/
-title: "Field Map"
-description: "An interactive coordinate map of Valentine Golden Ghanem's medical screening, conference and community outreach activity across Ghana."
+title: "Ghana Health Map"
+browser_title: "Ghana Health Atlas | Valentine Ghanem"
+description: "An interactive atlas of population context, social determinants, health services and selected outcomes across Ghana's 16 regions and 261 districts."
 jsonld: map
-extra_js: ["vendor/echarts.min.js", "field-map.js"]
+extra_css: ["map-phase9.css"]
+extra_js: ["vendor/echarts.min.js", "home-district-engine.js", "field-map.js", "map-phase9.js"]
 ---
 {% include nav-v3.html %}
-{%- assign geo_events = "" | split: "," -%}
-{%- for e in site.data.community_activities.medical_screening -%}{%- assign geo_events = geo_events | push: e -%}{%- endfor -%}
-{%- for e in site.data.community_activities.conferences -%}{%- assign geo_events = geo_events | push: e -%}{%- endfor -%}
-{%- for e in site.data.community_activities.outreach -%}{%- assign geo_events = geo_events | push: e -%}{%- endfor -%}
-<section class="map-v2 v3-page-canvas v3-page-canvas--map pt-40 pb-24 px-6" data-nav-marker="00" data-nav-label="Map" data-nav-colour="#22D3EE">
-  <div class="max-w-[1800px] mx-auto">
-    <p class="font-mono text-xs text-slate-400 mb-6"><a href="{{ '/' | relative_url }}" class="hover:text-cyan-500">Home</a> / Field Map</p>
-    <h1 class="text-4xl sm:text-5xl md:text-6xl font-black font-heading tracking-tight text-slate-900 dark:text-white mb-5">Surveillance field map</h1>
-    <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mb-10">
-      A coordinate-based record of the medical screenings, scientific meetings and community outreach activities documented on this site, shown against the boundaries of Ghana's 261 administrative districts.
-    </p>
 
-    <div class="lg:grid lg:grid-cols-[minmax(260px,420px)_minmax(0,1fr)] gap-8 lg:gap-14 items-start">
-      <div class="lg:sticky lg:top-24 mb-10 lg:mb-0">
-        <div class="geo-map-frame glass-card rounded-2xl border shadow-lg">
-          <div class="geo-map-hint" data-geo-hint>Drag to pan &middot; Ctrl/&#8984; + scroll to zoom</div>
-          <div class="geo-compass" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 9-3 3-3-3 3-9z" fill="currentColor"/><path d="M12 22V13M4 12h16M6.5 6.5l11 11M17.5 6.5l-11 11" stroke="currentColor" stroke-width="0.75" opacity="0.4"/></svg>
-            <span>N</span>
+<main class="map9" data-map9-root>
+  <section class="map9-hero" data-nav-marker="00" data-nav-label="Atlas" data-nav-colour="#63D2FF" aria-labelledby="map9-title">
+    <img
+      class="map9-hero__image"
+      src="{{ '/assets/img/community/goaso-2024/with-ceo.jpg' | relative_url }}"
+      alt="Valentine Golden Ghanem with the Cocoa Clinic medical team and cocoa-sector community members during the 2024 Goaso health screening"
+      width="1080"
+      height="1350"
+      fetchpriority="high">
+    <div class="map9-hero__veil" aria-hidden="true"></div>
+    <div class="map9-shell map9-hero__content">
+      <p class="map9-breadcrumb"><a href="{{ '/' | relative_url }}">Home</a><span aria-hidden="true">/</span>Ghana Health Map</p>
+      <p class="map9-hero__eyebrow">Spatial epidemiology / health equity / district evidence</p>
+      <h1 id="map9-title">Ghana's health evidence, resolved from <span>region to district.</span></h1>
+      <p class="map9-hero__lede">
+        Valentine Golden Ghanem's national atlas brings population context, social determinants, service coverage and selected health outcomes into a single geographic record that readers can examine directly.
+      </p>
+      <div class="map9-hero__actions">
+        <a class="map9-button map9-button--primary" href="#national-atlas">
+          <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+          Open atlas
+        </a>
+        <a class="map9-button map9-button--secondary" href="#evidence-provenance">
+          <i class="fa-solid fa-database" aria-hidden="true"></i>
+          View sources
+        </a>
+      </div>
+      <dl class="map9-hero__metrics" aria-label="Ghana health atlas coverage">
+        <div><dt>261</dt><dd>district profiles</dd></div>
+        <div><dt>5</dt><dd>comparison indicators</dd></div>
+        <div><dt>3</dt><dd>medical-screening sites</dd></div>
+        <div><dt>7</dt><dd>geolocated field records</dd></div>
+      </dl>
+    </div>
+    <div class="map9-hero__caption">
+      <span>Cocoa-farmers medical screening</span>
+      <strong>Valentine Golden Ghanem</strong>
+      <small>Goaso / 6 November 2024</small>
+    </div>
+  </section>
+
+  <section id="national-atlas" class="map9-atlas district-intelligence-section" data-nav-marker="01" data-nav-label="Explore" data-nav-colour="#9766E1" aria-labelledby="map9-atlas-title">
+    <div class="map9-shell">
+      <header class="map9-heading">
+        <span class="map9-heading__number" aria-hidden="true">01</span>
+        <div>
+          <p class="map9-heading__kicker">01 &mdash; Interactive Atlas</p>
+          <h2 id="map9-atlas-title">National health geography at two scales</h2>
+          <p>Compare Ghana's 16 regions, then move to any of its 261 districts. Every selection updates the adjacent evidence card without leaving the map.</p>
+        </div>
+      </header>
+
+      <div id="ghanaDistrictExplorer"
+           class="district-explorer map9-explorer"
+           data-geo-url="{{ '/assets/data/ghana-districts.geojson' | relative_url }}"
+           data-region-geo-url="{{ '/assets/data/ghana-regions.geojson' | relative_url }}"
+           data-facts-url="{{ '/assets/data/ghana-district-facts.json' | relative_url }}"
+           aria-busy="true">
+        <div class="district-map-panel">
+          <div class="district-map-toolbar">
+            <div class="district-geography-control">
+              <span>Map view</span>
+              <div role="group" aria-label="Geographic level">
+                <button type="button" class="is-active" data-geography-view="regions" aria-pressed="true">Regions</button>
+                <button type="button" data-geography-view="districts" aria-pressed="false">Districts</button>
+              </div>
+            </div>
+            <div class="district-selector-control">
+              <label for="districtSelector" id="geographySelectorLabel">Region selector</label>
+              <select id="districtSelector">
+                <option value="">Loading regional atlas...</option>
+              </select>
+            </div>
+            <div class="district-metric-control" role="group" aria-label="Map colour indicator">
+              <span>Map colour</span>
+              <div>
+                <button type="button" class="is-active" data-district-metric="health" aria-pressed="true">Health score</button>
+                <button type="button" data-district-metric="poverty" aria-pressed="false">Poverty</button>
+                <button type="button" data-district-metric="insurance" aria-pressed="false">Insurance</button>
+                <button type="button" data-district-metric="illiteracy" aria-pressed="false">Illiteracy</button>
+                <button type="button" data-district-metric="sanitation" aria-pressed="false">Sanitation</button>
+              </div>
+            </div>
           </div>
-          <div id="geo-map-echarts" class="geo-map-echarts" role="img" aria-label="Map of Ghana's 261 administrative districts with activity locations marked" data-geojson-url="{{ '/assets/data/ghana-districts.geojson' | relative_url }}"></div>
-          <script type="application/json" id="geo-map-data">
-            {
-              "screening": {{ site.data.community_activities.medical_screening | jsonify }},
-              "conference": {{ site.data.community_activities.conferences | jsonify }},
-              "outreach": {{ site.data.community_activities.outreach | jsonify }}
-            }
-          </script>
-          <div class="geo-scale" data-geo-scale aria-hidden="true">
-            <span class="geo-scale__bar" data-geo-scale-bar style="width: 64px;"></span>
-            <span class="geo-scale__label" data-geo-scale-label>50 km</span>
+
+          <div class="district-map-caption">
+            <div>
+              <span class="district-map-kicker">Bespoke HI-EI atlas engine &middot; ECharts SVG</span>
+              <strong id="districtMapMetricLabel">Regional SDG health score</strong>
+            </div>
+            <div class="district-map-caption__actions">
+              <span id="districtMapCoverage">Aggregating 16 regional summaries...</span>
+              <button type="button" id="districtMapReset" title="Reset map to Greater Accra">
+                <i class="fa-solid fa-location-crosshairs" aria-hidden="true"></i>
+                <span>Reset to Greater Accra</span>
+              </button>
+            </div>
           </div>
-          <div class="geo-zoom" data-geo-zoom>
-            <button type="button" class="geo-zoom__btn" data-geo-zoom-in aria-label="Zoom in">+</button>
-            <button type="button" class="geo-zoom__btn" data-geo-zoom-out aria-label="Zoom out">&minus;</button>
-            <button type="button" class="geo-zoom__btn geo-zoom__btn--reset" data-geo-zoom-reset aria-label="Reset map view">&#8634;</button>
+
+          <div class="district-map-frame">
+            <div id="ghanaDistrictMap"
+                 class="district-map-echarts"
+                 role="img"
+                 aria-label="Interactive choropleth atlas of Ghana's 16 regions and 261 districts. Use the selector or click a boundary to update the evidence card."
+                 tabindex="0"></div>
+            <div id="districtMapLoading" class="district-map-loading">
+              <i class="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
+              <span>Preparing Ghana's regional and district boundaries</span>
+            </div>
+          </div>
+
+          <div id="districtMapLegend" class="district-map-legend" aria-label="Map legend"></div>
+          <p class="district-map-source">Colours show quintiles for the selected indicator. They support comparison; they do not represent clinical thresholds or formal local-cluster tests.</p>
+        </div>
+
+        <aside class="district-inspector" aria-labelledby="inspectorDistrictName">
+          <header>
+            <div class="district-inspector-heading">
+              <span class="district-map-kicker" id="inspectorKicker"><i class="fa-solid fa-layer-group" aria-hidden="true"></i> Regional evidence card</span>
+              <span class="district-signal-badge" id="inspectorSignal">Assessing regional signal</span>
+            </div>
+            <h3 id="inspectorDistrictName">Loading regional atlas</h3>
+            <p id="inspectorRegion">Aggregating district records by region</p>
+          </header>
+
+          <dl class="district-identity">
+            <div><dt id="inspectorPopulationLabel">Population</dt><dd id="inspectorPopulation">--</dd></div>
+            <div><dt id="inspectorClassLabel">Districts in region</dt><dd id="inspectorClass">--</dd></div>
+            <div><dt id="inspectorCoordinatesLabel">Atlas level</dt><dd id="inspectorCoordinates">Region overview</dd></div>
+          </dl>
+
+          <div class="district-inspector-tabs" role="tablist" aria-label="Geographic evidence view">
+            <button type="button" class="is-active" role="tab" aria-selected="true" data-district-view="social">Determinants</button>
+            <button type="button" role="tab" aria-selected="false" data-district-view="services">Services</button>
+            <button type="button" role="tab" aria-selected="false" data-district-view="outcomes">Outcomes</button>
+          </div>
+
+          <div id="districtInspectorPanel" class="district-inspector-panel" role="tabpanel" aria-live="polite"></div>
+
+          <div class="district-inspector-note">
+            <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+            <p id="inspectorNote">Regional summaries are population-weighted from district records and should not be interpreted as individual risk or causal effects.</p>
+          </div>
+
+          <div class="district-inspector-actions">
+            <a href="#comparative-context">Compare selected geography <i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a>
+            <button type="button" id="districtCopySummary"><i class="fa-regular fa-copy" aria-hidden="true"></i> Copy regional summary</button>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="field-evidence" class="map9-field" data-nav-marker="02" data-nav-label="Field" data-nav-colour="#FF5964" aria-labelledby="map9-field-title">
+    <div class="map9-shell">
+      <header class="map9-heading map9-heading--dark">
+        <span class="map9-heading__number" aria-hidden="true">02</span>
+        <div>
+          <p class="map9-heading__kicker">02 &mdash; Geolocated Field Evidence</p>
+          <h2 id="map9-field-title">Seven documented activities at their recorded coordinates</h2>
+          <p>Screening, technical learning and public engagement are mapped as dated field records. Hover or focus a marker for its image; select it to update the permanent record card.</p>
+        </div>
+      </header>
+
+      <div class="map9-field__workspace">
+        <div class="map9-field__map-column">
+          <div class="geo-map-frame map9-field__map-frame">
+            <div class="geo-map-hint" data-geo-hint>Drag to pan &middot; Ctrl/&#8984; + scroll to zoom</div>
+            <div class="geo-compass" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 9-3 3-3-3 3-9z" fill="currentColor"/><path d="M12 22V13M4 12h16M6.5 6.5l11 11M17.5 6.5l-11 11" stroke="currentColor" stroke-width="0.75" opacity="0.4"/></svg>
+              <span>N</span>
+            </div>
+            <div id="geo-map-echarts"
+                 class="geo-map-echarts"
+                 role="img"
+                 aria-label="Map of Ghana's 261 district boundaries with seven documented screening, learning and outreach locations"
+                 data-geojson-url="{{ '/assets/data/ghana-districts.geojson' | relative_url }}"></div>
+            <script type="application/json" id="geo-map-data">
+              {
+                "screening": {{ site.data.community_activities.medical_screening | jsonify }},
+                "conference": {{ site.data.community_activities.conferences | jsonify }},
+                "outreach": {{ site.data.community_activities.outreach | jsonify }}
+              }
+            </script>
+            <div class="geo-scale" data-geo-scale aria-hidden="true">
+              <span class="geo-scale__bar" data-geo-scale-bar style="width:64px"></span>
+              <span class="geo-scale__label" data-geo-scale-label>50 km</span>
+            </div>
+            <div class="geo-zoom" data-geo-zoom>
+              <button type="button" class="geo-zoom__btn" data-geo-zoom-in aria-label="Zoom in">+</button>
+              <button type="button" class="geo-zoom__btn" data-geo-zoom-out aria-label="Zoom out">&minus;</button>
+              <button type="button" class="geo-zoom__btn geo-zoom__btn--reset" data-geo-zoom-reset aria-label="Reset field map">&#8634;</button>
+            </div>
+          </div>
+          <p class="map9-field__map-note">Real district boundaries &middot; animated markers identify verified field coordinates &middot; marker images open in the adjacent record card.</p>
+
+          <div class="geo-legend map9-field__filters" data-geo-legend role="group" aria-label="Filter mapped field records by activity type">
+            <button type="button" class="geo-legend__item geo-legend__item--screening" data-geo-filter="screening" aria-pressed="false"><i class="geo-legend__swatch"></i>Medical screening</button>
+            <button type="button" class="geo-legend__item geo-legend__item--conference" data-geo-filter="conference" aria-pressed="false"><i class="geo-legend__swatch"></i>Conferences &amp; seminars</button>
+            <button type="button" class="geo-legend__item geo-legend__item--outreach" data-geo-filter="outreach" aria-pressed="false"><i class="geo-legend__swatch"></i>Community outreach</button>
+            <span class="geo-legend__item"><i class="geo-legend__swatch geo-legend__swatch--district"></i>District boundary</span>
+          </div>
+
+          <div class="map9-field__timeline">
+            <p>Scrub by year</p>
+            <div data-geo-timeline></div>
           </div>
         </div>
-        <p class="font-mono text-xs text-slate-400 text-center mt-2">Real district boundaries (261 districts) &middot; hover a pin for a preview, click to open its record.</p>
 
-        <div class="geo-legend flex flex-wrap gap-x-4 gap-y-2 font-mono text-xs text-slate-500 dark:text-slate-400 mt-5" data-geo-legend>
-          <button type="button" class="geo-legend__item geo-legend__item--screening" data-geo-filter="screening"><i class="geo-legend__swatch"></i>Medical screening</button>
-          <button type="button" class="geo-legend__item geo-legend__item--conference" data-geo-filter="conference"><i class="geo-legend__swatch"></i>Conferences &amp; seminars</button>
-          <button type="button" class="geo-legend__item geo-legend__item--outreach" data-geo-filter="outreach"><i class="geo-legend__swatch"></i>Community outreach</button>
-          <span class="geo-legend__item"><i class="geo-legend__swatch geo-legend__swatch--district"></i>District boundary</span>
+        <aside class="map9-field-card" data-map9-field-inspector aria-live="polite" aria-labelledby="map9-field-record-title">
+          <figure>
+            <img data-map9-field-image
+                 src="{{ '/assets/img/community/goaso-2024/with-ceo.jpg' | relative_url }}"
+                 alt="Valentine Golden Ghanem with the Cocoa Clinic medical team during the 2024 Goaso medical screening">
+            <figcaption data-map9-field-category>Medical screening</figcaption>
+          </figure>
+          <div class="map9-field-card__body">
+            <p class="map9-micro" data-map9-field-coordinate>6.80&deg; N / 2.51&deg; W</p>
+            <h3 id="map9-field-record-title" data-map9-field-title>2024 Medical Screening &ndash; Goaso</h3>
+            <p class="map9-field-card__meta" data-map9-field-meta>Goaso, Ahafo / 6 November 2024</p>
+            <p data-map9-field-description>Valentine Golden Ghanem worked with the Cocoa Clinic medical team during a health-screening outreach for cocoa farmers in Goaso.</p>
+            <a data-map9-field-link href="{{ '/community/' | relative_url }}#community-event-0">Open complete field record <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+          </div>
+          <div class="map9-field-card__records">
+            <span>Mapped records</span>
+            <div data-map9-field-list aria-label="Choose a mapped field record"></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="comparative-context" class="map9-comparison" data-nav-marker="03" data-nav-label="Compare" data-nav-colour="#FFE87A" aria-labelledby="map9-comparison-title">
+    <div class="map9-shell">
+      <header class="map9-heading map9-heading--dark">
+        <span class="map9-heading__number" aria-hidden="true">03</span>
+        <div>
+          <p class="map9-heading__kicker">03 &mdash; Comparative Context</p>
+          <h2 id="map9-comparison-title">Place each selection within the national distribution</h2>
+          <p>The comparison bench follows the active map indicator and geographic level. Select any listed place to return it to the map and evidence card.</p>
         </div>
+      </header>
 
-        <div class="mt-8">
-          <p class="font-mono text-[0.68rem] uppercase tracking-widest text-slate-400 mb-3.5">Scrub by year</p>
-          <div data-geo-timeline></div>
+      <div class="map9-comparison__workspace" aria-live="polite">
+        <article class="map9-selected">
+          <p class="map9-micro">Current selection</p>
+          <h3 data-map9-selected-name>Greater Accra</h3>
+          <p data-map9-selected-context>Regional SDG health score</p>
+          <strong data-map9-selected-value>Preparing comparison...</strong>
+          <div class="map9-range" aria-label="Position in the current geographic distribution">
+            <span class="map9-range__track"><i data-map9-range-marker></i></span>
+            <div><span data-map9-range-min>Minimum</span><b data-map9-selected-rank>--</b><span data-map9-range-max>Maximum</span></div>
+          </div>
+          <p class="map9-selected__note" data-map9-selected-note>Waiting for the atlas engine.</p>
+        </article>
+
+        <div class="map9-ranking">
+          <div class="map9-ranking__header">
+            <div>
+              <p class="map9-micro">Ranked geography</p>
+              <h3 data-map9-ranking-title>Highest indicator values</h3>
+            </div>
+            <span data-map9-ranking-scope>16 regions</span>
+          </div>
+          <ol data-map9-ranking-list>
+            <li class="map9-ranking__loading">Preparing the national distribution...</li>
+          </ol>
         </div>
       </div>
+    </div>
+  </section>
 
-      <ol class="grid gap-6 list-none p-0">
-        {%- for e in geo_events -%}
-        <li class="geo-card" id="geo-event-{{ forloop.index0 }}" data-geo-card>
-          <span class="block font-mono text-xs text-violet-500">{{ e.lat }}&deg; N, {{ e.lng }}&deg; W</span>
-          <h2 class="font-bold font-heading text-lg text-slate-900 dark:text-white mt-1.5 mb-1.5">{{ e.title }}</h2>
-          <span class="block font-mono text-xs text-slate-400 mb-2.5">{{ e.provider }}{% if e.location %} &middot; {{ e.location }}{% endif %}{% if e.format and e.format contains "In-Person," %} &middot; {{ e.format | remove: "In-Person, " }}{% endif %} &middot; {{ e.date }}</span>
-          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed max-w-[60ch] mb-4">{{ e.description }}</p>
-          <a href="{{ '/community/' | relative_url }}#community-event-{{ forloop.index0 }}" class="px-3.5 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:border-cyan-500 hover:text-cyan-500 transition-colors inline-block">See full record &rarr;</a>
-        </li>
-        {%- endfor -%}
+  <section id="evidence-provenance" class="map9-provenance" data-nav-marker="04" data-nav-label="Sources" data-nav-colour="#34D399" aria-labelledby="map9-provenance-title">
+    <div class="map9-shell map9-provenance__layout">
+      <div class="map9-provenance__summary">
+        <header class="map9-heading">
+          <span class="map9-heading__number" aria-hidden="true">04</span>
+          <div>
+            <p class="map9-heading__kicker">04 &mdash; Evidence Provenance</p>
+            <h2 id="map9-provenance-title">Seven sources joined at district level</h2>
+          </div>
+        </header>
+        <p>The live atlas joins seven complete 261-row tables selected after review of 53 local master CSV files. Each source contributes a defined group of indicators; no incomplete field is presented as a national measure.</p>
+        <dl>
+          <div><dt>261</dt><dd>district records joined</dd></div>
+          <div><dt>7</dt><dd>canonical tables in the live card</dd></div>
+          <div><dt>53</dt><dd>master CSV files retained in the provenance inventory</dd></div>
+        </dl>
+        <p class="map9-provenance__caveat"><strong>Interpretation boundary:</strong> indicators describe geographic context. Regional summaries are population-weighted. The atlas does not estimate individual risk, test causal effects or replace source-study methods.</p>
+      </div>
+
+      <ol class="map9-domain-register" aria-label="Evidence domains represented in the map">
+        <li><span>01</span><div><strong>Demography and structural determinants</strong><p>Population, poverty, illiteracy, unemployment and dependency context.</p></div></li>
+        <li><span>02</span><div><strong>Insurance and women's education</strong><p>Insurance gaps, literacy, educational attainment and facility delivery.</p></div></li>
+        <li><span>03</span><div><strong>SDG, WASH, services and outcomes</strong><p>Water, sanitation, service coverage, mortality and composite health scores.</p></div></li>
+        <li><span>04</span><div><strong>Nutrition, anaemia and child health</strong><p>Anaemia, dietary adequacy, diarrhoea and childhood stunting.</p></div></li>
+        <li><span>05</span><div><strong>Maternal and reproductive health</strong><p>Postnatal care, contraception, unmet need and demand satisfied.</p></div></li>
+        <li><span>06</span><div><strong>Immunisation coverage</strong><p>BCG, measles, full vaccination, non-vaccination and dropout indicators.</p></div></li>
+        <li><span>07</span><div><strong>Ranked structural vulnerability</strong><p>A reproducible national index and district rank across all 261 records.</p></div></li>
       </ol>
     </div>
-  </div>
-</section>
+  </section>
+</main>
 
 {% include footer-v3.html %}
