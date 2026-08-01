@@ -95,7 +95,7 @@ extra_js: ["gallery-morph.js", "fan-carousel.js"]
       </header>
 
       <div class="fan-carousel gallery10-fan"
-           data-autoplay="5500"
+           data-autoplay="4200"
            data-gallery-label="Professional portraits of Valentine Golden Ghanem"
            aria-labelledby="gallery10-portraits-title">
         <div class="gallery10-fan__toolbar">
@@ -150,7 +150,7 @@ extra_js: ["gallery-morph.js", "fan-carousel.js"]
       </header>
 
       <div class="fan-carousel gallery10-fan gallery10-fan--dark"
-           data-autoplay="6000"
+           data-autoplay="4600"
            data-gallery-label="Field and community photographs of Valentine Golden Ghanem"
            aria-labelledby="gallery10-field-title">
         <div class="gallery10-fan__toolbar">
