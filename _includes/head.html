@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% if page.browser_title %}{{ page.browser_title }}{% elsif page.title %}{{ page.title }} | {{ site.data.profile.name }}{% else %}{{ site.data.profile.name }}{% endif %}</title>
+<title>{% if page.browser_title %}{{ page.browser_title }}{% elsif page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
 <meta name="description" content="{{ page.description | default: site.data.profile.short_description | strip_newlines }}">
 <link rel="canonical" href="{{ page.url | absolute_url }}">
 <link rel="icon" href="{{ '/favicon-96x96.png' | relative_url }}" type="image/png" sizes="96x96">
@@ -13,17 +13,17 @@
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="{% if page.title %}{{ page.title }} | {% endif %}{{ site.data.profile.name }}">
+<meta property="og:title" content="{% if page.browser_title %}{{ page.browser_title }}{% elsif page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}">
 <meta property="og:description" content="{{ page.description | default: site.data.profile.short_description | strip_newlines }}">
 <meta property="og:url" content="{{ page.url | absolute_url }}">
-<meta property="og:site_name" content="{{ site.data.profile.name }}">
+<meta property="og:site_name" content="{{ site.title }}">
 <meta property="og:image" content="{{ '/assets/img/knowledge-panel/portrait-studio-square.jpg' | absolute_url }}">
 <meta property="og:image:width" content="1086">
 <meta property="og:image:height" content="1086">
 
 <!-- X / Twitter card -->
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="{% if page.title %}{{ page.title }} | {% endif %}{{ site.data.profile.name }}">
+<meta name="twitter:title" content="{% if page.browser_title %}{{ page.browser_title }}{% elsif page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}">
 <meta name="twitter:description" content="{{ page.description | default: site.data.profile.short_description | strip_newlines }}">
 <meta name="twitter:image" content="{{ '/assets/img/knowledge-panel/portrait-studio-square.jpg' | absolute_url }}">
 
@@ -70,7 +70,7 @@
       "@type": "WebPage",
       "@id": "{{ page.url | absolute_url }}#webpage",
       "url": "{{ page.url | absolute_url }}",
-      "name": {% if page.title %}"{{ page.title }} | {{ site.data.profile.name }}"{% else %}{{ site.data.profile.name | jsonify }}{% endif %},
+      "name": {{ page.browser_title | default: page.title | default: site.title | jsonify }},
       "description": {{ page.description | default: site.data.profile.short_description | strip_newlines | jsonify }},
       "isPartOf": { "@id": "{{ site.url }}/#website" },
       "about": { "@id": "{{ site.url }}/#person" },

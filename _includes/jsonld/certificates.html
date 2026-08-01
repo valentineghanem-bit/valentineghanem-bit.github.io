@@ -10,7 +10,7 @@
       "@type": "CollectionPage",
       "@id": "{{ page.url | absolute_url }}#webpage",
       "url": {{ page.url | absolute_url | jsonify }},
-      "name": "Continuing professional development archive of Valentine Golden Ghanem",
+      "name": {{ page.browser_title | default: page.title | default: site.title | default: site.data.profile.name | jsonify }},
       "description": {{ page.description | strip_newlines | jsonify }},
       "isPartOf": { "@id": "{{ site.url }}/#website" },
       "about": { "@id": "{{ site.url }}/#person" },

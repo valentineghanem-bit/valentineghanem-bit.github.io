@@ -2,6 +2,7 @@
 layout: v3
 permalink: /portfolio/
 title: "Research Systems and Applied Projects"
+browser_title: "Research Portfolio | Valentine Ghanem"
 description: "Research repositories, dashboards, models, analytical pipelines and applied projects by Valentine Golden Ghanem."
 jsonld: portfolio
 extra_css: ["portfolio-v2.css"]

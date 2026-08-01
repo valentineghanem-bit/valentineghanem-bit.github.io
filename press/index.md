@@ -2,7 +2,7 @@
 layout: v3
 permalink: /press/
 title: "Press"
-browser_title: "Press and media coverage | Valentine Ghanem"
+browser_title: "Press and Media | Valentine Ghanem"
 description: "Publisher-verified media coverage of Valentine Golden Ghanem's research, public-health work and professional practice."
 jsonld: press
 extra_css: ["press-v2.css"]

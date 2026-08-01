@@ -2,7 +2,7 @@
 layout: v3
 permalink: /community/
 title: "Community"
-browser_title: "Community Health Practice | Valentine Ghanem"
+browser_title: "Community Health | Valentine Ghanem"
 description: "A documented record of community screening, professional learning and public-health engagement by Valentine Golden Ghanem across Ghana."
 jsonld: community
 extra_css: ["community-v2.css"]

@@ -3,6 +3,7 @@ layout: v3
 permalink: /about/
 jsonld: about
 title: "About Valentine Golden Ghanem"
+browser_title: "About | Valentine Ghanem"
 description: "Professional profile of Valentine Golden Ghanem, a Ghanaian medical scientist, epidemiologist and public health researcher."
 extra_css: ["about-v3.css"]
 extra_js: ["about-fx.js"]

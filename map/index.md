@@ -3,7 +3,7 @@ layout: v3
 permalink: /map/
 title: "Ghana Health Map"
 browser_title: "Ghana Health Atlas | Valentine Ghanem"
-description: "An interactive atlas of population context, social determinants, health services and selected outcomes across Ghana's 16 regions and 261 districts."
+description: "Valentine Golden Ghanem's interactive atlas of population context, social determinants, health services and selected outcomes across Ghana's 16 regions and 261 districts."
 jsonld: map
 extra_css: ["map-phase9.css"]
 extra_js: ["vendor/echarts.min.js", "home-district-engine.js", "field-map.js", "map-phase9.js"]
@@ -163,12 +163,56 @@ extra_js: ["vendor/echarts.min.js", "home-district-engine.js", "field-map.js", "
     </div>
   </section>
 
-  <section id="field-evidence" class="map9-field" data-nav-marker="02" data-nav-label="Field" data-nav-colour="#FF5964" aria-labelledby="map9-field-title">
+  <section id="comparative-context" class="map9-comparison" data-nav-marker="02" data-nav-label="Compare" data-nav-colour="#FFE87A" aria-labelledby="map9-comparison-title">
     <div class="map9-shell">
       <header class="map9-heading map9-heading--dark">
         <span class="map9-heading__number" aria-hidden="true">02</span>
         <div>
-          <p class="map9-heading__kicker">02 &mdash; Geolocated Field Evidence</p>
+          <p class="map9-heading__kicker">02 &mdash; Comparative Context</p>
+          <h2 id="map9-comparison-title">Place each selection within the national distribution</h2>
+          <p>Select any region or district below to return to the atlas above and open its evidence card. The comparison follows the active map indicator and geographic level.</p>
+        </div>
+      </header>
+
+      <div class="map9-comparison__workspace" aria-live="polite">
+        <article class="map9-selected">
+          <p class="map9-micro">Current selection</p>
+          <h3 data-map9-selected-name>Greater Accra</h3>
+          <p data-map9-selected-context>Regional SDG health score</p>
+          <strong data-map9-selected-value>Preparing comparison...</strong>
+          <div class="map9-range" aria-label="Position in the current geographic distribution">
+            <span class="map9-range__track"><i data-map9-range-marker></i></span>
+            <div><span data-map9-range-min>Minimum</span><b data-map9-selected-rank>--</b><span data-map9-range-max>Maximum</span></div>
+          </div>
+          <p class="map9-selected__note" data-map9-selected-note>Waiting for the atlas engine.</p>
+          <button type="button" class="map9-selected__return" data-map9-return-selected>
+            <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+            View selected place on map
+          </button>
+        </article>
+
+        <div class="map9-ranking">
+          <div class="map9-ranking__header">
+            <div>
+              <p class="map9-micro">Ranked geography</p>
+              <h3 data-map9-ranking-title>Highest indicator values</h3>
+            </div>
+            <span data-map9-ranking-scope>16 regions</span>
+          </div>
+          <ol data-map9-ranking-list>
+            <li class="map9-ranking__loading">Preparing the national distribution...</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="field-evidence" class="map9-field" data-nav-marker="03" data-nav-label="Field" data-nav-colour="#FF5964" aria-labelledby="map9-field-title">
+    <div class="map9-shell">
+      <header class="map9-heading map9-heading--dark">
+        <span class="map9-heading__number" aria-hidden="true">03</span>
+        <div>
+          <p class="map9-heading__kicker">03 &mdash; Geolocated Field Evidence</p>
           <h2 id="map9-field-title">Seven documented activities at their recorded coordinates</h2>
           <p>Screening, technical learning and public engagement are mapped as dated field records. Hover or focus a marker for its image; select it to update the permanent record card.</p>
         </div>
@@ -234,50 +278,10 @@ extra_js: ["vendor/echarts.min.js", "home-district-engine.js", "field-map.js", "
             <a data-map9-field-link href="{{ '/community/' | relative_url }}#community-event-0">Open complete field record <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
           </div>
           <div class="map9-field-card__records">
-            <span>Mapped records</span>
-            <div data-map9-field-list aria-label="Choose a mapped field record"></div>
+            <label for="map9FieldRecordSelect">Choose a mapped record</label>
+            <select id="map9FieldRecordSelect" data-map9-field-list aria-label="Choose a mapped field record"></select>
           </div>
         </aside>
-      </div>
-    </div>
-  </section>
-
-  <section id="comparative-context" class="map9-comparison" data-nav-marker="03" data-nav-label="Compare" data-nav-colour="#FFE87A" aria-labelledby="map9-comparison-title">
-    <div class="map9-shell">
-      <header class="map9-heading map9-heading--dark">
-        <span class="map9-heading__number" aria-hidden="true">03</span>
-        <div>
-          <p class="map9-heading__kicker">03 &mdash; Comparative Context</p>
-          <h2 id="map9-comparison-title">Place each selection within the national distribution</h2>
-          <p>The comparison bench follows the active map indicator and geographic level. Select any listed place to return it to the map and evidence card.</p>
-        </div>
-      </header>
-
-      <div class="map9-comparison__workspace" aria-live="polite">
-        <article class="map9-selected">
-          <p class="map9-micro">Current selection</p>
-          <h3 data-map9-selected-name>Greater Accra</h3>
-          <p data-map9-selected-context>Regional SDG health score</p>
-          <strong data-map9-selected-value>Preparing comparison...</strong>
-          <div class="map9-range" aria-label="Position in the current geographic distribution">
-            <span class="map9-range__track"><i data-map9-range-marker></i></span>
-            <div><span data-map9-range-min>Minimum</span><b data-map9-selected-rank>--</b><span data-map9-range-max>Maximum</span></div>
-          </div>
-          <p class="map9-selected__note" data-map9-selected-note>Waiting for the atlas engine.</p>
-        </article>
-
-        <div class="map9-ranking">
-          <div class="map9-ranking__header">
-            <div>
-              <p class="map9-micro">Ranked geography</p>
-              <h3 data-map9-ranking-title>Highest indicator values</h3>
-            </div>
-            <span data-map9-ranking-scope>16 regions</span>
-          </div>
-          <ol data-map9-ranking-list>
-            <li class="map9-ranking__loading">Preparing the national distribution...</li>
-          </ol>
-        </div>
       </div>
     </div>
   </section>
@@ -289,26 +293,40 @@ extra_js: ["vendor/echarts.min.js", "home-district-engine.js", "field-map.js", "
           <span class="map9-heading__number" aria-hidden="true">04</span>
           <div>
             <p class="map9-heading__kicker">04 &mdash; Evidence Provenance</p>
-            <h2 id="map9-provenance-title">Seven sources joined at district level</h2>
+            <h2 id="map9-provenance-title">Three source layers, seven canonical tables</h2>
           </div>
         </header>
-        <p>The live atlas joins seven complete 261-row tables selected after review of 53 local master CSV files. Each source contributes a defined group of indicators; no incomplete field is presented as a national measure.</p>
+        <p>The atlas combines administrative geography, district and regional health evidence, and a separate dated field-record layer. Seven complete 261-row analytical tables were selected after review of 53 local master CSV files; incomplete fields are not presented as national measures.</p>
         <dl>
           <div><dt>261</dt><dd>district records joined</dd></div>
           <div><dt>7</dt><dd>canonical tables in the live card</dd></div>
           <div><dt>53</dt><dd>master CSV files retained in the provenance inventory</dd></div>
         </dl>
+        <div class="map9-source-layers" aria-label="Atlas source layers">
+          <article>
+            <span>01</span>
+            <div><strong>Administrative boundaries</strong><p>District polygons come from Ghana administrative boundary GeoJSON documented in the contributing repositories as Ghana Statistical Service-derived or OCHA HDX public geography. The same geometry supplies district perimeters, representative coordinates and the 16-region aggregation.</p></div>
+          </article>
+          <article>
+            <span>02</span>
+            <div><strong>Population and health evidence</strong><p>District determinants draw chiefly from the 2021 Population and Housing Census. Ghana DHS 2019 and 2022 indicators remain identified as regional estimates assigned to districts within each survey region; NHIA and study-derived indices retain their stated analytical resolution.</p></div>
+          </article>
+          <article>
+            <span>03</span>
+            <div><strong>Dated field records</strong><p>The seven event markers come from the site's documented activity register, with recorded dates, locations, coordinates, descriptions and local image paths. They are a professional field archive, not a national facility registry or epidemiological sample.</p></div>
+          </article>
+        </div>
         <p class="map9-provenance__caveat"><strong>Interpretation boundary:</strong> indicators describe geographic context. Regional summaries are population-weighted. The atlas does not estimate individual risk, test causal effects or replace source-study methods.</p>
       </div>
 
       <ol class="map9-domain-register" aria-label="Evidence domains represented in the map">
-        <li><span>01</span><div><strong>Demography and structural determinants</strong><p>Population, poverty, illiteracy, unemployment and dependency context.</p></div></li>
-        <li><span>02</span><div><strong>Insurance and women's education</strong><p>Insurance gaps, literacy, educational attainment and facility delivery.</p></div></li>
-        <li><span>03</span><div><strong>SDG, WASH, services and outcomes</strong><p>Water, sanitation, service coverage, mortality and composite health scores.</p></div></li>
-        <li><span>04</span><div><strong>Nutrition, anaemia and child health</strong><p>Anaemia, dietary adequacy, diarrhoea and childhood stunting.</p></div></li>
-        <li><span>05</span><div><strong>Maternal and reproductive health</strong><p>Postnatal care, contraception, unmet need and demand satisfied.</p></div></li>
-        <li><span>06</span><div><strong>Immunisation coverage</strong><p>BCG, measles, full vaccination, non-vaccination and dropout indicators.</p></div></li>
-        <li><span>07</span><div><strong>Ranked structural vulnerability</strong><p>A reproducible national index and district rank across all 261 records.</p></div></li>
+        <li><span>01</span><div><strong>Demography and structural determinants</strong><p>GSS PHC 2021 population, poverty, literacy, employment, insurance and dependency measures at district level.</p></div></li>
+        <li><span>02</span><div><strong>Insurance and women's education</strong><p>PHC district context combined with DHS 2019/2022 regional insurance, education and facility-delivery estimates; regional proxies are disclosed in the source repositories.</p></div></li>
+        <li><span>03</span><div><strong>SDG, WASH, services and outcomes</strong><p>Census context, regional service indicators and derived health scores. Regional DHIMS2 measures remain uniform within their source region.</p></div></li>
+        <li><span>04</span><div><strong>Nutrition, anaemia and child health</strong><p>DHS 2022 regional outcomes modelled to district surfaces with PHC 2021 covariates; estimates are model-based, not direct district observations.</p></div></li>
+        <li><span>05</span><div><strong>Maternal and reproductive health</strong><p>DHS 2022 service indicators, PHC 2021 determinants and NHIA summaries assembled as an ecological district dataset.</p></div></li>
+        <li><span>06</span><div><strong>Immunisation coverage</strong><p>DHS 2022 regional immunisation estimates linked to district-varying PHC 2021 socioeconomic context; geographic resolution is retained in interpretation.</p></div></li>
+        <li><span>07</span><div><strong>Ranked structural vulnerability</strong><p>A reproducible index derived from six PHC 2021 structural determinants and ranked across 261 districts.</p></div></li>
       </ol>
     </div>
   </section>

@@ -7,7 +7,8 @@
       "@type": "WebSite",
       "@id": "{{ site.url }}/#website",
       "url": "{{ site.url }}/",
-      "name": {{ site.data.profile.name | jsonify }},
+      "name": "Valentine Ghanem",
+      "alternateName": {{ site.data.profile.name | jsonify }},
       "description": {{ site.data.profile.short_description | strip_newlines | jsonify }},
       "inLanguage": "en",
       "publisher": { "@id": "{{ site.url }}/#person" }
@@ -16,7 +17,7 @@
       "@type": "WebPage",
       "@id": "{{ site.url }}/#webpage",
       "url": "{{ site.url }}/",
-      "name": "{{ site.data.profile.name }} | Medical Scientist and Epidemiologist",
+      "name": "Valentine Ghanem | Home",
       "description": {{ site.data.profile.short_description | strip_newlines | jsonify }},
       "isPartOf": { "@id": "{{ site.url }}/#website" },
       "about": { "@id": "{{ site.url }}/#person" },

@@ -18,7 +18,7 @@
       "@type": "WebPage",
       "@id": "{{ page.url | absolute_url }}#webpage",
       "url": "{{ page.url | absolute_url }}",
-      "name": {% if page.title %}"{{ page.title }} | {{ site.data.profile.name }}"{% else %}{{ site.data.profile.name | jsonify }}{% endif %},
+      "name": {{ page.browser_title | default: page.title | default: site.title | default: site.data.profile.name | jsonify }},
       "description": {{ page.description | default: site.data.profile.short_description | strip_newlines | jsonify }},
       "isPartOf": { "@id": "{{ site.url }}/#website" },
       "about": { "@id": "{{ site.url }}/#person" },
@@ -34,11 +34,7 @@
       "description": {{ page.description | jsonify }},
       "about": { "@id": "{{ site.url }}/#person" },
       "mainEntityOfPage": { "@id": "{{ page.url | absolute_url }}#webpage" },
-      "hasPart": [
-        {%- for event in community_events -%}
-        { "@id": "{{ page.url | absolute_url }}#event-{{ forloop.index0 }}" }{% unless forloop.last %},{% endunless %}
-        {%- endfor -%}
-      ],
+      "mainEntity": { "@id": "{{ page.url | absolute_url }}#activity-list" },
       "associatedMedia": [
         {%- for photo in community_photos -%}
         { "@id": {{ photo.url | absolute_url | append: "#image" | jsonify }} }{% unless forloop.last %},{% endunless %}

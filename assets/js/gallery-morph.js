@@ -1,140 +1,173 @@
-// Gallery morph-hero: scatter -> line -> circle intro (timed), then a
-// scroll-pinned circle -> arc morph + shuffle (GSAP ScrollTrigger, scrub).
-// Real photos + real captions from window.VG_GALLERY_MORPH (set inline by
-// gallery/index.md from _data/gallery_portraits.yml).
+// Gallery hero: selected photographs remain a quiet background collage.
+// The only circular motion on the opening sequence belongs to the white archive wheel below.
 (function () {
-  var root = document.querySelector('.gallery-morph');
-  if (!root) return;
-  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReduced) return; // CSS fallback renders a plain static grid
+  var hero = document.querySelector('.gallery-morph');
+  if (!hero) return;
 
-  var stage = root.querySelector('.gallery-morph__stage');
-  var items = window.VG_GALLERY_MORPH || [];
-  if (!items.length) return;
+  window.requestAnimationFrame(function () {
+    hero.classList.add('gallery-morph--ready');
+  });
+})();
 
-  var cards = items.map(function (item) {
-    var card = document.createElement('div');
-    card.className = 'gallery-morph__card';
-    card.innerHTML = '<img src="' + item.src + '" alt="' + item.caption.replace(/"/g, '&quot;') + ', Valentine Golden Ghanem" loading="lazy">';
-    card.title = item.caption;
-    stage.appendChild(card);
-    return card;
+// White archive wheel: photographs assemble into the circle with scroll,
+// then continue the original visibility-gated orbit. Scrolling upward reverses
+// the composition without creating a second carousel in the hero.
+(function () {
+  var wheel = document.querySelector('[data-gallery-wheel]');
+  if (!wheel) return;
+
+  var section = wheel.closest('.gallery10-wheel');
+  var wheelItems = Array.prototype.slice.call(
+    wheel.querySelectorAll('.gallery10-wheel__item')
+  );
+  if (!section || !wheelItems.length) return;
+
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var spin = 0;
+  var frame = null;
+  var composeFrame = null;
+  var last = 0;
+  var visible = false;
+  var dragging = false;
+  var startX = 0;
+  var startSpin = 0;
+
+  function deterministicUnit(index, salt) {
+    var value = Math.sin((index + 1) * (12.9898 + salt * 7.233)) * 43758.5453;
+    return value - Math.floor(value);
+  }
+
+  function clamp(value, minimum, maximum) {
+    return Math.min(maximum, Math.max(minimum, value));
+  }
+
+  function ease(value) {
+    return value * value * (3 - 2 * value);
+  }
+
+  function wheelRadius() {
+    return window.innerWidth < 720
+      ? -Math.min(window.innerWidth * .43, 172)
+      : -Math.min(window.innerWidth * .4, 430);
+  }
+
+  wheelItems.forEach(function (item, index) {
+    var angle = (index / wheelItems.length) * 360;
+    item.style.setProperty('--wheel-angle', angle.toFixed(3) + 'deg');
+    item.style.setProperty('--wheel-angle-inverse', (-angle).toFixed(3) + 'deg');
+    item._wheelScatter = {
+      x: deterministicUnit(index, 1) * 2 - 1,
+      y: deterministicUnit(index, 2) * 2 - 1
+    };
   });
 
-  var lerp = function (a, b, t) { return a + (b - a) * t; };
-
-  function scatterTarget() {
-    return {
-      x: (Math.random() - 0.5) * Math.min(window.innerWidth * 0.9, 1100),
-      y: (Math.random() - 0.5) * Math.min(window.innerHeight * 0.7, 700),
-      rotation: (Math.random() - 0.5) * 140,
-      scale: 0.6,
-      opacity: 0
-    };
-  }
-  var scatterPositions = cards.map(scatterTarget);
-
-  function apply(card, t) {
-    card.style.transform = 'translate(' + t.x.toFixed(1) + 'px,' + t.y.toFixed(1) + 'px) rotate(' + t.rotation.toFixed(2) + 'deg) scale(' + t.scale.toFixed(3) + ')';
-    card.style.opacity = String(t.opacity);
+  function paintSpin() {
+    wheel.style.setProperty('--wheel-spin', spin.toFixed(2) + 'deg');
+    wheel.style.setProperty('--wheel-spin-inverse', (-spin).toFixed(2) + 'deg');
   }
 
-  function animateTo(card, target, duration) {
-    var start = null;
-    var from = card._current || { x: 0, y: 0, rotation: 0, scale: 0.6, opacity: 0 };
-    function frame(ts) {
-      if (!start) start = ts;
-      var p = Math.min((ts - start) / duration, 1);
-      var eased = 1 - Math.pow(1 - p, 3);
-      var t = {
-        x: lerp(from.x, target.x, eased), y: lerp(from.y, target.y, eased),
-        rotation: lerp(from.rotation, target.rotation, eased), scale: lerp(from.scale, target.scale, eased),
-        opacity: lerp(from.opacity, target.opacity, eased)
-      };
-      apply(card, t);
-      if (p < 1) requestAnimationFrame(frame);
-      else card._current = target;
+  function paintComposition(progress) {
+    var composed = reduced ? 1 : ease(clamp(progress, 0, 1));
+    var remaining = 1 - composed;
+    var radius = wheelRadius() * composed;
+    var spreadX = Math.min(window.innerWidth * .58, 680);
+    var spreadY = Math.min(window.innerHeight * .34, 320);
+
+    wheelItems.forEach(function (item) {
+      var scatter = item._wheelScatter;
+      item.style.setProperty('--wheel-scatter-x', (scatter.x * spreadX * remaining).toFixed(1) + 'px');
+      item.style.setProperty('--wheel-scatter-y', (scatter.y * spreadY * remaining).toFixed(1) + 'px');
+      item.style.setProperty('--wheel-live-radius', radius.toFixed(1) + 'px');
+      item.style.setProperty('--wheel-compose-scale', (.7 + composed * .3).toFixed(3));
+      item.style.setProperty('--wheel-compose-opacity', (.16 + composed * .84).toFixed(3));
+    });
+  }
+
+  function updateComposition() {
+    composeFrame = null;
+    if (reduced) {
+      paintComposition(1);
+      return;
     }
-    requestAnimationFrame(frame);
+    var rect = section.getBoundingClientRect();
+    var start = window.innerHeight * .96;
+    var finish = window.innerHeight * .2;
+    paintComposition((start - rect.top) / Math.max(start - finish, 1));
   }
 
-  // --- Phase 1: scatter (immediate) ---
-  cards.forEach(function (card, i) { card._current = scatterPositions[i]; apply(card, scatterPositions[i]); });
-
-  // --- Phase 2: line (500ms in) ---
-  setTimeout(function () {
-    var spacing = window.innerWidth < 720 ? 46 : 62;
-    var total = cards.length * spacing;
-    cards.forEach(function (card, i) {
-      animateTo(card, { x: i * spacing - total / 2, y: 0, rotation: 0, scale: 1, opacity: 1 }, 900);
-    });
-  }, 500);
-
-  // --- Phase 3: circle (2500ms in) ---
-  var circlePositions = [];
-  function computeCircle() {
-    // Radius driven primarily by viewport WIDTH (not the shorter of width/
-    // height) so the circle reads edge-to-edge with small side gutters on
-    // wide screens, instead of staying capped to a small centered medallion.
-    // -90 accounts for the card's own half-width (39px) plus a small margin.
-    var radius = Math.min(window.innerWidth * 0.5 - 90, window.innerHeight * 0.42, 520);
-    radius = Math.max(radius, 140);
-    circlePositions = cards.map(function (_, i) {
-      var angle = (i / cards.length) * Math.PI * 2;
-      return { x: Math.cos(angle) * radius, y: Math.sin(angle) * radius, rotation: (angle * 180 / Math.PI) + 90, scale: 1, opacity: 1 };
-    });
-  }
-  computeCircle();
-  setTimeout(function () {
-    cards.forEach(function (card, i) { animateTo(card, circlePositions[i], 1000); });
-  }, 2500);
-
-  // --- Phase 4: scroll-pinned circle -> arc morph + shuffle ---
-  function computeArc(rotationOffsetDeg) {
-    var isMobile = window.innerWidth < 720;
-    var arcRadius = Math.min(window.innerWidth, window.innerHeight * 1.4) * (isMobile ? 1.3 : 1.05);
-    var apexY = window.innerHeight * (isMobile ? 0.32 : 0.24);
-    var centerY = apexY + arcRadius - window.innerHeight / 2;
-    var spread = isMobile ? 95 : 125;
-    var start = -90 - spread / 2;
-    var step = spread / Math.max(cards.length - 1, 1);
-    return cards.map(function (_, i) {
-      var angleDeg = start + i * step + rotationOffsetDeg;
-      var rad = angleDeg * Math.PI / 180;
-      return {
-        x: Math.cos(rad) * arcRadius, y: Math.sin(rad) * arcRadius + centerY,
-        rotation: angleDeg + 90, scale: isMobile ? 1.25 : 1.5, opacity: 1
-      };
-    });
+  function requestComposition() {
+    if (composeFrame !== null) return;
+    composeFrame = window.requestAnimationFrame(updateComposition);
   }
 
-  if (window.gsap && window.ScrollTrigger) {
-    gsap.registerPlugin(ScrollTrigger);
-    var state = { morph: 0, rotate: 0 };
-    ScrollTrigger.create({
-      trigger: root.querySelector('.gallery-morph__scroller'),
-      start: 'top top',
-      end: 'bottom bottom',
-      pin: stage,
-      scrub: 0.4,
-      onUpdate: function (self) {
-        var p = self.progress;
-        state.morph = Math.min(p / 0.35, 1);
-        state.rotate = p > 0.35 ? (p - 0.35) / 0.65 : 0;
-        if (state.morph <= 0) return; // still in the timed intro phases
-        var arc = computeArc(-state.rotate * 90);
-        cards.forEach(function (card, i) {
-          var c = circlePositions[i], a = arc[i];
-          var t = {
-            x: lerp(c.x, a.x, state.morph), y: lerp(c.y, a.y, state.morph),
-            rotation: lerp(c.rotation, a.rotation, state.morph), scale: lerp(1, a.scale, state.morph), opacity: 1
-          };
-          card._current = t;
-          apply(card, t);
-        });
-      }
-    });
+  function tick(timestamp) {
+    if (!visible || reduced || dragging) {
+      frame = null;
+      return;
+    }
+    if (!last) last = timestamp;
+    var elapsed = Math.min(48, timestamp - last);
+    last = timestamp;
+    spin = (spin + elapsed * .0028) % 360;
+    paintSpin();
+    frame = window.requestAnimationFrame(tick);
   }
 
-  window.addEventListener('resize', function () { computeCircle(); }, { passive: true });
+  function start() {
+    if (frame || reduced || !visible || dragging) return;
+    last = 0;
+    frame = window.requestAnimationFrame(tick);
+  }
+
+  function stop() {
+    if (frame) window.cancelAnimationFrame(frame);
+    frame = null;
+  }
+
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function (entries) {
+      visible = entries[0].isIntersecting;
+      if (visible) start(); else stop();
+    }, { threshold: .08 });
+    observer.observe(wheel);
+  } else {
+    visible = true;
+    start();
+  }
+
+  wheel.addEventListener('pointerdown', function (event) {
+    if (event.button !== 0) return;
+    dragging = true;
+    startX = event.clientX;
+    startSpin = spin;
+    stop();
+    wheel.setPointerCapture(event.pointerId);
+  });
+
+  wheel.addEventListener('pointermove', function (event) {
+    if (!dragging) return;
+    spin = startSpin + (event.clientX - startX) * .18;
+    paintSpin();
+  });
+
+  function release(event) {
+    if (!dragging) return;
+    dragging = false;
+    if (wheel.hasPointerCapture(event.pointerId)) wheel.releasePointerCapture(event.pointerId);
+    start();
+  }
+
+  wheel.addEventListener('pointerup', release);
+  wheel.addEventListener('pointercancel', release);
+  wheel.addEventListener('mouseenter', stop);
+  wheel.addEventListener('mouseleave', start);
+  window.addEventListener('scroll', requestComposition, { passive: true });
+  window.addEventListener('resize', requestComposition, { passive: true });
+  window.addEventListener('pagehide', function () {
+    stop();
+    if (composeFrame !== null) window.cancelAnimationFrame(composeFrame);
+  }, { once: true });
+
+  paintSpin();
+  updateComposition();
 })();

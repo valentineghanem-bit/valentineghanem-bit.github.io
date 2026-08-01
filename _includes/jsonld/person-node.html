@@ -12,9 +12,27 @@
   "description": {{ p.description | strip_newlines | jsonify }},
   "disambiguatingDescription": {{ p.disambiguating_description | strip_newlines | jsonify }},
   "jobTitle": {{ p.job_titles | jsonify }},
+  "hasOccupation": [
+    {%- for role in p.job_titles -%}
+    {
+      "@type": "Occupation",
+      "name": {{ role | jsonify }},
+      "occupationLocation": { "@type": "Country", "name": "Ghana" }
+    }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ],
   "nationality": { "@type": "Country", "name": {{ p.nationality | jsonify }} },
   "birthDate": {{ p.birth_date | jsonify }},
   "birthPlace": { "@type": "Place", "name": {{ p.birth_place | jsonify }} },
+  "workLocation": {
+    "@type": "Place",
+    "name": "Accra, Ghana",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Accra",
+      "addressCountry": "GH"
+    }
+  },
   "knowsLanguage": [
     {%- for lang in p.languages -%}
     { "@type": "Language", "name": {{ lang.name | jsonify }}{% if lang.code and lang.code != "" %}, "alternateName": {{ lang.code | jsonify }}{% endif %} }{% unless forloop.last %},{% endunless %}

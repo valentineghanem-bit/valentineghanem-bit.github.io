@@ -98,12 +98,13 @@
       data: events.filter(function (e) { return e.category === cat && (!yearFilter || e.year === yearFilter); }).map(function (e) {
         return { name: e.title, value: [e.lng, e.lat], event: e };
       }),
-      symbolSize: 16,
+      symbolSize: 24,
       showEffectOn: 'render',
       rippleEffect: { brushType: 'stroke', scale: 2.2, period: 4.2 },
       itemStyle: { color: color, borderColor: p.paperRaised, borderWidth: 2, shadowBlur: 8, shadowColor: color },
-      emphasis: { scale: 1.35, itemStyle: { borderColor: p.ink } },
-      zlevel: 2,
+      emphasis: { scale: 1.24, itemStyle: { borderColor: p.ink, borderWidth: 3 } },
+      zlevel: 4,
+      z: 20,
       cursor: 'pointer'
     };
   }
@@ -185,11 +186,8 @@
     if (meta) meta.textContent = [eventRecord.location, eventRecord.date].filter(Boolean).join(' / ');
     if (description) description.textContent = eventRecord.description;
     if (link) link.href = eventRecord.href;
-    document.querySelectorAll('[data-map9-field-record]').forEach(function (button) {
-      var active = Number(button.getAttribute('data-map9-field-record')) === eventRecord.index;
-      button.classList.toggle('is-active', active);
-      button.setAttribute('aria-pressed', active ? 'true' : 'false');
-    });
+    var recordSelect = document.querySelector('[data-map9-field-list]');
+    if (recordSelect) recordSelect.value = String(eventRecord.index);
   }
 
   function themeAndRedraw() {
@@ -223,6 +221,12 @@
           } else {
             window.location.href = params.data.event.href;
           }
+        }
+      });
+
+      chart.on('mouseover', function (params) {
+        if (params.componentType === 'series' && params.data && params.data.event) {
+          updateFieldInspector(params.data.event);
         }
       });
 
@@ -307,13 +311,23 @@
       var legendItems = Array.prototype.slice.call(document.querySelectorAll('[data-geo-filter]'));
       var activeFilters = [];
       function refreshFieldRecordVisibility() {
-        document.querySelectorAll('[data-map9-field-record]').forEach(function (button) {
-          var category = button.getAttribute('data-category');
-          var year = button.getAttribute('data-year');
+        var recordSelect = document.querySelector('[data-map9-field-list]');
+        if (!recordSelect) return;
+        Array.prototype.forEach.call(recordSelect.options, function (option) {
+          var category = option.getAttribute('data-category');
+          var year = option.getAttribute('data-year');
           var categoryMatch = !activeFilters.length || activeFilters.indexOf(category) !== -1;
           var yearMatch = !activeYear || activeYear === year;
-          button.hidden = !(categoryMatch && yearMatch);
+          option.hidden = !(categoryMatch && yearMatch);
+          option.disabled = option.hidden;
         });
+        var activeOption = recordSelect.options[recordSelect.selectedIndex];
+        if (activeOption && !activeOption.hidden) return;
+        var firstVisible = Array.prototype.find.call(recordSelect.options, function (option) { return !option.hidden; });
+        if (firstVisible) {
+          recordSelect.value = firstVisible.value;
+          selectFieldRecord(Number(firstVisible.value), false);
+        }
       }
       function applyFilter() {
         var any = activeFilters.length > 0;
@@ -372,10 +386,9 @@
             dataIndex: dataIndex
           });
         }
-        if (focusButton) {
-          var activeButton = document.querySelector('[data-map9-field-record="' + idx + '"]');
-          if (activeButton) activeButton.focus();
-        }
+        var recordSelect = document.querySelector('[data-map9-field-list]');
+        if (recordSelect) recordSelect.value = String(idx);
+        if (focusButton && recordSelect) recordSelect.focus();
       }
 
       var fieldRecordList = document.querySelector('[data-map9-field-list]');
@@ -393,38 +406,15 @@
       }
       if (fieldRecordList) {
         events.forEach(function (eventRecord) {
-          var button = document.createElement('button');
-          button.type = 'button';
-          button.setAttribute('data-map9-field-record', eventRecord.index);
-          button.setAttribute('data-category', eventRecord.category);
-          button.setAttribute('data-year', eventRecord.year || '');
-          button.setAttribute('aria-pressed', eventRecord.index === activeEventIndex ? 'true' : 'false');
-          button.innerHTML =
-            '<span>' + String(eventRecord.index + 1).padStart(2, '0') + '</span>' +
-            '<strong>' + escapeHtml(eventRecord.title) + '</strong>' +
-            '<small>' + escapeHtml(eventRecord.location) + '</small>';
-          if (eventRecord.index === activeEventIndex) button.classList.add('is-active');
-          button.addEventListener('click', function () {
-            selectFieldRecord(eventRecord.index, false);
-          });
-          button.addEventListener('keydown', function (keyboardEvent) {
-            if (keyboardEvent.key !== 'ArrowDown' && keyboardEvent.key !== 'ArrowUp' &&
-                keyboardEvent.key !== 'Home' && keyboardEvent.key !== 'End') return;
-            keyboardEvent.preventDefault();
-            var visibleButtons = Array.prototype.slice.call(
-              fieldRecordList.querySelectorAll('[data-map9-field-record]:not([hidden])')
-            );
-            var currentIndex = visibleButtons.indexOf(button);
-            var nextIndex = currentIndex;
-            if (keyboardEvent.key === 'ArrowDown') nextIndex = (currentIndex + 1) % visibleButtons.length;
-            if (keyboardEvent.key === 'ArrowUp') nextIndex = (currentIndex - 1 + visibleButtons.length) % visibleButtons.length;
-            if (keyboardEvent.key === 'Home') nextIndex = 0;
-            if (keyboardEvent.key === 'End') nextIndex = visibleButtons.length - 1;
-            if (visibleButtons[nextIndex]) {
-              selectFieldRecord(Number(visibleButtons[nextIndex].getAttribute('data-map9-field-record')), true);
-            }
-          });
-          fieldRecordList.appendChild(button);
+          var option = document.createElement('option');
+          option.value = String(eventRecord.index);
+          option.setAttribute('data-category', eventRecord.category);
+          option.setAttribute('data-year', eventRecord.year || '');
+          option.textContent = String(eventRecord.index + 1).padStart(2, '0') + ' - ' + eventRecord.title + ' - ' + eventRecord.location;
+          fieldRecordList.appendChild(option);
+        });
+        fieldRecordList.addEventListener('change', function () {
+          selectFieldRecord(Number(fieldRecordList.value), false);
         });
       }
       if (requestedRecordIndex !== null) {

@@ -3,7 +3,7 @@ layout: v3
 permalink: /
 jsonld: home
 title: "Valentine Ghanem"
-browser_title: "Valentine Ghanem"
+browser_title: "Valentine Ghanem | Home"
 description: "Official website of Valentine Golden Ghanem, a Ghanaian medical scientist, epidemiologist and public health researcher."
 extra_js: ["vendor/echarts.min.js", "home-district-engine.js"]
 ---

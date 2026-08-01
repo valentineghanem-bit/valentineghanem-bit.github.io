@@ -15,6 +15,8 @@
   var rankingTitle = root.querySelector('[data-map9-ranking-title]');
   var rankingScope = root.querySelector('[data-map9-ranking-scope]');
   var rankingList = root.querySelector('[data-map9-ranking-list]');
+  var returnSelected = root.querySelector('[data-map9-return-selected]');
+  var currentSelectionId = '';
 
   function validNumber(value) {
     return typeof value === 'number' && Number.isFinite(value);
@@ -60,6 +62,7 @@
     var levelLabel = detail.geography === 'regions' ? 'regional' : 'district';
 
     selectedName.textContent = detail.selected.name;
+    currentSelectionId = detail.selected.id;
     selectedContext.textContent = detail.metric.label + ' at ' + levelLabel + ' level';
     selectedValue.textContent = format(detail.metric.value, detail.metric.suffix);
     rangeMarker.style.left = Math.max(0, Math.min(100, percentile)).toFixed(1) + '%';
@@ -72,7 +75,7 @@
     rankingTitle.textContent = 'Highest ' + detail.metric.label.toLowerCase() + ' values';
     rankingScope.textContent = items.length + ' ' + (detail.geography === 'regions' ? 'regions' : 'districts');
 
-    var leaders = descending.slice(0, 8);
+    var leaders = detail.geography === 'regions' ? descending : descending.slice(0, 12);
     if (!leaders.some(function (item) { return item.id === detail.selected.id; })) {
       var selectedItem = items.find(function (item) { return item.id === detail.selected.id; });
       if (selectedItem) leaders.push(selectedItem);
@@ -90,6 +93,7 @@
         '<small>' + escapeHtml(detail.geography === 'regions' ? 'Regional summary' : item.region) + '</small></span>' +
         '<span class="map9-ranking__bar" aria-hidden="true"><i style="width:' + Math.max(3, width).toFixed(1) + '%"></i></span>' +
         '<b>' + format(item.value, detail.metric.suffix) + '</b>' +
+        '<span class="map9-ranking__action">View on map <i class="fa-solid fa-arrow-up" aria-hidden="true"></i></span>' +
         '</button></li>';
     }).join('');
   }
@@ -100,6 +104,12 @@
     rankingList.addEventListener('click', function (event) {
       var button = event.target.closest('[data-map9-select]');
       if (button) selectGeography(button.getAttribute('data-map9-select'));
+    });
+  }
+
+  if (returnSelected) {
+    returnSelected.addEventListener('click', function () {
+      if (currentSelectionId) selectGeography(currentSelectionId);
     });
   }
 })();

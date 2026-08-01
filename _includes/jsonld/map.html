@@ -6,7 +6,7 @@
       "@type": "CollectionPage",
       "@id": "{{ page.url | absolute_url }}#webpage",
       "url": {{ page.url | absolute_url | jsonify }},
-      "name": "Ghana Health Atlas | Valentine Golden Ghanem",
+      "name": {{ page.browser_title | default: page.title | default: site.title | default: site.data.profile.name | jsonify }},
       "description": {{ page.description | strip_newlines | jsonify }},
       "isPartOf": { "@id": "{{ site.url }}/#website" },
       "about": [
@@ -23,13 +23,19 @@
       "@id": "{{ page.url | absolute_url }}#hero-image",
       "contentUrl": "{{ '/assets/img/community/goaso-2024/with-ceo.jpg' | absolute_url }}",
       "url": "{{ '/assets/img/community/goaso-2024/with-ceo.jpg' | absolute_url }}",
+      "name": "Valentine Golden Ghanem at the 2024 Goaso health screening",
       "caption": "Valentine Golden Ghanem with the Cocoa Clinic medical team and cocoa-sector community members during the 2024 Goaso health screening.",
       "description": "Field photograph of Valentine Golden Ghanem during a health-screening outreach for cocoa farmers in Goaso, Ghana.",
       "width": 1080,
       "height": 1350,
+      "encodingFormat": "image/jpeg",
       "representativeOfPage": true,
+      "creator": { "@type": "Person", "name": {{ site.data.profile.name | jsonify }}, "@id": "{{ site.url }}/#person" },
       "creditText": "Valentine Golden Ghanem",
-      "copyrightHolder": { "@id": "{{ site.url }}/#person" }
+      "copyrightHolder": { "@id": "{{ site.url }}/#person" },
+      "copyrightNotice": "Copyright {{ 'now' | date: '%Y' }} {{ site.data.profile.name }}. All rights reserved.",
+      "license": {{ site.url | append: "/gallery/#image-licensing" | jsonify }},
+      "acquireLicensePage": {{ site.url | append: "/gallery/#image-licensing" | jsonify }}
     },
     {
       "@type": "Dataset",

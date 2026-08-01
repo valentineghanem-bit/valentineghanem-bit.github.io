@@ -2,6 +2,7 @@
 layout: v3
 permalink: /skills/
 title: "Skills, Methods and Technical Practice"
+browser_title: "Skills and Methods | Valentine Ghanem"
 description: "Applied public-health, data-science and cross-disciplinary medical-laboratory practice of Valentine Golden Ghanem, supported by documented methods, platforms and professional evidence."
 jsonld: skills
 extra_css: ["skills-v2.css"]
