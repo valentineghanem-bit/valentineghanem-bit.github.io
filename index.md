@@ -7,35 +7,11 @@ browser_title: "Valentine Ghanem | Home"
 description: "Official website of Valentine Golden Ghanem, a Ghanaian medical scientist, epidemiologist and public health researcher."
 extra_js: ["vendor/echarts.min.js", "home-district-engine.js"]
 ---
-{%- assign msph = site.data.profile.credentials | where_exp: "c", "c.name contains 'Public Health'" | first -%}
-{%- assign mds = site.data.profile.credentials | where_exp: "c", "c.name contains 'Data Science'" | first -%}
-{%- assign frsph = site.data.profile.memberships | where_exp: "m", "m.abbreviation == 'FRSPH'" | first -%}
-{%- assign acslm = site.data.profile.memberships | where_exp: "m", "m.abbreviation == 'ACSLM'" | first -%}
-{%- assign gamls = site.data.profile.memberships | where_exp: "m", "m.abbreviation == 'GAMLS'" | first -%}
-{%- assign vve = site.data.profile.memberships | where_exp: "m", "m.abbreviation == 'VvE'" | first -%}
-
-{%- comment -%} Real content injected for the v3 template's JS (journey tabs,
-publications, portfolio, radar chart, district-map teaser) -- built from the
+{%- comment -%} Real content injected for the v3 template's JS (publications,
+portfolio, radar chart, district-map teaser) -- built from the
 real _data/*.yml files, not the reference template's fabricated arrays. {%- endcomment -%}
 <script>
   window.SITE_DATA = {
-    journey: {
-      education: [
-        {% for t in site.data.timeline %}{% if t.title contains "Master of Science" or t.title contains "Master of Laws" or t.title contains "Bachelor of Science in Medical" %}
-        { inst: {{ t.dates | jsonify }}, title: {{ t.title | jsonify }}, desc: {{ t.description | default: "" | jsonify }} },
-        {% endif %}{% endfor %}
-      ],
-      appointments: [
-        {% for t in site.data.timeline %}{% if t.title contains "Biomedical Scientist" or t.title contains "Screening" %}
-        { inst: {{ t.dates | jsonify }}, title: {{ t.title | jsonify }}, desc: {{ t.description | default: "" | jsonify }} },
-        {% endif %}{% endfor %}
-      ],
-      fellowships: [
-        {% for t in site.data.timeline %}{% if t.title contains "Fellow" or t.title contains "CORU" or t.title contains "Licensure" %}
-        { inst: {{ t.dates | jsonify }}, title: {{ t.title | jsonify }}, desc: {{ t.description | default: "" | jsonify }} },
-        {% endif %}{% endfor %}
-      ]
-    },
     publications: [
       {% for p in site.data.publications %}
       {
@@ -156,6 +132,8 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
 
 {% include nav-v3.html %}
 
+<main id="main-content">
+
 <section id="hero" class="home-hero min-h-screen pt-36 pb-20 flex flex-col justify-center items-center px-6 relative overflow-hidden" data-nav-marker="00" data-nav-label="Top" data-nav-colour="#22D3EE">
   <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
     <div class="absolute inset-0 graded-hero-overlay"></div>
@@ -260,66 +238,6 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   </div>
 </section>
 
-<section id="sub-hero" class="py-24 px-6 bg-slate-50/50 dark:bg-slate-900/40 border-y border-slate-200 dark:border-slate-800 relative" data-nav-marker="00" data-nav-label="Profile" data-nav-colour="#34D399">
-  <div class="max-w-[1600px] mx-auto grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-    <div class="lg:col-span-7 reveal">
-      <div class="inline-flex items-center gap-2 text-xs font-mono font-bold text-red-500 tracking-widest uppercase mb-4">
-        <i class="fa-solid fa-microscope"></i>
-        <span>FIELD EPIDEMIOLOGY &amp; CLINICAL LABORATORY LEADERSHIP</span>
-      </div>
-      <h2 class="text-4xl sm:text-5xl font-black font-heading tracking-tight text-slate-900 dark:text-white leading-tight mb-6">
-        Laboratory diagnostics interpreted through <span class="text-cyan-500">spatial epidemiology.</span>
-      </h2>
-      <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
-        As <strong class="text-slate-900 dark:text-white">{{ site.data.profile.job_titles[0] }} at {{ site.data.organization.cocoa_clinic.name }} ({{ site.data.organization.cocoa_clinic.parent_organization.alternate_name }})</strong>, Valentine leads diagnostic laboratory operations and applies spatial statistics and machine learning to HIV/AIDS surveillance and health-insurance access across Ghana's 261 districts.
-      </p>
-      <div class="relative pl-6 py-2 my-8 border-l-4 border-cyan-500 bg-cyan-500/5 rounded-r-2xl">
-        <p class="text-lg sm:text-xl font-serif italic text-slate-800 dark:text-slate-200 leading-snug">
-          &ldquo;{{ site.data.profile.aim | strip_newlines }}&rdquo;
-        </p>
-        <span class="text-xs font-mono text-slate-400 mt-2 block">&mdash; {{ site.data.profile.name }}, FRSPH</span>
-      </div>
-      <div class="flex flex-wrap gap-2.5 mb-8 text-xs font-mono font-semibold">
-        <span class="px-3.5 py-1.5 glass-card rounded-lg flex items-center gap-2 text-amber-600 dark:text-amber-400">
-          <i class="fa-solid fa-award"></i> {{ frsph.abbreviation }} {{ frsph.reg_no }} (UK)
-        </span>
-        <span class="px-3.5 py-1.5 glass-card rounded-lg flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
-          <i class="fa-solid fa-id-card"></i> {{ acslm.abbreviation }} / CORU {{ acslm.reg_no }} (Ireland)
-        </span>
-        <span class="px-3.5 py-1.5 glass-card rounded-lg flex items-center gap-2 text-cyan-600 dark:text-cyan-400">
-          <i class="fa-solid fa-shield-halved"></i> {{ gamls.abbreviation }} {{ gamls.reg_no }} (Ghana)
-        </span>
-        <span class="px-3.5 py-1.5 glass-card rounded-lg flex items-center gap-2 text-violet-600 dark:text-violet-400">
-          <i class="fa-solid fa-globe"></i> {{ vve.abbreviation }} {{ vve.reg_no }} (Netherlands)
-        </span>
-      </div>
-      <div class="flex flex-wrap gap-4">
-        <a href="{{ '/publications/' | relative_url }}" class="px-6 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-black uppercase tracking-wider rounded-xl hover:opacity-90 transition-all flex items-center gap-2">
-          <i class="fa-solid fa-book-open"></i> Publications Index
-        </a>
-        <a href="{{ site.data.profile.cv_download_url | relative_url }}" download class="px-6 py-3 glass-card text-slate-800 dark:text-slate-200 text-xs font-black uppercase tracking-wider rounded-xl hover:border-cyan-500 transition-all flex items-center gap-2" aria-label="Download Valentine Golden Ghanem CV">
-          <i class="fa-solid fa-download text-red-500"></i> CV Summary
-        </a>
-      </div>
-    </div>
-    <div class="lg:col-span-5 relative flex justify-center lg:justify-end reveal">
-      <div class="relative w-full max-w-md rounded-[32px] overflow-hidden glass-card p-3 border shadow-2xl group">
-        <div class="absolute top-6 right-6 z-20 bg-slate-900/90 backdrop-blur-md text-white text-[10px] font-mono tracking-widest px-3 py-1.5 rounded-full border border-slate-700 flex items-center gap-2 shadow-lg">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>ACCRA, GHANA</span>
-        </div>
-        <img src="{{ '/assets/img/gallery/portraits/Valentine Golden Ghanem Portrait-18.webp' | relative_url }}"
-             alt="{{ site.data.profile.name }}"
-             class="w-full h-auto object-cover rounded-[24px] shadow-inner group-hover:scale-105 transition-transform duration-500">
-        <div class="p-4 mt-2 text-center">
-          <p class="font-bold text-sm text-slate-900 dark:text-white">{{ site.data.profile.name }}</p>
-          <p class="text-xs text-slate-500 dark:text-slate-400">MLS (CORU) &middot; ACSLM &middot; AHPC &middot; FRSPH &middot; VvE</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section id="about" class="py-32 px-6 relative" data-nav-marker="01" data-nav-label="Identity" data-nav-colour="#22D3EE">
   <div class="max-w-[1600px] mx-auto">
     <div class="reveal text-center max-w-3xl mx-auto mb-16">
@@ -331,7 +249,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       <p class="text-slate-600 dark:text-slate-400 mt-4 text-base">Valentine Golden Ghanem combines quality-assured laboratory practice with spatial epidemiology and machine learning to strengthen disease surveillance. Further detail is available on the <a href="{{ '/about/' | relative_url }}" class="text-cyan-500 hover:underline">About page</a>.</p>
     </div>
     <div class="reveal glass-card home-identity-panel rounded-[32px] p-6 sm:p-10 border">
-      <div class="grid lg:grid-cols-[0.9fr_1.35fr] gap-8 items-stretch">
+      <div class="grid lg:grid-cols-[1fr_auto] gap-8 items-center">
         <div class="home-identity-rail rounded-[28px] p-6 sm:p-8 relative overflow-hidden">
           <div class="relative z-10">
             <p class="font-mono text-[10px] uppercase tracking-[0.34em] text-cyan-500 font-black mb-5">Clinical science. Public health intelligence.</p>
@@ -344,20 +262,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
             </div>
           </div>
         </div>
-        <div>
-          <div class="flex flex-wrap gap-3 mb-7 border-b border-slate-200 dark:border-slate-800 pb-5">
-            <button onclick="switchJourneyTab('education', event)" class="journey-btn px-6 py-2.5 rounded-full text-xs font-bold bg-slate-900 dark:bg-white text-white dark:text-slate-900 transition-all flex items-center gap-2">
-              <i class="fa-solid fa-graduation-cap"></i> Education
-            </button>
-            <button onclick="switchJourneyTab('appointments', event)" class="journey-btn px-6 py-2.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-all flex items-center gap-2">
-              <i class="fa-solid fa-briefcase-medical"></i> Clinical Appointments
-            </button>
-            <button onclick="switchJourneyTab('fellowships', event)" class="journey-btn px-6 py-2.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-all flex items-center gap-2">
-              <i class="fa-solid fa-certificate"></i> Councils &amp; Fellowships
-            </button>
-          </div>
-          <div id="journey-content" class="home-journey-grid grid md:grid-cols-2 gap-5"></div>
-        </div>
+        <a href="{{ '/about/' | relative_url }}" class="inline-flex min-h-[48px] items-center justify-center gap-3 rounded-xl border border-cyan-400/40 px-6 py-3 text-xs font-black uppercase tracking-wider text-cyan-500 transition hover:border-cyan-400 hover:bg-cyan-400/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-400">View professional profile <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
       </div>
     </div>
   </div>
@@ -373,6 +278,10 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <h3 class="text-4xl sm:text-5xl font-black font-heading">Multidisciplinary Practice Matrix</h3>
       </div>
       <p class="text-slate-400 mt-3 text-sm">Relative emphasis across clinical practice, public-health work, spatial analytics and applied modelling. These values are not proficiency scores.</p>
+      <details class="home-expertise-method mt-5 text-left text-xs text-slate-300">
+        <summary class="cursor-pointer font-mono font-bold uppercase tracking-wider text-amber-300">How the portfolio-emphasis index is calculated</summary>
+        <p class="mt-3 leading-relaxed">Each domain is coded against the documented portfolio: breadth of practice statements (40%), evidence of repeated application (35%) and publicly inspectable methods or artifacts (25%). The resulting 0&ndash;100 index describes the relative distribution of evidence within this website; it does not measure professional competence.</p>
+      </details>
     </div>
     <div class="home-expertise-layout grid lg:grid-cols-12 gap-12 items-start">
       <div class="home-expertise-radar-column lg:col-span-6 reveal">
@@ -737,5 +646,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
     </div>
   </div>
 </section>
+
+</main>
 
 {% include footer-v3.html %}

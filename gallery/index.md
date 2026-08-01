@@ -20,7 +20,7 @@ extra_js: ["gallery-morph.js", "fan-carousel.js"]
       <div class="gallery-morph__stage">
         <div class="gallery-morph__collage" aria-hidden="true">
           {% for p in site.data.gallery_portraits limit: 6 %}
-          <img src="{{ p.url | relative_url }}"
+          <img src="{{ p.thumbnail_url | relative_url }}"
                alt="Valentine Golden Ghanem - {{ p.caption }}"
                width="{{ p.width }}"
                height="{{ p.height }}"
@@ -29,7 +29,7 @@ extra_js: ["gallery-morph.js", "fan-carousel.js"]
                decoding="async">
           {% endfor %}
           {% for p in site.data.gallery_photos limit: 6 %}
-          <img src="{{ p.url | relative_url }}"
+          <img src="{{ p.thumbnail_url | relative_url }}"
                alt="Valentine Golden Ghanem - {{ p.caption }}"
                width="{{ p.width }}"
                height="{{ p.height }}"
@@ -62,7 +62,7 @@ extra_js: ["gallery-morph.js", "fan-carousel.js"]
     <div class="gallery10-wheel__orbit" data-gallery-wheel>
       {% for p in site.data.gallery_portraits %}
       <figure class="gallery10-wheel__item" data-wheel-index="{{ forloop.index0 }}">
-        <img src="{{ p.url | relative_url }}"
+        <img src="{{ p.thumbnail_url | relative_url }}"
              alt="Valentine Golden Ghanem - {{ p.caption }}"
              width="{{ p.width }}"
              height="{{ p.height }}"
@@ -108,10 +108,11 @@ extra_js: ["gallery-morph.js", "fan-carousel.js"]
           {% for p in site.data.gallery_portraits %}
           <div class="fan-carousel__card{% if p.contain %} fan-carousel__card--contain{% endif %}{% if p.width > p.height %} fan-carousel__card--landscape{% endif %}"
                data-caption="{{ p.caption | escape }}"
+               data-full-src="{{ p.url | relative_url }}"
                role="button"
                tabindex="-1"
                aria-label="{{ p.caption | escape }} - view full-size photograph of Valentine Golden Ghanem">
-            <img src="{{ p.url | relative_url }}"
+            <img src="{{ p.thumbnail_url | relative_url }}"
                  alt="Valentine Golden Ghanem - {{ p.caption }}"
                  width="{{ p.width }}"
                  height="{{ p.height }}"
@@ -162,10 +163,11 @@ extra_js: ["gallery-morph.js", "fan-carousel.js"]
           {% for p in site.data.gallery_photos %}
           <div class="fan-carousel__card{% if p.contain %} fan-carousel__card--contain{% endif %}{% if p.width > p.height %} fan-carousel__card--landscape{% endif %}"
                data-caption="{{ p.caption | escape }}"
+               data-full-src="{{ p.url | relative_url }}"
                role="button"
                tabindex="-1"
                aria-label="{{ p.caption | escape }} - view full-size photograph of Valentine Golden Ghanem">
-            <img src="{{ p.url | relative_url }}"
+            <img src="{{ p.thumbnail_url | relative_url }}"
                  alt="Valentine Golden Ghanem - {{ p.caption }}"
                  width="{{ p.width }}"
                  height="{{ p.height }}"

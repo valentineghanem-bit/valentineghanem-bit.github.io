@@ -112,7 +112,7 @@
       var sourceImage = card.querySelector('img');
       if (!sourceImage) return;
 
-      image.src = sourceImage.currentSrc || sourceImage.src;
+      image.src = card.getAttribute('data-full-src') || sourceImage.currentSrc || sourceImage.src;
       image.alt = sourceImage.alt || 'Full-size photograph of Valentine Golden Ghanem';
       caption.textContent = card.getAttribute('data-caption') || '';
       backdrop.setAttribute('aria-label', 'Full-size photograph ' + (currentIndex + 1) + ' of ' + cards.length);
@@ -123,9 +123,9 @@
         image.style.objectFit = 'cover';
       }
 
-      var grow = function () { growToImage(sourceImage); };
-      if (sourceImage.complete && sourceImage.naturalWidth) grow();
-      else sourceImage.addEventListener('load', grow, { once: true });
+      var grow = function () { growToImage(image); };
+      if (image.complete && image.naturalWidth) grow();
+      else image.addEventListener('load', grow, { once: true });
 
       if (onChange) onChange(currentIndex);
     }

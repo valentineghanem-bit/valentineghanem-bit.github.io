@@ -14,111 +14,137 @@
 # unrelated design mood-board images, not a Sites export. If a Takeout
 # archive or export surfaces later, reconcile against it.
 - url: "/assets/img/gallery/portraits/studio-tuxedo-portrait.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p01.webp"
   caption: "Portrait at an event venue, patterned maroon shirt, stage screens behind him."
   width: 1086
   height: 1448
 - url: "/assets/img/gallery/portraits/desk-health-policy-books.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p02.webp"
   caption: "Seated in a hanging wicker chair outdoors, navy suit, holding a magazine."
   width: 1200
   height: 895
 - url: "/assets/img/gallery/portraits/cocoa-clinic-map-wall.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p03.webp"
   caption: "Briefing the Cocoa Clinic team beside the ambulance at an outreach tent."
   width: 1683
   height: 934
 - url: "/assets/img/gallery/portraits/policy-stakeholder-meeting.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p04.webp"
   caption: "Portrait, arms crossed, Ghana COCOBOD 70th Anniversary patterned shirt."
   width: 1086
   height: 1448
 - url: "/assets/img/gallery/portraits/conference-participant-screens.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p05.webp"
   caption: "At the laboratory desk, yellow shirt, reviewing the Lab Information System's sample list."
   width: 1085
   height: 1450
   contain: true
 - url: "/assets/img/gallery/portraits/lab-yellow-shirt-microscope.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p06.webp"
   caption: "Portrait at a residential gate, light blue shirt, flowering shrubs behind him."
   width: 1536
   height: 1024
 - url: "/assets/img/gallery/portraits/lab-yellow-shirt-lis-samples.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p07.webp"
   caption: "At the laboratory desk, yellow shirt, reviewing the Lab Information System's dashboard."
   width: 1085
   height: 1450
   contain: true
 - url: "/assets/img/gallery/portraits/lab-biosafety-cabinet.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p08.webp"
   caption: "At his desk with health-policy textbooks, red patterned shirt."
   width: 1537
   height: 1023
 - url: "/assets/img/gallery/portraits/lab-coat-with-team.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p09.webp"
   caption: "Seated portrait, Ghana COCOBOD 70th Anniversary patterned shirt."
   width: 1254
   height: 1254
 - url: "/assets/img/gallery/portraits/lab-coat-tablet-stool.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p10.webp"
   caption: "On a lab stool, mint-green shirt, reviewing a tablet, coat draped behind him."
   width: 1086
   height: 1448
 - url: "/assets/img/gallery/portraits/lab-desk-checkered-shirt.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p11.webp"
   caption: "At a biosafety cabinet, gloved hands, white lab coat."
   width: 534
   height: 611
 - url: "/assets/img/gallery/portraits/clinic-tablet-review.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p12.webp"
   caption: "At the laboratory desk, checkered shirt, beside the microscope."
   width: 1254
   height: 1254
 - url: "/assets/img/gallery/portraits/ambulance-heart-hands.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p13.webp"
   caption: "Beside the Cocoa Clinic ambulance, hands forming a heart."
   width: 1448
   height: 1086
 - url: "/assets/img/gallery/portraits/medical-team-dispensing.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p14.webp"
   caption: "As a conference participant, reviewing epidemiological data on screen."
   width: 1536
   height: 1024
 - url: "/assets/img/gallery/portraits/cocoa-clinic-locations-map.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p15.webp"
   caption: "At his desk, arms resting beside health-policy texts, red patterned shirt."
   width: 1536
   height: 1024
 - url: "/assets/img/gallery/portraits/cocobod-70-seated-portrait.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p16.webp"
   caption: "Portrait in an event hall, blue patterned shirt."
   width: 1122
   height: 1402
 - url: "/assets/img/gallery/portraits/cocobod-70-portrait-closeup.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p17.webp"
   caption: "Outdoor portrait, teal patterned shirt, green shrubs behind him."
   width: 1254
   height: 1254
 - url: "/assets/img/gallery/portraits/venue-portrait-maroon-shirt.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p18.webp"
   caption: "Portrait in a mall hallway, blue shirt."
   width: 1122
   height: 1402
 - url: "/assets/img/gallery/portraits/hall-portrait-blue-pattern.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p19.webp"
   caption: "Studio portrait, seated, red patterned shirt."
   width: 1081
   height: 1455
   contain: true
 - url: "/assets/img/gallery/portraits/outdoor-portrait-green-pattern.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p20.webp"
   caption: "Beside a laboratory analyser, mint-green shirt, reviewing a tablet."
   width: 1448
   height: 1086
 - url: "/assets/img/gallery/portraits/street-portrait-blue-shirt.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p21.webp"
   caption: "Portrait on a residential street, light blue shirt."
   width: 1254
   height: 1254
 - url: "/assets/img/gallery/portraits/gate-portrait-blue-shirt.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p22.webp"
   caption: "Portrait at home, beside a display cabinet, navy checkered shirt."
   width: 1254
   height: 1254
 - url: "/assets/img/gallery/portraits/outdoor-portrait-blue-shirt-2.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p23.webp"
   caption: "Studio portrait in a black tuxedo and bow tie."
   width: 1023
   height: 1537
   contain: true
 - url: "/assets/img/gallery/portraits/mall-hallway-portrait.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p24.webp"
   caption: "Beside a wall-mounted map of Cocoa Clinic locations, Ghana COCOBOD 70th Anniversary shirt."
   width: 1023
   height: 1537
   contain: true
 - url: "/assets/img/gallery/portraits/wicker-chair-portrait.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p25.webp"
   caption: "Portrait in an office hallway, lime-green shirt."
   width: 1230
   height: 1279
 - url: "/assets/img/gallery/portraits/living-room-portrait.jpg"
+  thumbnail_url: "/assets/img/gallery/thumbs/p26.webp"
   caption: "Portrait against a stone wall, navy patterned shirt, phone in hand."
   width: 1254
   height: 1254

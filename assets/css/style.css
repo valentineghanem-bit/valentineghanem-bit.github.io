@@ -1037,8 +1037,8 @@ html.has-pseudo-fullscreen { overflow: hidden; }
 body.lightbox-open { overflow: hidden; }
 @media (max-width: 640px) {
   .lightbox { padding: 16px; }
-  .lightbox__arrow { width: 40px; height: 40px; font-size: 1.4rem; }
-  .lightbox__close { width: 38px; height: 38px; top: 12px; right: 12px; }
+  .lightbox__arrow { width: 44px; height: 44px; font-size: 1.4rem; }
+  .lightbox__close { width: 44px; height: 44px; top: 12px; right: 12px; }
 }
 
 /* ---------- Empty state ---------- */

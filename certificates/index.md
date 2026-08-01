@@ -20,7 +20,7 @@ jsonld: "certificates"
   {%- endfor -%}
 {%- endfor -%}
 
-<section class="certificates-v2 certificates-v3">
+<main id="main-content" class="certificates-v2 certificates-v3">
   <section class="certificates-hero"
            id="certificates-top"
            data-nav-marker="00"
@@ -268,6 +268,6 @@ jsonld: "certificates"
       </div>
     </div>
   </section>
-</section>
+</main>
 
 {% include footer-v3.html %}

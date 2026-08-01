@@ -242,24 +242,13 @@
       });
       themeObserver.observe(document.documentElement, { attributes: true });
 
-      // ---- Zoom buttons + Ctrl/Cmd+wheel zoom (plain scroll still scrolls the page) ----
+      // ---- Reset control + Ctrl/Cmd+wheel zoom (plain scroll still scrolls the page) ----
       var hint = document.querySelector('[data-geo-hint]');
       function currentZoom() { return chart.getOption().geo[0].zoom || 1; }
       function zoomBy(factor, originX, originY) {
         chart.dispatchAction({ type: 'geoRoam', componentType: 'geo', zoom: factor, originX: originX, originY: originY });
       }
-      var zoomInBtn = document.querySelector('[data-geo-zoom-in]');
-      var zoomOutBtn = document.querySelector('[data-geo-zoom-out]');
       var zoomResetBtn = document.querySelector('[data-geo-zoom-reset]');
-      var rect0 = container.getBoundingClientRect();
-      if (zoomInBtn) zoomInBtn.addEventListener('click', function () {
-        var r = container.getBoundingClientRect();
-        zoomBy(1.5, r.width / 2, r.height / 2);
-      });
-      if (zoomOutBtn) zoomOutBtn.addEventListener('click', function () {
-        var r = container.getBoundingClientRect();
-        zoomBy(1 / 1.5, r.width / 2, r.height / 2);
-      });
       if (zoomResetBtn) zoomResetBtn.addEventListener('click', function () {
         chart.setOption(buildOption(), true);
       });

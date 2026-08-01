@@ -12,6 +12,7 @@ medical_screening:
     video: "/assets/video/goaso-2024-screening.mp4"
     video_duration: "PT13S"
     video_landscape: true
+    video_description: "A short field recording of Valentine Golden Ghanem and the Cocoa Clinic medical team during the Goaso health-screening outreach for cocoa farmers."
     photos:
       - url: "/assets/img/community/goaso-2024/with-ceo.jpg"
         caption: "With the Cocoa Clinic CEO at the Goaso outreach."
@@ -38,6 +39,7 @@ medical_screening:
     video: "/assets/video/agona-swedru-2024-screening.mp4"
     video_duration: "PT32S"
     video_landscape: true
+    video_description: "A short field recording of Valentine Golden Ghanem supporting the Cocoa Clinic screening programme for staff and cocoa farmers in Agona Swedru."
     photos:
       - url: "/assets/img/community/agona-swedru-2024/group-pic.jpg"
         caption: "The Cocoa Clinic screening team at Agona Swedru."

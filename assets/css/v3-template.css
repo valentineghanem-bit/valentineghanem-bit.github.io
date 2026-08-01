@@ -2223,6 +2223,14 @@ html[data-v2-theme="dark"] .record-lightbox-close, html[data-v2-theme="dim"] .re
    flashing on then immediately exiting on desktop Firefox; see
    community-fx.js for the full rationale). */
 .v3-scope .event-media__video { position: relative; margin: 16px 0 0; display: inline-block; max-width: 100%; }
+.v3-scope .event-media__video-description {
+  max-width: 64ch;
+  margin: 10px 0 0;
+  color: #64748b;
+  font-size: .8rem;
+  line-height: 1.65;
+}
+.dark .v3-scope .event-media__video-description { color: #cbd5e1; }
 .v3-scope .event-media__video video { height: 260px; max-width: 100%; width: auto; border-radius: 10px; border: 1px solid rgba(148,163,184,0.25); display: block; box-shadow: 0 10px 30px -5px rgba(0,0,0,0.15); }
 .v3-scope .event-media__video--landscape video { width: 462px; height: 260px; object-fit: cover; object-position: 50% 30%; }
 .v3-scope .event-media__video__play {
@@ -2272,8 +2280,8 @@ html.has-pseudo-fullscreen { overflow: hidden; }
 body.lightbox-open { overflow: hidden; }
 @media (max-width: 640px) {
   .lightbox { padding: 16px; }
-  .lightbox__arrow { width: 40px; height: 40px; font-size: 1.4rem; }
-  .lightbox__close { width: 38px; height: 38px; top: 12px; right: 12px; }
+  .lightbox__arrow { width: 44px; height: 44px; font-size: 1.4rem; }
+  .lightbox__close { width: 44px; height: 44px; top: 12px; right: 12px; }
 }
 
 /* Community sidebar nav -- scrollspy active state (community-fx.js) */

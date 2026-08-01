@@ -64,16 +64,11 @@ extra_js: ["press-fx.js"]
         <div>
           <p class="press-section-heading__kicker">Media archive</p>
           <h2 id="coverage-title">Coverage, commentary and profiles</h2>
-          <p>Browse seven articles by outlet, subject or coverage type.</p>
+          <p>Browse seven articles by coverage type.</p>
         </div>
       </header>
 
       <div class="press-controls" aria-label="Filter media records">
-        <label class="press-search">
-          <span class="sr-only">Search media records</span>
-          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-          <input type="search" placeholder="Search headline, outlet or subject" data-press-search>
-        </label>
         <div class="press-filter-group" aria-label="Coverage type">
           <button type="button" class="is-active" data-press-filter="all" aria-pressed="true">All records</button>
           <button type="button" data-press-filter="research" aria-pressed="false">Research</button>

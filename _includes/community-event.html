@@ -94,7 +94,9 @@
                {% if event.photos.first.url %}poster="{{ event.photos.first.url | relative_url }}"{% endif %}
                controls
                preload="metadata"
-               aria-label="{{ event.title | escape }} video featuring Valentine Golden Ghanem"></video>
+               aria-label="{{ event.title | escape }} video featuring Valentine Golden Ghanem"
+               aria-describedby="community-video-description-{{ include.index }}"></video>
+        <p class="event-media__video-description" id="community-video-description-{{ include.index }}"><strong>Video description:</strong> {{ event.video_description | default: event.description }}</p>
       </div>
       {% endif %}
     </div>

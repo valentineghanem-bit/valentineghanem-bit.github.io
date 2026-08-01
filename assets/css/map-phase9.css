@@ -313,7 +313,7 @@
 
 .map9-field__workspace {
   display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(360px, .55fr);
+  grid-template-columns: minmax(0, 1.35fr) minmax(400px, .65fr);
   gap: 32px;
   margin-top: 48px;
   padding-top: 40px;
@@ -400,7 +400,7 @@
 
 .map9-field-card figure {
   position: relative;
-  height: 300px;
+  height: clamp(340px, 22vw, 390px);
   margin: 0;
   overflow: hidden;
   background: #07101f;
@@ -485,6 +485,7 @@
 }
 
 .map9-field-card__records select {
+  color-scheme: dark;
   width: 100%;
   min-height: 48px;
   padding: 0 42px 0 14px;
@@ -494,6 +495,16 @@
   color: #f8fafc;
   font: 650 .72rem/1.4 "Plus Jakarta Sans", sans-serif;
   cursor: pointer;
+}
+.map9-field-card__records select option {
+  color: #f8fafc;
+  background: #0b1424;
+}
+.map9-field .geo-zoom__btn {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .map9-field-card__records select:hover,

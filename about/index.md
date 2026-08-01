@@ -18,7 +18,7 @@ extra_js: ["about-fx.js"]
       <div class="about-profile-hero__copy reveal">
         <p class="about-v3__breadcrumb"><a href="{{ '/' | relative_url }}">Home</a><span>/</span>About</p>
         <p class="about-v3__eyebrow">Medical science <b>&bull;</b> Epidemiology <b>&bull;</b> Public health</p>
-        <h1 id="aboutTitle"><span>Valentine</span><span>Golden Ghanem</span></h1>
+        <h1 id="aboutTitle"><span>Valentine</span> <span>Golden Ghanem</span></h1>
         <p class="about-profile-hero__role">{{ site.data.profile.job_titles | join: " / " }}</p>
         <p class="about-profile-hero__summary">{{ site.data.profile.about_hero_description | strip_newlines }}</p>
         <div class="about-profile-hero__actions" aria-label="About page actions">

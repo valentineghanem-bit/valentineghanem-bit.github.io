@@ -243,9 +243,7 @@ extra_js: ["vendor/echarts.min.js", "home-district-engine.js", "field-map.js", "
               <span class="geo-scale__label" data-geo-scale-label>50 km</span>
             </div>
             <div class="geo-zoom" data-geo-zoom>
-              <button type="button" class="geo-zoom__btn" data-geo-zoom-in aria-label="Zoom in">+</button>
-              <button type="button" class="geo-zoom__btn" data-geo-zoom-out aria-label="Zoom out">&minus;</button>
-              <button type="button" class="geo-zoom__btn geo-zoom__btn--reset" data-geo-zoom-reset aria-label="Reset field map">&#8634;</button>
+              <button type="button" class="geo-zoom__btn geo-zoom__btn--reset" data-geo-zoom-reset aria-label="Reset field map to show all of Ghana" title="Reset map">&#8634;</button>
             </div>
           </div>
           <p class="map9-field__map-note">Real district boundaries &middot; animated markers identify verified field coordinates &middot; marker images open in the adjacent record card.</p>
@@ -279,7 +277,7 @@ extra_js: ["vendor/echarts.min.js", "home-district-engine.js", "field-map.js", "
           </div>
           <div class="map9-field-card__records">
             <label for="map9FieldRecordSelect">Choose a mapped record</label>
-            <select id="map9FieldRecordSelect" data-map9-field-list aria-label="Choose a mapped field record"></select>
+            <select id="map9FieldRecordSelect" data-map9-field-list></select>
           </div>
         </aside>
       </div>
@@ -304,15 +302,15 @@ extra_js: ["vendor/echarts.min.js", "home-district-engine.js", "field-map.js", "
         </dl>
         <div class="map9-source-layers" aria-label="Atlas source layers">
           <article>
-            <span>01</span>
+            <span>P1</span>
             <div><strong>Administrative boundaries</strong><p>District polygons come from Ghana administrative boundary GeoJSON documented in the contributing repositories as Ghana Statistical Service-derived or OCHA HDX public geography. The same geometry supplies district perimeters, representative coordinates and the 16-region aggregation.</p></div>
           </article>
           <article>
-            <span>02</span>
+            <span>P2</span>
             <div><strong>Population and health evidence</strong><p>District determinants draw chiefly from the 2021 Population and Housing Census. Ghana DHS 2019 and 2022 indicators remain identified as regional estimates assigned to districts within each survey region; NHIA and study-derived indices retain their stated analytical resolution.</p></div>
           </article>
           <article>
-            <span>03</span>
+            <span>P3</span>
             <div><strong>Dated field records</strong><p>The seven event markers come from the site's documented activity register, with recorded dates, locations, coordinates, descriptions and local image paths. They are a professional field archive, not a national facility registry or epidemiological sample.</p></div>
           </article>
         </div>
@@ -320,13 +318,13 @@ extra_js: ["vendor/echarts.min.js", "home-district-engine.js", "field-map.js", "
       </div>
 
       <ol class="map9-domain-register" aria-label="Evidence domains represented in the map">
-        <li><span>01</span><div><strong>Demography and structural determinants</strong><p>GSS PHC 2021 population, poverty, literacy, employment, insurance and dependency measures at district level.</p></div></li>
-        <li><span>02</span><div><strong>Insurance and women's education</strong><p>PHC district context combined with DHS 2019/2022 regional insurance, education and facility-delivery estimates; regional proxies are disclosed in the source repositories.</p></div></li>
-        <li><span>03</span><div><strong>SDG, WASH, services and outcomes</strong><p>Census context, regional service indicators and derived health scores. Regional DHIMS2 measures remain uniform within their source region.</p></div></li>
-        <li><span>04</span><div><strong>Nutrition, anaemia and child health</strong><p>DHS 2022 regional outcomes modelled to district surfaces with PHC 2021 covariates; estimates are model-based, not direct district observations.</p></div></li>
-        <li><span>05</span><div><strong>Maternal and reproductive health</strong><p>DHS 2022 service indicators, PHC 2021 determinants and NHIA summaries assembled as an ecological district dataset.</p></div></li>
-        <li><span>06</span><div><strong>Immunisation coverage</strong><p>DHS 2022 regional immunisation estimates linked to district-varying PHC 2021 socioeconomic context; geographic resolution is retained in interpretation.</p></div></li>
-        <li><span>07</span><div><strong>Ranked structural vulnerability</strong><p>A reproducible index derived from six PHC 2021 structural determinants and ranked across 261 districts.</p></div></li>
+        <li><span>T1</span><div><strong>Demography and structural determinants</strong><p>GSS PHC 2021 population, poverty, literacy, employment, insurance and dependency measures at district level.</p></div></li>
+        <li><span>T2</span><div><strong>Insurance and women's education</strong><p>PHC district context combined with DHS 2019/2022 regional insurance, education and facility-delivery estimates; regional proxies are disclosed in the source repositories.</p></div></li>
+        <li><span>T3</span><div><strong>SDG, WASH, services and outcomes</strong><p>Census context, regional service indicators and derived health scores. Regional DHIMS2 measures remain uniform within their source region.</p></div></li>
+        <li><span>T4</span><div><strong>Nutrition, anaemia and child health</strong><p>DHS 2022 regional outcomes modelled to district surfaces with PHC 2021 covariates; estimates are model-based, not direct district observations.</p></div></li>
+        <li><span>T5</span><div><strong>Maternal and reproductive health</strong><p>DHS 2022 service indicators, PHC 2021 determinants and NHIA summaries assembled as an ecological district dataset.</p></div></li>
+        <li><span>T6</span><div><strong>Immunisation coverage</strong><p>DHS 2022 regional immunisation estimates linked to district-varying PHC 2021 socioeconomic context; geographic resolution is retained in interpretation.</p></div></li>
+        <li><span>T7</span><div><strong>Ranked structural vulnerability</strong><p>A reproducible index derived from six PHC 2021 structural determinants and ranked across 261 districts.</p></div></li>
       </ol>
     </div>
   </section>
