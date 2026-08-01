@@ -400,7 +400,7 @@
 
 .map9-field-card figure {
   position: relative;
-  height: clamp(340px, 22vw, 390px);
+  height: clamp(480px, 35vw, 520px);
   margin: 0;
   overflow: hidden;
   background: #07101f;
