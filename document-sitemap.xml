@@ -1,0 +1,39 @@
+---
+layout: null
+permalink: /document-sitemap.xml
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  {%- for year_group in site.data.cpd -%}
+    {%- for record in year_group.entries -%}
+      {%- if record.certificate_url %}
+  <url>
+    <loc>{{ record.certificate_url | absolute_url | replace: " ", "%20" | xml_escape }}</loc>
+    <lastmod>2026-08-02</lastmod>
+  </url>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endfor -%}
+  {%- for role in site.data.peer_review -%}
+    {%- if role.certificate_url %}
+  <url>
+    <loc>{{ role.certificate_url | absolute_url | replace: " ", "%20" | xml_escape }}</loc>
+    <lastmod>2026-08-02</lastmod>
+  </url>
+    {%- endif -%}
+  {%- endfor -%}
+  {%- for record in site.data.portfolio.practice_archive -%}
+    {%- for link in record.links -%}
+      {%- if link.url contains '.pdf' %}
+  <url>
+    <loc>{{ link.url | absolute_url | replace: " ", "%20" | xml_escape }}</loc>
+    <lastmod>2026-08-02</lastmod>
+  </url>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endfor -%}
+  <url>
+    <loc>{{ site.data.profile.cv_download_url | absolute_url | replace: " ", "%20" | xml_escape }}</loc>
+    <lastmod>2026-08-02</lastmod>
+  </url>
+</urlset>

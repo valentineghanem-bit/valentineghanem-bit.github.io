@@ -7,6 +7,8 @@ browser_title: "Valentine Ghanem | Home"
 description: "Official website of Valentine Golden Ghanem, a Ghanaian medical scientist, epidemiologist and public health researcher."
 extra_js: ["vendor/echarts.min.js", "home-district-engine.js"]
 ---
+{%- assign home_peer_reviewed = site.data.publications | where: "record_type", "peer_reviewed" -%}
+{%- assign home_preprints = site.data.publications | where: "record_type", "preprint" -%}
 {%- comment -%} Real content injected for the v3 template's JS (publications,
 portfolio, radar chart, district-map teaser) -- built from the
 real _data/*.yml files, not the reference template's fabricated arrays. {%- endcomment -%}
@@ -62,29 +64,29 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         {
           label: "Public Health",
           score: 90,
-          domain: "Population health practice",
+          domain: "Public health practice",
           engine: "HI-EI Component 02",
           interpretation: "Public-health reasoning connects disease prevention, health-systems strengthening, service access and community-level implementation.",
           evidence: "Communicable-disease epidemiology, vaccination context, WASH exposure, outreach screening and health advisory work.",
-          output: "Actionable programme intelligence for targeted outreach, prevention priorities and equity-aware service planning."
+          output: "Evidence for targeted outreach, prevention priorities and equitable service planning."
         },
         {
           label: "Surveillance",
           score: 88,
-          domain: "Outbreak and signal intelligence",
+          domain: "Disease surveillance and outbreak response",
           engine: "HI-EI Component 03",
-          interpretation: "Surveillance work is treated as an early-warning discipline: signals are checked, contextualised and translated before action.",
+          interpretation: "Surveillance requires potential warning signs to be verified and interpreted in context before action is taken.",
           evidence: "Screening records, district patterns, clinical indicators, exposure signals and response-priority logic.",
-          output: "Clear escalation cues for sampling, field verification, neighbouring-district review and public-health response."
+          output: "Evidence to guide sampling, field verification, neighbouring-district review and public health response."
         },
         {
           label: "Spatial GIS",
           score: 88,
-          domain: "Ghana district intelligence",
+          domain: "Ghana district analysis",
           engine: "HI-EI Component 04",
-          interpretation: "Spatial analysis treats place as evidence, especially when district patterns expose clustering, service gaps or inequity.",
+          interpretation: "Spatial analysis examines whether district patterns indicate clustering, service gaps or inequity.",
           evidence: "Moran's I, bivariate LISA, choropleth mapping, district centroids, GeoJSON and Ghana's 261-district geography.",
-          output: "District-level maps and spatial summaries that show where population risk, access and service signals concentrate."
+          output: "District maps and spatial summaries showing the distribution of population risk, access and service indicators."
         },
         {
           label: "Predictive ML",
@@ -93,14 +95,14 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
           engine: "HI-EI Component 05",
           interpretation: "Machine-learning models are presented with their assumptions and interpretation, rather than as unexplained predictions.",
           evidence: "Random Forest, Ridge Regression, XGBoost, SVR, SHAP explainability and reproducible Python/R workflows.",
-          output: "Forecasting and risk-stratification artifacts that can be inspected, explained and compared against public-health context."
+          output: "Forecasts and risk classifications that can be inspected, explained and compared with public health evidence."
         },
         {
           label: "Quality Systems",
           score: 89,
           domain: "Governance and reliability",
           engine: "HI-EI Component 06",
-          interpretation: "Quality systems hold the work together: methods, documentation, reproducibility and laboratory governance must agree.",
+          interpretation: "Quality systems align laboratory methods, documentation, reproducibility and governance.",
           evidence: "ISO 15189 thinking, quality control, external quality assurance, biosafety awareness and data-quality checks.",
           output: "Auditable workflows that preserve trust from specimen handling through analysis, reporting and dashboard publication."
         },
@@ -109,9 +111,9 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
           score: 84,
           domain: "Clinical data science",
           engine: "HI-EI Component 07",
-          interpretation: "Clinical data are used as a bridge between laboratory records, epidemiological meaning and decision-support tools.",
+          interpretation: "Clinical data connect laboratory records with epidemiological interpretation and decision-support tools.",
           evidence: "Clinical datasets, HIV/AIDS incidence forecasting, model files, Streamlit dashboards and reproducible scripts.",
-          output: "Interfaces and summaries that help clinicians, public-health teams and researchers inspect the same evidence."
+          output: "Interfaces and summaries through which clinicians, public health teams and researchers can examine the same evidence."
         }
       ]
     },
@@ -165,8 +167,8 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       <span class="sr-only">Principal Biomedical Scientist, epidemiologist and public health researcher</span>
 
       <h1 class="home-hero__title text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black font-heading tracking-tight leading-[1.05] mb-6 text-white max-w-full">
-        I turn scattered field data into <br class="hidden sm:inline">
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-violet-400">the pattern that stops an outbreak</span>
+        I use laboratory and field data to <br class="hidden sm:inline">
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-violet-400">strengthen outbreak surveillance and response</span>
       </h1>
 
       <p class="home-hero__summary text-lg sm:text-xl font-light text-slate-300 max-w-2xl leading-relaxed mb-8">
@@ -220,18 +222,18 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       </div>
       <div class="p-4 glass-card rounded-2xl text-center">
         <div class="text-3xl lg:text-4xl font-black font-heading text-emerald-500" data-target="5000" data-suffix="+">0</div>
-        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">Individuals Screened in Outreach</div>
+        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">People Screened Through Outreach</div>
       </div>
       <div class="p-4 glass-card rounded-2xl text-center">
         <div class="text-3xl lg:text-4xl font-black font-heading text-amber-500" data-target="261" data-suffix="">0</div>
-        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">Ghana Districts in Spatial Models</div>
+        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">District Records Used in Spatial Analyses</div>
       </div>
       <div class="p-4 glass-card rounded-2xl text-center">
-        <div class="text-3xl lg:text-4xl font-black font-heading text-violet-500" data-target="3" data-suffix="">0</div>
-        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">Peer-Reviewed Publications</div>
+        <div class="text-3xl lg:text-4xl font-black font-heading text-violet-500" data-target="{{ home_peer_reviewed.size }}" data-suffix="">0</div>
+        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">Peer-Reviewed Articles</div>
       </div>
       <div class="p-4 glass-card rounded-2xl text-center">
-        <div class="text-3xl lg:text-4xl font-black font-heading text-red-500" data-target="2" data-suffix="">0</div>
+        <div class="text-3xl lg:text-4xl font-black font-heading text-red-500" data-target="{{ home_preprints.size }}" data-suffix="">0</div>
         <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">Preprints</div>
       </div>
     </div>
@@ -243,8 +245,8 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
     <div class="reveal text-center max-w-3xl mx-auto mb-16">
       <div class="section__ghost-wrap">
         <span class="section__ghost-num">01</span>
-        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-4">01 &mdash; Identity &amp; Evolution</h2>
-        <h3 class="text-4xl sm:text-5xl font-black font-heading">Dual Precision: Clinical Lab + Data Science</h3>
+        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-cyan-500 mb-4">01 &mdash; Professional Practice</h2>
+        <h3 class="text-4xl sm:text-5xl font-black font-heading">Clinical Laboratory Science and Public Health Analysis</h3>
       </div>
       <p class="text-slate-600 dark:text-slate-400 mt-4 text-base">Valentine Golden Ghanem combines quality-assured laboratory practice with spatial epidemiology and machine learning to strengthen disease surveillance. Further detail is available on the <a href="{{ '/about/' | relative_url }}" class="text-cyan-500 hover:underline">About page</a>.</p>
     </div>
@@ -252,8 +254,8 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       <div class="grid lg:grid-cols-[1fr_auto] gap-8 items-center">
         <div class="home-identity-rail rounded-[28px] p-6 sm:p-8 relative overflow-hidden">
           <div class="relative z-10">
-            <p class="font-mono text-[10px] uppercase tracking-[0.34em] text-cyan-500 font-black mb-5">Clinical science. Public health intelligence.</p>
-            <h4 class="text-2xl sm:text-3xl font-black font-heading text-slate-950 dark:text-white leading-tight">A medical scientist translating laboratory evidence into population action.</h4>
+            <p class="font-mono text-[10px] uppercase tracking-[0.34em] text-cyan-500 font-black mb-5">Laboratory evidence. Public health decisions.</p>
+            <h4 class="text-2xl sm:text-3xl font-black font-heading text-slate-950 dark:text-white leading-tight">From laboratory evidence to public health decisions.</h4>
             <p class="mt-4 text-sm leading-relaxed text-slate-600 dark:text-slate-300">Valentine Golden Ghanem's work spans clinical laboratory leadership, field epidemiology, Ghana district analysis and applied data science. He applies diagnostic quality, infectious-disease surveillance, spatial analysis and machine-learning models to practical public-health decisions.</p>
             <div class="mt-7 grid gap-3">
               <div class="home-identity-chip" data-accent="cyan"><i class="fa-solid fa-vial-virus"></i><span>Clinical laboratory leadership</span></div>
@@ -265,6 +267,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <a href="{{ '/about/' | relative_url }}" class="inline-flex min-h-[48px] items-center justify-center gap-3 rounded-xl border border-cyan-400/40 px-6 py-3 text-xs font-black uppercase tracking-wider text-cyan-500 transition hover:border-cyan-400 hover:bg-cyan-400/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-400">View professional profile <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
       </div>
     </div>
+    <p class="mt-4 text-center text-[11px] leading-relaxed text-slate-500 dark:text-slate-400 font-mono">Career and portfolio counts. The outreach total is cumulative and is not an epidemiological study sample.</p>
   </div>
 </section>
 
@@ -280,7 +283,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       <p class="text-slate-400 mt-3 text-sm">Relative emphasis across clinical practice, public-health work, spatial analytics and applied modelling. These values are not proficiency scores.</p>
       <details class="home-expertise-method mt-5 text-left text-xs text-slate-300">
         <summary class="cursor-pointer font-mono font-bold uppercase tracking-wider text-amber-300">How the portfolio-emphasis index is calculated</summary>
-        <p class="mt-3 leading-relaxed">Each domain is coded against the documented portfolio: breadth of practice statements (40%), evidence of repeated application (35%) and publicly inspectable methods or artifacts (25%). The resulting 0&ndash;100 index describes the relative distribution of evidence within this website; it does not measure professional competence.</p>
+        <p class="mt-3 leading-relaxed">Each domain is coded against the documented portfolio: breadth of practice statements (40%), evidence of repeated application (35%) and documented methods or public outputs (25%). The resulting 0&ndash;100 index describes the relative distribution of evidence on this website; it does not measure professional competence.</p>
       </details>
     </div>
     <div class="home-expertise-layout grid lg:grid-cols-12 gap-12 items-start">
@@ -332,11 +335,11 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
             <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg">02</div>
             <h4 class="text-xl font-bold font-heading">Public Health Epidemiology &amp; Surveillance</h4>
           </div>
-          <p class="text-sm leading-relaxed text-slate-200 sm:pl-14">Public-health work framed around disease prevention, early signal recognition, community reach and practical response planning.</p>
+          <p class="text-sm leading-relaxed text-slate-200 sm:pl-14">Public health practice focused on disease prevention, surveillance, community screening and response planning.</p>
           <div class="home-expertise-card__body sm:pl-14">
-            <span><b>Core domains</b> Communicable-disease epidemiology, screening outreach, outbreak intelligence and health-systems strengthening.</span>
-            <span><b>Programme lens</b> Vaccination coverage, WASH context, service access, field realities and vulnerable-population considerations.</span>
-            <span><b>Decision output</b> Surveillance summaries that help teams move from observation to targeted sampling, escalation or outreach.</span>
+            <span><b>Core areas</b> Communicable-disease epidemiology, medical screening, outbreak surveillance and health-systems strengthening.</span>
+            <span><b>Programme context</b> Vaccination coverage, WASH conditions, service access and the needs of populations at greater risk.</span>
+            <span><b>Practical use</b> Surveillance summaries that inform targeted sampling, escalation and outreach.</span>
           </div>
         </article>
         <article class="home-expertise-card p-6 glass-card bg-slate-800/40 rounded-2xl border border-slate-700 hover:border-violet-400 transition-all" data-radar-index="3" tabindex="0" role="button" aria-label="Inspect Spatial Epidemiology and Ghana District Analytics in the radar">
@@ -344,7 +347,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
             <div class="w-10 h-10 rounded-xl bg-violet-500/20 text-violet-400 flex items-center justify-center font-bold text-lg">03</div>
             <h4 class="text-xl font-bold font-heading">Spatial Epidemiology &amp; Ghana District Analytics</h4>
           </div>
-          <p class="text-sm leading-relaxed text-slate-200 sm:pl-14">Spatial intelligence that treats place as evidence, especially where district patterns reveal inequity, clustering or service gaps.</p>
+          <p class="text-sm leading-relaxed text-slate-200 sm:pl-14">Spatial analysis of district-level inequities, geographic clustering and gaps in service access.</p>
           <div class="home-expertise-card__body sm:pl-14">
             <span><b>Methods</b> Moran's I, bivariate LISA, choropleth mapping, district centroids and field-activity geocoding.</span>
             <span><b>Geography</b> Ghana's 261-district administrative structure, regional comparisons and district-level public-health interpretation.</span>
@@ -359,8 +362,8 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
           <p class="text-sm leading-relaxed text-slate-200 sm:pl-14">Applied modelling and dashboard design that produce interpretable, reproducible and inspectable health evidence.</p>
           <div class="home-expertise-card__body sm:pl-14">
             <span><b>Modelling stack</b> Python, R, Random Forest, Ridge Regression, XGBoost, SVR and SHAP explainability.</span>
-            <span><b>Research signal</b> HIV/AIDS incidence forecasting, spatial risk interpretation and clinical/public-health data synthesis.</span>
-            <span><b>Interface output</b> Streamlit dashboards, model files, reproducible scripts and interactive decision-support artifacts.</span>
+            <span><b>Research applications</b> HIV/AIDS incidence forecasting, spatial risk interpretation and clinical and public health data synthesis.</span>
+            <span><b>Technical outputs</b> Streamlit dashboards, model files, reproducible scripts and interactive decision-support tools.</span>
           </div>
         </article>
       </div>
@@ -373,8 +376,8 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
     <div class="reveal text-center max-w-4xl mx-auto mb-12">
       <div class="section__ghost-wrap">
         <span class="section__ghost-num">03</span>
-        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-4">03 &mdash; Spatial Intelligence</h2>
-        <h3 class="text-4xl sm:text-5xl font-black font-heading">Ghana Health Intelligence Atlas</h3>
+        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-violet-500 mb-4">03 &mdash; District Health Evidence</h2>
+        <h3 class="text-4xl sm:text-5xl font-black font-heading">Ghana District Health Atlas</h3>
       </div>
       <p class="text-slate-600 dark:text-slate-400 mt-4">Move between Ghana's 16 regions and 261 districts to compare population context, social determinants, health-service coverage and selected outcomes represented in Valentine Golden Ghanem's research repositories. A map selection immediately updates the evidence card.</p>
     </div>
@@ -439,7 +442,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         </div>
 
         <div id="districtMapLegend" class="district-map-legend" aria-label="Map legend"></div>
-        <p class="district-map-source">Rendered by the site's bespoke HI-EI ECharts engine from 16 dissolved regional boundaries, 261 district boundaries and seven canonical 261-row tables selected from a 53-file master-CSV inventory. The live card separates demographics and structural determinants; insurance and education; SDG, WASH, services and outcomes; nutrition and anaemia; maternal health; immunisation; and ranked structural vulnerability. Regional values are population-weighted summaries and describe geographic context, not individual risk.</p>
+      <p class="district-map-source">The map uses 16 regional boundaries, 261 district boundaries and seven complete 261-row analytical tables selected from 53 source CSV files. The evidence card reports demographics and structural determinants, insurance and education, SDG and WASH indicators, services and outcomes, nutrition and anaemia, maternal health, immunisation and structural vulnerability. Regional values are population-weighted summaries of geographic context, not estimates of individual risk.</p>
       </div>
 
       <aside class="district-inspector" aria-labelledby="inspectorDistrictName">
@@ -488,7 +491,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <h2>04 &mdash; Academic Repository</h2>
         <h3>Publications &amp; Preprints</h3>
       </div>
-      <p>Six connected records: three peer-reviewed articles, two active preprints and one citable data-and-software deposit. Each record keeps its scholarly status, source and limitations visible.</p>
+      <p>The academic record comprises three peer-reviewed articles, two preprints and one citable data and software deposit. Publication status, source and limitations are stated for every record.</p>
     </header>
 
     <dl class="academic-counts reveal" aria-label="Academic record summary">
@@ -538,8 +541,8 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       <aside class="academic-provenance">
         <div class="academic-pane-label">Record interpretation</div>
         <div class="academic-provenance-mark" aria-hidden="true"><i class="fa-solid fa-fingerprint"></i></div>
-        <h4>Paper, method and artifact remain distinct.</h4>
-        <p>Peer review, preprint status and software deposits are not interchangeable. This reader preserves those boundaries while showing how the scholarly and technical records connect.</p>
+        <h4>How the records are classified</h4>
+        <p>Peer-reviewed articles, preprints and software deposits have different scholarly status. The repository identifies each record correctly and shows its related methods, code and analytical outputs.</p>
         <a href="{{ '/publications/' | relative_url }}">Open the complete academic record <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
       </aside>
     </div>
@@ -555,7 +558,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
           <h2>05 &mdash; Portfolio</h2>
           <h3>Selected Projects &amp; Models</h3>
         </div>
-        <p>Open the systems behind the research: reproducible pipelines, Ghana district models, source-provenance audits and interactive dashboards.</p>
+        <p>Review the code, methods, district models, source checks and dashboards associated with the research.</p>
       </div>
       <div class="artifact-filters" role="group" aria-label="Filter featured artifacts">
         <button type="button" class="is-active" data-artifact-filter="all">All systems</button>
@@ -600,9 +603,9 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <div class="section__ghost-wrap">
           <span class="section__ghost-num">06</span>
           <h2>06 &mdash; Field &amp; Diagnostic Operations</h2>
-          <h3>A Look Behind the Work</h3>
+          <h3>Field and Laboratory Practice</h3>
         </div>
-        <p>Clinical evidence is built through people, instruments and disciplined workflows. These scenes connect outreach coordination, laboratory practice and data review without duplicating the full Gallery.</p>
+        <p>These photographs document medical screening, laboratory practice and data review. The complete photographic record is available in the Gallery.</p>
       </div>
       <a href="{{ '/gallery/' | relative_url }}">Open all 26 photographs <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
     </header>
@@ -619,13 +622,13 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <span class="operations-image-label"><b>01</b> Field coordination</span>
       </button>
       <aside class="operations-brief">
-        <span class="academic-pane-label">Operational continuum</span>
-        <h4>From specimen quality to population response.</h4>
-        <p>Valentine Golden Ghanem's work connects laboratory evidence with the practical decisions that follow: quality checks, team communication, surveillance interpretation and targeted public-health action.</p>
+        <span class="academic-pane-label">Professional practice</span>
+        <h4>Laboratory quality and public health action.</h4>
+        <p>Valentine Golden Ghanem applies laboratory evidence through quality review, team communication, surveillance interpretation and targeted public health action.</p>
         <dl>
           <div><dt>Diagnostic practice</dt><dd>Quality-controlled workflows, biosafety and traceable laboratory records.</dd></div>
           <div><dt>Field coordination</dt><dd>Screening, outreach and clear communication across clinical and community teams.</dd></div>
-          <div><dt>Data interpretation</dt><dd>Clinical and spatial signals presented as evidence that can be reviewed and acted upon.</dd></div>
+          <div><dt>Data interpretation</dt><dd>Clinical and spatial findings presented for review and use in public health decisions.</dd></div>
         </dl>
       </aside>
     </div>

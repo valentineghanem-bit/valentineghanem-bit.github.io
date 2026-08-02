@@ -97,6 +97,7 @@
                aria-label="{{ event.title | escape }} video featuring Valentine Golden Ghanem"
                aria-describedby="community-video-description-{{ include.index }}"></video>
         <p class="event-media__video-description" id="community-video-description-{{ include.index }}"><strong>Video description:</strong> {{ event.video_description | default: event.description }}</p>
+        {% if event.watch_url %}<a class="event-media__watch-link" href="{{ event.watch_url | relative_url }}"><i class="fa-solid fa-circle-play" aria-hidden="true"></i> Watch the full video record</a>{% endif %}
       </div>
       {% endif %}
     </div>

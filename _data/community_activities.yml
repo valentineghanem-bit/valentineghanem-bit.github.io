@@ -10,7 +10,9 @@ medical_screening:
     lng: -2.51
     description: "Worked with the Cocoa Clinic medical team during a health-screening outreach for cocoa farmers in Goaso. The programme combined field engagement with preventive health assessment."
     video: "/assets/video/goaso-2024-screening.mp4"
+    watch_url: "/community/videos/goaso-2024-screening/"
     video_duration: "PT13S"
+    video_duration_seconds: 13
     video_landscape: true
     video_description: "A short field recording of Valentine Golden Ghanem and the Cocoa Clinic medical team during the Goaso health-screening outreach for cocoa farmers."
     photos:
@@ -37,7 +39,9 @@ medical_screening:
     lng: -0.70
     description: "Supported a public-health screening programme for SPD staff and cocoa farmers. Services covered malaria, diabetes, obesity, breast cancer, HIV and general wellness, with physician consultation and medication."
     video: "/assets/video/agona-swedru-2024-screening.mp4"
+    watch_url: "/community/videos/agona-swedru-2024-screening/"
     video_duration: "PT32S"
+    video_duration_seconds: 32
     video_landscape: true
     video_description: "A short field recording of Valentine Golden Ghanem supporting the Cocoa Clinic screening programme for staff and cocoa farmers in Agona Swedru."
     photos:
@@ -74,7 +78,7 @@ medical_screening:
         caption: "Ambulance support on site."
 conferences:
   - title: "2021 Scientific Conference"
-    category: "Professional learning and diagnostic practice"
+    category: "Scientific conference and professional development"
     provider: "Ghana Association of Medical Laboratory Scientists (GAMLS) – National"
     format: "In-Person, Desert Pastures, Bolgatanga – Upper East Region"
     date: "13–16 October 2021"
@@ -117,7 +121,7 @@ conferences:
         caption: "Congress programme and reference materials."
         contain: true
   - title: "2020 Technical Training"
-    category: "Professional learning and diagnostic practice"
+    category: "Technical training and professional development"
     provider: "Ghana Health Service (GHS)"
     format: "In-Person, Adabraka Polyclinic, Accra"
     date: "18 January 2020"

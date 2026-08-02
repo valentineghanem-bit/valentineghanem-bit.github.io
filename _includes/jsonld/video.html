@@ -1,0 +1,49 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "{{ page.url | absolute_url }}#webpage",
+      "url": "{{ page.url | absolute_url }}",
+      "name": {{ page.browser_title | default: page.title | jsonify }},
+      "description": {{ page.description | jsonify }},
+      "isPartOf": { "@id": "{{ site.url }}/#website" },
+      "about": { "@id": "{{ site.url }}/#person" },
+      "primaryImageOfPage": { "@id": "{{ page.video_thumbnail | absolute_url }}#image" },
+      "mainEntity": { "@id": "{{ page.video_content | absolute_url }}#video" },
+      "inLanguage": "en"
+    },
+    {
+      "@type": "VideoObject",
+      "@id": "{{ page.video_content | absolute_url }}#video",
+      "name": {{ page.video_title | jsonify }},
+      "description": {{ page.video_description | jsonify }},
+      "thumbnailUrl": ["{{ page.video_thumbnail | absolute_url }}"],
+      "uploadDate": "{{ page.video_date }}",
+      "dateCreated": "{{ page.video_date }}",
+      "duration": "{{ page.video_duration }}",
+      "contentUrl": "{{ page.video_content | absolute_url }}",
+      "embedUrl": "{{ page.url | absolute_url }}",
+      "isFamilyFriendly": true,
+      "creator": { "@id": "{{ site.url }}/#person" },
+      "publisher": { "@id": "{{ site.url }}/#person" },
+      "about": { "@id": "{{ site.url }}/#person" }
+    },
+    {
+      "@type": "ImageObject",
+      "@id": "{{ page.video_thumbnail | absolute_url }}#image",
+      "contentUrl": "{{ page.video_thumbnail | absolute_url }}",
+      "name": {{ page.video_title | append: " video thumbnail" | jsonify }},
+      "caption": {{ page.video_thumbnail_caption | jsonify }},
+      "creator": { "@id": "{{ site.url }}/#person" },
+      "creditText": "Valentine Golden Ghanem professional archive",
+      "copyrightNotice": "Copyright Valentine Golden Ghanem. All rights reserved.",
+      "license": "{{ site.url }}/gallery/#image-licensing",
+      "acquireLicensePage": "{{ site.url }}/gallery/#image-licensing"
+    },
+    {% include jsonld/person-node.html %},
+    {% include jsonld/organization-node.html %}
+  ]
+}
+</script>

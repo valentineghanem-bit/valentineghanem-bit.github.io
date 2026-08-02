@@ -693,6 +693,6 @@
 
     setGeography('regions', 'Greater Accra', false);
   }).catch(function (error) {
-    fail(error.message || 'District intelligence data could not load.');
+    fail(error.message || 'District health data could not load.');
   });
 })();

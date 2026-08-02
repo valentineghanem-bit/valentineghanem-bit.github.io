@@ -8,6 +8,9 @@ jsonld: gallery
 extra_css: ["gallery-phase10.css"]
 extra_js: ["gallery-morph.js", "fan-carousel.js"]
 ---
+{%- assign gallery_portrait_count = site.data.gallery_portraits | size -%}
+{%- assign gallery_field_count = site.data.gallery_photos | size -%}
+{%- assign gallery_image_count = gallery_portrait_count | plus: gallery_field_count -%}
 {% include nav-v3.html %}
 
 <main class="gallery10" data-gallery10-root>
@@ -40,17 +43,17 @@ extra_js: ["gallery-morph.js", "fan-carousel.js"]
         </div>
         <div class="gallery-morph__intro">
           <p class="gallery10-breadcrumb"><a href="{{ '/' | relative_url }}">Home</a><span aria-hidden="true">/</span>Gallery</p>
-          <p class="gallery-morph__eyebrow">Photographic archive / 50 images</p>
-          <h1 class="gallery-morph__title" id="gallery10-title">A visual record of <span>practice, people and place.</span></h1>
-          <p class="gallery-morph__lede">Portraiture, clinical laboratory practice and public-health field work form one documented professional record.</p>
+          <p class="gallery-morph__eyebrow">Photographic archive / {{ gallery_image_count }} images</p>
+          <h1 class="gallery-morph__title" id="gallery10-title">A photographic record of <span>professional practice.</span></h1>
+          <p class="gallery-morph__lede">The gallery documents professional portraits, clinical laboratory work, medical screening and public health activities.</p>
           <div class="gallery-morph__actions">
             <a href="#professional-portraits"><i class="fa-solid fa-user-tie" aria-hidden="true"></i>View portraits</a>
             <a href="#field-record"><i class="fa-solid fa-people-group" aria-hidden="true"></i>View field record</a>
           </div>
           <dl class="gallery-morph__metrics" aria-label="Photographic archive summary">
-            <div><dt>50</dt><dd>archived images</dd></div>
-            <div><dt>26</dt><dd>professional portraits</dd></div>
-            <div><dt>24</dt><dd>field photographs</dd></div>
+            <div><dt>{{ gallery_image_count }}</dt><dd>archived photographs</dd></div>
+            <div><dt>{{ gallery_portrait_count }}</dt><dd>professional portraits</dd></div>
+            <div><dt>{{ gallery_field_count }}</dt><dd>field photographs</dd></div>
           </dl>
         </div>
       </div>
@@ -71,8 +74,8 @@ extra_js: ["gallery-morph.js", "fan-carousel.js"]
       </figure>
       {% endfor %}
       <div class="gallery10-wheel__centre">
-        <p>Accra, Ghana &middot; Field &amp; laboratory record</p>
-        <h2 id="gallery10-wheel-title">A visual record of the work</h2>
+        <p>Accra, Ghana &middot; Professional photographic archive</p>
+        <h2 id="gallery10-wheel-title">Professional and field photography</h2>
         <a href="#professional-portraits">Explore the archive <i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a>
       </div>
     </div>
@@ -90,7 +93,7 @@ extra_js: ["gallery-morph.js", "fan-carousel.js"]
         <div>
           <p class="gallery10-heading__kicker">01 &mdash; Professional Portraits</p>
           <h2 id="gallery10-portraits-title">Portraiture across laboratory and professional settings</h2>
-          <p>Use the fan deck, arrow keys or swipe gesture to examine 26 portraits. Select the centred photograph to open its complete, uncropped view.</p>
+          <p>Browse 26 portraits with the fan deck, arrow keys or a swipe. Select the centred image to open the uncropped photograph.</p>
         </div>
       </header>
 
@@ -143,9 +146,9 @@ extra_js: ["gallery-morph.js", "fan-carousel.js"]
       <header class="gallery10-heading gallery10-heading--dark">
         <span class="gallery10-heading__number" aria-hidden="true">02</span>
         <div>
-          <p class="gallery10-heading__kicker">02 &mdash; Field &amp; Community Record</p>
-          <h2 id="gallery10-field-title">Screening, scientific learning and public engagement</h2>
-          <p>Twenty-four dated photographs document medical screening, diagnostic training, scientific meetings and community health education in Ghana.</p>
+          <p class="gallery10-heading__kicker">02 &mdash; Field &amp; Professional Activities</p>
+          <h2 id="gallery10-field-title">Medical screening, technical training and scientific meetings</h2>
+          <p>{{ gallery_field_count }} dated photographs document medical screening, laboratory training, scientific conferences and community health education in Ghana.</p>
         </div>
       </header>
 

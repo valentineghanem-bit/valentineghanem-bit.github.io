@@ -1,0 +1,125 @@
+.video-watch {
+  min-height: 100vh;
+  background: #0b1120;
+  color: #f8fafc;
+}
+
+.video-watch__shell {
+  width: min(1184px, calc(100% - 32px));
+  margin-inline: auto;
+  padding: 112px 0 80px;
+}
+
+.video-watch__breadcrumb,
+.video-watch__eyebrow,
+.video-watch__facts dt {
+  font-family: "Fira Code", monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.video-watch__breadcrumb {
+  margin: 0 0 40px;
+  color: #94a3b8;
+}
+
+.video-watch__breadcrumb a,
+.video-watch__eyebrow,
+.video-watch__record a {
+  color: #63d2ff;
+}
+
+.video-watch__header {
+  max-width: 880px;
+  margin-bottom: 32px;
+}
+
+.video-watch__header h1 {
+  margin: 12px 0 16px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(2.25rem, 6vw, 4.75rem);
+  line-height: 1.02;
+}
+
+.video-watch__header p:last-child,
+.video-watch__record p {
+  color: #cbd5e1;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.video-watch__player {
+  overflow: hidden;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  background: #020617;
+}
+
+.video-watch__player video {
+  display: block;
+  width: 100%;
+  max-height: 72vh;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  background: #020617;
+}
+
+.video-watch__record {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(240px, 0.55fr);
+  gap: 48px;
+  padding-top: 40px;
+}
+
+.video-watch__record h2 {
+  margin: 0 0 16px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.video-watch__facts {
+  margin: 0;
+  border-top: 1px solid #334155;
+}
+
+.video-watch__facts div {
+  padding: 16px 0;
+  border-bottom: 1px solid #334155;
+}
+
+.video-watch__facts dt {
+  color: #a78bfa;
+}
+
+.video-watch__facts dd {
+  margin: 6px 0 0;
+  color: #f8fafc;
+}
+
+.event-media__watch-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  color: #22d3ee;
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .video-watch__shell {
+    width: min(100% - 24px, 1184px);
+    padding-top: 88px;
+  }
+
+  .video-watch__record {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .video-watch__player video {
+    max-height: none;
+  }
+}

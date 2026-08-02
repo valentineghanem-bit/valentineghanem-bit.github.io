@@ -75,6 +75,7 @@
       "thumbnailUrl": [{{ video.photos.first.url | absolute_url | jsonify }}],
       "dateCreated": {{ video.date_iso | jsonify }},
       "contentUrl": "{{ video.video | absolute_url }}",
+      "embedUrl": "{{ video.watch_url | absolute_url }}",
       "duration": "{{ video.video_duration }}",
       "isFamilyFriendly": true,
       "about": { "@id": "{{ site.url }}/#person" },

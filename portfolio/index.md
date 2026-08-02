@@ -39,12 +39,11 @@ extra_js: ["portfolio-fx.js"]
       <div class="portfolio-hero__copy">
         <p class="portfolio-v3__breadcrumb"><a href="{{ '/' | relative_url }}">Home</a> / Portfolio</p>
       <p class="portfolio-v3__eyebrow">Repositories / dashboards / models / reproducible analysis</p>
-      <h1 id="portfolioHeroTitle">Research repositories built for <span>inspection and reuse.</span></h1>
+      <h1 id="portfolioHeroTitle">Research repositories for <span>inspection and reuse.</span></h1>
         <p class="portfolio-hero__lede">
-          Valentine Golden Ghanem's portfolio documents the progression from an
-          epidemiological question to its dataset, reproducible analysis, spatial
-          methods, model, dashboard and public code repository. Peer-reviewed
-          articles and preprints are catalogued separately in the
+          Valentine Golden Ghanem's portfolio links each health question to its data,
+          methods, code, models and public outputs. Peer-reviewed articles and
+          preprints are catalogued separately in the
           <a href="{{ '/publications/' | relative_url }}">academic repository</a>.
         </p>
         <div class="portfolio-hero__actions">
@@ -61,14 +60,14 @@ extra_js: ["portfolio-fx.js"]
           <div><dt>{{ repositories.size }}</dt><dd>research repositories</dd></div>
           <div><dt>{{ dashboard_count }}</dt><dd>interactive dashboards</dd></div>
           <div><dt>{{ poster_count }}</dt><dd>research posters</dd></div>
-          <div><dt>{{ site.data.portfolio.practice_archive.size }}</dt><dd>additional research records</dd></div>
+          <div><dt>{{ site.data.portfolio.practice_archive.size }}</dt><dd>additional academic research records</dd></div>
         </dl>
       </div>
 
       <aside class="portfolio-hero__domains" aria-labelledby="portfolioDomainsTitle">
         <header>
           <p>Research domains</p>
-          <h2 id="portfolioDomainsTitle">Browse the portfolio by health question.</h2>
+          <h2 id="portfolioDomainsTitle">Browse the portfolio by health question</h2>
         </header>
         <div>
           <button type="button" data-portfolio-domain-jump="infectious-disease" style="--domain-accent:#F87171">

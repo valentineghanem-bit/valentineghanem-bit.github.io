@@ -54,8 +54,8 @@ extra_js: ["publications-v5.js"]
         <dl class="publications-hero__metrics" aria-label="Scholarly record summary">
           <div><dt>{{ peer_reviewed.size }}</dt><dd>peer-reviewed articles</dd></div>
           <div><dt>{{ preprints.size }}</dt><dd>preprints</dd></div>
-          <div><dt>{{ repositories.size }}</dt><dd>data and software deposit</dd></div>
-          <div><dt>{{ connected_count }}</dt><dd>records with linked outputs</dd></div>
+          <div><dt>{{ repositories.size }}</dt><dd>data and software deposit{% if repositories.size != 1 %}s{% endif %}</dd></div>
+          <div><dt>{{ connected_count }}</dt><dd>records with associated outputs</dd></div>
         </dl>
       </div>
     </div>
@@ -200,8 +200,8 @@ extra_js: ["publications-v5.js"]
     <div class="publications-shell">
       <header class="publications-section__header publications-section__header--dark">
         <span class="publications-section__number" aria-hidden="true">02</span>
-        <p>02 - Research connections</p>
-        <h2 id="researchConnectionsTitle">Links between publications and reproducible outputs</h2>
+        <p>02 - Related research outputs</p>
+        <h2 id="researchConnectionsTitle">Code, models and dashboards associated with the research</h2>
         <span>
           Where available, each record links to its code, dashboard, model or archived
           software. These materials accompany the research and are not counted as

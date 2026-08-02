@@ -10,6 +10,7 @@ extra_js: ["press-fx.js"]
 ---
 {% include nav-v3.html %}
 {%- assign press_outlets = site.data.press | map: "outlet" | uniq -%}
+{%- assign press_types = site.data.press | map: "type_key" | uniq -%}
 
 <main class="press-v2" data-press-root>
   <section class="press-hero" data-nav-marker="00" data-nav-label="Press" data-nav-colour="#FBBF24" aria-labelledby="press-title">
@@ -26,7 +27,7 @@ extra_js: ["press-fx.js"]
       <p class="press-hero__eyebrow">Research coverage / professional profiles / commentary</p>
       <h1 id="press-title">Research and practice in the <span>public record.</span></h1>
       <p class="press-hero__lede">
-        This archive brings together reporting and commentary on Valentine Golden Ghanem's research, clinical practice and public-health work. Each entry opens on the publisher's website.
+        This archive contains reporting and commentary on Valentine Golden Ghanem's research, clinical practice and public health work. Each entry links to the publisher's website.
       </p>
       <div class="press-hero__actions">
         <a class="press-button press-button--primary" href="#coverage-register">
@@ -41,7 +42,7 @@ extra_js: ["press-fx.js"]
       <dl class="press-hero__metrics" aria-label="Press archive summary">
         <div><dt>{{ site.data.press.size }}</dt><dd>published features</dd></div>
         <div><dt>{{ press_outlets.size }}</dt><dd>media outlets</dd></div>
-        <div><dt>3</dt><dd>coverage types</dd></div>
+        <div><dt>{{ press_types.size }}</dt><dd>record categories</dd></div>
       </dl>
     </div>
     <div class="press-hero__source">

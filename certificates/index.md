@@ -46,11 +46,11 @@ jsonld: "certificates"
     <div class="certificates-shell certificates-hero__inner">
       <div class="certificates-hero__copy">
         <p class="certificates-breadcrumb"><a href="{{ '/' | relative_url }}">Home</a> / Professional development</p>
-        <p class="certificates-eyebrow">Laboratory medicine / public health / professional learning</p>
+        <p class="certificates-eyebrow">Laboratory medicine / public health / continuing professional development</p>
         <h1 id="certificatesHeroTitle">Continuing professional <span>development.</span></h1>
         <p class="certificates-hero__summary">
-          Valentine Golden Ghanem's archive records congresses, technical training
-          and accredited professional learning completed from 2020 to 2026. Each
+          Valentine Golden Ghanem's archive records scientific congresses, technical
+          training and accredited continuing professional development completed from 2020 to 2026. Each
           entry identifies its provider, subject, date and available certificate.
         </p>
         <div class="certificates-hero__actions">

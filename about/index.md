@@ -22,7 +22,7 @@ extra_js: ["about-fx.js"]
         <p class="about-profile-hero__role">{{ site.data.profile.job_titles | join: " / " }}</p>
         <p class="about-profile-hero__summary">{{ site.data.profile.about_hero_description | strip_newlines }}</p>
         <div class="about-profile-hero__actions" aria-label="About page actions">
-          <a href="#professional-remit"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i> Explore professional remit</a>
+          <a href="#professional-remit"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i> View professional practice</a>
           <a href="#professional-verification"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> View verified credentials</a>
         </div>
         <div class="about-profile-hero__status" aria-label="Current professional scope">
@@ -57,7 +57,7 @@ extra_js: ["about-fx.js"]
         <span class="about-v3__ghost" aria-hidden="true">01</span>
         <div>
           <p>01 - Professional identity</p>
-          <h2 id="aboutRemitTitle">Laboratory precision, interpreted at population scale</h2>
+          <h2 id="aboutRemitTitle">From laboratory evidence to population health decisions</h2>
         </div>
         <p>{{ site.data.profile.statement_of_purpose }}</p>
       </header>
@@ -74,7 +74,7 @@ extra_js: ["about-fx.js"]
           </button>
           <button id="identity-step-population" type="button" role="tab" aria-selected="false" aria-controls="identityInspector" tabindex="-1"
                   class="about-identity__tab" style="--identity-colour:#34D399"
-                  data-identity-number="02" data-identity-kicker="Population lens"
+                  data-identity-number="02" data-identity-kicker="Population health context"
                   data-identity-title="Epidemiology and surveillance"
                   data-identity-copy="Epidemiological and field data place clinical findings within patterns of population exposure, service access and disease distribution."
                   data-identity-output="Population evidence that identifies affected groups, persistent service gaps and priorities for response.">
@@ -82,7 +82,7 @@ extra_js: ["about-fx.js"]
           </button>
           <button id="identity-step-decisions" type="button" role="tab" aria-selected="false" aria-controls="identityInspector" tabindex="-1"
                   class="about-identity__tab" style="--identity-colour:#A78BFA"
-                  data-identity-number="03" data-identity-kicker="Decision layer"
+                  data-identity-number="03" data-identity-kicker="Analytical methods"
                   data-identity-title="Spatial and data science"
                   data-identity-copy="Spatial analysis, statistical modelling and interactive systems support the interpretation of population-level patterns."
                   data-identity-output="Reproducible maps, models and dashboards whose assumptions and findings can be examined and reused.">
@@ -99,13 +99,13 @@ extra_js: ["about-fx.js"]
           </div>
           <p data-identity-copy>Clinical laboratory services produce quality-assured evidence for clinical and public health decision-making.</p>
           <div class="about-identity__output">
-            <span>Professional output</span>
+          <span>Professional application</span>
             <p data-identity-output>Validated results, accountable laboratory operations and interpretation grounded in clinical practice.</p>
           </div>
         </article>
 
         <aside class="about-identity__context">
-          <p>Operating principle</p>
+          <p>Practice objective</p>
           <blockquote>{{ site.data.profile.aim }}</blockquote>
           <div class="about-identity__languages">
             <span>Working languages</span>
@@ -115,7 +115,7 @@ extra_js: ["about-fx.js"]
       </div>
 
       <div class="about-identity__vision reveal">
-        <span>Professional objective</span>
+        <span>Career direction</span>
         <p>{{ site.data.profile.career_vision }}</p>
       </div>
     </div>
@@ -240,8 +240,8 @@ extra_js: ["about-fx.js"]
     <div class="about-v3__inner">
       <header class="about-v3__section-header reveal">
         <span class="about-v3__ghost" aria-hidden="true">03</span>
-        <p>03 - Academic formation</p>
-        <h2 id="aboutEducationTitle">Academic formation across biomedical science, public health, data science and law</h2>
+        <p>03 - Education and training</p>
+        <h2 id="aboutEducationTitle">Education in biomedical science, public health, data science and law</h2>
         <span>Completed and current degree programmes are identified separately, with the principal academic focus stated for each record.</span>
       </header>
 

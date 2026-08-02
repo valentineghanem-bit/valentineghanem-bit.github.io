@@ -23,9 +23,9 @@ extra_js: ["vendor/echarts.min.js", "home-district-engine.js", "field-map.js", "
     <div class="map9-shell map9-hero__content">
       <p class="map9-breadcrumb"><a href="{{ '/' | relative_url }}">Home</a><span aria-hidden="true">/</span>Ghana Health Map</p>
       <p class="map9-hero__eyebrow">Spatial epidemiology / health equity / district evidence</p>
-      <h1 id="map9-title">Ghana's health evidence, resolved from <span>region to district.</span></h1>
+      <h1 id="map9-title">Ghana health indicators by <span>region and district.</span></h1>
       <p class="map9-hero__lede">
-        Valentine Golden Ghanem's national atlas brings population context, social determinants, service coverage and selected health outcomes into a single geographic record that readers can examine directly.
+        The atlas presents population, social determinants, service coverage and selected health outcomes for Ghana's 16 regions and 261 districts.
       </p>
       <div class="map9-hero__actions">
         <a class="map9-button map9-button--primary" href="#national-atlas">
@@ -39,9 +39,9 @@ extra_js: ["vendor/echarts.min.js", "home-district-engine.js", "field-map.js", "
       </div>
       <dl class="map9-hero__metrics" aria-label="Ghana health atlas coverage">
         <div><dt>261</dt><dd>district profiles</dd></div>
-        <div><dt>5</dt><dd>comparison indicators</dd></div>
+        <div><dt>5</dt><dd>mapped health indicators</dd></div>
         <div><dt>3</dt><dd>medical-screening sites</dd></div>
-        <div><dt>7</dt><dd>geolocated field records</dd></div>
+        <div><dt>7</dt><dd>mapped field records</dd></div>
       </dl>
     </div>
     <div class="map9-hero__caption">
@@ -169,7 +169,7 @@ extra_js: ["vendor/echarts.min.js", "home-district-engine.js", "field-map.js", "
         <span class="map9-heading__number" aria-hidden="true">02</span>
         <div>
           <p class="map9-heading__kicker">02 &mdash; Comparative Context</p>
-          <h2 id="map9-comparison-title">Place each selection within the national distribution</h2>
+          <h2 id="map9-comparison-title">Compare each selection with the national distribution</h2>
           <p>Select any region or district below to return to the atlas above and open its evidence card. The comparison follows the active map indicator and geographic level.</p>
         </div>
       </header>
@@ -212,9 +212,9 @@ extra_js: ["vendor/echarts.min.js", "home-district-engine.js", "field-map.js", "
       <header class="map9-heading map9-heading--dark">
         <span class="map9-heading__number" aria-hidden="true">03</span>
         <div>
-          <p class="map9-heading__kicker">03 &mdash; Geolocated Field Evidence</p>
+          <p class="map9-heading__kicker">03 &mdash; Mapped Field Activities</p>
           <h2 id="map9-field-title">Seven documented activities at their recorded coordinates</h2>
-          <p>Screening, technical learning and public engagement are mapped as dated field records. Hover or focus a marker for its image; select it to update the permanent record card.</p>
+          <p>Medical screening, scientific conferences, technical training and community health education are shown as dated field records. Hover over or focus a marker to preview its photograph; select it to update the record card.</p>
         </div>
       </header>
 
@@ -229,7 +229,7 @@ extra_js: ["vendor/echarts.min.js", "home-district-engine.js", "field-map.js", "
             <div id="geo-map-echarts"
                  class="geo-map-echarts"
                  role="img"
-                 aria-label="Map of Ghana's 261 district boundaries with seven documented screening, learning and outreach locations"
+                 aria-label="Map of Ghana's 261 district boundaries with seven documented medical screening, conference, training and community health locations"
                  data-geojson-url="{{ '/assets/data/ghana-districts.geojson' | relative_url }}"></div>
             <script type="application/json" id="geo-map-data">
               {
@@ -246,11 +246,11 @@ extra_js: ["vendor/echarts.min.js", "home-district-engine.js", "field-map.js", "
               <button type="button" class="geo-zoom__btn geo-zoom__btn--reset" data-geo-zoom-reset aria-label="Reset field map to show all of Ghana" title="Reset map">&#8634;</button>
             </div>
           </div>
-          <p class="map9-field__map-note">Real district boundaries &middot; animated markers identify verified field coordinates &middot; marker images open in the adjacent record card.</p>
+          <p class="map9-field__map-note">District boundaries are shown with seven verified field locations. Select a marker to open its photograph and record.</p>
 
           <div class="geo-legend map9-field__filters" data-geo-legend role="group" aria-label="Filter mapped field records by activity type">
             <button type="button" class="geo-legend__item geo-legend__item--screening" data-geo-filter="screening" aria-pressed="false"><i class="geo-legend__swatch"></i>Medical screening</button>
-            <button type="button" class="geo-legend__item geo-legend__item--conference" data-geo-filter="conference" aria-pressed="false"><i class="geo-legend__swatch"></i>Conferences &amp; seminars</button>
+            <button type="button" class="geo-legend__item geo-legend__item--conference" data-geo-filter="conference" aria-pressed="false"><i class="geo-legend__swatch"></i>Conferences &amp; training</button>
             <button type="button" class="geo-legend__item geo-legend__item--outreach" data-geo-filter="outreach" aria-pressed="false"><i class="geo-legend__swatch"></i>Community outreach</button>
             <span class="geo-legend__item"><i class="geo-legend__swatch geo-legend__swatch--district"></i>District boundary</span>
           </div>
@@ -290,15 +290,15 @@ extra_js: ["vendor/echarts.min.js", "home-district-engine.js", "field-map.js", "
         <header class="map9-heading">
           <span class="map9-heading__number" aria-hidden="true">04</span>
           <div>
-            <p class="map9-heading__kicker">04 &mdash; Evidence Provenance</p>
-            <h2 id="map9-provenance-title">Three source layers, seven canonical tables</h2>
+            <p class="map9-heading__kicker">04 &mdash; Data Sources and Scope</p>
+            <h2 id="map9-provenance-title">Three data layers and seven analytical tables</h2>
           </div>
         </header>
-        <p>The atlas combines administrative geography, district and regional health evidence, and a separate dated field-record layer. Seven complete 261-row analytical tables were selected after review of 53 local master CSV files; incomplete fields are not presented as national measures.</p>
+        <p>The atlas combines administrative geography, district and regional health data, and a separate set of dated field records. Seven complete 261-row analytical tables were selected after review of 53 source CSV files. Incomplete fields are not reported as national measures.</p>
         <dl>
           <div><dt>261</dt><dd>district records joined</dd></div>
-          <div><dt>7</dt><dd>canonical tables in the live card</dd></div>
-          <div><dt>53</dt><dd>master CSV files retained in the provenance inventory</dd></div>
+          <div><dt>7</dt><dd>analytical tables in the evidence card</dd></div>
+          <div><dt>53</dt><dd>source CSV files reviewed</dd></div>
         </dl>
         <div class="map9-source-layers" aria-label="Atlas source layers">
           <article>
@@ -314,7 +314,7 @@ extra_js: ["vendor/echarts.min.js", "home-district-engine.js", "field-map.js", "
             <div><strong>Dated field records</strong><p>The seven event markers come from the site's documented activity register, with recorded dates, locations, coordinates, descriptions and local image paths. They are a professional field archive, not a national facility registry or epidemiological sample.</p></div>
           </article>
         </div>
-        <p class="map9-provenance__caveat"><strong>Interpretation boundary:</strong> indicators describe geographic context. Regional summaries are population-weighted. The atlas does not estimate individual risk, test causal effects or replace source-study methods.</p>
+        <p class="map9-provenance__caveat"><strong>Interpretation:</strong> these indicators describe geographic context. Regional summaries are population-weighted. The atlas does not estimate individual risk, test causal effects or replace the methods reported by each source study.</p>
       </div>
 
       <ol class="map9-domain-register" aria-label="Evidence domains represented in the map">

@@ -42,7 +42,7 @@ extra_js: ["skills-v4.js"]
         <div class="skills-hero__actions">
           <a href="#practice-architecture">
             <i class="fa-solid fa-route" aria-hidden="true"></i>
-            Explore practice architecture
+            View professional domains
           </a>
           <a href="#methods-registry" class="skills-hero__action--secondary">
             <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
@@ -95,7 +95,7 @@ extra_js: ["skills-v4.js"]
     <div class="skills-v4__inner">
       <header class="skills-v4__section-header">
         <span class="skills-v4__ghost" aria-hidden="true">01</span>
-        <p>01 - Practice architecture</p>
+        <p>01 - Professional domains</p>
         <h2 id="skillsPracticeTitle">Three domains of applied professional practice</h2>
         <span>
           Select a domain and stage to inspect the documented practice behind it.
@@ -138,7 +138,7 @@ extra_js: ["skills-v4.js"]
             <p data-practice-kicker>Public Health / Technical</p>
             <span data-practice-count>3 documented statements</span>
           </header>
-          <h3 data-practice-title>Public-health technical practice</h3>
+          <h3 data-practice-title>Public health methods</h3>
           <p data-practice-summary>
             Laboratory-informed surveillance, community screening and interpretation
             of diagnostic evidence for population-health reporting.
@@ -155,8 +155,8 @@ extra_js: ["skills-v4.js"]
 
       <div class="skills-matrix-v4" aria-labelledby="skillsMatrixTitle">
         <div class="skills-matrix-v4__intro">
-          <p>Evidence matrix</p>
-          <h3 id="skillsMatrixTitle">Select a practice domain and evidence stage</h3>
+          <p>Practice matrix</p>
+          <h3 id="skillsMatrixTitle">Select a professional domain and type of evidence</h3>
           <span>Each number is the count of documented statements in that cell.</span>
         </div>
         <div class="skills-matrix-v4__table" role="group" aria-label="Skills evidence matrix">
@@ -280,7 +280,7 @@ extra_js: ["skills-v4.js"]
       <aside class="skills-registry__standards" aria-labelledby="skillsStandardsTitle">
         <div>
           <p>Standards basis</p>
-          <h3 id="skillsStandardsTitle">Laboratory practice is organised by the complete path of workflow.</h3>
+          <h3 id="skillsStandardsTitle">Laboratory practice follows the total testing process.</h3>
         </div>
         <p>
           The registry follows the pre-examination, examination and post-examination

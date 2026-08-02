@@ -285,7 +285,7 @@ def main() -> None:
     )
     print(
         f"Enriched {len(districts)} districts from "
-        f"{payload['meta']['canonical_fact_source_count']} canonical tables."
+        f"{payload['meta']['canonical_fact_source_count']} analytical tables."
     )
 
 

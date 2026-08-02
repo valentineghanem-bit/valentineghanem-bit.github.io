@@ -3,12 +3,22 @@ layout: v3
 permalink: /community/
 title: "Community"
 browser_title: "Community Health | Valentine Ghanem"
-description: "A documented record of community screening, professional learning and public-health engagement by Valentine Golden Ghanem across Ghana."
+description: "A documented record of medical screening, technical training, scientific conferences and community health education by Valentine Golden Ghanem across Ghana."
 jsonld: community
 extra_css: ["community-v2.css"]
 extra_js: ["community-fx.js"]
 ---
 {% include nav-v3.html %}
+{%- assign community_activity_count = 0 -%}
+{%- assign community_photo_count = 0 -%}
+{%- assign community_video_count = 0 -%}
+{%- for activity_group in site.data.community_activities -%}
+  {%- assign community_activity_count = community_activity_count | plus: activity_group[1].size -%}
+  {%- for activity in activity_group[1] -%}
+    {%- assign community_photo_count = community_photo_count | plus: activity.photos.size -%}
+    {%- if activity.video -%}{%- assign community_video_count = community_video_count | plus: 1 -%}{%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}
 
 <main class="community-v2 v3-page-canvas v3-page-canvas--community">
   <section class="community-hero"
@@ -21,10 +31,10 @@ extra_js: ["community-fx.js"]
       <div class="community-hero__copy">
         <p class="community-breadcrumb"><a href="{{ '/' | relative_url }}">Home</a> / Community</p>
         <p class="community-eyebrow">Field practice / Ghana / 2016-2024</p>
-        <h1 id="community-title">Public health, <span>practised with communities.</span></h1>
+        <h1 id="community-title">Public health practice <span>in Ghanaian communities.</span></h1>
         <p class="community-hero__summary">
-          Valentine Golden Ghanem's community record documents field screening,
-          diagnostic education and professional learning undertaken across Ghana.
+          Valentine Golden Ghanem's community record documents medical screening,
+          technical training, scientific conferences and health education across Ghana.
           Each entry is linked to a date, location and original photograph or video.
         </p>
         <div class="community-hero__actions">
@@ -38,9 +48,9 @@ extra_js: ["community-fx.js"]
           </a>
         </div>
         <dl class="community-hero__metrics" aria-label="Community record summary">
-          <div><dt>7</dt><dd>documented activities</dd></div>
-          <div><dt>40</dt><dd>field photographs</dd></div>
-          <div><dt>2</dt><dd>video records</dd></div>
+          <div><dt>{{ community_activity_count }}</dt><dd>documented activities</dd></div>
+          <div><dt>{{ community_photo_count }}</dt><dd>field photographs</dd></div>
+          <div><dt>{{ community_video_count }}</dt><dd>video records</dd></div>
         </dl>
       </div>
 
@@ -78,7 +88,7 @@ extra_js: ["community-fx.js"]
       <div class="community-filter" role="group" aria-label="Filter community records by practice area">
         <button type="button" data-community-filter="all" aria-pressed="true">All <span>7</span></button>
         <button type="button" data-community-filter="screening" aria-pressed="false">Screening <span>3</span></button>
-        <button type="button" data-community-filter="learning" aria-pressed="false">Professional learning <span>2</span></button>
+        <button type="button" data-community-filter="learning" aria-pressed="false">Conferences &amp; training <span>2</span></button>
         <button type="button" data-community-filter="engagement" aria-pressed="false">Public engagement <span>2</span></button>
       </div>
       <p class="community-filter__status" data-community-status aria-live="polite">Showing all 7 activities.</p>
@@ -96,9 +106,9 @@ extra_js: ["community-fx.js"]
     <div class="community-shell community-section__layout">
       <header class="community-section__header">
         <span class="community-section__number" aria-hidden="true">01</span>
-        <p class="community-eyebrow">Screening and field diagnostics</p>
-        <h2 id="screening-title">Clinical evidence in community settings</h2>
-        <p>Three field programmes document diagnostic assessment and preventive-health support for cocoa-farming and workplace communities.</p>
+        <p class="community-eyebrow">Medical screening</p>
+        <h2 id="screening-title">Medical screening in community settings</h2>
+        <p>Three programmes document diagnostic assessment, preventive services and health advice for cocoa-farming and workplace communities.</p>
       </header>
       <div class="community-ledger">
         {% for event in site.data.community_activities.medical_screening %}
@@ -119,13 +129,13 @@ extra_js: ["community-fx.js"]
     <div class="community-shell community-section__layout">
       <header class="community-section__header">
         <span class="community-section__number" aria-hidden="true">02</span>
-        <p class="community-eyebrow">Professional learning and diagnostic practice</p>
+        <p class="community-eyebrow">Scientific conferences and technical training</p>
         <h2 id="learning-title">Standards, microscopy and infectious-disease response</h2>
-        <p>Congress participation and technical training connect continuing professional development with laboratory quality and national disease-control practice.</p>
+        <p>The records cover a national scientific congress and practical tuberculosis diagnostic training, including microscopy and laboratory workflow.</p>
       </header>
       <div class="community-ledger">
         {% for event in site.data.community_activities.conferences %}
-          {% include community-event.html event=event index=event_index filter="learning" category="Professional learning" accent="#FBBF24" icon="fa-solid fa-microscope" open=forloop.first %}
+          {% include community-event.html event=event index=event_index filter="learning" category="Conference or technical training" accent="#FBBF24" icon="fa-solid fa-microscope" open=forloop.first %}
           {%- assign event_index = event_index | plus: 1 -%}
         {% endfor %}
       </div>
@@ -143,8 +153,8 @@ extra_js: ["community-fx.js"]
       <header class="community-section__header">
         <span class="community-section__number" aria-hidden="true">03</span>
         <p class="community-eyebrow">Health education and public engagement</p>
-        <h2 id="engagement-title">Health knowledge beyond formal clinical encounters</h2>
-        <p>These records document preventive screening, health communication and youth engagement outside formal clinical settings.</p>
+        <h2 id="engagement-title">Community health education and outreach</h2>
+        <p>These records document health education and community engagement outside formal clinical settings.</p>
       </header>
       <div class="community-ledger">
         {% for event in site.data.community_activities.outreach %}
