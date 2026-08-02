@@ -106,6 +106,13 @@
     - "Dashboard"
   caveat: "Repository record, not a separate peer-reviewed article."
   schema_subject_of: false
+  license_url: "https://creativecommons.org/licenses/by/4.0/"
+  is_accessible_for_free: true
+  same_as: "https://zenodo.org/records/15616846"
+  distributions:
+    - name: "Archived data and software package"
+      encoding_format: "application/zip"
+      content_url: "https://zenodo.org/api/records/15616846/files/vghanem/ghana_disease_dashboard-v1.0.zip/content"
   links:
     - label: "Launch dashboard"
       url: "https://dashboardapppy-3ryuuaxnlmrsrrkqoxpcfw.streamlit.app/"
