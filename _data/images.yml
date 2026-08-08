@@ -4,9 +4,9 @@
 # Wikimedia Commons set. `id_url` is the page URL with the #image fragment
 # used as the node's @id; `page_url` and `content_url` are the file page and
 # the direct redirect-to-original link respectively.
-- id_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Official_Portrait4.jpg#image"
+- id_url: "https://www.valentineghanem.com/assets/img/knowledge-panel/valentine-golden-ghanem-official-portrait.jpg#image"
   page_url: "https://commons.wikimedia.org/wiki/File:Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Official_Portrait4.jpg"
-  content_url: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Valentine_Golden_Ghanem_Ghanaian_medical_scientist_public_health_researcher_and_epidemiologist_Official_Portrait4.jpg"
+  content_url: "/assets/img/knowledge-panel/valentine-golden-ghanem-official-portrait.jpg"
   name: "Official portrait of Valentine Golden Ghanem"
   caption: "Official professional portrait of Valentine Golden Ghanem."
   width: 810

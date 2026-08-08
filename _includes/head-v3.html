@@ -2,6 +2,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{% if page.browser_title %}{{ page.browser_title }}{% elsif page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
 <meta name="description" content="{{ page.description | default: site.data.profile.short_description | strip_newlines }}">
+<meta name="robots" content="max-image-preview:large">
 <link rel="canonical" href="{{ page.url | absolute_url }}">
 <link rel="icon" href="{{ '/favicon-96x96.png' | relative_url }}" type="image/png" sizes="96x96">
 <link rel="icon" href="{{ '/favicon-192x192.png' | relative_url }}" type="image/png" sizes="192x192">
@@ -12,20 +13,28 @@
 <meta name="theme-color" content="#0B1120">
 
 <!-- Open Graph -->
+{% assign social_image_path = page.social_image | default: '/assets/social/vgg-og-image-theme.png' %}
+{% assign social_image_width = page.social_image_width | default: 1200 %}
+{% assign social_image_height = page.social_image_height | default: 630 %}
+{% assign social_image_alt = page.social_image_alt | default: 'Valentine Golden Ghanem faceted G brand card' %}
+{% assign social_image_type = page.social_image_type | default: 'image/png' %}
 <meta property="og:type" content="website">
 <meta property="og:title" content="{% if page.browser_title %}{{ page.browser_title }}{% elsif page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}">
 <meta property="og:description" content="{{ page.description | default: site.data.profile.short_description | strip_newlines }}">
 <meta property="og:url" content="{{ page.url | absolute_url }}">
 <meta property="og:site_name" content="{{ site.title }}">
-<meta property="og:image" content="{{ '/assets/social/vgg-og-image-theme.png' | absolute_url }}">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Valentine Golden Ghanem theme-remapped faceted G brand card">
+<meta property="og:image" content="{{ social_image_path | absolute_url }}">
+<meta property="og:image:secure_url" content="{{ social_image_path | absolute_url }}">
+<meta property="og:image:type" content="{{ social_image_type }}">
+<meta property="og:image:width" content="{{ social_image_width }}">
+<meta property="og:image:height" content="{{ social_image_height }}">
+<meta property="og:image:alt" content="{{ social_image_alt }}">
+<link rel="image_src" href="{{ social_image_path | absolute_url }}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{% if page.browser_title %}{{ page.browser_title }}{% elsif page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}">
 <meta name="twitter:description" content="{{ page.description | default: site.data.profile.short_description | strip_newlines }}">
-<meta name="twitter:image" content="{{ '/assets/social/vgg-og-image-theme.png' | absolute_url }}">
-<meta name="twitter:image:alt" content="Valentine Golden Ghanem theme-remapped faceted G brand card">
+<meta name="twitter:image" content="{{ social_image_path | absolute_url }}">
+<meta name="twitter:image:alt" content="{{ social_image_alt }}">
 <script>
   window.VGG_CV_DOWNLOAD_URL = "{{ site.data.profile.cv_download_url | relative_url }}";
 </script>

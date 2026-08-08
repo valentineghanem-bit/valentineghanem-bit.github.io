@@ -5,6 +5,11 @@ jsonld: about
 title: "About Valentine Golden Ghanem"
 browser_title: "About | Valentine Ghanem"
 description: "Professional profile of Valentine Golden Ghanem, a Ghanaian medical scientist, epidemiologist and public health researcher."
+social_image: "/assets/img/knowledge-panel/valentine-golden-ghanem-official-portrait.jpg"
+social_image_width: 810
+social_image_height: 810
+social_image_type: "image/jpeg"
+social_image_alt: "Official professional portrait of Valentine Golden Ghanem"
 extra_css: ["about-v3.css"]
 extra_js: ["about-fx.js"]
 ---

@@ -13,20 +13,20 @@ permalink: /image-sitemap.xml
   <url>
     <loc>{{ site.url | append: "/" | xml_escape }}</loc>
     <image:image>
+      <image:loc>{{ representative.content_url | absolute_url | replace: " ", "%20" | xml_escape }}</image:loc>
+      <image:title>{{ representative.name | xml_escape }}</image:title>
+      <image:caption>{{ representative.caption | xml_escape }}</image:caption>
+    </image:image>
+    <image:image>
       <image:loc>{{ '/assets/img/gallery/portraits/hero-green-shirt-cutout.png' | absolute_url | replace: " ", "%20" | xml_escape }}</image:loc>
       <image:title>Valentine Golden Ghanem, medical scientist and epidemiologist</image:title>
       <image:caption>Portrait of Valentine Golden Ghanem, Principal Biomedical Scientist, epidemiologist and public health researcher.</image:caption>
-    </image:image>
-    <image:image>
-      <image:loc>{{ '/assets/img/gallery/portraits/Valentine Golden Ghanem Portrait-18.webp' | absolute_url | replace: " ", "%20" | xml_escape }}</image:loc>
-      <image:title>Valentine Golden Ghanem professional portrait</image:title>
-      <image:caption>Professional portrait of Valentine Golden Ghanem.</image:caption>
     </image:image>
   </url>
   <url>
     <loc>{{ '/about/' | absolute_url | xml_escape }}</loc>
     <image:image>
-      <image:loc>{{ representative.content_url | replace: " ", "%20" | xml_escape }}</image:loc>
+      <image:loc>{{ representative.content_url | absolute_url | replace: " ", "%20" | xml_escape }}</image:loc>
       <image:title>{{ representative.name | xml_escape }}</image:title>
       <image:caption>{{ representative.caption | xml_escape }}</image:caption>
     </image:image>

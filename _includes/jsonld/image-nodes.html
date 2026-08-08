@@ -3,7 +3,7 @@
   "@type": "ImageObject",
   "@id": {{ img.id_url | jsonify }},
   "url": {{ img.page_url | jsonify }},
-  "contentUrl": {{ img.content_url | jsonify }},
+  "contentUrl": {{ img.content_url | absolute_url | jsonify }},
   "name": {{ img.name | jsonify }},
   "caption": {{ img.caption | jsonify }},
   "description": {{ img.caption | jsonify }},
