@@ -16,3 +16,15 @@ plugins:
 
 # Keep permalinks clean and predictable, matching what the JSON-LD @ids assume
 permalink: pretty
+
+# Keep the primary page sitemap limited to canonical HTML destinations.
+# Downloadable evidence is indexed separately through document-sitemap.xml.
+defaults:
+  - scope:
+      path: "assets/files/**/*.pdf"
+    values:
+      sitemap: false
+  - scope:
+      path: "google7a66aee984736ffd.html"
+    values:
+      sitemap: false
