@@ -6,8 +6,13 @@ medical_screening:
     date: "6 November 2024"
     date_iso: "2024-11-06"
     location: "Goaso, Ahafo Region"
+    address:
+      locality: "Goaso"
+      region: "Ahafo Region"
+      country: "GH"
     lat: 6.80
     lng: -2.51
+    organizer_url: "https://cocobod.gh/"
     description: "Worked with the Cocoa Clinic medical team during a health-screening outreach for cocoa farmers in Goaso. The programme combined field engagement with preventive health assessment."
     video: "/assets/video/goaso-2024-screening.mp4"
     watch_url: "/community/videos/goaso-2024-screening/"
@@ -36,8 +41,13 @@ medical_screening:
     date: "19 October 2024"
     date_iso: "2024-10-19"
     location: "Agona West Municipal, Central Region"
+    address:
+      locality: "Agona West Municipal"
+      region: "Central Region"
+      country: "GH"
     lat: 5.54
     lng: -0.70
+    organizer_url: "https://cocobod.gh/"
     description: "Supported a public-health screening programme for SPD staff and cocoa farmers. Services covered malaria, diabetes, obesity, breast cancer, HIV and general wellness, with physician consultation and medication."
     video: "/assets/video/agona-swedru-2024-screening.mp4"
     watch_url: "/community/videos/agona-swedru-2024-screening/"
@@ -68,8 +78,13 @@ medical_screening:
     date: "21 October 2023"
     date_iso: "2023-10-21"
     location: "Kofikrom, Koforidua, Eastern Region"
+    address:
+      locality: "Kofikrom, Koforidua"
+      region: "Eastern Region"
+      country: "GH"
     lat: 6.12
     lng: -0.26
+    organizer_url: "https://cocobod.gh/"
     description: "Participated in COCOBOD's regional health outreach for cocoa farmers at Kofikrom. The programme included diagnostic assessment and general wellness services."
     photos:
       - url: "/assets/img/community/kofikrom-2023/screening-exercise.jpg"
@@ -87,8 +102,13 @@ conferences:
     date_iso: "2021-10-13"
     end_date_iso: "2021-10-16"
     location: "Bolgatanga, Upper East Region"
+    address:
+      locality: "Bolgatanga"
+      region: "Upper East Region"
+      country: "GH"
     lat: 10.79
     lng: -0.85
+    organizer_url: "https://www.gamls.org/"
     description: "Participated in the Annual National Congress and Scientific Conference, awarded 10 CPD credits. The programme examined standards for medical laboratory practice during infectious-disease response."
     photos:
       - url: "/assets/img/community/gamls-congress-2021/group-picture.jpg"
@@ -129,8 +149,13 @@ conferences:
     date: "18 January 2020"
     date_iso: "2020-01-18"
     location: "Adabraka, Greater Accra Region"
+    address:
+      locality: "Adabraka"
+      region: "Greater Accra Region"
+      country: "GH"
     lat: 5.56
     lng: -0.21
+    organizer_url: "https://ghs.gov.gh/"
     description: "Completed practical National TB Control training in specimen collection, Ziehl-Neelsen staining, acid-fast bacilli microscopy and diagnostic workflow under national protocols."
     photos:
       - url: "/assets/img/community/tb-seminar-2020/seminar-1.jpg"
@@ -147,8 +172,13 @@ outreach:
     date: "1 October 2018"
     date_iso: "2018-10-01"
     location: "State House, Osu, Greater Accra Region"
+    address:
+      locality: "Osu, Accra"
+      region: "Greater Accra Region"
+      country: "GH"
     lat: 5.55
     lng: -0.18
+    organizer_url: "https://cocobod.gh/"
     description: "Worked with the Cocoa Clinic team at National Cocoa Day, providing blood-pressure checks, glucose testing and basic health education."
     photos:
       - url: "/assets/img/community/cocoa-day-2018/medical-team.jpg"
@@ -171,8 +201,13 @@ outreach:
     date: "16 July 2016"
     date_iso: "2016-07-16"
     location: "Lartebiokorshie, Greater Accra Region"
+    address:
+      locality: "Lartebiokorshie, Accra"
+      region: "Greater Accra Region"
+      country: "GH"
     lat: 5.54
     lng: -0.24
+    organizer_url: "https://www.valentineghanem.com/community/#community-event-6"
     description: "Delivered a guest address on substance-use prevention and health awareness to junior high school students. The session addressed peer pressure, personal responsibility and the science of addiction."
     photos:
       - url: "/assets/img/community/youth-event-2016/talk-1.jpg"

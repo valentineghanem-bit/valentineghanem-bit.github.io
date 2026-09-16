@@ -6,12 +6,19 @@
   "description": {{ include.event.description | jsonify }},
   "startDate": {{ include.event.date_iso | jsonify }},
   "endDate": {{ include.event.end_date_iso | default: include.event.date_iso | jsonify }},
-  "eventStatus": "https://schema.org/EventCompleted",
+  "eventStatus": "https://schema.org/EventScheduled",
   "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
   "keywords": {{ include.event.category | jsonify }},
+  "isAccessibleForFree": true,
   "location": {
     "@type": "Place",
     "name": {{ include.event.location | jsonify }},
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": {{ include.event.address.locality | default: include.event.location | jsonify }},
+      "addressRegion": {{ include.event.address.region | default: "Ghana" | jsonify }},
+      "addressCountry": {{ include.event.address.country | default: "GH" | jsonify }}
+    },
     "geo": {
       "@type": "GeoCoordinates",
       "latitude": {{ include.event.lat }},
@@ -20,7 +27,21 @@
   },
   "organizer": {
     "@type": "Organization",
-    "name": {{ include.event.provider | jsonify }}
+    "name": {{ include.event.provider | jsonify }},
+    "url": {{ include.event.organizer_url | default: site.url | jsonify }}
+  },
+  "performer": {
+    "@type": "Organization",
+    "name": {{ include.event.provider | jsonify }},
+    "url": {{ include.event.organizer_url | default: site.url | jsonify }}
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": "{{ page.url | absolute_url }}#community-event-{{ include.index }}",
+    "price": "0",
+    "priceCurrency": "GHS",
+    "availability": "https://schema.org/SoldOut",
+    "validFrom": {{ include.event.date_iso | jsonify }}
   },
   "contributor": { "@id": "{{ site.url }}/#person" }
   {%- if include.event.photos %},
