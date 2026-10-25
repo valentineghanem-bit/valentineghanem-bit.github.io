@@ -30,7 +30,7 @@
     {%- endfor -%}
   ]
   {%- endif -%}
-  {%- if include.event.video %},
-  "subjectOf": { "@id": "{{ include.event.video | absolute_url }}#video" }
+  {%- if include.event.watch_url %},
+  "subjectOf": { "@id": "{{ include.event.watch_url | absolute_url }}#webpage" }
   {%- endif %}
 },

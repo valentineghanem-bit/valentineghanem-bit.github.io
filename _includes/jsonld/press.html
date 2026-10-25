@@ -66,7 +66,7 @@
         "name": {{ article.outlet | jsonify }}
       }{% if article.byline %},
       "author": {
-        "@type": "Person",
+        "@type": {{ article.byline_type | default: "Person" | jsonify }},
         "name": {{ article.byline | jsonify }}
       }{% endif %}
     }{% unless forloop.last %},{% endunless %}

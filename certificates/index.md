@@ -1,10 +1,10 @@
 ---
 layout: v3
 permalink: /certificates/
-title: "Professional Development Certificates"
-browser_title: "Professional Development and CPD | Valentine Ghanem"
-description: "Downloadable continuing professional development evidence for Valentine Golden Ghanem across laboratory medicine, public health and clinical practice."
-extra_css: ["certificates-v2.css"]
+title: "Professional Development, Awards and Certificates"
+browser_title: "Awards, Professional Development and CPD | Valentine Ghanem"
+description: "Academic awards and downloadable continuing professional development evidence for Valentine Golden Ghanem across laboratory medicine, public health and clinical practice."
+extra_css: ["certificates-v2.css", "authority-updates.css"]
 extra_js: ["certificates-fx.js"]
 jsonld: "certificates"
 ---
@@ -86,6 +86,24 @@ jsonld: "certificates"
           {% endfor %}
         </div>
       </nav>
+    </div>
+  </section>
+
+  <section id="academic-awards" class="certificate-awards" aria-labelledby="academicAwardsTitle">
+    <div class="certificates-shell">
+      <p class="certificates-section-kicker">Academic recognition</p>
+      <h2 id="academicAwardsTitle">Awards and academic distinctions</h2>
+      <p class="certificate-awards__intro">Award records are presented separately from professional registrations and CPD certificates. Each entry links to a source; no certificate image is displayed where one is not available in this archive.</p>
+      <div class="certificate-awards__grid">
+        {% for award in site.data.awards %}
+        <a class="certificate-awards__item" href="{{ award.source_url }}" target="_blank" rel="noopener noreferrer">
+          <span>{{ award.awarded_by }}{% if award.date_display and award.date_display != "Date not stated in the available source" %} · {{ award.date_display }}{% endif %}</span>
+          <strong>{{ award.name }}</strong>
+          <small>{{ award.context }}</small>
+          <b>{{ award.source_label }} <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></b>
+        </a>
+        {% endfor %}
+      </div>
     </div>
   </section>
 

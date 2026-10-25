@@ -10,7 +10,9 @@ alternate_names:
   - "Ghanem Valentine"
   - "Ghanem Valentine Golden"
   - "Ghanem, Valentine Golden"
-birth_date: "1987-04-25"
+  - "valentine_ghanem"
+  - "ghanemvalentine"
+  - "valentine.ghanem"
 birth_place: "Accra, Ghana"
 job_titles:
   - "Principal Biomedical Scientist"
@@ -29,7 +31,7 @@ disambiguating_description: >
 short_description: >
   Official website of Valentine Golden Ghanem, a Ghanaian medical scientist,
   epidemiologist and public health researcher.
-profile_date_modified: "2026-08-03T23:02:49Z"
+profile_date_modified: "2026-10-25T00:00:00Z"
 about_hero_description: >
   Valentine Golden Ghanem is a Ghanaian medical scientist, epidemiologist and public
   health researcher. As Principal Biomedical Scientist at Cocoa Clinic, Ghana Cocoa
@@ -123,11 +125,6 @@ memberships:
     abbreviation: "GAMLS"
     country: "Ghana"
     reg_no: "AS 1206"
-  - name: "Vereniging voor Epidemiologie"
-    abbreviation: "VvE"
-    country: "Netherlands"
-    reg_no: "1637"
-    note: "Netherlands Epidemiological Society"
 licensure:
   - credential: "Medical Scientist"
     jurisdiction: "Ghana"
@@ -140,16 +137,21 @@ licensure:
     abbreviation: "CORU"
     reg_no: "MS 063958"
 certifications_in_progress:
-  - name: "Epidemioloog A"
-    body: "Vereniging voor Epidemiologie"
-    abbreviation: "VvE"
-    country: "Netherlands"
-    note: "Registration in progress."
   - name: "Certified in Public Health (CPH)"
     body: "National Board of Public Health Examiners"
     abbreviation: "NBPHE"
     country: "United States"
     note: "Examination preparation in progress."
+
+professional_registrations:
+  - name: "Epidemiologist A"
+    body: "Vereniging voor Epidemiologie"
+    abbreviation: "VvE"
+    country: "Netherlands"
+    reg_no: "1637"
+    registered_on: "2026-09-22"
+    registered_on_display: "22 September 2026"
+    note: "Professional epidemiology registration."
 religion: "Christianity"
 statement_of_purpose: >
   My work connects diagnostic medicine with public health practice. I interpret

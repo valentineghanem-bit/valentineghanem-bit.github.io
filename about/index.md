@@ -56,6 +56,23 @@ extra_js: ["about-fx.js"]
     </div>
   </section>
 
+  <section id="biography" class="about-v3__section about-biography" aria-labelledby="biographyTitle">
+    <div class="about-v3__inner">
+      <header class="about-v3__section-header reveal">
+        <span class="about-v3__ghost" aria-hidden="true">VG</span>
+        <p>Professional biography</p>
+        <h2 id="biographyTitle">Biography — Valentine Golden Ghanem</h2>
+        <span>A concise account of clinical practice, public-health research and professional recognition.</span>
+      </header>
+      <div class="about-biography__copy reveal">
+        <p>Valentine Golden Ghanem was born in Accra, Ghana, and is a medical laboratory scientist, epidemiologist and public-health researcher based there. He is Principal Biomedical Scientist at Cocoa Clinic, Ghana Cocoa Board, where his work draws on clinical diagnostics, laboratory quality and health-service practice.</p>
+        <p>He holds an MSc in Public Health from the University of Suffolk and an MSc in Data Science with Distinction from the University of East London. His research combines machine learning, spatial epidemiology and routine health information to examine infectious-disease surveillance and health inequities. His peer-reviewed work and reproducible analytical projects are documented in the <a href="{{ '/publications/' | relative_url }}">publications</a> and <a href="{{ '/portfolio/' | relative_url }}">portfolio</a> sections.</p>
+        <p>His academic recognition includes the Unicaf Africa Prize for Academic Excellence, associated with his public-health studies, and the University of East London’s 2026 Industry of the Future Award. His professional record includes medical-scientist registrations in Ghana and Ireland and Epidemiologist A registration with the Vereniging voor Epidemiologie (VvE), Netherlands. Further details and source links appear in <a href="{{ '/certificates/#academic-awards' | relative_url }}">awards</a> and <a href="{{ '/press/#coverage-register' | relative_url }}">press coverage</a>.</p>
+        <p class="about-biography__actions"><a href="{{ site.data.profile.cv_download_url | relative_url }}" target="_blank" rel="noopener">Download current CV</a><a href="{{ '/press/' | relative_url }}">View media coverage</a></p>
+      </div>
+    </div>
+  </section>
+
   <section id="professional-remit" class="about-v3__section about-identity" aria-labelledby="aboutRemitTitle" data-nav-marker="01" data-nav-label="Identity" data-nav-colour="#34D399">
     <div class="about-v3__inner">
       <header class="about-identity__header reveal">
@@ -141,13 +158,15 @@ extra_js: ["about-fx.js"]
           <h3>Professional standing and current credential status</h3>
           <p>Each record names the responsible organisation, jurisdiction and reference number. Pending credentials remain clearly separated from completed registration.</p>
           <div class="about-verification__summary" aria-label="Professional verification summary">
-            <span><strong>{{ site.data.profile.licensure | size }}</strong> registrations</span>
+            <span><strong>{{ site.data.profile.licensure | size }}</strong> medical-scientist registrations</span>
+            <span><strong>{{ site.data.profile.professional_registrations | size }}</strong> professional registrations</span>
             <span><strong>{{ site.data.profile.memberships | size }}</strong> memberships</span>
             <span><strong>{{ site.data.profile.certifications_in_progress | size }}</strong> in progress</span>
           </div>
           <div class="about-home-panel__controls" role="group" aria-label="Filter professional verification records">
             <button type="button" class="is-active" data-verify-filter="all" aria-pressed="true">All evidence</button>
-            <button type="button" data-verify-filter="licensure" aria-pressed="false">Registrations</button>
+            <button type="button" data-verify-filter="licensure" aria-pressed="false">Medical-scientist licences</button>
+            <button type="button" data-verify-filter="professional-registration" aria-pressed="false">Professional registrations</button>
             <button type="button" data-verify-filter="membership" aria-pressed="false">Memberships</button>
             <button type="button" data-verify-filter="pending" aria-pressed="false">In progress</button>
             <button type="button" data-verify-filter="identifiers" aria-pressed="false">Identifiers</button>
@@ -175,6 +194,28 @@ extra_js: ["about-fx.js"]
                   <h4>{{ licence.credential }}</h4>
                   <strong>{{ licence.body }} ({{ licence.abbreviation }})</strong>
                   <code>{{ licence.reg_no }}</code>
+                </article>
+                {% endfor %}
+              </div>
+            </section>
+
+            <section class="about-verification__group" data-verify-group="professional-registration" aria-labelledby="professionalRegistrationHeading">
+              <header>
+                <p>Professional registration</p>
+                <h3 id="professionalRegistrationHeading">Epidemiologist A registration</h3>
+                <span>Professional epidemiology registration; separate from medical-scientist licensure.</span>
+              </header>
+              <div>
+                {% for registration in site.data.profile.professional_registrations %}
+                <article class="about-verification__entry home-journey-card" style="--journey-accent: var(--about-violet);">
+                  <div class="about-verification__meta">
+                    <p>{{ registration.abbreviation }}</p>
+                    <span><i class="fa-solid fa-location-dot" aria-hidden="true"></i>{{ registration.country }}</span>
+                  </div>
+                  <span class="about-verification__state">Registered {{ registration.registered_on_display }}</span>
+                  <h4>{{ registration.name }}</h4>
+                  <strong>{{ registration.body }} ({{ registration.abbreviation }})</strong>
+                  <code>Reference {{ registration.reg_no }}</code>
                 </article>
                 {% endfor %}
               </div>

@@ -1,0 +1,28 @@
+# Static, manually maintained feed. Add only public original posts whose
+# canonical post URL and preview have been checked. Profile URLs are fallbacks,
+# not post links. Do not add access tokens or scrape platform pages.
+heading: "Latest Posts by Valentine Golden Ghanem"
+platforms:
+  - key: "facebook"
+    label: "Facebook"
+    icon: "fa-brands fa-facebook-f"
+    profile_url: "https://web.facebook.com/valentine.ghanem"
+    posts: []
+  - key: "instagram"
+    label: "Instagram"
+    icon: "fa-brands fa-instagram"
+    profile_url: "https://www.instagram.com/valentine_ghanem"
+    posts: []
+  - key: "x"
+    label: "X"
+    icon: "fa-brands fa-x-twitter"
+    profile_url: "https://x.com/ghanemvalentine"
+    posts:
+      - url: "https://x.com/ghanemvalentine/status/2110965706443342292"
+        date: "2026-10-16"
+        date_display: "16 October 2026"
+        preview: "Valentine shared his thanks after receiving The Industry of the Future Award at the 2026 UEL Alumni Achievement Awards."
+      - url: "https://x.com/ghanemvalentine/status/2105702840492511704"
+        date: "2026-10-01"
+        date_display: "1 October 2026"
+        preview: "Valentine announced his registration as an Epidemiologist A in the Dutch Register of Epidemiologists (VvE), confirmed on 22 September 2026."

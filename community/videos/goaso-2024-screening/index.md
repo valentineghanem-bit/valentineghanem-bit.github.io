@@ -6,8 +6,8 @@ browser_title: "Goaso Medical Screening Video | Valentine Ghanem"
 description: "Video record of Valentine Golden Ghanem and the Cocoa Clinic medical team during the 2024 medical screening for cocoa farmers in Goaso, Ghana."
 jsonld: video
 extra_css: ["video-watch.css"]
-video_title: "2024 Goaso Cocoa Farmers Medical Screening - Valentine Golden Ghanem"
-video_description: "Valentine Golden Ghanem worked with the Cocoa Clinic medical team during a preventive health screening for cocoa farmers in Goaso, Ahafo Region, on 6 November 2024."
+video_title: "2024 Medical Screening – Goaso"
+video_description: "A short field recording shows Valentine Golden Ghanem and the Cocoa Clinic medical team during the Goaso health-screening outreach for cocoa farmers."
 video_content: "/assets/video/goaso-2024-screening.mp4"
 video_thumbnail: "/assets/img/community/goaso-2024/with-ceo.jpg"
 video_thumbnail_caption: "Valentine Golden Ghanem with the Cocoa Clinic CEO during the 2024 Goaso medical screening."
@@ -20,8 +20,8 @@ video_duration: "PT13S"
     <p class="video-watch__breadcrumb"><a href="{{ '/community/' | relative_url }}">Community health</a> / Medical screening video</p>
     <header class="video-watch__header">
       <p class="video-watch__eyebrow">Goaso, Ahafo Region / 6 November 2024</p>
-      <h1>Goaso cocoa farmers medical screening</h1>
-      <p>Valentine Golden Ghanem worked with the Cocoa Clinic medical team during a preventive health screening for cocoa farmers in Goaso.</p>
+      <h1>{{ page.video_title }}</h1>
+      <p>{{ page.video_description }}</p>
     </header>
     <div class="video-watch__player">
       <video controls preload="metadata" poster="{{ page.video_thumbnail | relative_url }}" aria-describedby="goaso-video-transcript">

@@ -1,0 +1,37 @@
+<section id="latest-posts" class="latest-posts" aria-labelledby="latestPostsTitle" data-nav-marker="07" data-nav-label="Latest Posts" data-nav-colour="#A78BFA">
+  <div class="latest-posts__inner">
+    <header class="latest-posts__header">
+      <div>
+        <p>Social activity</p>
+        <h2 id="latestPostsTitle">{{ site.data.social_posts.heading }}</h2>
+        <span>Public updates from Facebook, Instagram and X. Original posts appear here only after their links are verified.</span>
+      </div>
+      <a href="{{ '/press/' | relative_url }}">Read media coverage <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+    </header>
+    <div class="latest-posts__grid">
+      {% for platform in site.data.social_posts.platforms %}
+      <section class="latest-posts__platform latest-posts__platform--{{ platform.key }}" aria-labelledby="latestPosts-{{ platform.key }}">
+        <header>
+          <i class="{{ platform.icon }}" aria-hidden="true"></i>
+          <h3 id="latestPosts-{{ platform.key }}">{{ platform.label }}</h3>
+        </header>
+        {% if platform.posts and platform.posts.size > 0 %}
+          {% for post in platform.posts %}
+          <article class="latest-posts__item">
+            <p>{{ post.preview }}</p>
+            {% if post.date_display %}<time datetime="{{ post.date }}">{{ post.date_display }}</time>{% endif %}
+            <a href="{{ post.url }}" target="_blank" rel="noopener noreferrer">Open original {{ platform.label }} post <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+          </article>
+          {% endfor %}
+        {% else %}
+          <div class="latest-posts__empty">
+            <p>No verified post link is in this feed yet.</p>
+            <a href="{{ platform.profile_url }}" target="_blank" rel="noopener noreferrer">View public {{ platform.label }} profile <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+          </div>
+        {% endif %}
+      </section>
+      {% endfor %}
+    </div>
+    <p class="latest-posts__maintenance">Feed maintenance: add the public post URL, platform, verified preview and reliable publication date to <code>_data/social_posts.yml</code>. No platform API key or embed is required.</p>
+  </div>
+</section>

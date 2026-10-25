@@ -11,6 +11,7 @@ social_image_height: 810
 social_image_type: "image/jpeg"
 social_image_alt: "Official professional portrait of Valentine Golden Ghanem"
 extra_js: ["vendor/echarts.min.js", "home-district-engine.js"]
+extra_css: ["authority-updates.css"]
 ---
 {%- assign home_peer_reviewed = site.data.publications | where: "record_type", "peer_reviewed" -%}
 {%- assign home_preprints = site.data.publications | where: "record_type", "preprint" -%}
@@ -163,7 +164,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
         <span class="px-2.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">ACSLM</span>
         <span class="px-2.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">AHPC</span>
         <span class="px-2.5 py-0.5 rounded bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20">FRSPH</span>
-        <span class="px-2.5 py-0.5 rounded bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20">VvE</span>
+        <span class="px-2.5 py-0.5 rounded bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20">Epidemiologist A (VvE)</span>
       </div>
 
       <p class="home-hero__role home-hero__identity-label mb-4 break-words" aria-hidden="true">
@@ -222,23 +223,23 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
   <div class="w-full max-w-6xl mx-auto mt-20 pt-8 border-t border-slate-200 dark:border-slate-800 reveal relative z-10">
     <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
       <div class="p-4 glass-card rounded-2xl text-center">
-        <div class="text-3xl lg:text-4xl font-black font-heading text-cyan-500" data-target="11" data-suffix="+">0</div>
+        <div class="text-3xl lg:text-4xl font-black font-heading text-cyan-500" data-target="11" data-suffix="+">11+</div>
         <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">Years in Clinical &amp; Public Health Practice</div>
       </div>
       <div class="p-4 glass-card rounded-2xl text-center">
-        <div class="text-3xl lg:text-4xl font-black font-heading text-emerald-500" data-target="5000" data-suffix="+">0</div>
+        <div class="text-3xl lg:text-4xl font-black font-heading text-emerald-500" data-target="5000" data-suffix="+">5,000+</div>
         <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">People Screened Through Outreach</div>
       </div>
       <div class="p-4 glass-card rounded-2xl text-center">
-        <div class="text-3xl lg:text-4xl font-black font-heading text-amber-500" data-target="261" data-suffix="">0</div>
+        <div class="text-3xl lg:text-4xl font-black font-heading text-amber-500" data-target="261" data-suffix="">261</div>
         <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">District Records Used in Spatial Analyses</div>
       </div>
       <div class="p-4 glass-card rounded-2xl text-center">
-        <div class="text-3xl lg:text-4xl font-black font-heading text-violet-500" data-target="{{ home_peer_reviewed.size }}" data-suffix="">0</div>
+        <div class="text-3xl lg:text-4xl font-black font-heading text-violet-500" data-target="{{ home_peer_reviewed.size }}" data-suffix="">{{ home_peer_reviewed.size }}</div>
         <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">Peer-Reviewed Articles</div>
       </div>
       <div class="p-4 glass-card rounded-2xl text-center">
-        <div class="text-3xl lg:text-4xl font-black font-heading text-red-500" data-target="{{ home_preprints.size }}" data-suffix="">0</div>
+        <div class="text-3xl lg:text-4xl font-black font-heading text-red-500" data-target="{{ home_preprints.size }}" data-suffix="">{{ home_preprints.size }}</div>
         <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-1">Preprints</div>
       </div>
     </div>
@@ -273,6 +274,30 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       </div>
     </div>
     <p class="mt-4 text-center text-[11px] leading-relaxed text-slate-500 dark:text-slate-400 font-mono">Career and portfolio counts. The outreach total is cumulative and is not an epidemiological study sample.</p>
+    <section class="home-authority-awards reveal" aria-labelledby="homeAwardsTitle">
+      <div class="home-authority-awards__heading">
+        <p>Recent recognition</p>
+        <h3 id="homeAwardsTitle">Awards and media</h3>
+      </div>
+      <div class="home-authority-awards__grid">
+        {% for award in site.data.awards %}
+        <a class="home-authority-award" href="{{ award.source_url }}" target="_blank" rel="noopener noreferrer">
+          <span>{{ award.awarded_by }}{% if award.date_display and award.date_display != "Date not stated in the available source" %} · {{ award.date_display }}{% endif %}</span>
+          <strong>{{ award.name }}</strong>
+          <small>{{ award.context }}</small>
+          <b>Read source <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></b>
+        </a>
+        {% endfor %}
+        {% assign yen_coverage = site.data.press | where: "id", "vve-epidemiologist-a" | first %}
+        <a class="home-authority-award home-authority-award--media" href="{{ yen_coverage.url }}" target="_blank" rel="noopener noreferrer">
+          <span>{{ yen_coverage.outlet }} · {{ yen_coverage.date }}</span>
+          <strong>{{ yen_coverage.headline }}</strong>
+          <small>{{ yen_coverage.summary }}</small>
+          <b>Read coverage <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></b>
+        </a>
+      </div>
+      <a class="home-authority-awards__archive" href="{{ '/certificates/#academic-awards' | relative_url }}">View award records and source links <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+    </section>
   </div>
 </section>
 
@@ -442,7 +467,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
                tabindex="0"></div>
           <div id="districtMapLoading" class="district-map-loading">
             <i class="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
-            <span>Preparing Ghana's regional and district boundaries</span>
+            <span>Preparing Ghana's regional and district boundaries. If the interactive map cannot load, <a href="{{ '/assets/data/ghana-district-facts.json' | relative_url }}">open the 261-district atlas data</a>.</span>
           </div>
         </div>
 
@@ -654,6 +679,8 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
     </div>
   </div>
 </section>
+
+{% include social-posts-section.html %}
 
 </main>
 

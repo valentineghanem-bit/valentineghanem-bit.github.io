@@ -645,7 +645,7 @@
     if (loading) {
       loading.classList.add('is-error');
       loading.innerHTML = '<i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i><span>' +
-        escapeHtml(message) + '</span>';
+        escapeHtml(message) + '</span><a href="/assets/data/ghana-district-facts.json">Open the 261-district atlas data</a>';
     }
   }
 

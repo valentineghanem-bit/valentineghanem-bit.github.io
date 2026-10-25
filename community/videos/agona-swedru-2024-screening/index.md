@@ -6,8 +6,8 @@ browser_title: "Agona Swedru Medical Screening Video | Valentine Ghanem"
 description: "Video record of Valentine Golden Ghanem supporting the Cocoa Clinic medical screening for staff and cocoa farmers in Agona Swedru, Ghana."
 jsonld: video
 extra_css: ["video-watch.css"]
-video_title: "2024 Agona Swedru Medical Screening - Valentine Golden Ghanem"
-video_description: "Valentine Golden Ghanem supported the Cocoa Clinic medical screening for staff and cocoa farmers in Agona Swedru, Central Region, on 19 October 2024."
+video_title: "2024 Medical Screening – Agona Swedru"
+video_description: "A short field recording shows Valentine Golden Ghanem supporting the Cocoa Clinic screening programme for staff and cocoa farmers in Agona Swedru."
 video_content: "/assets/video/agona-swedru-2024-screening.mp4"
 video_thumbnail: "/assets/img/community/agona-swedru-2024/group-pic.jpg"
 video_thumbnail_caption: "Valentine Golden Ghanem with the Cocoa Clinic screening team in Agona Swedru."
@@ -20,8 +20,8 @@ video_duration: "PT32S"
     <p class="video-watch__breadcrumb"><a href="{{ '/community/' | relative_url }}">Community health</a> / Medical screening video</p>
     <header class="video-watch__header">
       <p class="video-watch__eyebrow">Agona Swedru, Central Region / 19 October 2024</p>
-      <h1>Agona Swedru medical screening</h1>
-      <p>Valentine Golden Ghanem supported a Cocoa Clinic medical screening for staff and cocoa farmers in Agona Swedru.</p>
+      <h1>{{ page.video_title }}</h1>
+      <p>{{ page.video_description }}</p>
     </header>
     <div class="video-watch__player">
       <video controls preload="metadata" poster="{{ page.video_thumbnail | relative_url }}" aria-describedby="swedru-video-transcript">

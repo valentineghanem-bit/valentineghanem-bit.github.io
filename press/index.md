@@ -65,7 +65,7 @@ extra_js: ["press-fx.js"]
         <div>
           <p class="press-section-heading__kicker">Media archive</p>
           <h2 id="coverage-title">Coverage, commentary and profiles</h2>
-          <p>Browse seven articles by coverage type.</p>
+          <p>Browse {{ site.data.press.size }} items by coverage type.</p>
         </div>
       </header>
 

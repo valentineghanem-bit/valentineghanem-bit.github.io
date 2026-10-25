@@ -11,12 +11,10 @@ permalink: /video-sitemap.xml
     <loc>{{ video.watch_url | absolute_url | xml_escape }}</loc>
     <video:video>
       <video:thumbnail_loc>{{ video.photos.first.url | absolute_url | replace: " ", "%20" | xml_escape }}</video:thumbnail_loc>
-      <video:title>{{ video.title | append: " - Valentine Golden Ghanem" | xml_escape }}</video:title>
+      <video:title>{{ video.video_title | default: video.title | xml_escape }}</video:title>
       <video:description>{{ video.video_description | default: video.description | strip_html | xml_escape }}</video:description>
       <video:content_loc>{{ video.video | absolute_url | replace: " ", "%20" | xml_escape }}</video:content_loc>
-      <video:player_loc>{{ video.watch_url | absolute_url | xml_escape }}</video:player_loc>
       <video:duration>{{ video.video_duration_seconds }}</video:duration>
-      <video:publication_date>{{ video.date_iso }}T00:00:00+00:00</video:publication_date>
       <video:family_friendly>yes</video:family_friendly>
     </video:video>
   </url>

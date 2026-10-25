@@ -8,7 +8,7 @@
   "additionalName": {{ p.additional_name | jsonify }},
   "familyName": {{ p.family_name | jsonify }},
   "alternateName": {{ p.alternate_names | jsonify }},
-  "honorificSuffix": ["MLS (CORU)", "ACSLM", "AHPC", "FRSPH", "VvE"],
+  "honorificSuffix": ["MLS (CORU)", "ACSLM", "AHPC", "FRSPH"],
   "description": {{ p.description | strip_newlines | jsonify }},
   "disambiguatingDescription": {{ p.disambiguating_description | strip_newlines | jsonify }},
   "jobTitle": {{ p.job_titles | jsonify }},
@@ -22,7 +22,6 @@
     {%- endfor -%}
   ],
   "nationality": { "@type": "Country", "name": {{ p.nationality | jsonify }} },
-  "birthDate": {{ p.birth_date | jsonify }},
   "birthPlace": { "@type": "Place", "name": {{ p.birth_place | jsonify }} },
   "workLocation": {
     "@type": "Place",
@@ -66,6 +65,10 @@
     {%- for l in p.licensure -%}
     { "@type": "EducationalOccupationalCredential", "name": {{ l.credential | jsonify }}, "credentialCategory": "license", "recognizedBy": { "@type": "Organization", "name": {{ l.body | jsonify }}, "alternateName": {{ l.abbreviation | jsonify }} }{% if l.reg_no %}, "identifier": {{ l.reg_no | jsonify }}{% endif %}, "spatialCoverage": { "@type": "Country", "name": {{ l.jurisdiction | jsonify }} } }{% unless forloop.last %},{% endunless %}
     {%- endfor -%}
+    {%- if p.professional_registrations and p.professional_registrations.size > 0 -%},{%- endif -%}
+    {%- for r in p.professional_registrations -%}
+    { "@type": "EducationalOccupationalCredential", "name": {{ r.name | jsonify }}, "credentialCategory": "professional registration", "description": {{ r.registered_on_display | prepend: "Registered " | append: "; professional epidemiology registration." | jsonify }}, "recognizedBy": { "@type": "Organization", "name": {{ r.body | jsonify }}, "alternateName": {{ r.abbreviation | jsonify }}, "address": { "@type": "PostalAddress", "addressCountry": {{ r.country | jsonify }} } }{% if r.reg_no %}, "identifier": {{ r.reg_no | jsonify }}{% endif %}, "spatialCoverage": { "@type": "Country", "name": {{ r.country | jsonify }} } }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
     {%- if p.certifications_in_progress and p.certifications_in_progress.size > 0 -%},{%- endif -%}
     {%- for c in p.certifications_in_progress -%}
     {%- capture prog_name -%}{{ c.name }} - in progress{%- endcapture -%}
@@ -78,6 +81,7 @@
     { "@id": {{ pub.doi_url | jsonify }} }{% unless forloop.last %},{% endunless %}
     {%- endfor -%}
   ],
+  "award": {{ site.data.awards | map: "name" | jsonify }},
   "mainEntityOfPage": { "@id": "{{ site.url }}/about/#profilepage" },
   "identifier": [
     {%- for ident in p.identifiers -%}
