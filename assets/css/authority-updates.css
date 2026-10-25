@@ -79,13 +79,14 @@
 .v3-scope .latest-posts__header h2 { margin: 0; font: 700 clamp(1.6rem, 4vw, 2.7rem)/1.15 "Space Grotesk", sans-serif; }
 .v3-scope .latest-posts__header span { display: block; max-width: 680px; margin-top: 12px; color: #cbd5e1; line-height: 1.65; }
 .v3-scope .latest-posts__header > a { display: inline-flex; min-height: 44px; align-items: center; gap: 8px; color: #67e8f9; font-weight: 700; text-decoration: none; }
-.v3-scope .latest-posts__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.v3-scope .latest-posts__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 16px; }
 .v3-scope .latest-posts__platform { min-width: 0; padding: 24px; border: 1px solid rgba(148, 163, 184, .25); background: rgba(30, 41, 59, .68); }
 .v3-scope .latest-posts__platform > header { display: flex; align-items: center; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid rgba(148, 163, 184, .2); }
 .v3-scope .latest-posts__platform > header i { display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid #475569; border-radius: 50%; color: #e2e8f0; }
 .v3-scope .latest-posts__platform h3 { margin: 0; color: #fff; font: 700 1.05rem/1.3 "Space Grotesk", sans-serif; }
 .v3-scope .latest-posts__empty,
 .v3-scope .latest-posts__item { display: flex; min-height: 132px; flex-direction: column; align-items: flex-start; gap: 12px; padding-top: 16px; }
+.v3-scope .latest-posts__empty { min-height: 0; }
 .v3-scope .latest-posts__empty p,
 .v3-scope .latest-posts__item p { margin: 0; color: #cbd5e1; font-size: .9rem; line-height: 1.65; }
 .v3-scope .latest-posts__empty a,

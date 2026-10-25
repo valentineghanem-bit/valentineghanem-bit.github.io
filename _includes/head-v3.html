@@ -70,9 +70,9 @@
      declared via front matter
      (extra_css: [...], extra_js: [...]) instead of duplicating the tags
      into every page body. -->
-{% if page.extra_css %}{% for f in page.extra_css %}<link rel="stylesheet" href="{{ '/assets/css/' | append: f | relative_url }}?v=20260801-g34">
+{% if page.extra_css %}{% for f in page.extra_css %}<link rel="stylesheet" href="{{ '/assets/css/' | append: f | relative_url }}?v=20261025-g35">
 {% endfor %}{% endif %}
-{% if page.extra_js %}{% for f in page.extra_js %}<script src="{{ '/assets/js/' | append: f | relative_url }}?v=20260801-g34" defer></script>
+{% if page.extra_js %}{% for f in page.extra_js %}<script src="{{ '/assets/js/' | append: f | relative_url }}?v=20261025-g35" defer></script>
 {% endfor %}{% endif %}
 
 {% if page.jsonld == "home" %}

@@ -1914,12 +1914,20 @@ html[data-v2-theme="dim"] .v3-scope .about-home-panel {
 .v3-scope .about-biography__copy {
   width: min(900px, 100%);
   margin: 0 auto;
-  color: #dbe4f0;
-  font-size: clamp(.95rem, 1.3vw, 1.05rem);
-  line-height: 1.8;
+  color: var(--text-main);
+  font-size: clamp(1rem, 1.3vw, 1.075rem);
+  font-weight: 500;
+  line-height: 1.75;
 }
 .v3-scope .about-biography__copy p + p { margin-top: 16px; }
-.v3-scope .about-biography__copy a { color: #67e8f9; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.v3-scope .about-biography__copy a { color: #0e7490; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.v3-scope .about-biography__copy a:hover { color: #155e75; }
 .v3-scope .about-biography__copy a:focus-visible { outline: 3px solid #fbbf24; outline-offset: 3px; }
 .v3-scope .about-biography__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px !important; }
-.v3-scope .about-biography__actions a { display: inline-flex; min-height: 44px; align-items: center; padding: 10px 16px; border: 1px solid rgba(103, 232, 249, .45); text-decoration: none; }
+.v3-scope .about-biography__actions a { display: inline-flex; min-height: 44px; align-items: center; padding: 10px 16px; border: 1px solid #0e7490; text-decoration: none; }
+html[data-v2-theme="dark"] .v3-scope .about-biography__copy a,
+html[data-v2-theme="dim"] .v3-scope .about-biography__copy a { color: #67e8f9; }
+html[data-v2-theme="dark"] .v3-scope .about-biography__copy a:hover,
+html[data-v2-theme="dim"] .v3-scope .about-biography__copy a:hover { color: #a5f3fc; }
+html[data-v2-theme="dark"] .v3-scope .about-biography__actions a,
+html[data-v2-theme="dim"] .v3-scope .about-biography__actions a { border-color: rgba(103, 232, 249, .65); }
