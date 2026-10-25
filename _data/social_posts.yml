@@ -1,4 +1,4 @@
-# Static, manually maintained Facebook/X feed. Add only public original posts
+# Static, manually maintained Facebook/Instagram/X feed. Add only public original posts
 # whose canonical post URL and preview have been checked. Profile URLs are
 # fallbacks, not post links. Do not add access tokens or scrape platform pages.
 heading: "Latest Posts by Valentine Golden Ghanem"
@@ -7,6 +7,11 @@ platforms:
     label: "Facebook"
     icon: "fa-brands fa-facebook-f"
     profile_url: "https://web.facebook.com/valentine.ghanem"
+    posts: []
+  - key: "instagram"
+    label: "Instagram"
+    icon: "fa-brands fa-instagram"
+    profile_url: "https://www.instagram.com/valentine_ghanem"
     posts: []
   - key: "x"
     label: "X"
