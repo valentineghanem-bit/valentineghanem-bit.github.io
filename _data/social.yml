@@ -2,13 +2,14 @@
 # Add/remove lines here only -- the JSON-LD and the visible social icons
 # both read from this one list, so they can never drift out of sync.
 same_as:
+  - "https://web.facebook.com/valentine.ghanem"
+  - "https://x.com/ghanemvalentine"
   - "https://www.wikidata.org/wiki/Q137962236"
   - "https://commons.wikimedia.org/wiki/Category:Valentine_Golden_Ghanem"
   - "https://isni.org/isni/000000052967791X"
   - "https://orcid.org/0009-0002-8332-0220"
   - "https://scholar.google.com/citations?user=06JdyxMAAAAJ"
   - "https://www.linkedin.com/in/valentineghanem"
-  - "https://x.com/ghanemvalentine"
   - "https://www.researchgate.net/profile/Valentine-Ghanem"
   - "https://www.webofscience.com/wos/author/record/NRA-8276-2025"
   - "https://www.semanticscholar.org/author/Valentine-Golden-Ghanem/2368956236"
@@ -18,10 +19,15 @@ same_as:
   - "https://www.cureus.com/users/1116835-valentine-g-ghanem"
   - "https://github.com/valentineghanem-bit"
   - "https://www.instagram.com/valentine_ghanem"
-  - "https://web.facebook.com/valentine.ghanem"
 
 # Icons shown in the footer/nav (subset of same_as, with a label + icon key)
 icons:
+  - label: "Facebook"
+    url: "https://web.facebook.com/valentine.ghanem"
+    icon: "facebook"
+  - label: "X"
+    url: "https://x.com/ghanemvalentine"
+    icon: "x"
   - label: "LinkedIn"
     url: "https://www.linkedin.com/in/valentineghanem"
     icon: "linkedin"
@@ -31,15 +37,9 @@ icons:
   - label: "ORCID"
     url: "https://orcid.org/0009-0002-8332-0220"
     icon: "orcid"
-  - label: "X"
-    url: "https://x.com/ghanemvalentine"
-    icon: "x"
   - label: "Instagram"
     url: "https://www.instagram.com/valentine_ghanem"
     icon: "instagram"
-  - label: "Facebook"
-    url: "https://web.facebook.com/valentine.ghanem"
-    icon: "facebook"
   - label: "Email"
     url: "mailto:valentineghanem@gmail.com"
     icon: "email"

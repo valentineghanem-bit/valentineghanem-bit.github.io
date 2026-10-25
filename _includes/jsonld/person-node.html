@@ -1,8 +1,8 @@
 {%- assign p = site.data.profile -%}
+{%- assign representative_image = site.data.images | where: "representative", true | first -%}
 {
   "@type": "Person",
   "@id": "{{ site.url }}/#person",
-  "url": "{{ site.url }}/",
   "name": {{ p.name | jsonify }},
   "givenName": {{ p.given_name | jsonify }},
   "additionalName": {{ p.additional_name | jsonify }},
@@ -88,16 +88,6 @@
     { "@type": "PropertyValue", "propertyID": {{ ident.property_id | jsonify }}, "value": {{ ident.value | jsonify }}, "url": {{ ident.url | jsonify }} }{% unless forloop.last %},{% endunless %}
     {%- endfor -%}
   ],
-  "image": [
-    {%- for img in site.data.images -%}
-    { "@id": {{ img.id_url | jsonify }} },
-    {%- endfor -%}
-    {%- assign gallery_images = "" | split: "," -%}
-    {%- for img in site.data.gallery_portraits -%}{%- assign gallery_images = gallery_images | push: img -%}{%- endfor -%}
-    {%- for img in site.data.gallery_photos -%}{%- assign gallery_images = gallery_images | push: img -%}{%- endfor -%}
-    {%- for img in gallery_images -%}
-    { "@id": {{ img.url | absolute_url | append: "#image" | jsonify }} }{% unless forloop.last %},{% endunless %}
-    {%- endfor -%}
-  ],
+  "image": { "@id": {{ representative_image.id_url | jsonify }} },
   "sameAs": {{ site.data.social.same_as | jsonify }}
 }
