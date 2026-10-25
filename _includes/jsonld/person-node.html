@@ -54,7 +54,8 @@
     {%- endfor -%}
   ],
   "hasCredential": [
-    {%- for c in p.credentials -%}
+    {%- assign completed_credentials = p.credentials | where: "status", "completed" -%}
+    {%- for c in completed_credentials -%}
     {%- capture cred_name -%}{{ c.name }}{% if c.status == "in progress" %} - studies in progress{% endif %}{%- endcapture -%}
     { "@type": "EducationalOccupationalCredential", "name": {{ cred_name | jsonify }}, "credentialCategory": {{ c.category | jsonify }}{% if c.level %}, "educationalLevel": {{ c.level | jsonify }}{% endif %}, "recognizedBy": { "@type": "CollegeOrUniversity", "name": {{ c.institution | jsonify }} }{% if c.status == "in progress" %}, "description": {{ c.note | jsonify }}{% endif %} },
     {%- endfor -%}

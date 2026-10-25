@@ -3,7 +3,9 @@ given_name: "Valentine"
 additional_name: "Golden"
 family_name: "Ghanem"
 alternate_names:
+  - "Valentine Golden"
   - "Valentine Ghanem"
+  - "Golden Ghanem"
   - "Valentine G. Ghanem"
   - "Valentine G Ghanem"
   - "V. G. Ghanem"
@@ -20,23 +22,42 @@ job_titles:
   - "Public Health Researcher"
 nationality: "Ghana"
 description: >
-  Valentine Golden Ghanem is a Ghanaian medical scientist, epidemiologist and public
-  health researcher with over a decade of experience in diagnostic medicine and
-  data-informed health systems. He is Principal Biomedical Scientist at Cocoa Clinic,
-  Ghana Cocoa Board. His work combines laboratory medicine, epidemiology,
-  clinical data science, spatial analysis and machine learning to strengthen disease
-  surveillance and reduce health inequities.
+  Valentine Golden Ghanem is a Ghanaian medical laboratory scientist, epidemiologist
+  and public-health researcher based in Accra. He is Principal Biomedical Scientist
+  at Cocoa Clinic, Ghana Cocoa Board. He holds a BSc in Medical Laboratory Science
+  from the University of Ghana, an MSc in Public Health with Merit from the University
+  of Suffolk, and an MSc in Data Science with Distinction from the University of East
+  London. He is pursuing an LLM in International Law at Liverpool John Moores
+  University; the degree is in progress. He received the Unicaf Africa Prize for
+  Academic Excellence. He also received The Industry of the Future Award at the
+  University of East London's 2026 Alumni Achievement Awards. He is a Fellow of the Royal Society for
+  Public Health and is registered as a medical scientist
+  in Ghana and Ireland and as an Epidemiologist A with the Vereniging voor
+  Epidemiologie in the Netherlands.
 disambiguating_description: >
   Ghanaian medical scientist, epidemiologist and public health researcher based in Accra, Ghana.
 short_description: >
-  Official website of Valentine Golden Ghanem, a Ghanaian medical scientist,
-  epidemiologist and public health researcher.
+  Valentine Golden Ghanem is an Accra-based Ghanaian medical laboratory scientist,
+  epidemiologist and public-health researcher.
+homepage_bio: >
+  Valentine Golden Ghanem is a Ghanaian medical laboratory scientist, epidemiologist
+  and public-health researcher in Accra, where he serves as Principal Biomedical
+  Scientist at Cocoa Clinic, Ghana Cocoa Board. He holds a BSc in Medical Laboratory
+  Science from the University of Ghana, an MSc in Public Health with Merit from the
+  University of Suffolk, and an MSc in Data Science with Distinction from the
+  University of East London. He is pursuing an LLM in International Law at Liverpool
+  John Moores University; the degree is in progress. He received the Unicaf Africa
+  Prize for Academic Excellence. He also received The Industry of the Future Award at
+  the University of East London's 2026 Alumni Achievement Awards. He is a Fellow of the
+  Royal Society
+  for Public Health and is registered as a
+  medical scientist in Ghana and Ireland and as an Epidemiologist A in the Netherlands.
 profile_date_modified: "2026-10-25T00:00:00Z"
 about_hero_description: >
-  Valentine Golden Ghanem is a Ghanaian medical scientist, epidemiologist and public
-  health researcher. As Principal Biomedical Scientist at Cocoa Clinic, Ghana Cocoa
-  Board, he connects laboratory medicine, disease surveillance, spatial analysis and
-  machine learning to strengthen public health decision-making.
+  A Ghanaian medical laboratory scientist, epidemiologist and public-health researcher,
+  Valentine Golden Ghanem leads diagnostic laboratory practice at Cocoa Clinic, Ghana
+  Cocoa Board. His work connects clinical evidence, data science and epidemiology to
+  improve disease surveillance and health systems.
 cv_download_url: "/assets/files/valentine-golden-ghanem-resume.pdf"
 languages:
   - name: "English"

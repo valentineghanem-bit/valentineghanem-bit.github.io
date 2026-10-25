@@ -2,9 +2,9 @@
 layout: v3
 permalink: /
 jsonld: home
-title: "Valentine Ghanem"
-browser_title: "Valentine Ghanem | Home"
-description: "Official website of Valentine Golden Ghanem, a Ghanaian medical scientist, epidemiologist and public health researcher."
+title: "Valentine Golden Ghanem"
+browser_title: "Valentine Golden Ghanem | Home"
+description: "Valentine Golden Ghanem is an Accra-based Ghanaian medical laboratory scientist, epidemiologist and public-health researcher."
 social_image: "/assets/img/knowledge-panel/valentine-golden-ghanem-official-portrait.jpg"
 social_image_width: 810
 social_image_height: 810
@@ -178,7 +178,7 @@ real _data/*.yml files, not the reference template's fabricated arrays. {%- endc
       </h1>
 
       <p class="home-hero__summary text-lg sm:text-xl font-light text-slate-300 max-w-2xl leading-relaxed mb-8">
-        {{ site.data.profile.description | strip_newlines }}
+        {{ site.data.profile.homepage_bio | strip_newlines }}
       </p>
 
       <div class="home-hero__actions flex flex-wrap items-center gap-4 mb-10">
